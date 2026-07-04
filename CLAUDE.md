@@ -50,6 +50,38 @@ end-to-end on 2026-07-04, removing a member from the member page):
 4. **Verify** — after publishing, curl the changed pages on
    https://www.rio.scrc.iir.isct.ac.jp and confirm the change is live.
 
+## Content conventions
+
+- **File quirks**: the HTML files have CRLF line endings and occasional
+  non-breaking spaces, so the Edit tool's exact-match replace often fails.
+  Edit them with a small `python3` script (`open(path, newline='')` to
+  preserve CRLF) instead.
+- **Institution naming** (renamed 2024): 東京科学大学 総合研究院 / Institute of
+  Science Tokyo, IIR. Old names (東京工業大学, Tokyo Tech, 学術国際情報センター,
+  GSIC) were replaced site-wide on 2026-07-05, EXCEPT in historical records —
+  the CV on `member/yokota.html`, old news items — and in live URLs
+  (`t4.gsic.titech.ac.jp`, SuperCon links), which keep the old names.
+- **Achievements** (`achievements/index.html`): sections `sub001`–`sub007`
+  (journal / book series / books / international peer-reviewed / domestic
+  peer-reviewed / international non-reviewed / domestic non-reviewed), entries
+  newest-first inside each `<ol>`. International citations are written in
+  English on BOTH language pages; domestic ones in Japanese on both.
+- **News**: only top-conference acceptances (ICLR/NeurIPS/CVPR/AAAI level) and
+  grants get news items — not workshops, GTC talks, or LREC-tier venues. Each
+  item appears in four places: a dated row in the News table on both top pages
+  (`en/index.html`, `jp/index.html`) linking to `news/index.html#evYYMMDD`,
+  and the full anchored entry on both news pages. Dates = announcement date;
+  member grades are written as of that date (e.g. "(2nd year PhD)"/"(D2)").
+- **Computers page**: the Hinadori section is generated from live cluster data —
+  this machine IS the Hinadori login node. `sinfo`/`slurm.conf` give the node
+  layout, `yrun` (no args) lists resources with GPU models, and short `ybatch`
+  jobs (`#YBATCH -r <resource>`; write output to `$HOME`, not `/tmp` — `/tmp`
+  is node-local) give exact CPU/GPU models. Direct `srun` is blocked. Last
+  refreshed 2026-07-05: 81 GPUs; the two RTX 6000 Ada nodes' CPU models are
+  still unverified ("-" in the table).
+- When changing a site-wide string, also update `Templates/*.dwt` so the
+  inert templates stay consistent with the pages.
+
 ## Deployment details
 
 `publish.sh` calls `./deploy.sh` (preview with `./deploy.sh --dry-run`). It mirrors
