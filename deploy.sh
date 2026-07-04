@@ -15,6 +15,7 @@ if [ "${1:-}" = "--dry-run" ]; then
 fi
 
 # mirror -R: local -> remote; uploads new/changed files only.
-# Never uploads .git or this script. Does NOT delete remote files
-# that were removed locally — add --delete below if you want that.
-lftp -e "mirror -R --verbose $DRY_RUN -x '^\.git/' -x '^deploy\.sh$' . www; bye" sftp://web
+# Never uploads .git or repo-only files (this script, CLAUDE.md, .gitignore).
+# Does NOT delete remote files that were removed locally — add --delete
+# below if you want that.
+lftp -e "mirror -R --verbose $DRY_RUN -x '^\.git/' -x '^\.claude/' -x '^deploy\.sh$' -x '^CLAUDE\.md$' -x '^\.gitignore$' . www; bye" sftp://web
