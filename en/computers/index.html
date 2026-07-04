@@ -120,11 +120,12 @@ Computers
       <article>
         <p>All  members of our research group are provided with a new laptop (MacBookPro), a  large display, keyboard, and mouse of their choice. They are also given access  to the following supercomputers:</p>
         <ul>
-          <li><a href="https://www.r-ccs.riken.jp/jp/fugaku" target="_blank">Fugaku (R-CSS)</a></li>
-          <li><a href="https://www.olcf.ornl.gov/summit" target="_blank">Summit (ORNL)</a></li>
+          <li><a href="https://www.r-ccs.riken.jp/jp/fugaku" target="_blank">Fugaku (R-CCS)</a></li>
+          <li><a href="https://www.olcf.ornl.gov/olcf-resources/compute-systems/frontier/" target="_blank">Frontier (ORNL)</a></li>
+          <li><a href="https://www.alcf.anl.gov/aurora" target="_blank">Aurora (ANL)</a></li>
           <li><a href="https://abci.ai/" target="_blank">ABCI (AIST)</a></li>
-          <li><a href="https://www.t3.gsic.titech.ac.jp/" target="_blank">TSUBAME 3.0 (TokyoTech)</a></li>
-          <li><a href="https://www.cc.u-tokyo.ac.jp/supercomputer/" target="_blank">Reedbush / Oakforest PACS / Oakbridge-CX (UofT)</a></li>
+          <li><a href="https://www.t4.gsic.titech.ac.jp/" target="_blank">TSUBAME 4.0 (Science Tokyo)</a></li>
+          <li><a href="https://www.cc.u-tokyo.ac.jp/supercomputer/miyabi/service/index.php" target="_blank">Miyabi (UTokyo)</a></li>
         </ul>
         <p>In addition, a private cluster &quot;Hinadori&quot; is maintained within the lab.</p>
         <h3 class="heading"><a name="sub002"></a>Hinadori Cluster</h3>
@@ -132,54 +133,36 @@ Computers
           Students take the initiative in determining specification, procurement, and operation. </p>
         <h4>Hardware</h4>
         <p>To  conduct forefront research in HPC and Deep Learning, GPUs are necessary for  daily research in Yokota Lab.<br>
-Hence, we provide multiple GPU servers (74 GPUs in total):</p>
+Hence, we provide multiple GPU servers (81 GPUs in total):</p>
         <table width="98%" border="0" align="center" cellpadding="0" cellspacing="1">
           <tr>
             <td bgcolor="#eeeeee">CPU </td>
-            <td bgcolor="#eeeeee">ホストメモリ </td>
-            <td bgcolor="#eeeeee">GPU    (1ノードあたりの搭載数 </td>
-            <td bgcolor="#eeeeee">台数 </td>
+            <td bgcolor="#eeeeee">Host memory </td>
+            <td bgcolor="#eeeeee">GPU (per node) </td>
+            <td bgcolor="#eeeeee"># of nodes </td>
           </tr>
           <tr>
-            <td>Intel Xeon Silver 4215</td>
-            <td class="line">96GB</td>
-            <td class="line">NVIDIA GeForce GTX 1080Ti (2)</td>
+            <td class="line">AMD Ryzen Threadripper 3960X</td>
+            <td class="line">128GB</td>
+            <td class="line">NVIDIA RTX A4500 (2)</td>
             <td class="line">4</td>
           </tr>
           <tr>
-            <td></td>
-            <td class="line"></td>
-            <td class="line">NVIDIA GeForce RTX 2080 (2)</td>
-            <td class="line">2</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td class="line"></td>
-            <td class="line">NVIDIA GeForce RTX 2080Ti (2)</td>
-            <td class="line">1</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td class="line"></td>
-            <td class="line">NVIDIA TITAN V (2)</td>
+            <td class="line">AMD EPYC 7402</td>
+            <td class="line">512GB</td>
+            <td class="line">NVIDIA GeForce RTX 3090 (8)</td>
             <td class="line">1</td>
           </tr>
           <tr>
             <td class="line"></td>
             <td class="line"></td>
-            <td class="line">NVIDIA TESLA V100 PCIe 16GB (1)</td>
+            <td class="line">NVIDIA GeForce RTX 3090 (6)</td>
             <td class="line">1</td>
           </tr>
           <tr>
-            <td class="line">Intel Xeon E5-2630v3</td>
-            <td class="line">64GB</td>
-            <td class="line">NVIDIA TITAN RTX (1)</td>
-            <td class="line">1</td>
-          </tr>
-          <tr>
-            <td class="line">AMD EPYC 7742</td>
-            <td class="line">1TB</td>
-            <td class="line">NVIDIA A100 40GB SXM4 (8)</td>
+            <td class="line">AMD EPYC 7313P</td>
+            <td class="line">512GB</td>
+            <td class="line">NVIDIA GeForce RTX 3090 (4)</td>
             <td class="line">1</td>
           </tr>
           <tr>
@@ -191,35 +174,69 @@ Hence, we provide multiple GPU servers (74 GPUs in total):</p>
           <tr>
             <td class="line">AMD EPYC 7453</td>
             <td class="line">512GB</td>
-            <td class="line">NVIDIA A6000 (8)</td>
+            <td class="line">NVIDIA RTX A6000 (6)</td>
             <td class="line">1</td>
           </tr>
           <tr>
-            <td class="line">AMD Ryzen Threadripper 3960X</td>
-            <td class="line">128GB</td>
-            <td class="line">NVIDIA A4500 (2)</td>
-            <td class="line">4</td>
+            <td class="line">-</td>
+            <td class="line">512GB</td>
+            <td class="line">NVIDIA RTX 6000 Ada (8)</td>
+            <td class="line">1</td>
           </tr>
           <tr>
-            <td class="line">AMD EPYC 7402</td>
+            <td class="line">-</td>
+            <td class="line">384GB</td>
+            <td class="line">NVIDIA RTX 6000 Ada (2)</td>
+            <td class="line">1</td>
+          </tr>
+          <tr>
+            <td class="line">Intel Xeon Gold 5418Y</td>
             <td class="line">512GB</td>
-            <td class="line">NVIDIA GeForce RTX 3090 (8)</td>
-            <td class="line">3</td>
+            <td class="line">NVIDIA GeForce RTX 4090 (8)</td>
+            <td class="line">1</td>
+          </tr>
+          <tr>
+            <td class="line"></td>
+            <td class="line"></td>
+            <td class="line">NVIDIA GeForce RTX 4090 (7)</td>
+            <td class="line">1</td>
+          </tr>
+          <tr>
+            <td class="line">Intel Xeon Gold 6530</td>
+            <td class="line">512GB</td>
+            <td class="line">NVIDIA H100 NVL (2)</td>
+            <td class="line">1</td>
+          </tr>
+          <tr>
+            <td class="line">Intel Xeon Platinum 8570</td>
+            <td class="line">2TB</td>
+            <td class="line">NVIDIA B200 (8)</td>
+            <td class="line">1</td>
+          </tr>
+          <tr>
+            <td class="line">Intel Xeon Silver 4514Y</td>
+            <td class="line">1TB</td>
+            <td class="line">NVIDIA RTX PRO 6000 Blackwell (6)</td>
+            <td class="line">1</td>
+          </tr>
+          <tr>
+            <td class="line">AMD EPYC 7502</td>
+            <td class="line">1TB</td>
+            <td class="line">- (CPU-only node)</td>
+            <td class="line">1</td>
           </tr>
         </table>
         <br>
         <p>Other features of Hinadori include:</p>
         <ul>
           <li>Login node as a bastion for SSH</li>
-             <li>100TB of SSD file-server (RAID10)</li>
-             <li>400TB of HDD file-server (RAID10)</li>
+             <li>NFS file servers with more than 500TB of storage in total</li>
              <li>Private VPN service</li>
         </ul>
-        <p>(as of 2024.11.28) </p>
+        <p>(as of 2026.07.05) </p>
         <p>&nbsp;</p>
         <p>These features enable students to conduct experiments remotely.</p>
-        <p>Hinadori also supports parallel computing with multiple computers using MPI by 10GbE.<br>
-          In addition, research using special processors, such as Intel KNL nodes and PEZY SC2, is performed.</p>
+        <p>Hinadori also supports multi-node parallel computing using MPI.</p>
         <p align="center">		<a href="../../jp/computers/images/images-1/hinadori-1.jpg"  rel="lightbox"><img src="../../jp/computers/images/images-1/hinadori-1.jpg" alt="" width="220px"/></a>
 		<a href="../../jp/computers/images/images-1/hinadori-2.jpg"  rel="lightbox"><img src="../../jp/computers/images/images-1/hinadori-2.jpg" alt="" width="220px"/></a>
 		<a href="../../jp/computers/images/images-1/hinadori-3.jpg"  rel="lightbox"><img src="../../jp/computers/images/images-1/hinadori-3.jpg" alt="" width="220px"/></a>
