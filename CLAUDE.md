@@ -26,11 +26,24 @@ structure one-to-one.
 
 ## Publishing workflow
 
-1. Edit files, preview locally: `python3 -m http.server 8000`, then open
-   `http://localhost:8000/jp/index.html` (or `/en/`) in a browser.
-2. When satisfied: `./publish.sh "what changed"` — shows pending changes,
-   asks for confirmation, then deploys to the web server and commits and
-   pushes to GitHub in one step.
+This is the standard cycle for every content change (first exercised
+end-to-end on 2026-07-04, removing a member from the member page):
+
+1. **Edit** — make the change; remember to update both `jp/` and `en/`
+   counterparts. When Claude makes the edit, grep for other occurrences of
+   the changed content (names, links) across the whole site, not just the
+   page the user named.
+2. **Preview** — the user checks the result on their local server
+   (`python3 -m http.server 8000` in this folder →
+   `http://localhost:8000/jp/index.html`). Wait for the user's OK before
+   publishing; do not skip this step.
+3. **Publish** — `./publish.sh "what changed"`. It shows the pending git
+   changes and exactly which files would be uploaded, asks one y/N
+   confirmation, then deploys to the web server and commits and pushes to
+   GitHub in one step. When Claude runs it after the user's OK, pipe the
+   confirmation: `echo y | ./publish.sh "message"`.
+4. **Verify** — after publishing, curl the changed pages on
+   https://www.rio.scrc.iir.isct.ac.jp and confirm the change is live.
 
 ## Deployment details
 
