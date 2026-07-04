@@ -18,4 +18,4 @@ fi
 # Never uploads .git or repo-only files (this script, CLAUDE.md, .gitignore).
 # Does NOT delete remote files that were removed locally — add --delete
 # below if you want that.
-lftp -e "mirror -R --verbose $DRY_RUN -x '^\.git/' -x '^\.claude/' -x '^deploy\.sh$' -x '^CLAUDE\.md$' -x '^\.gitignore$' . www; bye" sftp://web
+lftp -e "mirror -R --verbose $DRY_RUN -x '^\.git/' -x '^\.claude/' -x '^deploy\.sh$' -x '^publish\.sh$' -x '^CLAUDE\.md$' -x '^\.gitignore$' . www; bye" sftp://web

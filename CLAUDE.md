@@ -24,9 +24,17 @@ structure one-to-one.
   changes (e.g. the nav menu) must be edited in every page (find-and-replace).
 - `.dont-remove-me` — hosting marker file; keep it, deploy it, never delete it.
 
-## Deployment
+## Publishing workflow
 
-Deploy with `./deploy.sh` (preview with `./deploy.sh --dry-run`). It mirrors
+1. Edit files, preview locally: `python3 -m http.server 8000`, then open
+   `http://localhost:8000/jp/index.html` (or `/en/`) in a browser.
+2. When satisfied: `./publish.sh "what changed"` — shows pending changes,
+   asks for confirmation, then deploys to the web server and commits and
+   pushes to GitHub in one step.
+
+## Deployment details
+
+`publish.sh` calls `./deploy.sh` (preview with `./deploy.sh --dry-run`). It mirrors
 this folder to `www/` on the server via lftp/SFTP, uploading only new/changed
 files. It does NOT delete remote files removed locally.
 
