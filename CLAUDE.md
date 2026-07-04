@@ -57,10 +57,16 @@ this folder to `www/` on the server via lftp/SFTP, uploading only new/changed
 files. It does NOT delete remote files removed locally.
 
 - Server: `gsic0017@web-o3.noc.titech.ac.jp`, SFTP only (no shell), web root `www/`.
-- Auth: password-only via the `web` alias in `~/.ssh/config`, which multiplexes
-  over an authenticated ControlMaster connection (persists 8h). If the master
-  has expired (`ssh -O check web` fails), ask the user to run `! ssh -fN web`
-  and enter the password themselves — never ask for the password in chat.
+- Auth: password-only via the `web` alias in `~/.ssh/config`, multiplexed over
+  a ControlMaster connection (`ControlPersist yes` — lives until reboot).
+  If the master is down, `deploy.sh` re-establishes it automatically: the
+  password is stored in `~/.ssh/web-password` (chmod 600, created by the user,
+  NEVER printed or read into the conversation) and supplied to ssh by the
+  `~/.ssh/web-askpass` helper via `SSH_ASKPASS_REQUIRE=force`.
+- If that file is missing, ask the user to run `ssh -fN web` in a separate
+  terminal — never ask for the password in chat. Note: `!` commands in the
+  Claude Code session have no tty, so interactive password entry does not
+  work there.
 - Key-based auth is impossible: the chrooted SFTP home is root-owned, so no
   `~/.ssh/authorized_keys` can be created on the server.
 - NEVER upload `.git` to the server. Its public copy was removed on 2026-07-04

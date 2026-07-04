@@ -14,12 +14,8 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 # The web server allows password auth only; deploys ride on a pre-authenticated
-# SSH master connection that expires after 8 idle hours.
-if ! ssh -O check web >/dev/null 2>&1; then
-	echo "No active connection to the web server."
-	echo "Run:  ssh -fN web   (enter the password), then re-run this script."
-	exit 1
-fi
+# SSH master connection. deploy.sh re-establishes it automatically from
+# ~/.ssh/web-password if it has expired, so no check is needed here.
 
 echo "== Uncommitted changes =="
 if git status --porcelain | grep -q .; then

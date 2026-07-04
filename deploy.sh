@@ -14,6 +14,19 @@ if [ "${1:-}" = "--dry-run" ]; then
 	DRY_RUN="--dry-run"
 fi
 
+# Make sure the SSH master connection is alive; re-establish it from the
+# stored password file if possible, otherwise ask the user to log in.
+if ! ssh -O check web >/dev/null 2>&1; then
+	if [ -r "$HOME/.ssh/web-password" ]; then
+		echo "Re-establishing connection to the web server..."
+		SSH_ASKPASS="$HOME/.ssh/web-askpass" SSH_ASKPASS_REQUIRE=force ssh -fN web </dev/null
+	else
+		echo "No active connection to the web server."
+		echo "Run:  ssh -fN web   (enter the password), then re-run this script."
+		exit 1
+	fi
+fi
+
 # mirror -R: local -> remote; uploads new/changed files only.
 # Never uploads .git or repo-only files (this script, CLAUDE.md, .gitignore).
 # Does NOT delete remote files that were removed locally — add --delete
