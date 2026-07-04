@@ -1,0 +1,16 @@
+function chglang() {
+;	var url = window.location.href ;
+	if ( url.match('/jp/')) {
+		var nexturl = url.replace( '/jp/', '/en/' );
+	}  else  {
+		var nexturl = url.replace( '/en/', '/jp/' );
+	}
+
+$.get(url)
+    .done(function() { 
+	document.location = nexturl;
+    }).fail(function() { 
+	document.location = 'www.rio.gsic.titech.ac.jp';
+    })
+
+}

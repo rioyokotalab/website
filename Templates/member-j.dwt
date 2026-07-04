@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja"><!-- InstanceBegin template="/Templates/2nd-j.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="description" content="横田研究室">
+<meta name="keywords" content="">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>メンバー：横田研究室：東京科学大学　学術国際情報センター</title>
+<!-- InstanceEndEditable -->
+<link rel="stylesheet" href="../style.css" type="text/css" media="screen">
+<script src="../js/chglang.js"></script>
+<!--[if lt IE 9]>
+<script src="../js/html5.js"></script>
+<script src="../js/css3-mediaqueries.js"></script>
+<![endif]-->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../js/pagetop.js"></script>
+<script type="text/javascript" src="../js/openclose.js"></script>
+<script type="text/javascript" src="../js/ddmenu_min.js"></script>
+
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-82924932-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</head>
+<body>
+<!-- ヘッダー -->
+<div id="header">
+  <div class="inner">
+    <div class="htitle">
+    <a href="../jp/index.html">
+    <div class="logomark"><img src="../images/logo.png" height="65" alt=""/></div>
+    <h1>東京科学大学　総合研究院　スーパーコンピューティング研究センター</h1>
+    
+    <div class="logo"> 横田研究室<br>
+      <span>YOKOTA Laboratory</span> </div>
+    </a>
+    </div>
+
+    
+    <!-- 電話番号+受付時間 -->
+    <div class="info">
+      <p> | <a href="../jp/index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">ENGLISH</a> | <a href="../jp/contact/index.html">連絡先・アクセス</a> | <a href="../jp/links/index.html">リンク</a> |  <a href="https://rioyokotalab.github.io/" target="_blank">ブログ</a> | </p>
+    </div>
+    <!-- / 電話番号+受付時間 --> 
+    
+    <!-- トップナビゲーション -->
+    <nav id="menubar">
+      <ul id="topnav">
+        <li><a href="../jp/index.html">トップページ<br>
+          <span>Top</span></a></li>
+        <li><a href="../jp/about/index.html">研究室紹介<br>
+          <span>About Lab.</span></a></li>
+        <li><a href="../jp/research/index.html">研究内容<br>
+          <span>Research</span></a></li>
+        <li><a href="../jp/achievements/index.html">研究成果<br>
+          <span>Achievements</span></a></li>
+        <li><a href="../jp/member/index.html">メンバー<br>
+          <span>Member</span></a></li>
+        <li><a href="../jp/computers/index.html">計算環境<br>
+          <span>Computers</span></a></li>
+        <li><a href="../jp/teaching/index.html">担当講義<br>
+          <span>Teaching</span></a></li>
+        <li><a href="../jp/picture/index.html">写真<br>
+          <span>Picture</span></a></li>
+      </ul>
+    </nav>
+
+    <nav id="menubar-s">
+      <ul id="topnav">
+        <li><a href="../jp/index.html">トップページ</a></li>
+        <li><a href="../jp/about/index.html">研究室紹介</a></li>
+        <li><a href="../jp/research/index.html">研究内容</a></li>
+        <li><a href="../jp/achievements/index.html">研究成果</a></li>
+        <li><a href="../jp/member/index.html">メンバー</a></li>
+        <li><a href="../jp/computers/index.html">計算環境</a></li>
+        <li><a href="../jp/teaching/index.html">担当講義</a></li>
+        <li><a href="../jp/picture/index.html">写真</a></li>
+      </ul>
+    </nav>
+
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<!-- メイン画像 -->
+<div id="mainBanner" class="mainImg">
+  <div class="inner"><!-- InstanceBeginEditable name="keyimage" --><img src="../images/mainImg2.jpg" width="940" height="150" alt=""><!-- InstanceEndEditable --><!-- InstanceBeginEditable name="slogan" -->
+	  <div class="slogan">
+	    <h2>@@("")@@
+メンバー@@("")@@
+</h2>
+    </div>
+	<!-- InstanceEndEditable --></div>
+</div>
+<!-- / メイン画像 -->
+
+<div id="wrapper"> <!-- InstanceBeginEditable name="contents" -->
+<section id="main">
+  <section class="content">
+    <h3 class="heading"><a name="re001"></a>論文・著書</h3>
+    <article>
+      <p>N体問題は重力多体問題や分子動力学などの物理現象自体が離散的な点の相互作用で記述される分野で盛んに用いられてきた。しかし、N体問題の解法は弾性力学、流体力学、電磁気学、音響学、量子力学などの数値解析にも用いることができる。これは連続体を記述する偏微分方程式を積分方程式に変換し求積点を用いて積分を行うことで離散点同士の相互作用問題に帰着するためである。そのため、N体問題の高速解法は科学技術計算において欠かすことのできないアルゴリズムであるといえる。 </p>
+    </article>
+  </section>
+  <section class="content" id="gallery"> </section>
+</section>
+<!-- InstanceEndEditable -->
+</section>
+	<aside id="sub">
+    <section class="grid col1">
+			<h3><!-- InstanceBeginEditable name="subtitle1" -->@@("")@@
+メンバー@@("")@@
+<!-- InstanceEndEditable --></h3>
+			<!-- InstanceBeginEditable name="subtitle2" -->
+@@("")@@
+            <ul>
+              <li><a href="../jp/member/index.html#sub001">教員</a></li>
+<!--              <li><a href="../jp/member/index.html#subPD">ポスドク</a></li>
+-->              <li><a href="../jp/member/index.html#sub002">学生</a></li>
+              <li><a href="../jp/member/index.html#subsec">秘書</a></li>
+              <li><a href="../jp/member/index.html#sub003">卒業生</a></li>
+            </ul>
+@@("")@@
+
+            <!-- InstanceEndEditable --></section>
+</aside>
+ </div>
+<!-- / WRAPPER -->
+
+<p id="pagetop" class="inner"><a href="#">↑</a></p>
+
+<!-- フッター -->
+<div id="footer">
+  <div class="inner"> 
+    
+    <!-- 3カラム -->
+    <section class="gridWrapper">
+      <article class="grid col3">
+        <ul>
+          <li>| <a href="../jp/index.html">トップページ</a></li>
+          <li><a href="../jp/about/index.html">研究室紹介</a></li>
+          <li><a href="../jp/research/index.html">研究内容</a></li>
+          <li><a href="../jp/achievements/index.html">研究成果</a></li>
+          <li><a href="../jp/member/index.html">メンバー</a></li>
+          <li><a href="../jp/computers/index.html">計算環境</a></li>
+          <li><a href="../jp/teaching/index.html">担当講義</a></li>
+          <li><a href="../jp/picture/index.html">写真</a></li>
+          <li><a href="../jp/contact/index.html">アクセス</a></li>
+          <li><a href="../jp/links/index.html">リンク</a></li>
+        </ul>
+      </article>
+      <article class="gridcol1 "> 
+        <!-- ロゴ -->
+        <p class="logo"><a href="../jp/index.html">横田研究室<br />
+          <span>東京科学大学　総合研究院　スーパーコンピューティング研究センター<br>
+          TEL：03-5734-2121<br>
+          住所：東京都目黒区大岡山2-12-1 i7-2<br>
+          Copyright&copy; Yokota Laboratory. All Rights Reserved.</span> </a> 
+          </p>  
+          <!-- / ロゴ --> 
+      </article>
+    </section>
+    <!-- / 3カラム --> 
+    
+  </div>
+</div>
+<!-- / フッター --> 
+<!--メニューの３本バー-->
+<div id="menubar_hdr" class="close"><span></span><span></span><span></span></div>
+<!--メニューの開閉処理条件設定　800px以下--> 
+<script type="text/javascript">
+if (OCwindowWidth() <= 800) {
+	open_close("menubar_hdr", "menubar-s");
+}
+</script> 
+
+<!−− qn1vjoq3 −−>
+</body>
+<!-- InstanceEnd --></html>

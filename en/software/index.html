@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja"><!-- InstanceBegin template="/Templates/software-e.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="description" content="YOKOTA Laboratory">
+<meta name="keywords" content="">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Software : YOKOTA Laboratory : Science Tokyo, GSIC</title>
+<!-- InstanceEndEditable -->
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<script src="../../js/chglang.js"></script>
+<!--[if lt IE 9]>
+<script src="../js/html5.js"></script>
+<script src="../js/css3-mediaqueries.js"></script>
+<![endif]-->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../js/pagetop.js"></script>
+<script type="text/javascript" src="../../js/openclose.js"></script>
+<script type="text/javascript" src="../../js/ddmenu_min.js"></script>
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-82924932-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</head>
+<body>
+<!-- ヘッダー -->
+<div id="header">
+  <div class="inner">
+    <div class="htitle">
+    <a href="../index.html">
+    <div class="logomark"><img src="../../images/logoE.png" height="65" alt=""/></div>
+    <h1>Institute of Science Tokyo, Institute of Integrated Research, Supercomputing Research Center</h1>
+    
+    <div class="logo"> YOKOTA Laboratory<br>
+      <span>YOKOTA Laboratory</span> </div>
+    </a>
+    </div>
+
+    
+    <!-- 電話番号+受付時間 -->
+    <div class="info">
+      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">JAPANESE</a> | <a href="../contact/index.html">CONTACT</a> | <a href="../links/index.html">LINKS</a> |  <a href="https://rioyokotalab.github.io/" target="_blank">BLOG</a> | </p>
+    </div>
+    <!-- / 電話番号+受付時間 --> 
+    
+    <!-- トップナビゲーション -->
+    <nav id="menubar">
+    <ul id="topnav">
+      <li><a href="../index.html">Top Page</a></li>
+      <li><a href="../about/index.html">About Lab.</a></li>
+      <li><a href="../research/index.html">Research</a></li>
+      <li><a href="../achievements/index.html">Achievements</a></li>
+      <li><a href="../member/index.html">Members</a></li>
+      <li><a href="../computers/index.html">Computers</a></li>
+      <li><a href="../teaching/index.html">Teaching</a></li>
+      <li><a href="../picture/index.html">Picture</a></li>
+    </ul>
+    </nav>
+    <nav id="menubar-s">
+    <ul id="topnav">
+      <li><a href="../index.html">Top Page</a></li>
+      <li><a href="../about/index.html">About Lab.</a></li>
+      <li><a href="../research/index.html">Research</a></li>
+      <li><a href="../achievements/index.html">Achievements</a></li>
+      <li><a href="../member/index.html">Members</a></li>
+      <li><a href="../computers/index.html">Computers</a></li>
+      <li><a href="../teaching/index.html">Teaching</a></li>
+      <li><a href="../picture/index.html">Picture</a></li>
+      <li><a href="../contact/index.html">Contact</a></li>
+    </ul>
+    </nav>
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<!-- メイン画像 -->
+<div id="mainBanner" class="mainImg">
+  <div class="inner"><!-- InstanceBeginEditable name="keyimage" --><img src="../../images/mainImg2.jpg" width="940" height="150" alt=""><!-- InstanceEndEditable -->
+	  <div class="slogan">
+	    <h2>
+Software
+</h2>
+    </div>
+	</div>
+</div>
+<!-- / メイン画像 -->
+
+<div id="wrapper"> <!-- InstanceBeginEditable name="contents" -->
+	<!-- 4カラム -->
+<section id="main">
+  <section class="content">
+   	  <h3 class="heading"><a name="sub001"></a>exaFMM</h3>
+      <article>
+        <p><a href="https://github.com/exafmm/exafmm" target="_blank">https://github.com/exafmm/exafmm</a></p>
+        <p>exaFMM has been designed to simultaneously maximize performance,  scalability, portability, modularity, simplicity, and extensibility. exaFMM has  the following specific features with respect to these six properties.</p>
+        <ul>
+          <li>Performance: SSE, AVX, MIC intrinsics for inner kernels. Low  precision reciprocal square root with Newton-Raphson correction. Template  meta-programming for high order recursion in translation operators. Optimized  CUDA kernels with warp- unit execution model. Kahan summation for extended  precision arithmetic.</li>
+          <li>Scalability: Various parallel programming models {OpenMP, pthreads,  qthreads, MassiveThreads, Intel thread building blocks, Cilk, QUARK, OmpSs,  Charm++}. Various partitioning schemes {orthogonal recursive multisection,  Morton/Hilbert curves}. Load-balancing using workload+communication from  previous step. MPI communicator splitting. Hypercube alltoall communication.  Local multithread radix sort with global sample-based histogram sort.</li>
+          <li>Portability: No dependence on external libraries. No use of c++11  features. Auto- detection of SIMD vector length for inner kernels. Auto-tuning  of parameters such as {bodies per leaf, multipole acceptance criteria, minimum  task size}. Support for both autotools and CMake. Tested on major supercomputers  {Titan, Mira, Stampede, K computer, Shaheen, Piz Daint, TSUBAME}.</li>
+          <li>Modularity: Complete modularization of inner kernels, tree  construction, partitioning, local essential tree, up/down sweep, and tree  traversal (evaluation). The modules are joined by a stable interface and can be  developed independently by different people, even using different languages  such as {Fortran, C, C++, CUDA}.</li>
+          <li>Simplicity: Operator overloading for all SIMD intrinsics with auto-detection  of SSE, AVX, MIC compatibility. Operator overloading for Kahan summation types  (can be combined with SIMD intrinsic overloading). Minimum use of C++ features  such as {templates, functors, polymorphism, class inheritance, virtual  classes}. Continuous effort to minimize lines of code at every step of the  development. Every single line of the code has useful comments on the right  side of it.</li>
+          <li>Extensibility: We considered the following topics when designing the  data structures and interface. Extension of mathematical kernels to Helmholtz,  Stokes, Maxwell, Yukawa, Navier, 1/R−ν, Biharmonic, continuous (Gaussian),  etc. Algebraic variants of the FMM using low-rank approximation such as  H-matrices, H2-matrices, HSS, HBS, IFMM, etc. Periodic boundary  conditions and Ewald methods. Application to boundary integral equations. High  dimensional problems.</li>
+        </ul>
+      </article>
+  </section>
+  </section>
+
+<!-- InstanceEndEditable -->
+</section>
+	<aside id="sub">
+    <section class="grid col1">
+			<h3> Software
+
+</h3>
+			
+
+            <ul>
+              <li><a href="#sub001">exaFMM</a></li>
+            </ul>
+
+
+            </section>
+</aside>
+ </div>
+<!-- / WRAPPER --> 
+
+<!-- フッター -->
+<div id="footer">
+  <div class="inner"> 
+    
+    <!-- 3カラム -->
+    <section class="gridWrapper">
+      <article class="grid col3">
+        <ul>
+          <li>| <a href="../index.html">Top Page</a></li>
+          <li><a href="../about/index.html">About Lab.</a></li>
+          <li><a href="../research/index.html">Research</a></li>
+          <li><a href="../achievements/index.html">Achievements</a></li>
+          <li><a href="../member/index.html">Member</a></li>
+          <li><a href="../computers/index.html">Computers</a></li>
+          <li><a href="../teaching/index.html">Teaching</a></li>
+          <li><a href="../picture/index.html">Picture</a></li>
+          <li><a href="../contact/index.html">Access/Contact</a></li>
+          <li><a href="../links/index.html">Links</a></li>
+        </ul>
+      </article>
+      <article class="gridcol1 "> 
+        <!-- ロゴ -->
+        <p class="logo"><a href="../index.html">YOKOTA Laboratory<br />
+          <span>Institute of Science Tokyo, Institute of Integrated Research, Supercomputing Research Center<br>
+          TEL：03-5734-2121<br>
+          ADDRESS：2-12-1 Ishikawadai Bldg. 9 I7-2 Ookayama, Meguro-ku, 152-8550, Tokyo, Japan<br>
+          Copyright&copy; Yokota Laboratory. All Rights Reserved.</span> </a> 
+          
+          <!-- / ロゴ --> 
+      </article>
+    </section>
+    <!-- / 3カラム --> 
+    
+  </div>
+</div>
+<!-- / フッター --> 
+<!--メニューの３本バー-->
+<div id="menubar_hdr" class="close"><span></span><span></span><span></span></div>
+<!--メニューの開閉処理条件設定　800px以下--> 
+<script type="text/javascript">
+if (OCwindowWidth() <= 800) {
+	open_close("menubar_hdr", "menubar-s");
+}
+</script> 
+
+<!−− qn1vjoq3 −−>
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja"><!-- InstanceBegin template="/Templates/member-e.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="description" content="YOKOTA Laboratory">
+<meta name="keywords" content="">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Member : YOKOTA Laboratory : Tokyo Tech, GSIC</title>
+<!-- InstanceEndEditable -->
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<script src="../../js/chglang.js"></script>
+<!--[if lt IE 9]>
+<script src="../js/html5.js"></script>
+<script src="../js/css3-mediaqueries.js"></script>
+<![endif]-->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../js/pagetop.js"></script>
+<script type="text/javascript" src="../../js/openclose.js"></script>
+<script type="text/javascript" src="../../js/ddmenu_min.js"></script>
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-82924932-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</head>
+<body>
+<!-- ヘッダー -->
+<div id="header">
+  <div class="inner">
+    <h1>Tokyo Institute of Technology, Global Scientific Information and Computing Center</h1>
+    
+    <!-- ロゴ -->
+    <div class="logo"> <a href="../index.html">YOKOTA Laboratory<br>
+      <span>YOKOTA Laboratory</span></a> </div>
+    <!-- / ロゴ --> 
+    
+    <!-- 電話番号+受付時間 -->
+    <div class="info">
+      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">JAPANESE</a> | <a href="../contact/index.html">CONTACT/ACCESS</a> | <a href="../links/index.html">LINKS</a> | </p>
+    </div>
+    <!-- / 電話番号+受付時間 --> 
+    
+    <!-- トップナビゲーション -->
+    <nav id="menubar">
+    <ul id="topnav">
+      <li><a href="../index.html">Top Page</a></li>
+      <li><a href="../about/index.html">About Lab.</a></li>
+      <li><a href="../research/index.html">Research</a></li>
+      <li><a href="../achievements/index.html">Achievements</a></li>
+      <li><a href="index.html">Member</a></li>
+      <li><a href="../software/index.html">Software</a></li>
+      <li><a href="../teaching/index.html">Teaching</a></li>
+      <li><a href="../picture/index.html">Picture</a></li>
+    </ul>
+    </nav>
+    <nav id="menubar-s">
+    <ul id="topnav">
+      <li><a href="../index.html">Top Page</a></li>
+      <li><a href="../about/index.html">About Lab.</a></li>
+      <li><a href="../research/index.html">Research</a></li>
+      <li><a href="../achievements/index.html">Achievements</a></li>
+      <li><a href="index.html">Member</a></li>
+      <li><a href="../software/index.html">Software</a></li>
+      <li><a href="../teaching/index.html">Teaching</a></li>
+      <li><a href="../picture/index.html">Picture</a></li>
+    </ul>
+    </nav>
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<!-- メイン画像 -->
+<div id="mainBanner" class="mainImg">
+  <div class="inner"><!-- InstanceBeginEditable name="keyimage" --><img src="../../images/mainImg2.jpg" width="940" height="150" alt=""><!-- InstanceEndEditable -->
+	  <div class="slogan">
+	    <h2>Member
+</h2>
+    </div>
+	</div>
+</div>
+<!-- / メイン画像 -->
+
+<div id="wrapper"> <!-- InstanceBeginEditable name="contents" -->
+	<!-- 4カラム -->
+<section id="main">
+  <section class="content">
+   	  <h3 class="heading"><a name="sub001"></a>Profile</h3>
+      <article>
+        <table width="98%" border="0" align="center">
+          <tbody>
+            <tr>
+              <td width="32%" valign="top"><img src="../../jp/member/images/naganuma.jpg" width="199" height="178" alt=""/></td>
+              <td width="68%" valign="top"><strong>Hiroki Naganuma</strong><br>
+                <br>
+                Master of Science: Computer Science Tokyo Institute of Technology<br>
+Email: hiroki11x at rio.gsic.titech.ac.jp</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <h3 class="heading">Research Interests</h3>
+        <ul><li>High  performance computing </li>
+          <li> Statistical Learning theory </li>
+          <li> Convex optimization        </li>
+        </ul>
+        <h3 class="heading">Work history</h3>
+        <ul>
+          <li>Internship Sep 2018 - Current<br>
+            <p align="left">              RIKEN  Center for Advanced Intelligence Project (AIP) Deep Learning Theory Team <br>
+              Verification of the theory and effectiveness of large-scale deep learning using quadratic optimization<br>
+              Internship  Apr 2017 - May 2018 </p>
+            IBM Research - Tokyo<br>
+            Optimization of Cognitive framework</li>
+          <li>Internship Mar 2017 - May 2017<br>
+            Mercari, Inc. <br>
+            User hearing and improvement proposal of Mercari and CtoC service.</li>
+          <li>Internship Aug 2016 - Apr 2017<br>
+            SORACOM INC.<br>
+            Developing an internal cloud computing system using Apache Spark.</li>
+          <li>Internship Feb 2016 - Mar 2016<br>
+            Recruit Holdings<br>
+            Silicon Valley workshop - visited research park and attended special lecture at Stanford Univ.</li>
+          <li>Internship Feb 2016 - Mar 2016<br>
+            Sony<br>
+            Development of Android Wear application that performs gesture recognition using machine learning.</li>
+          <li>Internship Dec 2015 - Jan 2016<br>
+            Nomura Research Institute, Ltd.<br>
+            Developed an internal system and consulting work based on data analysis.</li>
+          <li>Internship Aug 2015 - Dec 2015<br>
+            CyberAgent, Inc.<br>
+            Developed an Android application with Kotlin on abemaTV Fresh development team in Internet TV service AbemaTV.</li>
+          <li>Internship Aug 2015 - Oct 2015<br>
+            Team Lab INC.<br>
+            Developed an internal systems and some digital arts and using Java, Ruby, C++, OpenGL.</li>
+          <li>Internship Aug 2015 - Sep 2015<br>
+            Livesense Inc. <br>
+            Developed a web application that can generate a list of projects optimized for image selection by image analysis at the recruitment site.</li>
+          <li>Internship Apr 2013 - Current<br>
+            Life is Tech, Inc.<br>
+            Camp for middle school and high school Android course instructor University student training openFrameworks (C++) lecturer</li>
+        </ul>
+        <h3 class="heading">Skills</h3>
+        <p>C, C++(OpenMP,CUDA,MPI) ,Java, Apache Spark, OSX, Linux, Windows Android, OpenGL, OpenCV, openFrameworks, Python, Caffe, Caffe2, Chainer, ChainerMN</p>
+        <p>&nbsp;</p>
+        <h3 class="heading">Researches</h3>
+        <ol>
+          <li> Accelerating Matrix Multiplication in Deep Learning by using Low-Rank Approximation<br>
+            The time required for learning and inference of the convolutional neural network used in the field of image recognition of deep learning is mostly occupied by the convolution operation and it is put into the problem of calculating two large dense matrix products by a method called im2col.<br>
+            Focusing on the characteristic  of noise tolerance in convolutional neural networks, The method to reduce size  and reduce computational complexity by reducing low-ranking dense matrices  achieves to speed up learning and inference.<br>
+          <br>
+          </li>
+          <li>Accelerating Convolutional Neural Networks Using Low Precision Arithmetic<br>
+            Reducing memory consumption and calculation time is expected by changing the whole operation of the convolution neural network and the model of the network from single precision to half precision.<br>
+            The out-of-core problem such that the model size of the network is large and do not get on the device memory of the GPU was solved. <br>
+            Furthermore low precision learning achieves to speed up memory access such as fully-connected layer which is memory-access-bound and achieves to improve throughput such as convolution layer which is  computation-bound by SIMD instruction.<br>
+            Regarding the method of quantizing to 8-bit, we also examine the quantization method and the influence on recognition accuracy / computation time.<br>
+          <br>
+          </li>
+          <li>Investigation of Optimization Method of Deep Learning in a Large Scale Parallel Environment<br>
+            The supervised DNN learning come down to the minimization problem of the function representing the error between the training data and the supervised label.<br>
+            Conventionally, the stochastic gradient descent method (SGD), which is an on-line gradient descent method, has been used, but due to the increase in batch size due to large-scale parallelization, it is known that the smoothing due to the noise of the minimizing loss function is lost and tends to converge to a local optimal solution with low generalization performance.<br>
+            On the other hand, the natural gradient method (NGD) which adopts the Fisher information matrix as the Riemannian metric by considering the parameter of DNN as the point on the Riemann space has drawn attention as an effective solution in DNN learning.<br>
+          In this research, we consider an optimization method suitable for parallelization with high convergence performance using approximate calculation of Fischer information matrix with high calculation cost.</li>
+        </ol>
+        <h3 class="heading">Publications</h3>
+        <ol>
+          <li>International conference with peer review</li>
+        </ol>
+        <ul><li>          [1-1]Kazuki Osawa, Akira Sekiya, Hiroki Naganuma, and Rio Yokota, &quot;Accelerating Matrix Multiplication in Deep Learning by using Low-Rank Approximation&quot;, The 2017 International Conference on High Performance Computing &amp; Simulation(HPCS 2017), 2017 </li>
+          <li>            [1-2]Hiroki Naganuma, Rio Yokota, &quot;Accelerating Convolutional Neural Networks Using Low Precision Arithmetic&quot;, HPC Asia 2018 Poster Session, 2018</li>
+          <li>          [1-3]Hiroki Naganuma, Masafumi Harada, Takayuki Fukusawa, Kazuyoshi Fukutani, Hori Osao, Keiko Yamamoto, Toshiya Yui., &quot;Astral Body&quot;, ALIFE 2018 (Exhibition), 2018          </li>
+        </ul>
+        <ol start="2">
+          <li>Domestic conferences without peer review (workshops, symposia etc.)</li>
+        </ol>
+        <ul>
+          <li>[2-1]Akira Sekiya, Kazuki Osawa，Hiroki Naganuma，Rio Yokota ,&quot;Acceleration of matrix multiplication of deep learning using low rank approximation&quot;, 158th Research Presentation Seminar in High Performance Computing, 2017</li>
+          <li>[2-2]Kazuki Osawa, Akira Sekiya, Hiroki Naganuma, Rio Yokota, &quot;Accelerating Convolutional Neural Networks using Low-Rank Approximation&quot;,Proceedings of the Conference on Computational Engineering and Science Vol. 22, 2017</li>
+          <li>[2-3] Hiroki Naganuma, Kazuki Osawa, Akira Sekiya, Rio Yokota, &quot;Acceleration of compression model using half-precision arithmetic in deep learning&quot;, JSIAM2017, 2017</li>
+          <li>[2-4]Kazuki Osawa, Akira Sekiya, Hiroki Naganuma, Rio Yokota &quot;Accelerating Convolutional Neural Networks Using Low-Rank Tensor Decomposition &quot;, Technical Committee on Pattern Recognition and Media Understanding (PRMU),2017</li>
+          <li>[2-5]Hiroki Naganuma, Akira Sekiya, Kazuki Osawa, Hiroyuki Ootomo, Yuji Kuwamura, Rio Yokota,”Improvement of speed using low precision arithmetic in deep learning and performance evaluation of accelerator &quot;, Technical Committee on Pattern Recognition and Media Understanding (PRMU),2017</li>
+          <li>[2-6]Hiroki Naganuma, Akira Sekiya, Kazuki Osawa, Hiroyuki Ootomo, Yuji Kuwamura, Rio Yokota, &quot;Verification of speeding up using low precision arithmetic in convolutional neural network&quot;, GTC Japan 2017 Poster Session, 2017</li>
+          <li>[2-7]Hiroki Naganuma, Shun Iwase, Kinsho Kaku, Hikaru Nakata, Rio Yokota, ”Hyperparameter Optimization of Large Scale Parallel Deep Learning using Natural Gradient Approximation Method”, Forum for Information and Technology 2018</li>
+          <li>[2-8]Minatsu Sugimoto, Eitaro Yamatsuta, Hiroki Naganuma, Riku Arakawa, Yudai Ushio, Masayuki Teramoto, ”Design of smart pacifier detecting dehydration symptoms in baby’s and sharing parents behavior”, TGSW2018</li>
+        </ul>
+        <p>&nbsp;</p>
+        <h3 class="heading">Accomplishments        </h3>
+        <table width="98%" border="0" align="center">
+          <tbody>
+            <tr>
+              <td width="7%">2016</td>
+              <td width="93%">JPHACKS-2016 First Prize</td>
+            </tr>
+            <tr>
+              <td>2016</td>
+              <td>SC16 HPC for Undergraduates Program (first Japanese person)</td>
+            </tr>
+            <tr>
+              <td>2016</td>
+              <td>Mashup Awards 2016 Student First Prize</td>
+            </tr>
+            <tr>
+              <td>2017</td>
+              <td>Incentive award of director of School of Computing Tokyo Institute of Technology</td>
+            </tr>
+            <tr>
+              <td>2017</td>
+              <td>Imagine Cup 2017 Japan qualifying First Prize</td>
+            </tr>
+            <tr>
+              <td>2017</td>
+              <td>Stanford Health Hackathon 2017 3rd prize</td>
+            </tr>
+            <tr>
+              <td>2017</td>
+              <td>2025 Japan World Expo Committee (Digital Creative Department) First Prize</td>
+            </tr>
+            <tr>
+              <td>2018</td>
+              <td>Art Hack Day 2018 Grand Prize</td>
+            </tr>
+            <tr>
+              <td>2018</td>
+              <td>2018 James Dyson Award national winner</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <h3 class="heading">Scholorship</h3>
+        <table width="98%" border="0" align="center">
+          <tbody>
+            <tr>
+              <td width="13%">2017-</td>
+              <td width="87%">Masayoshi Son Foundation</td>
+            </tr>
+            <tr>
+              <td>2017-2018</td>
+              <td>Shinano Ikueikai Group Scholarship</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <h3 class="heading">Links</h3>
+        <ul><li><a href="http://www.slideshare.net/ssuser63b9a4" target="_blank">http://www.slideshare.net/ssuser63b9a4</a></li>
+          <li> <a href="https://bintray.com/hiroki11x" target="_blank">https://bintray.com/hiroki11x</a></li>
+          <li>  <a href="http://devpost.com/hiroki11x" target="_blank">http://devpost.com/hiroki11x</a></li>
+          <li><a href="http://qiita.com/Hiroki11x" target="_blank">http://qiita.com/Hiroki11x</a></li>
+          <li> <a href="https://github.com/Hiroki11x" target="_blank">https://github.com/Hiroki11x</a></li>
+          <li> <a href="https://www.wantedly.com/users/2117094" target="_blank">https://www.wantedly.com/users/2117094</a></li>
+          <li> <a href="https://www.linkedin.com/in/hiroki-naganuma-26256395/" target="_blank">https://www.linkedin.com/in/hiroki-naganuma-26256395/</a></li>
+        </ul>
+        <h3 class="heading">Portfolio</h3>
+        <table width="98%" border="0">
+          <tbody>
+            <tr valign="top">
+              <td class="uline" style="padding: 5px;"><strong>Astral Body</strong><br>
+                <br>
+                <a href="http://www.miraikan.jst.go.jp/press/20180316a.pdf" target="_blank">More Info.</a></td>
+              <td style="padding: 5px;" class="uline"><iframe width="300" src="https://www.youtube.com/embed/OGfwWKANnd8?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></td>
+            </tr>
+            <tr valign="top">
+              <td class="uline" style="padding: 5px;"><strong>Your Pacifier </strong><br>
+                <br>
+                <a href="https://devpost.com/software/your-pacifier" target="_blank">More Info.</a></td>
+              <td style="padding: 5px;" class="uline"><iframe width="300" src="https://www.youtube.com/embed/0KpKL2_BtdI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></td>
+            </tr>
+            <tr valign="top">
+              <td style="padding: 5px;" class="uline"><strong>Walky </strong><br>
+                <br>
+                <a href="https://devpost.com/software/tk_1621" target="_blank">More Info.</a></td>
+              <td style="padding: 5px;" class="uline"><iframe width="300" src="https://www.youtube.com/embed/IPwSHgdlTRA?rel=0" frameborder="0" allowfullscreen ></iframe></td>
+            </tr>
+            <tr valign="top">
+              <td style="padding: 5px;" class="line"><strong>Holochat</strong><br>
+                <br>
+                <a href="http://hacku.yahoo.co.jp/titech2016/" target="_blank">More Info.</a></td>
+              <td style="padding: 5px;" class="line"><img src="../../en/member/images/naganuma-holochat.jpg" width="300" height="200" alt=""/></td>
+            </tr>
+            <tr valign="top">
+              <td style="padding: 5px;" class="line"><strong>TEDxUTokyo2016</strong><br>
+                <br>
+                <a href="http://tedxutokyo.com/2016/tedxutokyo2016/" target="_blank">More Info.</a></td>
+              <td style="padding: 5px;" class="line"><iframe width="300" src="https://www.youtube.com/embed/pZWvRBbjvdU" frameborder="0" allowfullscreen></iframe></td>
+            </tr>
+            <tr valign="top">
+              <td style="padding: 5px;" class="line"><strong>Musashino Art University <br>
+                Arts Festival Projection Mapping Project</strong><br>
+                <br>
+                <a href="https://www.youtube.com/embed/20rGrjsn8Xo" target="_blank">More Info.</a></td>
+              <td style="padding: 5px;" class="line"><iframe width="300" src="https://www.youtube.com/embed/20rGrjsn8Xo?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+      <article>      </article>
+    
+    
+  </section>
+  </section>
+
+<!-- InstanceEndEditable -->
+</section>
+	<aside id="sub">
+    <section class="grid col1">
+			<h3> Member
+
+</h3>
+			
+
+            <ul>
+              <li><a href="index.html#sub001">Faculty</a></li>
+              <li><a href="index.html#sub002">Students</a></li>
+              <li><a href="index.html#sub003">Alumni</a></li>
+            </ul>
+
+
+            </section>
+</aside>
+ </div>
+<!-- / WRAPPER --> 
+
+<!-- フッター -->
+<div id="footer">
+  <div class="inner"> 
+    
+    <!-- 3カラム -->
+    <section class="gridWrapper">
+      <article class="grid col3">
+        <ul>
+          <li>| <a href="../index.html">Top Page</a></li>
+          <li><a href="../about/index.html">About Lab.</a></li>
+          <li><a href="../research/index.html">Research</a></li>
+          <li><a href="../achievements/index.html">Achievements</a></li>
+          <li><a href="index.html">Member</a></li>
+          <li><a href="../software/index.html">Software</a></li>
+          <li><a href="../teaching/index.html">Teaching</a></li>
+          <li><a href="../picture/index.html">Picture</a></li>
+          <li><a href="../contact/index.html">Access/Contact</a></li>
+          <li><a href="../links/index.html">Links</a></li>
+        </ul>
+      </article>
+      <article class="gridcol1 "> 
+        <!-- ロゴ -->
+        <p class="logo"><a href="../index.html">YOKOTA Laboratory<br />
+          <span>Tokyo Institute of Technology, Global Scientific Information and Computing Center<br>
+          TEL：03-5734-2121<br>
+          ADDRESS：2-12-1 i7-2 O-okayama Meguro-ku, 152-8550, Tokyo, Japan<br>
+          Copyright&copy; Yokota Laboratory. All Rights Reserved.</span> </a> 
+          
+          <!-- / ロゴ --> 
+      </article>
+    </section>
+    <!-- / 3カラム --> 
+    
+  </div>
+</div>
+<!-- / フッター --> 
+<!--メニューの３本バー-->
+<div id="menubar_hdr" class="close"><span></span><span></span><span></span></div>
+<!--メニューの開閉処理条件設定　800px以下--> 
+<script type="text/javascript">
+if (OCwindowWidth() <= 800) {
+	open_close("menubar_hdr", "menubar-s");
+}
+</script> 
+
+<!−− qn1vjoq3 −−>
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja"><!-- InstanceBegin template="/Templates/software-j.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="description" content="横田研究室">
+<meta name="keywords" content="">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>ソフトウェア：横田研究室：東京科学大学　学術国際情報センター</title>
+<!-- InstanceEndEditable -->
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<script src="../../js/chglang.js"></script>
+<!--[if lt IE 9]>
+<script src="../js/html5.js"></script>
+<script src="../js/css3-mediaqueries.js"></script>
+<![endif]-->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../js/pagetop.js"></script>
+<script type="text/javascript" src="../../js/openclose.js"></script>
+<script type="text/javascript" src="../../js/ddmenu_min.js"></script>
+
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-82924932-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</head>
+<body>
+<!-- ヘッダー -->
+<div id="header">
+  <div class="inner">
+    <div class="htitle">
+    <a href="../index.html">
+    <div class="logomark"><img src="../../images/logo.png" height="65" alt=""/></div>
+    <h1>東京科学大学　総合研究院　スーパーコンピューティング研究センター</h1>
+    
+    <div class="logo"> 横田研究室<br>
+      <span>YOKOTA Laboratory</span> </div>
+    </a>
+    </div>
+
+    
+    <!-- 電話番号+受付時間 -->
+    <div class="info">
+      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">ENGLISH</a> | <a href="../contact/index.html">連絡先・アクセス</a> | <a href="../links/index.html">リンク</a> |  <a href="https://rioyokotalab.github.io/" target="_blank">ブログ</a> | </p>
+    </div>
+    <!-- / 電話番号+受付時間 --> 
+    
+    <!-- トップナビゲーション -->
+    <nav id="menubar">
+      <ul id="topnav">
+        <li><a href="../index.html">トップページ<br>
+          <span>Top</span></a></li>
+        <li><a href="../about/index.html">研究室紹介<br>
+          <span>About Lab.</span></a></li>
+        <li><a href="../research/index.html">研究内容<br>
+          <span>Research</span></a></li>
+        <li><a href="../achievements/index.html">研究成果<br>
+          <span>Achievements</span></a></li>
+        <li><a href="../member/index.html">メンバー<br>
+          <span>Member</span></a></li>
+        <li><a href="../computers/index.html">計算環境<br>
+          <span>Computers</span></a></li>
+        <li><a href="../teaching/index.html">担当講義<br>
+          <span>Teaching</span></a></li>
+        <li><a href="../picture/index.html">写真<br>
+          <span>Picture</span></a></li>
+      </ul>
+    </nav>
+
+    <nav id="menubar-s">
+      <ul id="topnav">
+        <li><a href="../index.html">トップページ</a></li>
+        <li><a href="../about/index.html">研究室紹介</a></li>
+        <li><a href="../research/index.html">研究内容</a></li>
+        <li><a href="../achievements/index.html">研究成果</a></li>
+        <li><a href="../member/index.html">メンバー</a></li>
+        <li><a href="../computers/index.html">計算環境</a></li>
+        <li><a href="../teaching/index.html">担当講義</a></li>
+        <li><a href="../picture/index.html">写真</a></li>
+      </ul>
+    </nav>
+
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<!-- メイン画像 -->
+<div id="mainBanner" class="mainImg">
+  <div class="inner"><!-- InstanceBeginEditable name="keyimage" --><img src="../../images/mainImg2.jpg" width="940" height="150" alt=""><!-- InstanceEndEditable -->
+	  <div class="slogan">
+	    <h2>
+ソフトウェア
+</h2>
+    </div>
+	</div>
+</div>
+<!-- / メイン画像 -->
+
+<div id="wrapper"> <!-- InstanceBeginEditable name="contents" -->
+	<!-- 4カラム -->
+<section id="main">
+  <section class="content">
+   	  <h3 class="heading"><a name="sub001"></a>exaFMM</h3>
+      <article>
+        <p><a href="https://github.com/exafmm/exafmm" target="_blank">https://github.com/exafmm/exafmm</a></p>
+        <p>
+          exaFMMはexascale世代の超大型計算機を想定して開発されたFast Multipole Method (FMM)のライブラリである。exaFMMは以下の6つの特性について様々な工夫がなされている。 </p>
+        <ul>
+          <li>Performance(性能): SSE,AVXなどのイントリンシックを用いた内部カーネル。近似逆数平方根＋Newton-Raphson補正。C++テンプレートメタプログラミングを用いた漸化式の展開。Warp単位の実行モデルを用いたCUDAカーネル。Kahan summationを用いた浮動小数点演算精度の拡張 </li>
+          <li>Scalability(規模拡張性):OpenMP,  pthreads, qthreads, MassiveThreads, Intel thread building blocks, Cilk, QUARK,  OmpSs, Charm++などの幅広い並列化モデル。Orthogonal recursive  multisection, Morton/Hilbert 曲線の両方の領域分割法。通信の負荷分散。Hypercube型のalltoall通信。 </li>
+          <li>Portability(可搬性):ライブラリ依存なし。C++11依存なし。SIMDベクトル長の自動検知。自動チューニング。AutotoolsとCMakeの両方をサポート。Titan, Mira, Stampede, K computer, Shaheen, Piz Daint, TSUBAMEで検証済み。 </li>
+          <li>Modularity(モジュール性):内部カーネル、木構造、領域分割、通信の完全分離。 </li>
+          <li>Simplicity(簡素さ):SIMDイントリンシックの演算子オーバーロード。Kahan summation型の定義。C++のtemplates, functors, polymorphism, class inheritance, virtual  classesの限定的な使用。 </li>
+          <li>Extensibility(機能拡張性):Helmholtz, Stokes, Maxwell, Yukawa, Navier, 1/R−ν,  Biharmonicなどのカーネルへの拡張。周期境界条件。</li>
+        </ul>
+      </article>
+  </section>
+  </section>
+
+<!-- InstanceEndEditable -->
+</section>
+	<aside id="sub">
+    <section class="grid col1">
+			<h3>
+ソフトウェア
+</h3>
+			
+
+            <ul>
+              <li><a href="#sub001">exaFMM</a></li>
+            </ul>
+
+
+            </section>
+</aside>
+ </div>
+<!-- / WRAPPER -->
+
+<p id="pagetop" class="inner"><a href="#">↑</a></p>
+
+<!-- フッター -->
+<div id="footer">
+  <div class="inner"> 
+    
+    <!-- 3カラム -->
+    <section class="gridWrapper">
+      <article class="grid col3">
+        <ul>
+          <li>| <a href="../index.html">トップページ</a></li>
+          <li><a href="../about/index.html">研究室紹介</a></li>
+          <li><a href="../research/index.html">研究内容</a></li>
+          <li><a href="../achievements/index.html">研究成果</a></li>
+          <li><a href="../member/index.html">メンバー</a></li>
+          <li><a href="../computers/index.html">計算環境</a></li>
+          <li><a href="../teaching/index.html">担当講義</a></li>
+          <li><a href="../picture/index.html">写真</a></li>
+          <li><a href="../contact/index.html">アクセス</a></li>
+          <li><a href="../links/index.html">リンク</a></li>
+        </ul>
+      </article>
+      <article class="gridcol1 "> 
+        <!-- ロゴ -->
+        <p class="logo"><a href="../index.html">横田研究室<br />
+          <span>東京科学大学　総合研究院　スーパーコンピューティング研究センター<br>
+          TEL：03-5734-2121<br>
+          住所：東京都目黒区大岡山2-12-1 i7-2<br>
+          Copyright&copy; Yokota Laboratory. All Rights Reserved.</span> </a> 
+          </p>  
+          <!-- / ロゴ --> 
+      </article>
+    </section>
+    <!-- / 3カラム --> 
+    
+  </div>
+</div>
+<!-- / フッター --> 
+<!--メニューの３本バー-->
+<div id="menubar_hdr" class="close"><span></span><span></span><span></span></div>
+<!--メニューの開閉処理条件設定　800px以下--> 
+<script type="text/javascript">
+if (OCwindowWidth() <= 800) {
+	open_close("menubar_hdr", "menubar-s");
+}
+</script> 
+
+<!−− qn1vjoq3 −−>
+</body>
+<!-- InstanceEnd --></html>

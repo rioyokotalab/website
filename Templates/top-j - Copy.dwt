@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="description" content="横田研究室">
+<meta name="keywords" content="">
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>横田研究室：東京工業大学　学術国際情報センター</title>
+<!-- TemplateEndEditable -->
+<link rel="stylesheet" href="../style.css" type="text/css" media="screen">
+<!--[if lt IE 9]>
+<script src="js/html5.js"></script>
+<script src="js/css3-mediaqueries.js"></script>
+<![endif]-->
+<!-- TemplateBeginEditable name="head" -->
+<!-- TemplateEndEditable -->
+</head>
+<body>
+<!-- ヘッダー -->
+<div id="header">
+  <div class="inner">
+    <h1>東京工業大学　学術国際情報センター</h1>
+    
+    <!-- ロゴ -->
+    <div class="logo"> <a href="../jp/index.html">横田研究室<br>
+      <span>YOKOTA Laboratory</span></a> </div>
+    <!-- / ロゴ --> 
+    
+    <!-- 電話番号+受付時間 -->
+    <div class="info">
+      <p> | <a href="../jp/index.html">HOME</a> | <a href="../en/index.html">ENGLISH</a> | <a href="../jp/contact/index.html">連絡先・アクセス</a> | <a href="../jp/links/index.html">リンク</a> | </p>
+    </div>
+    <!-- / 電話番号+受付時間 --> 
+    
+    <!-- トップナビゲーション -->
+    <ul id="topnav">
+      <li><a href="../jp/index.html">トップページ<br>
+        <span>Top</span></a></li>
+      <li><a href="../jp/about/index.html">研究室紹介<br>
+        <span>About Lab.</span></a></li>
+      <li><a href="../jp/research/index.html">研究内容<br>
+        <span>Research</span></a></li>
+      <li><a href="../jp/achievements/index.html">研究成果<br>
+        <span>Achievements</span></a></li>
+      <li><a href="../jp/member/index.html">メンバー<br>
+        <span>Member</span></a></li>
+      <li><a href="../jp/software/index.html">ソフトウェア<br>
+        <span>Software</span></a></li>
+      <li><a href="../jp/teaching/index.html">担当講義<br>
+        <span>Teaching</span></a></li>
+      <li><a href="../jp/picture/index.html">写真<br>
+        <span>Picture</span></a></li>
+    </ul>
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<!-- メイン画像 -->
+<div id="mainBanner" class="mainImg">
+  <div class="inner"><!-- TemplateBeginEditable name="keyimage" --><img src="../images/mainImg.jpg" width="940" height="300" alt=""><!-- TemplateEndEditable --><!-- TemplateBeginEditable name="slogan" -->
+    <div class="slogan">
+      <h2>横田研究室は2015年●月にスタートした新しい研究室です</h2>
+      <h3>簡単な説明</h3>
+    </div>
+    <!-- TemplateEndEditable --></div>
+</div>
+<!-- / メイン画像 -->
+
+<div id="wrapper"> <!-- TemplateBeginEditable name="contents" --> <!-- TemplateEndEditable --> </div>
+<!-- / WRAPPER --> 
+
+<!-- フッター -->
+<div id="footer">
+  <div class="inner"> 
+    
+    <!-- 3カラム -->
+    <section class="gridWrapper">
+      <article class="grid col3">
+        <ul>
+          <li>| <a href="../jp/index.html">トップページ</a></li>
+          <li><a href="../jp/about.html">研究室紹介</a></li>
+          <li><a href="../jp/research/index.html">研究内容</a></li>
+          <li><a href="../jp/achievements.html">研究成果</a></li>
+          <li><a href="../jp/member.html">メンバー</a></li>
+          <li><a href="../jp/software.html">ソフトウェア</a></li>
+          <li><a href="../jp/lecture.html">担当講義</a></li>
+          <li><a href="../jp/picture.html">写真</a></li>
+          <li><a href="../jp/access.html">アクセス</a></li>
+          <li><a href="../jp/links.html">リンク</a></li>
+        </ul>
+      </article>
+      <article class="gridcol1 "> 
+        <!-- ロゴ -->
+        <p class="logo"><a href="../jp/index.html">横田研究室<br />
+          <span>東京工業大学　学術国際情報センター<br>
+          TEL：03-5734-2121<br>
+          住所：東京都目黒区大岡山2-12-1 i7-2<br>
+          Copyright&copy; Yokota Laboratory. All Rights Reserved.</span> </a> 
+          
+          <!-- / ロゴ --> 
+      </article>
+    </section>
+    <!-- / 3カラム --> 
+    
+  </div>
+</div>
+<!-- / フッター --> 
+
+<!−− qn1vjoq3 −−>
+</body>
+</html>

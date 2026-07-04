@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja"><!-- InstanceBegin template="/Templates/research-e.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="description" content="YOKOTA Laboratory">
+<meta name="keywords" content="">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Research : YOKOTA Laboratory : Science Tokyo, GSIC</title>
+<!-- InstanceEndEditable -->
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<script src="../../js/chglang.js"></script>
+<!--[if lt IE 9]>
+<script src="../js/html5.js"></script>
+<script src="../js/css3-mediaqueries.js"></script>
+<![endif]-->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../js/pagetop.js"></script>
+<script type="text/javascript" src="../../js/openclose.js"></script>
+<script type="text/javascript" src="../../js/ddmenu_min.js"></script>
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-82924932-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</head>
+<body>
+<!-- ヘッダー -->
+<div id="header">
+  <div class="inner">
+    <div class="htitle">
+    <a href="../index.html">
+    <div class="logomark"><img src="../../images/titech.png" width="66" height="65" alt=""/></div>
+    <h1>Institute of Science Tokyo, Global Scientific Information and Computing Center</h1>
+    
+    <div class="logo"> YOKOTA Laboratory<br>
+      <span>YOKOTA Laboratory</span> </div>
+    </a>
+    </div>
+
+    
+    <!-- 電話番号+受付時間 -->
+    <div class="info">
+      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">JAPANESE</a> | <a href="../contact/index.html">CONTACT</a> | <a href="../links/index.html">LINKS</a> |  <a href="https://rioyokotalab.github.io/" target="_blank">BLOG</a> | </p>
+    </div>
+    <!-- / 電話番号+受付時間 --> 
+    
+    <!-- トップナビゲーション -->
+    <nav id="menubar">
+    <ul id="topnav">
+      <li><a href="../index.html">Top Page</a></li>
+      <li><a href="../about/index.html">About Lab.</a></li>
+      <li><a href="index.html">Research</a></li>
+      <li><a href="../achievements/index.html">Achievements</a></li>
+      <li><a href="../member/index.html">Members</a></li>
+      <li><a href="../computers/index.html">Computers</a></li>
+      <li><a href="../teaching/index.html">Teaching</a></li>
+      <li><a href="../picture/index.html">Picture</a></li>
+    </ul>
+    </nav>
+    <nav id="menubar-s">
+    <ul id="topnav">
+      <li><a href="../index.html">Top Page</a></li>
+      <li><a href="../about/index.html">About Lab.</a></li>
+      <li><a href="index.html">Research</a></li>
+      <li><a href="../achievements/index.html">Achievements</a></li>
+      <li><a href="../member/index.html">Members</a></li>
+      <li><a href="../computers/index.html">Computers</a></li>
+      <li><a href="../teaching/index.html">Teaching</a></li>
+      <li><a href="../picture/index.html">Picture</a></li>
+      <li><a href="../contact/index.html">Contact</a></li>
+    </ul>
+    </nav>
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<!-- メイン画像 -->
+<div id="mainBanner" class="mainImg">
+  <div class="inner"><!-- InstanceBeginEditable name="keyimage" --><img src="../../images/mainImg2.jpg" width="940" height="150" alt=""><!-- InstanceEndEditable -->
+	  <div class="slogan">
+	    <h2>Research
+</h2>
+    </div>
+	</div>
+</div>
+<!-- / メイン画像 -->
+
+<div id="wrapper"> <!-- InstanceBeginEditable name="contents" -->
+<section id="main">
+  <section class="content">
+    <h3 class="heading"><a name="sub003" id="sub003"></a>Hierarchical Low-Rank Approximation</h3>
+    <article>
+      <p>Dense matrices appear in many computational  applications such as boundary integral methods for solving homogeneous partial  differential equations, kernel summation (convolution) problems in statistics  and machine learning. Such dense matrices usually have structure within them,  which can be used to compress them using hierarchical low-rank approximation.  In doing so, the storage of the dense matrix reduces from O(N<sup>2</sup>) to  O(N), while the O(N<sup>3</sup>)  complexity of matrix multiplication and  factorization becomes O(Nlog<sup>p</sup>N). This is an extremely powerful tool  when N is large.</p>
+      <p align="center"><img src="../../jp/research/images/003-01.jpg" width="583" height="198" alt=""></p>
+      <p align="center">Figure 1 Compression of a Dense Matrix (red) Using  Hierarchical Low-Rank Approximation (green)</p>
+      <p>&nbsp; </p>
+</article>
+</section>
+
+  <section class="content">
+    <h3 class="heading"><a name="sub004" id="sub004"></a>Application to Deep Learning</h3>
+    <article>
+      <p>Deep learning does not require very high precision,  and this fact is exploited by the recent low-precision hardware from NVIDIA and  Google. However, the matrix multiplication -- which is a dominant part of the  calculation time in deep learning – is still done using dense matrices without  any approximation. Even if the matrices themselves are full rank, proper  reordering and blocking can reveal the underlying structure, which can then be  used to perform low-rank approximations. This will reduce the storage from O(N<sup>2</sup>)  to O(N), and the complexity of matrix multiplication from O(N<sup>3</sup>) to  O(Nlog<sup>p</sup>N).</p>
+      <p align="center"><img src="../../jp/research/images/004-01.jpg" width="589" height="331" alt=""></p>
+      <p align="center">Figure 2 Accelerating Deep Learning Kernels with  Low-Rank Approximation</p>
+      <p>&nbsp; </p>
+</article>
+</section>
+
+  <section class="content">
+    <h3 class="heading"><a name="sub001" id="sub001"></a>Fast Multipole Methods</h3>
+    <article>
+      <p>The fast multipole method (FMM) is a fast algorithm  that reduces the complexity of the N-body problem from O(N2) to O(N). It is  widely regarded as one of the top 10 algorithms in scientific computing, along  with FFT and Krylov subspace methods. It is quite common that algorithms with  low Byte/flop (dense linear algebra) have high complexity O(N3), and algorithms  with low complexity (FFT, sparse linear algebra) have high Byte/flop. The FMM  has an exceptional combination of O(N) complexity and a Byte/flop that is even  lower than matrix-matrix multiplication. In other words, it is an efficient  algorithm that is compute bound, which makes it an interesting alternative  algorithm for many elliptic PDE solvers, on architectures of the future that  will most likely have low Byte/flop.</p>
+      <p align="center"><img src="images/001.jpg" width="589" height="350" alt=""></p>
+      <p align="center">図１　FMMの計算の流れ </p>
+      <p>&nbsp; </p>
+</article>
+</section>
+  <section class="content">
+      <h3 class="heading"><a name="sub002" id="sub2"></a>Fast Coulomb Field Calculation</h3>
+     <article>
+     <p>Coulomb  Interactions govern  the dynamics of molecules and is the most expensive part of classical molecular  dynamics simulations. Particle mesh Ewald (PME) and its variants such as  Gaussian splitting Ewald (GSE) are efficient methods for calculating lattice  sums with periodic boundary conditions. Although, these lattice sum methods are  accurate for periodic systems such as crystals, they suffer from long-range  correlation artifacts and anisotropy effects for noncrystalline systems such as  cellular environments. Another disadvantage of PME is its scalability, since it  requires a large amount of global communication due to the nature of the FFT.  It is difficult to even achieve weak scaling (not to mention strong scaling)  for a large number of CPUs with full electrostatics. On the other hand, fast  multipole methods (FMMs) can reduce the amount of communication in long-range  interactions to O(log p), where p is the number of processes.</p>
+<p align="center"><img src="images/002.jpg" width="589" height="441"  alt=""/></p>
+    </article>
+</section>
+  <section class="content" id="gallery"> </section>
+</section>
+<!-- InstanceEndEditable -->
+</section>
+	<aside id="sub">
+    <section class="grid col1">
+			<h3> Research
+
+</h3>
+			
+
+            <ul>
+              <li><a href="index.html#r2024">Current Research Topics 2024</a></li>
+              <li><a href="index.html#r2023">Thesis 2023</a></li>
+              <li><a href="index.html#r2022">Thesis 2022</a></li>
+              <li><a href="index.html#r2021">Thesis 2021</a></li>
+              <li><a href="index.html#r2020">Thesis 2020</a></li>
+              <li><a href="index.html#r2019">Thesis 2019</a></li>
+              <li><a href="index.html#r2018">Thesis 2018</a></li>
+            </ul>
+
+
+            </section>
+</aside>
+ </div>
+<!-- / WRAPPER --> 
+
+<!-- フッター -->
+<div id="footer">
+  <div class="inner"> 
+    
+    <!-- 3カラム -->
+    <section class="gridWrapper">
+      <article class="grid col3">
+        <ul>
+          <li>| <a href="../index.html">Top Page</a></li>
+          <li><a href="../about/index.html">About Lab.</a></li>
+          <li><a href="index.html">Research</a></li>
+          <li><a href="../achievements/index.html">Achievements</a></li>
+          <li><a href="../member/index.html">Member</a></li>
+          <li><a href="../computers/index.html">Computers</a></li>
+          <li><a href="../teaching/index.html">Teaching</a></li>
+          <li><a href="../picture/index.html">Picture</a></li>
+          <li><a href="../contact/index.html">Access/Contact</a></li>
+          <li><a href="../links/index.html">Links</a></li>
+        </ul>
+      </article>
+      <article class="gridcol1 "> 
+        <!-- ロゴ -->
+        <p class="logo"><a href="../index.html">YOKOTA Laboratory<br />
+          <span>Tokyo Institute of Technology, Global Scientific Information and Computing Center<br>
+          TEL：03-5734-2121<br>
+          ADDRESS：2-12-1 i7-2 O-okayama Meguro-ku, 152-8550, Tokyo, Japan<br>
+          Copyright&copy; Yokota Laboratory. All Rights Reserved.</span> </a> 
+          
+          <!-- / ロゴ --> 
+      </article>
+    </section>
+    <!-- / 3カラム --> 
+    
+  </div>
+</div>
+<!-- / フッター --> 
+<!--メニューの３本バー-->
+<div id="menubar_hdr" class="close"><span></span><span></span><span></span></div>
+<!--メニューの開閉処理条件設定　800px以下--> 
+<script type="text/javascript">
+if (OCwindowWidth() <= 800) {
+	open_close("menubar_hdr", "menubar-s");
+}
+</script> 
+
+<!−− qn1vjoq3 −−>
+</body>
+<!-- InstanceEnd --></html>
