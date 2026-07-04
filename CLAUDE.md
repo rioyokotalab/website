@@ -33,6 +33,11 @@ end-to-end on 2026-07-04, removing a member from the member page):
    counterparts. When Claude makes the edit, grep for other occurrences of
    the changed content (names, links) across the whole site, not just the
    page the user named.
+   - Standing rule: when asked to remove someone from the member list,
+     don't just delete them — also add them to the TOP of the Alumni list
+     on both member pages (jp form: `姓 名 (Romaji Name)`).
+   - Historical records (news items, publication lists) are never edited
+     when members leave or change grade.
 2. **Preview** — the user checks the result on their local server
    (`python3 -m http.server 8000` in this folder →
    `http://localhost:8000/jp/index.html`). Wait for the user's OK before
