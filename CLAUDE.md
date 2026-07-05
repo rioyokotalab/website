@@ -17,7 +17,8 @@ structure one-to-one.
   `news` and `software` exist but are not linked from the navigation.
 - `style.css` — the single site-wide stylesheet.
 - `images/` — shared images; section-specific photos live in e.g. `en/member/images/`.
-- `js/` — dropdown menu, mobile menu, back-to-top, language switcher, IE shims.
+- `js/` — dropdown menu, mobile menu, back-to-top, language switcher, and a
+  local jQuery 1.7.2 (pages load it from here; never from a CDN).
 - `lightbox/`, `lightbox2/` — image-popup library for the photo gallery.
 - `Templates/*.dwt` — Dreamweaver templates. Inert outside Dreamweaver; every
   HTML page carries its own full copy of the header/nav/footer. Site-wide
@@ -38,9 +39,11 @@ end-to-end on 2026-07-04, removing a member from the member page):
      on both member pages (jp form: `姓 名 (Romaji Name)`).
    - Historical records (news items, publication lists) are never edited
      when members leave or change grade.
-2. **Preview** — the user checks the result on their local server
-   (`python3 -m http.server 8000` in this folder →
-   `http://localhost:8000/jp/index.html`). Wait for the user's OK before
+2. **Preview** — the user checks the result at
+   `http://localhost:8000/jp/index.html`. A SessionStart/SessionEnd hook in
+   `.claude/settings.local.json` starts and stops `python3 -m http.server
+   8000` automatically (PID in `.claude/http-server.pid`); if the server is
+   down mid-session, start it the same way. Wait for the user's OK before
    publishing; do not skip this step.
 3. **Publish** — `./publish.sh "what changed"`. It shows the pending git
    changes and exactly which files would be uploaded, asks one y/N
@@ -79,8 +82,38 @@ end-to-end on 2026-07-04, removing a member from the member page):
   is node-local) give exact CPU/GPU models. Direct `srun` is blocked. Last
   refreshed 2026-07-05: 81 GPUs; the two RTX 6000 Ada nodes' CPU models are
   still unverified ("-" in the table).
+- **Research page** (`research/index.html`): "Current Research Topics YYYY"
+  first (anchor `rYYYY`), then per-year thesis sections newest-first (anchors
+  `rYYYYM`/`rYYYYB`), mirrored in the sidebar. Entry format: `<h4>Title（Name）
+  </h4>` + abstract `<p>` + a lightbox figure. Figures for BOTH language pages
+  live in `jp/research/images20XX/NNN.jpg` (numbering continues within the
+  folder). Unlike Achievements, the Research pages are fully monolingual
+  (since 2026-07-05): everything in English on `en/`, everything in Japanese
+  on `jp/` — translate titles and abstracts; use kanji names where known
+  (check the member/alumni lists), romaji for international students.
 - When changing a site-wide string, also update `Templates/*.dwt` so the
   inert templates stay consistent with the pages.
+
+## Content sources and figure tooling
+
+- **Lab Google Drive**: read-only access via rclone —
+  `~/.local/bin/rclone lsf --drive-root-folder-id 1MRyEsesRkuZ_eGtUgnPgC9k3rXuo_BLa gdrive:<path>`.
+  Layout: `Thesis/YYYY/{master,bachelor}/` (thesis PDFs — source for Research
+  page entries), `Posters/YYYY/` (研究室紹介 lab-intro poster; `.pages` files
+  are zip archives containing `preview.jpg` and original images under
+  `Data/`), `Slides/YYYY発表.../` (defense slides). The OAuth token is
+  Drive-read-only and revocable at myaccount.google.com/permissions.
+- **Swallow material**: https://swallow-llm.github.io/ (release pages exist
+  in `.ja.html` and `.en.html`). Its charts are ApexCharts SVGs whose legends
+  are NOT in the SVG — series names are in `seriesName` attributes, colors
+  follow the ApexCharts palette (#008FFB, #00E396, #FEB019, #FF4560, #775DD0
+  in series order); rebuild the legend with PIL when rasterizing.
+- **Figure production**: thesis-PDF figures via `pdftoppm -jpeg -r 150 -f N -l N`
+  + PIL crop (trim captions; flatten transparency onto white). SVG→PNG needs
+  cairosvg in a venv (`python3 -m venv`; system pip is PEP-668-locked) and
+  Japanese fonts — Noto Sans CJK JP is installed in `~/.local/share/fonts`
+  (2026-07-05); patch the SVG's `font-family` to "Noto Sans CJK JP" before
+  converting, since cairo does no font fallback.
 
 ## Deployment details
 
