@@ -8,9 +8,16 @@
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>研究内容：横田研究室：東京科学大学　総合研究院</title>
 <!-- InstanceEndEditable -->
-<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="icon" href="../../favicon.ico">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="YOKOTA Laboratory">
+<meta property="og:title" content="研究内容：横田研究室：東京科学大学 総合研究院">
+<meta property="og:image" content="https://www.rio.scrc.iir.isct.ac.jp/images/ogp.png">
+<meta property="og:url" content="https://www.rio.scrc.iir.isct.ac.jp/jp/research/002.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../style.css?v=20260705" type="text/css" media="screen">
 <script src="../../js/chglang.js"></script>
-<script type="text/javascript" src="../../js/jquery1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/pagetop.js"></script>
 <script type="text/javascript" src="../../js/openclose.js"></script>
 <script type="text/javascript" src="../../js/ddmenu_min.js"></script>
@@ -41,6 +48,14 @@
     <!-- / 電話番号+受付時間 --> 
     
     <!-- トップナビゲーション -->
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<div id="navbar">
+  <div class="inner">
     <nav id="menubar">
       <ul id="topnav">
         <li><a href="../index.html">トップページ<br>
@@ -74,12 +89,8 @@
         <li><a href="../picture/index.html">写真</a></li>
       </ul>
     </nav>
-
-    <!-- トップナビゲーション --> 
-    
   </div>
 </div>
-<!-- / ヘッダー --> 
 
 <!-- メイン画像 -->
 <div id="mainBanner" class="mainImg">
@@ -99,11 +110,11 @@
     <h3 class="heading"><a name="sub003"></a>階層的低ランク近似 / Hierarchical Low-Rank Approximation</h3>
     <article>
       <p>密行列の演算は境界積分法を用いた偏微分方程式の解法や統計学や機械学習における畳み込みの計算など様々な場面で用いられている。このような密行列はたいてい構造を有しており、その構造を利用することで階層的低ランク近似などによって圧縮することができる。これにより、密行列のメモリ消費量はO(N<sup>2</sup>)からO(N)へ低減され、行列積や行列分解の演算量もO(N<sup>3</sup>)からO(Nlog<sup>p</sup>N)へと低減される。Nが大きい場合このような圧縮は非常に有効である。</p>
-      <p align="center"><img src="images/003-01.jpg" width="583" height="198" alt=""></p>
+      <p align="center"><img loading="lazy" src="images/003-01.jpg" width="583" height="198" alt=""></p>
       <p align="center">図１　密行列（赤）の階層的低ランク近似（緑）による圧縮 </p>
       <h4><span class="heading">深層学習への応用</span></h4>
       <p>NVIDIAやGoogleの低精度演算用ハードウェアにみられるように深層学習は高い精度を必要としない。しかし、高い精度を必要としないはずの深層学習では今でも（近似を用いない）厳密な密行列積に計算時間の大部分に費やしている。それ自体がフルランクの密行列も、構造を抽出し、それに基づいた階層的なブロッキングを行うことで個々のブロックは低ランク行列を用いて近似することができる。これにより、O(N<sup>2</sup>)であった密行列のデータ量はO(N)になり、O(N<sup>3</sup>)であった密行列積の演算量はO(Nlog<sup>p</sup>N)に低減される。</p>
-      <p align="center"><img src="images/004-01.jpg" width="589" height="331" alt=""></p>
+      <p align="center"><img loading="lazy" src="images/004-01.jpg" width="589" height="331" alt=""></p>
       <p align="center">図１　密行列（赤）の階層的低ランク近似（緑）による圧縮 </p>
       <h4>MPI Parallelization of Low Rank Matrices</h4>
       <h5>Introduction</h5>
@@ -115,7 +126,7 @@
       <p>The distribution of the low rank blocks across processes determines how load balanced the final solution will be. We currently use a modified block cyclic distribution scheme where adjacent dense blocks are distributed on different processes whereas adjacent low rank blocks exist on the same process.</p>
       <p>My current research area focuses on creating the most optimum distribution scheme for distributed hierarchical matrices such that the communication overhead for computing the LU decomposition is minimized.</p>
       <p align="center">&nbsp;</p>
-      <p align="center"><a href="002.pdf" target="_blank"><img src="images2018/002-1.jpg" width="620" height="868" alt=""/><br>▲クリックするとPDFが表示されます。</a>
+      <p align="center"><a href="002.pdf" target="_blank"><img loading="lazy" src="images2018/002-1.jpg" width="620" height="868" alt=""/><br>▲クリックするとPDFが表示されます。</a>
       </p>
     </article>
   </section>

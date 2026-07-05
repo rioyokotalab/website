@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="ja"><!-- InstanceBegin template="/Templates/research-e.dwt" codeOutsideHTMLIsLocked="false" -->
+<html dir="ltr" lang="en"><!-- InstanceBegin template="/Templates/research-e.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
@@ -8,9 +8,16 @@
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Research : YOKOTA Laboratory : Science Tokyo, IIR</title>
 <!-- InstanceEndEditable -->
-<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="icon" href="../../favicon.ico">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="YOKOTA Laboratory">
+<meta property="og:title" content="Research : YOKOTA Laboratory : Science Tokyo, IIR">
+<meta property="og:image" content="https://www.rio.scrc.iir.isct.ac.jp/images/ogp.png">
+<meta property="og:url" content="https://www.rio.scrc.iir.isct.ac.jp/en/research/001.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../style.css?v=20260705" type="text/css" media="screen">
 <script src="../../js/chglang.js"></script>
-<script type="text/javascript" src="../../js/jquery1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/pagetop.js"></script>
 <script type="text/javascript" src="../../js/openclose.js"></script>
 <script type="text/javascript" src="../../js/ddmenu_min.js"></script>
@@ -92,6 +99,14 @@ a.rlist span {
     <!-- / 電話番号+受付時間 --> 
     
     <!-- トップナビゲーション -->
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<div id="navbar">
+  <div class="inner">
     <nav id="menubar">
     <ul id="topnav">
       <li><a href="../index.html">Top Page</a></li>
@@ -117,11 +132,8 @@ a.rlist span {
       <li><a href="../contact/index.html">Contact</a></li>
     </ul>
     </nav>
-    <!-- トップナビゲーション --> 
-    
   </div>
 </div>
-<!-- / ヘッダー --> 
 
 <!-- メイン画像 -->
 <div id="mainBanner" class="mainImg">
@@ -145,26 +157,26 @@ a.rlist span {
       <article>
         <h4 class="heading"><a name="sub001" id="sub001"></a>Fast Multipole Methods</h4>
         <p>The fast multipole method (FMM) is a fast algorithm  that reduces the complexity of the N-body problem from O(N2) to O(N). It is  widely regarded as one of the top 10 algorithms in scientific computing, along  with FFT and Krylov subspace methods. It is quite common that algorithms with  low Byte/flop (dense linear algebra) have high complexity O(N3), and algorithms  with low complexity (FFT, sparse linear algebra) have high Byte/flop. The FMM  has an exceptional combination of O(N) complexity and a Byte/flop that is even  lower than matrix-matrix multiplication. In other words, it is an efficient  algorithm that is compute bound, which makes it an interesting alternative  algorithm for many elliptic PDE solvers, on architectures of the future that  will most likely have low Byte/flop.</p>
-        <p align="center"><img src="images/001.jpg" width="589" height="350" alt=""></p>
+        <p align="center"><img loading="lazy" src="images/001.jpg" width="589" height="350" alt=""></p>
         <p align="center">図１　FMMの計算の流れ </p>
       </article>
       <article>
         <h4 class="heading">Fast Coulomb Field Calculation</h4>
         <p>Coulomb  Interactions govern  the dynamics of molecules and is the most expensive part of classical molecular  dynamics simulations. Particle mesh Ewald (PME) and its variants such as  Gaussian splitting Ewald (GSE) are efficient methods for calculating lattice  sums with periodic boundary conditions. Although, these lattice sum methods are  accurate for periodic systems such as crystals, they suffer from long-range  correlation artifacts and anisotropy effects for noncrystalline systems such as  cellular environments. Another disadvantage of PME is its scalability, since it  requires a large amount of global communication due to the nature of the FFT.  It is difficult to even achieve weak scaling (not to mention strong scaling)  for a large number of CPUs with full electrostatics. On the other hand, fast  multipole methods (FMMs) can reduce the amount of communication in long-range  interactions to O(log p), where p is the number of processes.</p>
-        <p align="center"><img src="images/002.jpg" width="589" height="441"  alt=""/></p>
+        <p align="center"><img loading="lazy" src="images/002.jpg" width="589" height="441"  alt=""/></p>
       </article>
       <article>
         <h4>Implementation of Kernel Independent Fast Multipole Method (KIFMM)</h4>
         <p>KIFMM is a technique that was developed to  speed up the calculation of long-ranged forces in the n-body problem from O(N2)  to O(N). It doesn&rsquo;t requires expanding the system green&rsquo;s function using a  multipole expansion like the classical FMM and it is based only on kernel  evaluations.</p>
         <p>Instead of using analytic expansions to represent  the potential generated by sources inside a box of the hierarchical FMM tree  like classical FMM, we use a continuous distribution of an equivalent density  on a surface enclosing the box. To find this equivalent density we match its  potential to the potential of the original sources at a surface, in the far  field, by solving local Dirichlet-type boundary value problems. The far field  evaluations are sparsified with singular value decomposition in 2D or fast  Fourier transforms in 3D. Its  advantage is the (relative) simplicity of the implementation. </p>
         <p>&nbsp;</p>
-        <p align="center"><img src="../../jp/research/images2018/001-2.jpg" width="571" height="594" alt=""/></p>
+        <p align="center"><img loading="lazy" src="../../jp/research/images2018/001-2.jpg" width="571" height="594" alt=""/></p>
         <p>Currently I am working on implementing a  GPU scalable version of KIFMM.</p>
         <a href="https://github.com/exafmm/exafmm-t/tree/gpu" target="_blank">https://github.com/exafmm/exafmm-t/tree/gpu </a> </article>
       <article>
         <h4><span class="heading">Improving the Energy Conservation of the FMM for Molecular Dynamics Simulations</span></h4>
         <p>Molecular dynamics simulation is common technique for studying the  movements of atoms and molecules and can be described as a type of N-body  system, a problem that can be solved by Fast Multipole Method. FMM is one of  the fastest algorithms and it decreases the computational cost to O(N).  Although FMM is considered to be a of a great importance in MD simulations,  often during the simulation it can be observed a large energy drift caused by  jump in the potential when particles move from one cell to another in the FMM  hierarchical tree. The energy conservation is one of the parameters commonly  used to describe the stability of MD simulation and the purpose of this  research is implementing a regularization technique that will reduce the energy  drift by smoothing the potential and obtain good energy conservation of the FMM  for MD simulations.</p>
-        <p align="center"><img src="../../jp/research/images2018/001-1.jpg" width="629" height="407" alt=""/></p>
+        <p align="center"><img loading="lazy" src="../../jp/research/images2018/001-1.jpg" width="629" height="407" alt=""/></p>
       </article>
     </section>
     <section class="content" id="gallery"> </section>
@@ -193,7 +205,9 @@ a.rlist span {
             </section>
 </aside>
  </div>
-<!-- / WRAPPER --> 
+<!-- / WRAPPER -->
+
+<p id="pagetop" class="inner"><a href="#">↑</a></p> 
 
 <!-- フッター -->
 <div id="footer">

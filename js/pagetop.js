@@ -1,29 +1,18 @@
-$(function(){
- 
-    // 「ページトップへ」の要素を隠す
-    $('#pagetop').hide();
- 
-    // スクロールした場合
-    $(window).scroll(function(){
-        // スクロール位置が100を超えた場合
-        if ($(this).scrollTop() > 100) {
-            // 「ページトップへ」をフェードイン
-            $('#pagetop').fadeIn();
-        }
-        // スクロール位置が100以下の場合
-        else {
-            // 「ページトップへ」をフェードアウト
-            $('#pagetop').fadeOut();
-        }
-    });
- 
-    // 「ページトップへ」をクリックした場合
-    $('#pagetop').click(function(){
-        // ページトップにスクロール
-        $('html,body').animate({
-            scrollTop: 0
-        }, 300);
-        return false;
-    });
- 
+// Back-to-top button: fade in after scrolling, smooth-scroll to top on click.
+// Vanilla JS (no jQuery required).
+document.addEventListener('DOMContentLoaded', function () {
+	var el = document.getElementById('pagetop');
+	if (!el) return;
+	el.style.transition = 'opacity 0.3s';
+	var toggle = function () {
+		var shown = (window.scrollY || document.documentElement.scrollTop) > 100;
+		el.style.opacity = shown ? '1' : '0';
+		el.style.pointerEvents = shown ? 'auto' : 'none';
+	};
+	toggle();
+	window.addEventListener('scroll', toggle, { passive: true });
+	el.addEventListener('click', function (e) {
+		e.preventDefault();
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	});
 });

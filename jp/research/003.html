@@ -8,9 +8,16 @@
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>研究内容：横田研究室：東京科学大学　総合研究院</title>
 <!-- InstanceEndEditable -->
-<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="icon" href="../../favicon.ico">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="YOKOTA Laboratory">
+<meta property="og:title" content="研究内容：横田研究室：東京科学大学 総合研究院">
+<meta property="og:image" content="https://www.rio.scrc.iir.isct.ac.jp/images/ogp.png">
+<meta property="og:url" content="https://www.rio.scrc.iir.isct.ac.jp/jp/research/003.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../style.css?v=20260705" type="text/css" media="screen">
 <script src="../../js/chglang.js"></script>
-<script type="text/javascript" src="../../js/jquery1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/pagetop.js"></script>
 <script type="text/javascript" src="../../js/openclose.js"></script>
 <script type="text/javascript" src="../../js/ddmenu_min.js"></script>
@@ -41,6 +48,14 @@
     <!-- / 電話番号+受付時間 --> 
     
     <!-- トップナビゲーション -->
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<div id="navbar">
+  <div class="inner">
     <nav id="menubar">
       <ul id="topnav">
         <li><a href="../index.html">トップページ<br>
@@ -74,12 +89,8 @@
         <li><a href="../picture/index.html">写真</a></li>
       </ul>
     </nav>
-
-    <!-- トップナビゲーション --> 
-    
   </div>
 </div>
-<!-- / ヘッダー --> 
 
 <!-- メイン画像 -->
 <div id="mainBanner" class="mainImg">
@@ -98,13 +109,13 @@
   <section class="content">
     <h3 class="heading"><a name="sub003"></a>大規模並列深層学習 / Large Scale Parallel Deep Learning</h3>
     <article>
-      <p align="center"><img src="images2018/003-1.jpg" width="620" height="465" alt=""/></p>
+      <p align="center"><img loading="lazy" src="images2018/003-1.jpg" width="620" height="465" alt=""/></p>
       <p>横田研究室では、深層ニューラルネットワーク（Deep Neural Netowrk: DNN）のための最適化手法、及びその大規模分散手法の開発に取り組んでいる。特に層の数が多く、パラメータ数が膨大なDNNを用いた「大規模深層学習」においては、学習の停滞による膨大な学習時間が重大な問題となっており、学習時間を短縮する高速な学習手法の実現が求められている。</p>
       <p> DNNを用いた予測モデルの学習では、与えられた学習データに対する予測の「誤差」を表現するために、DNNモデルのパラメータθの 関数である「損失関数L(θ)」を定義し、この最小化問題の反復的解法が用いられる。「自然勾配学習法（Natural Gradient Learning）[1]」はリーマン幾何学に基づく反復的解法で、Fisher情報行列により損失関数の地形を適切に捉え、パラメータの更新方向を補正することで、高速な収束を実現する。「K-FAC法 [3]」はこの自然勾配学習法で計算のボトルネックとなっているFisher情報行列の逆行列計算の効率的な近似手法である。</p>
       <p> 本研究室ではK-FAC法を大規模深層学習向けに発展させ、東工大スパコン「TSUBAME3.0」をはじめとする大規模計算資源を活用した「大規模分散型のK-FAC法」を開発している。「深層学習の理論に基づく高速な最適化手法」と「高スループットの大規模分散計算・通信手法」の組み合わせにより、画像分類ベンチマーク「ImagetNet」のためのDNNの学習時間において世界最速記録を目指す。      </p>
       <h4><span class="heading">Tensorコアを用いた行列計算の高速化</span></h4>
       <p>        NVIDIA Voltaアーキテクチャなどに搭載されている混合精度の行列乗算回路であるTensorコアを用いることで多くの行列計算が高速化されることが期待される．</p>
-      <p align="center"><img src="images2018/003-2.jpg" width="620" height="398" alt=""/> </p>
+      <p align="center"><img loading="lazy" src="images2018/003-2.jpg" width="620" height="398" alt=""/> </p>
     </article>
   </section>
 

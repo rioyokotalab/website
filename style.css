@@ -58,12 +58,41 @@ img {
 }
 /* -------------------------------------------------------------- */
 
+:root {
+	--bg: #ffffff;
+	--text: #24292f;
+	--heading: #002855;
+	--accent: #164272;
+	--accent-hover: #0a66c2;
+	--border: #dde4ec;
+	--border-light: #eef1f5;
+	--stripe: #f6f8fa;
+	--thead-bg: #eeeeee;
+	--thead-text: #24292f;
+	--navy: #002855;
+	--navy-mid: #164272;
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #0d1520;
+		--text: #c9d4df;
+		--heading: #9fc0e8;
+		--accent: #7ea6d9;
+		--accent-hover: #aecdf2;
+		--border: #263344;
+		--border-light: #1c2836;
+		--stripe: #121d2a;
+		--thead-bg: #1c2a3a;
+		--thead-text: #c9d4df;
+	}
+}
+
 body {
-	color: #24292f;
+	color: var(--text);
 	font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif;
 	font-size: 16px;
 	line-height: 1.75;
-	background: #fff;
+	background: var(--bg);
 	-webkit-text-size-adjust: 100%;
 	-webkit-font-smoothing: antialiased;
 }
@@ -74,11 +103,11 @@ html {
 /* Links
 ------------------------------------------------------------*/
 a {
-	color: #164272;
+	color: var(--accent);
 	text-decoration: none;
 }
 a:hover {
-	color: #0a66c2;
+	color: var(--accent-hover);
 	text-decoration: underline;
 	text-underline-offset: 3px;
 }
@@ -126,19 +155,19 @@ h1 {
 #main h4 {
 	margin-top: 2.2em;
 	margin-bottom: 0.8em;
-	color: #002855;
+	color: var(--heading);
 	font-size: 18px;
 	font-weight: 700;
 	line-height: 1.5;
-	border-left: 4px solid #164272;
-	border-bottom: 1px solid #dde4ec;
+	border-left: 4px solid var(--accent);
+	border-bottom: 1px solid var(--border);
 	background: transparent;
 	padding: 2px 0 6px 12px;
 }
 #main h5 {
 	margin-top: 1.5em;
 	margin-bottom: 0.5em;
-	color: #002855;
+	color: var(--heading);
 	font-size: 16px;
 	font-weight: 700;
 }
@@ -193,14 +222,21 @@ h1 {
 	font-weight: bold;
 }
 /**************************
-/* Top navigation
+/* Top navigation (sticky bar below the header)
 **************************/
+#navbar {
+	position: sticky;
+	top: 0;
+	z-index: 900;
+	background: var(--navy);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
 ul#topnav {
 	clear: both;
 	display: flex;
 	flex-wrap: wrap;
 	margin: 0 auto;
-	background: transparent;
+	background: var(--navy);
 	border-radius: 0;
 	border-top: 1px solid rgba(255,255,255,0.15);
 }
@@ -319,7 +355,7 @@ ul#topnav li.active a, ul#topnav a:hover {
 .grid li {
 	padding: 6px 0;
 	list-style: inside;
-	border-bottom: 1px solid #eef1f5;
+	border-bottom: 1px solid var(--border-light);
 }
 .gridWrapper img {
 	max-width: 100%;
@@ -342,12 +378,12 @@ ul#topnav li.active a, ul#topnav a:hover {
 	border-right: 1px solid rgba(255,255,255,0.35);
 }
 table td.line {
-	border-bottom: 1px solid #e3e8ee;
+	border-bottom: 1px solid var(--border);
 	padding: 6px 4px;
 }
 table td.uline {
-	border-top: 1px solid #e3e8ee;
-	border-bottom: 1px solid #e3e8ee;
+	border-top: 1px solid var(--border);
+	border-bottom: 1px solid var(--border);
 	padding: 6px 4px;
 }
 /*************
@@ -367,11 +403,11 @@ h3.heading, #sub .grid h3 {
 	font-size: 22px;
 	font-weight: 700;
 	line-height: 1.4;
-	color: #002855;
+	color: var(--heading);
 	background: transparent;
-	border-left: 5px solid #002855;
+	border-left: 5px solid var(--heading);
 	border-right: 0;
-	border-bottom: 2px solid #dde4ec;
+	border-bottom: 2px solid var(--border);
 }
 section.content > h3.heading:first-child, section.content h3.heading:first-of-type {
 	margin-top: 0;
@@ -408,7 +444,14 @@ section#gallery {
 section.content p[align="center"] img {
 	border-radius: 6px;
 	box-shadow: 0 1px 8px rgba(0, 40, 85, 0.12);
-	border: 1px solid #e3e8ee;
+	border: 1px solid var(--border);
+	background: #fff;
+}
+/* legacy bgcolor attribute on table header cells */
+td[bgcolor="#eeeeee"] {
+	background: var(--thead-bg);
+	color: var(--thead-text);
+	font-weight: 700;
 }
 /*************
 /* Back-to-top button
@@ -452,7 +495,7 @@ table.table {
 }
 table.table th, table.table td {
 	padding: 8px 10px;
-	border: 1px solid #dde4ec;
+	border: 1px solid var(--border);
 }
 table.table tr:first-child th, table.table tr:first-child td {
 	border-top: #002855 3px solid
@@ -465,7 +508,7 @@ table.table th {
 	background: #164272;
 }
 table.table tr:nth-child(even) td {
-	background: #f6f8fa;
+	background: var(--stripe);
 }
 /*************
 /* Lists
@@ -493,7 +536,7 @@ table.table tr:nth-child(even) td {
 #sub .grid li {
 	list-style: none;
 	padding: 7px 2px;
-	border-bottom: 1px solid #eef1f5;
+	border-bottom: 1px solid var(--border-light);
 	font-size: 14px;
 }
 /*************

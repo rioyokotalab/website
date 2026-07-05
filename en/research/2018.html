@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="ja"><!-- InstanceBegin template="/Templates/research-e.dwt" codeOutsideHTMLIsLocked="false" -->
+<html dir="ltr" lang="en"><!-- InstanceBegin template="/Templates/research-e.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
@@ -8,9 +8,16 @@
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Research : YOKOTA Laboratory : Science Tokyo, IIR</title>
 <!-- InstanceEndEditable -->
-<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="icon" href="../../favicon.ico">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="YOKOTA Laboratory">
+<meta property="og:title" content="Research : YOKOTA Laboratory : Science Tokyo, IIR">
+<meta property="og:image" content="https://www.rio.scrc.iir.isct.ac.jp/images/ogp.png">
+<meta property="og:url" content="https://www.rio.scrc.iir.isct.ac.jp/en/research/2018.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../style.css?v=20260705" type="text/css" media="screen">
 <script src="../../js/chglang.js"></script>
-<script type="text/javascript" src="../../js/jquery1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/pagetop.js"></script>
 <script type="text/javascript" src="../../js/openclose.js"></script>
 <script type="text/javascript" src="../../js/ddmenu_min.js"></script>
@@ -110,6 +117,14 @@ a.rlist span {
     <!-- / 電話番号+受付時間 --> 
     
     <!-- トップナビゲーション -->
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<div id="navbar">
+  <div class="inner">
     <nav id="menubar">
     <ul id="topnav">
       <li><a href="../index.html">Top Page</a></li>
@@ -135,11 +150,8 @@ a.rlist span {
       <li><a href="../contact/index.html">Contact</a></li>
     </ul>
     </nav>
-    <!-- トップナビゲーション --> 
-    
   </div>
 </div>
-<!-- / ヘッダー --> 
 
 <!-- メイン画像 -->
 <div id="mainBanner" class="mainImg">
@@ -162,11 +174,11 @@ a.rlist span {
         <p> However, there is a lack of discussion on the relationship between parameter compression and speedup within each layer of the CNN.</p>
         <p> In this research, we propose a method to speed up the inference by using half precision floating point SIMD instructions, by applying low precision to the learned model, in addition to reducing the data of the CNN model, and speeding up data access for layers that are computation-bound.</p>
         <p> We examined the influence of CNN recognition accuracy, the speedup for each layer, and its reason, when we apply our method.</p>
-        <p align="center"><a href="../../jp/research/images2018/naganuma1.png"  rel="lightbox"><img src="../../jp/research/images2018/naganuma1.png" alt="" width="95%"/></a><br>
+        <p align="center"><a href="../../jp/research/images2018/naganuma1.png"  rel="lightbox"><img loading="lazy" src="../../jp/research/images2018/naganuma1.png" alt="" width="95%"/></a><br>
           ▲ Click to enlarge</p>
         <h4>Smoothing of the Objective Function in Stochastic Optimization for Large Scale Parallel Deep Learnin (Hiroki Naganuma)</h4>
         <p>Classical learning theory states that when the number of parameters of the model is too large compared to the data, the model will overfit and the generalization performance deteriorates. However, it has been empirically shown that deep neural networks (DNN) can achieve high generalization capability by training with extremely large amount of data and model parameters, which exceeds the predictions of classical learning theory. One drawback of this is that training of DNN requires enormous calculation time. Therefore, it is necessary to reduce the training time through large scale parallelization. Straightforward data-parallelization of DNN degrades convergence and generalization. In the present work, we investigate the possibility of using second order methods to solve this generalization gap in large-batch training. This is motivated by our observation that each mini-batch becomes more statistically stable, and thus the effect of considering the curvature plays a more important role in large-batch training. We have also found that naively adapting the natural gradient method causes the generalization performance to deteriorate further due to the lack of regularization capability. We propose an improved second order method by smoothing the loss function, which allows second order methods to generalize as well as mini-batch SGD.</p>
-        <p align="center"> <a href="../../jp/research/images2018/naganuma2.png"  rel="lightbox"><img src="../../jp/research/images2018/naganuma2.png" alt="" width="95%"/></a><br>
+        <p align="center"> <a href="../../jp/research/images2018/naganuma2.png"  rel="lightbox"><img loading="lazy" src="../../jp/research/images2018/naganuma2.png" alt="" width="95%"/></a><br>
           ▲ Click to enlarge</p>
       </article>
       <article>
@@ -198,7 +210,9 @@ a.rlist span {
             </section>
 </aside>
  </div>
-<!-- / WRAPPER --> 
+<!-- / WRAPPER -->
+
+<p id="pagetop" class="inner"><a href="#">↑</a></p> 
 
 <!-- フッター -->
 <div id="footer">

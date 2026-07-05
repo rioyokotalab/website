@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="ja"><!-- InstanceBegin template="/Templates/research-e.dwt" codeOutsideHTMLIsLocked="false" -->
+<html dir="ltr" lang="en"><!-- InstanceBegin template="/Templates/research-e.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
@@ -8,9 +8,16 @@
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Research : YOKOTA Laboratory : Science Tokyo, IIR</title>
 <!-- InstanceEndEditable -->
-<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="icon" href="../../favicon.ico">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="YOKOTA Laboratory">
+<meta property="og:title" content="Research : YOKOTA Laboratory : Science Tokyo, IIR">
+<meta property="og:image" content="https://www.rio.scrc.iir.isct.ac.jp/images/ogp.png">
+<meta property="og:url" content="https://www.rio.scrc.iir.isct.ac.jp/en/research/002.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../style.css?v=20260705" type="text/css" media="screen">
 <script src="../../js/chglang.js"></script>
-<script type="text/javascript" src="../../js/jquery1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/pagetop.js"></script>
 <script type="text/javascript" src="../../js/openclose.js"></script>
 <script type="text/javascript" src="../../js/ddmenu_min.js"></script>
@@ -95,6 +102,14 @@ a.rlist span  {
     <!-- / 電話番号+受付時間 --> 
     
     <!-- トップナビゲーション -->
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<div id="navbar">
+  <div class="inner">
     <nav id="menubar">
     <ul id="topnav">
       <li><a href="../index.html">Top Page</a></li>
@@ -120,11 +135,8 @@ a.rlist span  {
       <li><a href="../contact/index.html">Contact</a></li>
     </ul>
     </nav>
-    <!-- トップナビゲーション --> 
-    
   </div>
 </div>
-<!-- / ヘッダー --> 
 
 <!-- メイン画像 -->
 <div id="mainBanner" class="mainImg">
@@ -143,14 +155,14 @@ a.rlist span  {
     <h3 class="heading"><a name="sub003" id="sub003"></a>Hierarchical Low-Rank Approximation</h3>
     <article>
       <p>Dense matrices appear in many computational  applications such as boundary integral methods for solving homogeneous partial  differential equations, kernel summation (convolution) problems in statistics  and machine learning. Such dense matrices usually have structure within them,  which can be used to compress them using hierarchical low-rank approximation.  In doing so, the storage of the dense matrix reduces from O(N<sup>2</sup>) to  O(N), while the O(N<sup>3</sup>)  complexity of matrix multiplication and  factorization becomes O(Nlog<sup>p</sup>N). This is an extremely powerful tool  when N is large.</p>
-      <p align="center"><img src="../../jp/research/images/003-01.jpg" width="583" height="198" alt=""></p>
+      <p align="center"><img loading="lazy" src="../../jp/research/images/003-01.jpg" width="583" height="198" alt=""></p>
       <p align="center">Figure 1 Compression of a Dense Matrix (red) Using  Hierarchical Low-Rank Approximation (green)</p>
     </article>
     <article>
       <h3 class="heading"><a name="sub004" id="sub004"></a>Application to Deep Learning</h3>
       <article>
         <p>Deep learning does not require very high precision,  and this fact is exploited by the recent low-precision hardware from NVIDIA and  Google. However, the matrix multiplication -- which is a dominant part of the  calculation time in deep learning – is still done using dense matrices without  any approximation. Even if the matrices themselves are full rank, proper  reordering and blocking can reveal the underlying structure, which can then be  used to perform low-rank approximations. This will reduce the storage from O(N<sup>2</sup>)  to O(N), and the complexity of matrix multiplication from O(N<sup>3</sup>) to  O(Nlog<sup>p</sup>N).</p>
-        <p align="center"><img src="../../jp/research/images/004-01.jpg" width="589" height="331" alt=""></p>
+        <p align="center"><img loading="lazy" src="../../jp/research/images/004-01.jpg" width="589" height="331" alt=""></p>
         <p align="center">Figure 2 Accelerating Deep Learning Kernels with  Low-Rank Approximation</p>
       </article>
       <h4>&nbsp;</h4>
@@ -164,7 +176,7 @@ a.rlist span  {
       <p>The distribution of the low rank blocks across processes determines how load balanced the final solution will be. We currently use a modified block cyclic distribution scheme where adjacent dense blocks are distributed on different processes whereas adjacent low rank blocks exist on the same process.</p>
       <p>My current research area focuses on creating the most optimum distribution scheme for distributed hierarchical matrices such that the communication overhead for computing the LU decomposition is minimized.</p>
       <p align="center">&nbsp;</p>
-      <p align="center"><a href="../../jp/research/002.pdf" target="_blank"><img src="../../jp/research/images2018/002-1.jpg" width="620" height="868" alt=""/><br>
+      <p align="center"><a href="../../jp/research/002.pdf" target="_blank"><img loading="lazy" src="../../jp/research/images2018/002-1.jpg" width="620" height="868" alt=""/><br>
       </a></p>
     </article>
     <article>
@@ -201,7 +213,9 @@ a.rlist span  {
             </section>
 </aside>
  </div>
-<!-- / WRAPPER --> 
+<!-- / WRAPPER -->
+
+<p id="pagetop" class="inner"><a href="#">↑</a></p> 
 
 <!-- フッター -->
 <div id="footer">

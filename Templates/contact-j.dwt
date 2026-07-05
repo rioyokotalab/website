@@ -8,9 +8,15 @@
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>連絡先・アクセス：横田研究室：東京科学大学　総合研究院</title>
 <!-- InstanceEndEditable -->
-<link rel="stylesheet" href="../style.css" type="text/css" media="screen">
+<link rel="icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="YOKOTA Laboratory">
+<meta property="og:title" content="連絡先・アクセス：横田研究室：東京科学大学 総合研究院">
+<meta property="og:image" content="https://www.rio.scrc.iir.isct.ac.jp/images/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css?v=20260705" type="text/css" media="screen">
 <script src="../js/chglang.js"></script>
-<script type="text/javascript" src="../js/jquery1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/pagetop.js"></script>
 <script type="text/javascript" src="../js/openclose.js"></script>
 <script type="text/javascript" src="../js/ddmenu_min.js"></script>
@@ -41,6 +47,14 @@
     <!-- / 電話番号+受付時間 --> 
     
     <!-- トップナビゲーション -->
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<div id="navbar">
+  <div class="inner">
     <nav id="menubar">
       <ul id="topnav">
         <li><a href="../jp/index.html">トップページ<br>
@@ -74,12 +88,8 @@
         <li><a href="../jp/picture/index.html">写真</a></li>
       </ul>
     </nav>
-
-    <!-- トップナビゲーション --> 
-    
   </div>
 </div>
-<!-- / ヘッダー --> 
 
 <!-- メイン画像 -->
 <div id="mainBanner" class="mainImg">
@@ -105,16 +115,16 @@
     <h3 class="heading"><a name="re002"></a>高速多重極展開法</h3>
     <article>
       <p>高速多重極展開法(FMM)はN体問題の計算コストをO(N2)からO(N)に軽減する手法である。FMMはFFTやKrylov部分空間法などと並んで２０世紀の１０大アルゴリズムの一つと考えられている。通常Byte/flopの低い蜜行列などのアルゴリズムはその複雑性が高くO(N3)、複雑性の低いFFTや疎行列計算などのアルゴリズムはByte/flopが高い。しかし、FMMはO(N)の複雑性も有しながらも蜜行列積よりも低いByte/flopを実現できる。つまり、FMMは効率的なアルゴリズムでありながらも演算密度が高く、次世代の計算機アーキテクチャにおける様々な楕円型方程式の高速解法の代替手法として期待されている。 </p>
-      <p align="center"><img src="../jp/research/images/001.jpg" width="589" height="350" alt=""></p>
+      <p align="center"><img loading="lazy" src="../jp/research/images/001.jpg" width="589" height="350" alt=""></p>
       <p align="center">図１　FMMの計算の流れ </p>
       <p> N体問題の計算を高速化する手法としてFMMは非常に有効である。FMMは６つの部分から成り立っている。P2Mは粒子の情報から多重極展開への変換、M2Mは多重極展開から多重極展開での変換、M2Lは多重極展開から局所展開への変換、L2Lは局所展開から局所展開への変換、L2Pは局所展開から粒子の作用への変換、P2Pは粒子同士の直接相互作用を表す。また、treecodeはFMMと異なり、M2L、L2L、L2Pの代わりにM2Pの変換を行うことで多重極展開から粒子での直接の作用を計算する。 </p>
-      <p align="center"><img src="../jp/research/images/002.jpg" width="589" height="441"  alt=""/><br>
+      <p align="center"><img loading="lazy" src="../jp/research/images/002.jpg" width="589" height="441"  alt=""/><br>
         図２　タンパク質のクラウディングの分子シミュレーション </p>
       <p> 分子動力学による解析は一般的に水で満たされた周期境界条件のような理想化された試験環境下(in vitro)で行われる。一方、実際の細胞などは様々なタンパク質が混在しており、そのような環境下での挙動をin vitroの計算から予測するには限界がある。本研究では663,552コアを用いた並列計算で５億原子の分子シミュレーションを行い、タンパク質のクラウディングの影響を調べた。 </p>
-      <p align="center"><img src="../jp/research/images/003.jpg" width="571" height="480"  alt=""/><br>
+      <p align="center"><img loading="lazy" src="../jp/research/images/003.jpg" width="571" height="480"  alt=""/><br>
         図３　境界要素法を用いた暗溶媒による分子シミュレーション </p>
       <p>分子シミュレーションは水分子を陽的に扱う陽溶媒と、連続体として扱う暗溶媒がある。暗溶媒の場合は分子の表面を境界要素法で離散化し、その上で積分方程式を解くことでポテンシャル場や力場の解析を行う。図３に示すように大規模解析においては多数の分子の集まりを境界要素法でそれぞれ離散化し、まとめて解くことで分子が混在するような場を解析することができる。</p>
-      <p align="center"><img src="../jp/research/images/004.jpg" width="583" height="598"  alt=""/><br>
+      <p align="center"><img loading="lazy" src="../jp/research/images/004.jpg" width="583" height="598"  alt=""/><br>
         図４　渦法を用いた一様等方性乱流の解析</p>
       <p>乱流解析も渦を最小単位とするような離散化を行うことでN体問題として解くことができる。これにより、FMMを用いてPoisson方程式に相当する部分をO(N)の計算時間で解くことができ、大規模並列計算において良いスケーリングを得ることができる。</p>
     </article>

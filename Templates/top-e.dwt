@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="ja">
+<html dir="ltr" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
@@ -7,10 +7,16 @@
 <meta name="keywords" content="">
 <!-- TemplateBeginEditable name="doctitle" -->
 <title>YOKOTA Laboratory : Institute of Science Tokyo, Institute of Integrated Research, Supercomputing Research Center</title>
+<link rel="icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="YOKOTA Laboratory">
+<meta property="og:title" content="YOKOTA Laboratory : Institute of Science Tokyo, Institute of Integrated Research, Supercomputing Research Center">
+<meta property="og:image" content="https://www.rio.scrc.iir.isct.ac.jp/images/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
 <!-- TemplateEndEditable -->
-<link rel="stylesheet" href="../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../style.css?v=20260705" type="text/css" media="screen">
 <script src="../js/chglang.js"></script>
-<script type="text/javascript" src="../js/jquery1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/pagetop.js"></script>
 <script type="text/javascript" src="../js/openclose.js"></script>
 <script type="text/javascript" src="../js/ddmenu_min.js"></script>
@@ -39,6 +45,14 @@
     <!-- / 電話番号+受付時間 --> 
     
     <!-- トップナビゲーション -->
+    <!-- トップナビゲーション --> 
+    
+  </div>
+</div>
+<!-- / ヘッダー --> 
+
+<div id="navbar">
+  <div class="inner">
     <nav id="menubar">
     <ul id="topnav">
       <li><a href="../en/index.html">Top Page</a></li>
@@ -64,11 +78,8 @@
       <li><a href="../en/contact/index.html">Contact</a></li>
     </ul>
     </nav>
-    <!-- トップナビゲーション --> 
-    
   </div>
 </div>
-<!-- / ヘッダー --> 
 
 <!-- メイン画像 -->
 <div id="mainBanner" class="mainImg">
@@ -82,7 +93,9 @@
 <!-- / メイン画像 -->
 
 <div id="wrapper"> <!-- TemplateBeginEditable name="contents" --> <!-- TemplateEndEditable --> </div>
-<!-- / WRAPPER --> 
+<!-- / WRAPPER -->
+
+<p id="pagetop" class="inner"><a href="#">↑</a></p> 
 
 <!-- フッター -->
 <div id="footer">

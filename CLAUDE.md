@@ -15,7 +15,10 @@ structure one-to-one.
 - Sections: `about`, `research`, `achievements`, `member`, `computers`,
   `teaching`, `picture` (top nav) plus `contact`, `links` (header bar).
   `news` and `software` exist but are not linked from the navigation.
-- `style.css` — the single site-wide stylesheet.
+- `style.css` — the single site-wide stylesheet. Pages reference it with a
+  cache-busting query (`style.css?v=YYYYMMDD`); when editing the CSS, bump the
+  version in ALL pages and templates (scripted replace) or browsers will keep
+  serving the stale sheet.
 - `images/` — shared images; section-specific photos live in e.g. `en/member/images/`.
 - `js/` — dropdown menu, mobile menu, back-to-top, language switcher, and a
   local jQuery 1.7.2 (pages load it from here; never from a CDN).
