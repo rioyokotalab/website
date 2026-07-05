@@ -20,8 +20,9 @@ structure one-to-one.
   version in ALL pages and templates (scripted replace) or browsers will keep
   serving the stale sheet.
 - `images/` — shared images; section-specific photos live in e.g. `en/member/images/`.
-- `js/` — dropdown menu, mobile menu, back-to-top, language switcher, and a
-  local jQuery 1.7.2 (pages load it from here; never from a CDN).
+- `js/` — dropdown menu, mobile menu, back-to-top (vanilla JS), language
+  switcher. No local jQuery; the only jQuery is the SRI-pinned CDN copy on
+  gallery pages.
 - Galleries (research figures, picture page, computers photos) all use
   lightbox2 2.11 + jQuery 3.7 from cdnjs with SRI hashes pinned in each
   page's head; there is no local copy. When bumping versions, recompute the
@@ -132,7 +133,9 @@ end-to-end on 2026-07-04, removing a member from the member page):
 
 `publish.sh` calls `./deploy.sh` (preview with `./deploy.sh --dry-run`). It mirrors
 this folder to `www/` on the server via lftp/SFTP, uploading only new/changed
-files. It does NOT delete remote files removed locally.
+files. It does NOT delete remote files removed locally — after deleting
+files, remove them from the server with `lftp -e "rm -f www/<path>; bye"
+sftp://web` (remote made an exact mirror on 2026-07-05).
 
 - Server: `gsic0017@web-o3.noc.titech.ac.jp`, SFTP only (no shell), web root `www/`.
 - Auth: password-only via the `web` alias in `~/.ssh/config`, multiplexed over
