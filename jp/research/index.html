@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="theme-color" content="#002855">
 <meta name="description" content="横田研究室">
 <meta name="keywords" content="">
 <!-- InstanceBeginEditable name="doctitle" -->
@@ -16,7 +17,7 @@
 <meta property="og:image" content="https://www.rio.scrc.iir.isct.ac.jp/images/ogp.png">
 <meta property="og:url" content="https://www.rio.scrc.iir.isct.ac.jp/jp/research/index.html">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../../style.css?v=20260705" type="text/css" media="screen">
+<link rel="stylesheet" href="../../style.css?v=20260705b" type="text/css" media="screen">
 <script src="../../js/chglang.js"></script>
 <script type="text/javascript" src="../../js/pagetop.js"></script>
 <script type="text/javascript" src="../../js/openclose.js"></script>
@@ -150,7 +151,7 @@ a.rlist span {
 
 <!-- メイン画像 -->
 <div id="mainBanner" class="mainImg">
-  <div class="inner"><!-- InstanceBeginEditable name="keyimage" --><img src="../../images/mainImg2.jpg" width="940" height="150" alt=""><!-- InstanceEndEditable -->
+  <div class="inner"><!-- InstanceBeginEditable name="keyimage" --><img src="../../images/banner-sub.jpg" width="1920" height="240" alt=""><!-- InstanceEndEditable -->
 	  <div class="slogan">
 	    <h2>
 研究内容
@@ -249,7 +250,7 @@ a.rlist span {
         ▲クリックすると拡大されます </p>
       <h4>複数モデルの活用による拡散モデルの学習・サンプリングの高速化（王 兆卿）</h4>
       <p>近年、拡散確率モデル（拡散モデル、DPM）は画像生成モデルの隆盛をもたらした。しかし、拡散モデルは学習とサンプリングの効率の面で依然として課題を抱えている。サンプリングの高速化や学習戦略の改善に向けた様々な取り組みがなされてきたが、これらの改善は拡散モデルが単一モデルをバックボーンとすることの制約を受けている。本研究では、理論的基礎と既存の解析を詳細に検討した上で、拡散モデルの学習とサンプリングの効率を高める二つのアプローチを提案する。第一に、拡散モデルのバックボーンからデノイジングモデルとスコアモデルを分離し、一度の推論でそれぞれ固有の目標を用いて学習する。第二に、単一モデルのバックボーンを複数の個別モデルに展開し、分散して学習する方法を提案する。</p>
-<p align="center"><a href="images2023/008.png"  data-lightbox="research"><img loading="lazy" src="images2023/008.png" alt="" width="95%"/></a><br>
+<p align="center"><a href="images2023/008.jpg"  data-lightbox="research"><img loading="lazy" src="images2023/008.jpg" alt="" width="95%"/></a><br>
         ▲クリックすると拡大されます </p>
       <h3 class="heading"><a name="r2023B"></a>2023年度 学位論文研究　学士論文</h3>
       <h4>大規模言語モデルの分散並列学習 (藤井 一喜)</h4>
@@ -267,7 +268,7 @@ a.rlist span {
       <h3 class="heading"><a name="r2022"></a>2022年度 学位論文研究　修士論文</h3>
       <h4>人工画像による事前学習のスケールアップとその効果 (高島 空良)</h4>
       <p>画像認識タスクの文脈では、JFT-300M/3B のような超大規模な実画像データセットで事前 学習した ViT によって最高精度が更新されている。一方で、事前学習に用いられるラベル付き 実画像データセットは、倫理的・権利的問題や、収集・ラベリングの困難、一部組織による寡 占など、多くの問題を抱えており、データセット大規模化によってこれらの問題を制御することは難しくなっている。そこで本研究では、ViT を事前学習させる FDSL 用人工画像データセットについて、1) 画像 内オブジェクトの輪郭が重要、2) 画像表現のバリエーションが重要、3) スケールアップにより 事前学習効果の向上が可能、という 3 つの仮説を立て、それぞれの仮説を検証できる FDSL 用 データセット{ExFractalDB, RCDB, VisualAtom}を新規に構築し、各データセットがもたらす事前学習効果の比較検証を実施すると共に、FDSL 手法の事前学習効果の底上げを図った。 </p>
-      <p align="center"><a href="images2022/001.png"  data-lightbox="research"><img loading="lazy" src="images2022/001.png" alt="" width="95%"/></a><br>
+      <p align="center"><a href="images2022/001.jpg"  data-lightbox="research"><img loading="lazy" src="images2022/001.jpg" alt="" width="95%"/></a><br>
         ▲クリックすると拡大されます </p>
       <h4>Vision TransformerのファインチューニングにおけるNASによるモデル削減効果（Xinyu Zhang）</h4>
       <p>自然言語処理で用いられるTransformerを画像に応用したVision Transformer（ViT）は、大規模データセットでの事前学習により、ImageNetの画像分類において従来の畳み込みニューラルネットワーク（CNN）を上回る性能を達成した。しかし、高い精度を得るためにモデルは巨大化しており、単一のGPUに載せることすら困難になり、推論時の有用性が制限されている。本研究では、このような大規模ViTモデルの性能を維持しつつサイズを削減するため、深層ニューラルネットワークのアーキテクチャを自動設計できるNeural Architecture Search（NAS）を活用する。LiuらのDARTSのアルゴリズムに基づいてMetaFormerのアーキテクチャを自動探索するAuto-MetaFormerという手法を提案する。この手法は、モデルの重みとともにアーキテクチャの重みを学習する勾配ベースのアプローチでアーキテクチャを探索する。Auto-MetaFormerはMetaFormerアーキテクチャの自動探索に成功し、同じパラメータ数で2%の精度向上を達成した。また、同じ分類精度であれば、人手で設計されたアーキテクチャと比較してパラメータ数をさらに20%削減できることを示した。</p>
@@ -301,11 +302,11 @@ a.rlist span {
       <h3 class="heading"><a name="r2021"></a>2021年度 学位論文研究　修士論文</h3>
       <h4>確率的重み平均化法のラージバッチ問題及び分布外汎化への拡張 (所畑 貴大)</h4>
       <p> 深層ニューラルネットワークモデルの実社会への適用への課題は，学習時間の増加や分布外のデータに対する汎化能力の低下など数多く存在する。学習時間の増加問題は，学習の高速化手法として複数の計算機を並列に用いて学習を行う分散並列深層学習が存在するが，汎化性能が低下する問題が経験的に知られている。本研究は，Stochastic Weight Averaging（SWA）に注目し，分散並列深層学習における汎化性能の低下問題と分布外のデータに対する汎化の改善を目的とする。SWAは，学習中に異なる局所解に収束した複数のモデルを得て平均化することで，一種のアンサンブル学習の近似を行う学習手法である。本研究ではSWAのハイパーパラメータへの依存性を網羅的に調査した。そして，SWAをを分散並列深層学習に適用し汎化性能を改善できることを示した。更に，分布外のデータに対する汎化タスクにおけるSWAの有効性を検証し，改善手法の提案を行なった。</p>
-      <p align="center"><a href="images2021/shohata_m_thesis.png"  data-lightbox="research"><img loading="lazy" src="images2021/shohata_m_thesis.png" alt="" width="95%"/></a><br>
+      <p align="center"><a href="images2021/shohata_m_thesis.jpg"  data-lightbox="research"><img loading="lazy" src="images2021/shohata_m_thesis.jpg" alt="" width="95%"/></a><br>
         ▲クリックすると拡大されます </p>
       <h4>分布マッチングによるオフポリシー逆強化学習（星野 華）</h4>
       <p>逆強化学習（IRL）は、報酬設計が煩雑になりがちな場面で魅力的な手法である。しかし、従来のIRLアルゴリズムはオンポリシーの遷移を用いるため、安定した最適な性能を得るには現在の方策から大量のサンプリングを行う必要がある。これは、環境との相互作用のコストが非常に高くなり得る実世界でのIRLの応用を制限している。この問題に取り組むため、本研究ではオフポリシー逆強化学習（OPIRL）を提案する。OPIRLは、(1) オンポリシーではなくオフポリシーのデータ分布を採用することで環境との相互作用の回数を大幅に削減し、(2) ダイナミクスの変化に対して高い汎化能力を持つ転移可能な報酬関数を学習し、(3) モードカバーの振る舞いを活用して収束を高速化する。実験により、提案手法がはるかに高いサンプル効率を持ち、新規環境へ汎化することを示した。提案手法は、大幅に少ない相互作用回数で方策性能のベースラインと同等以上の結果を達成した。さらに、復元された報酬関数が、従来手法では失敗しやすい異なるタスクへも汎化することを実証的に示した。</p>
-<p align="center"><a href="images2021/hoshino_m_thesis.png"  data-lightbox="research"><img loading="lazy" src="images2021/hoshino_m_thesis.png" alt="" width="95%"/></a><br>
+<p align="center"><a href="images2021/hoshino_m_thesis.jpg"  data-lightbox="research"><img loading="lazy" src="images2021/hoshino_m_thesis.jpg" alt="" width="95%"/></a><br>
         ▲クリックすると拡大されます </p>
       <h4>有益なサンプルを考慮したプロキシによる深層距離学習（Aoyu Li）</h4>
       <p>距離学習は機械学習の中核をなす基礎的なタスクの一つである。深層距離学習（DML）では、高い性能を維持しつつ柔軟性と効率性を備えたプロキシベースの手法が近年ますます注目されている。本研究では、クラスに依存した動的重み付けを組み合わせた新しいプロキシベース手法Informative Sample-Aware Proxy（Proxy-ISA）を提案する。表現空間におけるクラスの代表点であるプロキシは、サンプルの表現と同様に、プロキシとサンプルの類似度に基づいて更新される。既存手法では、大きな勾配を生む比較的少数のサンプル（ハードサンプル）と、小さな勾配を生む比較的多数のサンプル（イージーサンプル）が更新の大部分を占めてしまうことがある。そのような極端なサンプル集合への感度が高くなりすぎると汎化能力が損なわれるという仮定に基づき、提案するProxy-ISAは各サンプルへの勾配の重み係数を直接修正する。まず、クラスの難易度の情報を得るために、学習されたクラス関連領域を推定する方法を設計する。クラスの難易度に応じてハードサンプルとイージーサンプルを適応的に定義することで、各プロキシは自身のハード・イージーサンプルを識別し、スケジュールされた閾値関数によってそれらの重みを低減する。これにより、モデルは中間的なサンプル、すなわち「有益な（informative）」サンプルへの感度を高める。さらに、能動学習の考え方を取り入れて学習ステップに応じて有益なサンプルを動的に強調し、正例ペアと負例ペアに対して動的な重みを個別に割り当てる。CUB-200-2011、Cars-196、Stanford Online Products、In-shop Clothes Retrievalデータセットでの広範な実験により、Proxy-ISAが最先端手法を上回ることを実証した。</p>
@@ -327,7 +328,7 @@ a.rlist span {
       <h3 class="heading"><a name="r2020"></a>2020年度 学位論文研究　博士論文</h3>
       <h4>大規模深層学習のための二次最適化（大沢 和樹）</h4>
       <p>深層ニューラルネットワークの大規模分散学習では、実効的なミニバッチサイズの増大により、汎化性能の劣化したモデルが得られてしまう。従来のアプローチは、エポックや層ごとに学習率やバッチサイズを変化させたり、バッチ正規化にアドホックな修正を加えたりすることでこの問題への対処を試みてきた。本研究では、一次最適化手法で学習したモデルと同等の汎化性能を達成しつつ収束を加速できる原理的なアプローチとして、スケーラブルで実用的な自然勾配法（SP-NGD）を提案する。さらに、SP-NGDは一次手法と比較して無視できる程度の計算オーバーヘッドで大きなミニバッチサイズにスケールする。高度に最適化された一次手法が参照として利用できるベンチマークタスク、すなわちImageNetデータセットでのResNet-50の画像分類学習でSP-NGDを評価した。1,024基のGPUを用いたミニバッチサイズ32,768で5.5分でtop-1検証精度75.4%への収束を実証し、さらに131,072という極めて大きなミニバッチサイズでもSP-NGDの873ステップで74.9%の精度を達成した。</p>
-<p align="center"><a href="images2020/osawa_d_thesis.png"  data-lightbox="research"><img loading="lazy" src="images2020/osawa_d_thesis.png" alt="" width="95%"/></a><br>
+<p align="center"><a href="images2020/osawa_d_thesis.jpg"  data-lightbox="research"><img loading="lazy" src="images2020/osawa_d_thesis.jpg" alt="" width="95%"/></a><br>
         ▲クリックすると拡大されます </p>
       <h3 class="heading"><a name="r2019M"></a>2020年度 学位論文研究　修士論文</h3>
       <h4>分散深層学習の省メモリ・省I/O化と二次最適化の高速化（上野 裕一郎）</h4>
@@ -361,11 +362,11 @@ a.rlist span {
       <h4>Tensorコアを用いたRandomized SVDの実装と評価 (大友 広幸)</h4>
       <p> 本研究ではTensorコアを用いた高速かつ省メモリなRandomized SVDを開発しその評価を行った．<br>
         はじめにTensorコアを用いるためのAPIの構造の解析を行い，高速かつ省メモリにTensorコアを用いるためのAPI拡張の開発を行った． つぎにこれを用いてTensorコアを用いたTSQRの開発を行い，その計算精度と計算性能の調査を行った． 実装したTSQRでは入力行列の列数に制限があるため，これを複数回用いることで任意の大きさのQR分解を行うBlockQRを実装しRandomized SVDへの適用を行った． BlockQRではNVIDIAが開発している既存実装と比較し最大99.8%のメモリ消費を削減でき，4倍以上の計算速度の向上が確認された． Randomized SVDではNVIDIAが開発している既存手法での実装に対し精度の劣化を抑えつつ省メモリかつ高速に計算可能であることが確認された． </p>
-      <p align="center"><a href="images2019/Ootomo.png"   data-lightbox="research"><img loading="lazy" src="images2019/Ootomo.png" alt="" width="95%"/></a><br>
+      <p align="center"><a href="images2019/Ootomo.jpg"   data-lightbox="research"><img loading="lazy" src="images2019/Ootomo.jpg" alt="" width="95%"/></a><br>
         ▲クリックすると拡大されます</p>
       <h4>強化学習における好奇心駆動探索手法の高速なGPU 実装 (桑村 裕二)</h4>
       <p> 強化学習は環境とエージェントの相互応答の繰り返しによって学習を行う機械学習の手法の一つだが、学習に膨大な時間がかかることが知られている。CuLEは代表的なプラットフォームであるAtari emulatorをGPU上で実行させることにより学習時間を大幅に削減させた。学習アルゴリズムにはV-trace Actor Criticが使われているが、Atariに対して高いスコアを実現させている統合型Q学習アルゴリズムRainbowとのスコアの統一的な比較は十分にされていない。そのため、本研究ではRainbow含め他の学習アルゴリズムとのスコア比較を行った。また、探索手法として高分散に適したコンパクトな設計であるRNDとの統合を行い、統合前後での学習スコアの差異を基に、探索手法の選定の必要性について考察を行った。</p>
-      <p align="center"><a href="images2019/Kuwamura.png"   data-lightbox="research"><img loading="lazy" src="images2019/Kuwamura.png" alt="" width="95%"/></a><br>
+      <p align="center"><a href="images2019/Kuwamura.jpg"   data-lightbox="research"><img loading="lazy" src="images2019/Kuwamura.jpg" alt="" width="95%"/></a><br>
         ▲クリックすると拡大されます</p>
       <h4>階層的低ランク近似のための効率的なライブラリ（Peter Spalthoff）</h4>
       <p>密行列はメモリ量がサイズの二乗に比例し、多くの演算は三乗に比例するため、大規模な計算では非常に高価になる。共分散行列や境界要素法（BEM）など多くの応用では、低ランクブロックの部分構造が現れる。この部分構造を活用することで、階層的低ランク近似と呼ばれる効率的な行列の圧縮が可能になる。得られる階層的行列（H行列）は線形の記憶量しか必要とせず、乗算や逆行列などのすべての算術演算を定義でき、これらの演算もほぼ線形の計算量で高速に実行できる。我々は、ヘテロジニアスなノード上での分散メモリ並列化を備えた、モダンで柔軟なライブラリを開発している。</p>
@@ -385,11 +386,11 @@ a.rlist span {
       <h3 class="heading"><a name="r2018"></a>2018年度学位論文研究　修士論文</h3>
       <h4>畳み込みニューラルネットワークにおける低精度演算を用いた高速化の検証 (長沼 大樹)</h4>
       <p>近年の畳み込みニューラルネットワーク（CNN）は、より深い多層構造を持つ傾向にある。これによりモデルの精度は向上するが、学習と推論に関わる計算量とデータ量が増大する。この問題を解決するため、CNNのノイズへの耐性を活用し、計算とデータの数値精度を下げることで、データ量と計算量を削減する手法がいくつか提案されている。しかし、CNNの各層におけるパラメータ圧縮と高速化の関係についての議論は不足している。本研究では、学習済みモデルに低精度化を適用し、CNNモデルのデータ削減に加えて、計算律速な層のデータアクセスを高速化することで、半精度浮動小数点SIMD命令を用いて推論を高速化する手法を提案する。提案手法を適用した際のCNNの認識精度への影響、各層の高速化とその要因について検証を行った。</p>
-<p align="center"><a href="images2018/naganuma1.png"   data-lightbox="research"><img loading="lazy" src="images2018/naganuma1.png" alt="" width="95%"/></a><br>
+<p align="center"><a href="images2018/naganuma1.jpg"   data-lightbox="research"><img loading="lazy" src="images2018/naganuma1.jpg" alt="" width="95%"/></a><br>
         ▲クリックすると拡大されます</p>
       <h4>大規模並列深層学習のための確率的最適化に基づいた目的関数の平滑化 (長沼 大樹)</h4>
       <p>古典的な学習理論では、データに対してモデルのパラメータ数が大きすぎるとモデルは過学習し、汎化性能が劣化するとされている。しかし、深層ニューラルネットワーク（DNN）は、古典的な学習理論の予測を超えて、極めて大量のデータとモデルパラメータを用いた学習により高い汎化能力を達成できることが経験的に示されている。その一方で、DNNの学習には膨大な計算時間を要するため、大規模並列化による学習時間の短縮が必要となる。DNNの素朴なデータ並列化は収束と汎化を劣化させる。本研究では、大バッチ学習におけるこの汎化ギャップを解決するために二次最適化手法を用いる可能性を調査する。これは、大バッチ学習では各ミニバッチが統計的により安定するため、曲率を考慮することの効果がより重要な役割を果たすという我々の観察に基づいている。また、自然勾配法を素朴に適用すると、正則化能力の欠如により汎化性能がさらに劣化することも見出した。本研究では、損失関数を平滑化することで二次最適化手法がミニバッチSGDと同等に汎化できるようにする改良手法を提案する。</p>
-<p align="center"> <a href="images2018/naganuma2.png"   data-lightbox="research"><img loading="lazy" src="images2018/naganuma2.png" alt="" width="95%"/></a><br>
+<p align="center"> <a href="images2018/naganuma2.jpg"   data-lightbox="research"><img loading="lazy" src="images2018/naganuma2.jpg" alt="" width="95%"/></a><br>
         ▲クリックすると拡大されます<br>
   <br>
       </p>

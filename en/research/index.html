@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="theme-color" content="#002855">
 <meta name="description" content="YOKOTA Laboratory">
 <meta name="keywords" content="">
 <!-- InstanceBeginEditable name="doctitle" -->
@@ -16,7 +17,7 @@
 <meta property="og:image" content="https://www.rio.scrc.iir.isct.ac.jp/images/ogp.png">
 <meta property="og:url" content="https://www.rio.scrc.iir.isct.ac.jp/en/research/index.html">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../../style.css?v=20260705" type="text/css" media="screen">
+<link rel="stylesheet" href="../../style.css?v=20260705b" type="text/css" media="screen">
 <script src="../../js/chglang.js"></script>
 <script type="text/javascript" src="../../js/pagetop.js"></script>
 <script type="text/javascript" src="../../js/openclose.js"></script>
@@ -140,7 +141,7 @@ a.rlist span {
 
 <!-- メイン画像 -->
 <div id="mainBanner" class="mainImg">
-  <div class="inner"><!-- InstanceBeginEditable name="keyimage" --><img src="../../images/mainImg2.jpg" width="940" height="150" alt=""><!-- InstanceEndEditable -->
+  <div class="inner"><!-- InstanceBeginEditable name="keyimage" --><img src="../../images/banner-sub.jpg" width="1920" height="240" alt=""><!-- InstanceEndEditable -->
 	  <div class="slogan">
 	    <h2>Research
 </h2>
@@ -242,7 +243,7 @@ We then converted the parameter information from  this process into text using a
         ▲Click image to enlarge </p>
       <h4>Acceleration of Diffusion Models Training and Sampling Through the Use of Multiple Models (Zhaoqing Wang)</h4>
       <p>In recent years, Diffusion Probabilistic  Models (Diffusion Models or DPMs) have sparked a surge in generative models for  images. However, diffusion models still face challenges in terms of training  and sampling efficiency. While various efforts have been made to accelerate  sampling or enhance training strategies, these improvements are constrained by  the limitations of the single-model backbone used in diffusion models. After a  thorough examination of the theoretical foundations and existing analyses, we  propose two approaches to enhance the efficiency of training and sampling in  diffusion models. Firstly, we advocate separating a denoising model and a score  model from the diffusion model backbone, training them with specific targets  using only one inference. Secondly, we suggest unfolding the single-model  backbone into multiple individual models and training them in a distributed  manner. </p>
-<p align="center"><a href="../../jp/research/images2023/008.png"  data-lightbox="research"><img loading="lazy" src="../../jp/research/images2023/008.png" alt="" width="95%"/></a><br>
+<p align="center"><a href="../../jp/research/images2023/008.jpg"  data-lightbox="research"><img loading="lazy" src="../../jp/research/images2023/008.jpg" alt="" width="95%"/></a><br>
         ▲Click image to enlarge </p>
       <h3 class="heading"><a name="r2023B"></a><strong>Bachelors Thesis  2023</strong></h3>
       <h4>Distributed Parallel Training of Large Language Models (Kazuki Fujii)</h4>
@@ -260,7 +261,7 @@ We then converted the parameter information from  this process into text using a
 <h3 class="heading"><a name="r2022"></a>Thesis 2022</h3>
       <h4>Scaling  up Pre-training with Synthetic Images (Sora Takashima)</h4>
       <p>In the context of image recognition tasks,  the highest accuracy has been achieved by ViT pre-trained on very large real  image datasets such as JFT-300M/3B. On the other hand, labeled real image  datasets used for pre-training have many problems such as ethical and copyright  issues, difficulties in collection and labeling, and oligopoly by some  organizations, and it is difficult to control these problems by increasing the  dataset size. In this study, we developed three hypotheses about the human-made  image dataset for FDSL to pre-training ViT: 1) contours of objects in the image  are important, 2) variations in image representation are important, and 3)  scaling up can improve the pre-training effect. We constructed new datasets  {ExFractalDB, RCDB, VisualAtom} to test each hypothesis, and conducted a  comparative verification of the pre-training effect of each dataset. </p>
-      <p align="center"><a href="../../jp/research/images2022/001.png" data-lightbox="research"><img loading="lazy" src="../../jp/research/images2022/001.png" alt="" width="95%"/></a><br>
+      <p align="center"><a href="../../jp/research/images2022/001.jpg" data-lightbox="research"><img loading="lazy" src="../../jp/research/images2022/001.jpg" alt="" width="95%"/></a><br>
         ▲Click image to enlarge </p>
       <h4>Model  Reduction Effect of NAS during Finetuning of Vision Transformers (Xinyu Zhang)</h4>
       <p> Vision Transformers (ViT), an application  of Transformer used in natural language processing, have surpassed traditional  Convolutional Neural Networks (CNN) in image classification on ImageNet by  pre-training on large datasets. However, the models are becoming so large to  achieve high accuracy that they cannot even fit on a single GPU, which limits  their usefulness during inference. In order to reduce the size of such large  ViT models while keeping their performance, we utilize Neural Architecture  Search (NAS), which makes it possible to automatically design architectures of  deep neural networks. We propose a method called Auto-MetaFormer, which can automatically  search for architecture of MetaFormer based on algorithm of DARTS by Liu et al.  It uses a gradient based approach to search for architecture by training  architecture weights along with model weights. Auto-MetaFormer succeeds in  automatically searching the MetaFormer architecture, gaining a 2% increase in  accuracy using the same number of parameters. For the same classification  accuracy, the number of parameters also be further reduced by 20% compared to  the manually designed architecture. <br>
@@ -294,7 +295,7 @@ We then converted the parameter information from  this process into text using a
       <h3 class="heading"><a name="r2021"></a>Thesis 2021</h3>
       <h4>Off-Policy Inverse Reinforcement Learning via Distribution Matching (Hana Hoshino)</h4>
       <p> Inverse Reinforcement Learning (IRL) is attractive in scenarios where reward engineering can be tedious. However, prior IRL algorithms use on-policy transitions, which require intensive sampling from the current policy for stable and optimal performance. This limits IRL applications in the real world, where environment interactions can become highly expensive. To tackle this problem, we present Off-Policy Inverse Reinforcement Learning (OPIRL), which (1) adopts off-policy data distribution instead of on-policy and enables significant reduction of the number of interactions with the environment, (2) learns a reward function that is transferable with high generalization capabilities on changing dynamics, and (3) leverages mode-covering behavior for faster convergence. We demonstrate that our method is considerably more sample efficient and generalizes to novel environments through the experiments. Our method achieves better or comparable results on policy performance baselines with significantly fewer interactions. Furthermore, we empirically show that the recovered reward function generalizes to different tasks where prior arts are prone to fail.</p>
-      <p align="center"><a href="../../jp/research/images2021/hoshino_m_thesis.png" data-lightbox="research"><img loading="lazy" src="../../jp/research/images2021/hoshino_m_thesis.png" alt="" width="95%"/></a><br>
+      <p align="center"><a href="../../jp/research/images2021/hoshino_m_thesis.jpg" data-lightbox="research"><img loading="lazy" src="../../jp/research/images2021/hoshino_m_thesis.jpg" alt="" width="95%"/></a><br>
         ▲Click image to enlarge </p>
       <h4>Informative Sample-Aware Proxy for Deep Metric Learning (Aoyu Li)</h4>
       <p> Metric Learning is one if the core fundamental tasks of machine learning. In deep metric learning (DML), the proxy-based methods are drawing more and more attention recently because of their flexibility and efficiency while maintaining higher performance. In this work, we propose a novel proxy-based method combined with class-dependent dynamic weighting, called Informative Sample-Aware Proxy (Proxy-ISA).<br>
@@ -308,7 +309,7 @@ We then converted the parameter information from  this process into text using a
       <h3 class="heading"><a name="r2020"></a>Thesis 2020</h3>
       <h4>Second-order Optimization for Large-scale Deep Learning（Kazuki Osawa）</h4>
       <p>Large-scale distributed training of deep neural networks results in models   with worse generalization performance as a result of the increase in the   effective mini-batch size.  Previous approaches attempt to address this problem   by varying the learning rate and batch size over epochs and layers, or ad hoc   modifications of Batch Normalization.  We propose Scalable and Practical Natural   Gradient Descent , a principled approach for training models that allows them to   attain similar generalization performance to models trained with first-order   optimization methods, but with accelerated convergence. Furthermore, SP-NGD   scales to large mini-batch sizes with a negligible computational overhead as   compared to first-order methods.  We evaluate SP-NGD on a benchmark task where   highly optimized first-order methods are available as references: training a   ResNet-50 model for image classification on the ImageNet dataset. We demonstrate   convergence to a top-1 validation accuracy of 75.4% in 5.5 minutes using a   mini-batch size of 32,768 with 1,024 GPUs, as well as an accuracy of 74.9% with   an extremely large mini-batch size of 131,072 in 873 steps of SP-NGD. </p>
-      <p align="center"><a href="../../jp/research/images2020/osawa_d_thesis.png" data-lightbox="research"><img loading="lazy" src="../../jp/research/images2020/osawa_d_thesis.png" alt="" width="95%"/></a><br>
+      <p align="center"><a href="../../jp/research/images2020/osawa_d_thesis.jpg" data-lightbox="research"><img loading="lazy" src="../../jp/research/images2020/osawa_d_thesis.jpg" alt="" width="95%"/></a><br>
         ▲Click image to enlarge</p>
       <h3 class="heading"><a name="r2019"></a>Thesis 2019</h3>
       <h4>Efficient library for hierarchical low rank approximation (Peter Spalthoff)</h4>
@@ -322,11 +323,11 @@ We then converted the parameter information from  this process into text using a
       <p> However, there is a lack of discussion on the relationship between parameter compression and speedup within each layer of the CNN.</p>
       <p> In this research, we propose a method to speed up the inference by using half precision floating point SIMD instructions, by applying low precision to the learned model, in addition to reducing the data of the CNN model, and speeding up data access for layers that are computation-bound.</p>
       <p> We examined the influence of CNN recognition accuracy, the speedup for each layer, and its reason, when we apply our method.</p>
-      <p align="center"><a href="../../jp/research/images2018/naganuma1.png"  data-lightbox="research"><img loading="lazy" src="../../jp/research/images2018/naganuma1.png" alt="" width="95%"/></a><br>
+      <p align="center"><a href="../../jp/research/images2018/naganuma1.jpg"  data-lightbox="research"><img loading="lazy" src="../../jp/research/images2018/naganuma1.jpg" alt="" width="95%"/></a><br>
         ▲ Click image to enlarge</p>
       <h4>Smoothing of the Objective Function in Stochastic Optimization for Large Scale Parallel Deep Learning (Hiroki Naganuma)</h4>
       <p>Classical learning theory states that when the number of parameters of the model is too large compared to the data, the model will overfit and the generalization performance deteriorates. However, it has been empirically shown that deep neural networks (DNN) can achieve high generalization capability by training with extremely large amount of data and model parameters, which exceeds the predictions of classical learning theory. One drawback of this is that training of DNN requires enormous calculation time. Therefore, it is necessary to reduce the training time through large scale parallelization. Straightforward data-parallelization of DNN degrades convergence and generalization. In the present work, we investigate the possibility of using second order methods to solve this generalization gap in large-batch training. This is motivated by our observation that each mini-batch becomes more statistically stable, and thus the effect of considering the curvature plays a more important role in large-batch training. We have also found that naively adapting the natural gradient method causes the generalization performance to deteriorate further due to the lack of regularization capability. We propose an improved second order method by smoothing the loss function, which allows second order methods to generalize as well as mini-batch SGD.</p>
-      <p align="center"> <a href="../../jp/research/images2018/naganuma2.png"  data-lightbox="research"><img loading="lazy" src="../../jp/research/images2018/naganuma2.png" alt="" width="95%"/></a><br>
+      <p align="center"> <a href="../../jp/research/images2018/naganuma2.jpg"  data-lightbox="research"><img loading="lazy" src="../../jp/research/images2018/naganuma2.jpg" alt="" width="95%"/></a><br>
         ▲ Click image to enlarge </p>
     </section>
     <section class="content" id="gallery"> </section>

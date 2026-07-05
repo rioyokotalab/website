@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="theme-color" content="#002855">
 <meta name="description" content="YOKOTA Laboratory">
 <meta name="keywords" content="">
 <!-- InstanceBeginEditable name="doctitle" -->
@@ -15,7 +16,7 @@
 <meta property="og:title" content="CONTACT/ACCESS: YOKOTA Laboratory : Science Tokyo, IIR">
 <meta property="og:image" content="https://www.rio.scrc.iir.isct.ac.jp/images/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../style.css?v=20260705" type="text/css" media="screen">
+<link rel="stylesheet" href="../style.css?v=20260705b" type="text/css" media="screen">
 <script src="../js/chglang.js"></script>
 <script type="text/javascript" src="../js/pagetop.js"></script>
 <script type="text/javascript" src="../js/openclose.js"></script>
@@ -83,7 +84,7 @@
 
 <!-- メイン画像 -->
 <div id="mainBanner" class="mainImg">
-  <div class="inner"><!-- InstanceBeginEditable name="keyimage" --><img src="../images/mainImg2.jpg" width="940" height="150" alt=""><!-- InstanceEndEditable --><!-- InstanceBeginEditable name="slogan" -->
+  <div class="inner"><!-- InstanceBeginEditable name="keyimage" --><img src="../images/banner-sub.jpg" width="1920" height="240" alt=""><!-- InstanceEndEditable --><!-- InstanceBeginEditable name="slogan" -->
 	  <div class="slogan">
 	    <h2>研究内容</h2>
     </div>

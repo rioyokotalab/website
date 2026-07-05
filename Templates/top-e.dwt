@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="theme-color" content="#002855">
 <meta name="description" content="YOKOTA Laboratory">
 <meta name="keywords" content="">
 <!-- TemplateBeginEditable name="doctitle" -->
@@ -15,7 +16,7 @@
 <meta property="og:image" content="https://www.rio.scrc.iir.isct.ac.jp/images/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
 <!-- TemplateEndEditable -->
-<link rel="stylesheet" href="../style.css?v=20260705" type="text/css" media="screen">
+<link rel="stylesheet" href="../style.css?v=20260705b" type="text/css" media="screen">
 <script src="../js/chglang.js"></script>
 <script type="text/javascript" src="../js/pagetop.js"></script>
 <script type="text/javascript" src="../js/openclose.js"></script>
@@ -83,7 +84,7 @@
 
 <!-- メイン画像 -->
 <div id="mainBanner" class="mainImg">
-  <div class="inner"><!-- TemplateBeginEditable name="keyimage" --><img src="../images/mainImg.jpg" width="940" height="300" alt=""><!-- TemplateEndEditable --><!-- TemplateBeginEditable name="slogan" -->
+  <div class="inner"><!-- TemplateBeginEditable name="keyimage" --><img src="../images/banner-top.jpg" width="1920" height="480" alt=""><!-- TemplateEndEditable --><!-- TemplateBeginEditable name="slogan" -->
     <div class="slogan">
       <h2>横田研究室は2015年●月にスタートした新しい研究室です</h2>
       <h3>簡単な説明</h3>
