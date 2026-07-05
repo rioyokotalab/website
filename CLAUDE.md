@@ -106,8 +106,11 @@ files. It does NOT delete remote files removed locally.
 
 ## Known issues (as of 2026-07)
 
-- Pages load jQuery 1.7.2 from `http://code.jquery.com/...` — plain HTTP is
-  blocked on the HTTPS site, so anything depending on jQuery may be broken.
-- Every page embeds a dead Google Analytics snippet (Universal Analytics
-  `UA-82924932-1`, shut down in 2023).
-- Old-IE shims (`html5.js`, `css3-mediaqueries.js`) are obsolete.
+- (Fixed 2026-07-05: the broken http:// jQuery now loads locally from `js/`,
+  the dead Google Analytics snippet and IE8 shims were removed from every
+  page, and `style.css` was modernized — same selectors, refreshed look.)
+- The research pages additionally load lightbox2 2.7.1 + jQuery 1.12.4 from
+  HTTPS CDNs for the figure pop-ups; these work and are left as-is.
+- The page HTML itself is still Dreamweaver-era (floats, table layouts);
+  `style.css` is written against those existing selectors, so keep class/id
+  names stable when editing pages.
