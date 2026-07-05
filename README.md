@@ -14,7 +14,7 @@ automatically.**
 ### 1. Clone and install tools
 
 ```
-git clone github:rioyokotalab/website
+git clone https://github.com/rioyokotalab/website
 ```
 
 You need `python3` (local preview), `lftp` (deploy), and
