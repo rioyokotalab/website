@@ -55,6 +55,11 @@ end-to-end on 2026-07-04, removing a member from the member page):
    confirmation: `echo y | ./publish.sh "message"`.
 4. **Verify** — after publishing, curl the changed pages on
    https://www.rio.scrc.iir.isct.ac.jp and confirm the change is live.
+5. **Document** — if the change added or altered structure, conventions,
+   workflow, or tooling described in this file, update CLAUDE.md in the same
+   turn and commit and push it (repo-only file, not deployed). A PostToolUse
+   hook in `.claude/settings.local.json` injects a reminder after every
+   publish.sh run so this step is not forgotten.
 
 ## Content conventions
 
