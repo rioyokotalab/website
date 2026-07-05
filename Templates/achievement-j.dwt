@@ -43,7 +43,7 @@
     
     <!-- 電話番号+受付時間 -->
     <div class="info">
-      <p> | <a href="../jp/index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">ENGLISH</a> | <a href="../jp/contact/index.html">連絡先・アクセス</a> | <a href="../jp/links/index.html">リンク</a> |  <a href="https://rioyokotalab.github.io/" target="_blank">ブログ</a> | </p>
+      <p> | <a href="../jp/index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">ENGLISH</a> | <a href="../jp/contact/index.html">連絡先・アクセス</a> | <a href="../jp/links/index.html">リンク</a> |  <a href="https://rioyokotalab.github.io/" target="_blank" rel="noopener noreferrer">ブログ</a> | </p>
     </div>
     <!-- / 電話番号+受付時間 --> 
     

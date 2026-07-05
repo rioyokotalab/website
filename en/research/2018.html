@@ -76,24 +76,9 @@ a.rlist span {
 }
 -->
 </style>
-<link href="../../lightbox/css/jquery.lightbox-0.5.css" type="text/css" rel="stylesheet" media="screen" />  
-<script src="../../lightbox/js/jquery.js" type="text/javascript"></script>  
-<script src="../../lightbox/js/jquery.lightbox-0.5.min.js" type="text/javascript"></script>  
-<script type="text/javascript">  
-  $(document).ready(function() {  
-    $('a[rel*=lightbox]').lightBox({  
-        overlayBgColor:'#FFF',  
-        overlayOpacity:0.6,  
-        imageLoading:'../../lightbox/images/lightbox-ico-loading.gif',  
-        imageBtnClose:'../../lightbox/images/lightbox-btn-close.gif',  
-        imageBtnPrev:'../../lightbox/images/lightbox-btn-prev.gif',  
-        imageBtnNext:'../../lightbox/images/lightbox-btn-next.gif',  
-        containerResizeSpeed:350,  
-        txtImage:'画像：',  
-        txtOf:'／' 
-    });  
-  });  
-</script>  
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet" integrity="sha384-MzHT0pgTPI8fjMvEz54yA7HmSVjLLsxl+ytGS13+EOr/L5uLaBakmchzKgDYsSQz" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js" integrity="sha384-jN3Qe7xtdnQxdyZWXD9gn2Z4oRyiFuU03xQATriSicCq2SKDikN9UEJMCx+9nsJM" crossorigin="anonymous"></script>
 <!-- InstanceEndEditable -->
 </head>
 <body>
@@ -113,7 +98,7 @@ a.rlist span {
     
     <!-- 電話番号+受付時間 -->
     <div class="info">
-      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">JAPANESE</a> | <a href="../contact/index.html">CONTACT</a> | <a href="../links/index.html">LINKS</a> |  <a href="https://rioyokotalab.github.io/" target="_blank">BLOG</a> | </p>
+      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">JAPANESE</a> | <a href="../contact/index.html">CONTACT</a> | <a href="../links/index.html">LINKS</a> |  <a href="https://rioyokotalab.github.io/" target="_blank" rel="noopener noreferrer">BLOG</a> | </p>
     </div>
     <!-- / 電話番号+受付時間 --> 
     
@@ -175,11 +160,11 @@ a.rlist span {
         <p> However, there is a lack of discussion on the relationship between parameter compression and speedup within each layer of the CNN.</p>
         <p> In this research, we propose a method to speed up the inference by using half precision floating point SIMD instructions, by applying low precision to the learned model, in addition to reducing the data of the CNN model, and speeding up data access for layers that are computation-bound.</p>
         <p> We examined the influence of CNN recognition accuracy, the speedup for each layer, and its reason, when we apply our method.</p>
-        <p align="center"><a href="../../jp/research/images2018/naganuma1.jpg"  rel="lightbox"><img loading="lazy" src="../../jp/research/images2018/naganuma1.jpg" alt="" width="95%"/></a><br>
+        <p align="center"><a href="../../jp/research/images2018/naganuma1.jpg"  data-lightbox="hinadori"><img loading="lazy" src="../../jp/research/images2018/naganuma1.jpg" alt="" width="95%"/></a><br>
           ▲ Click to enlarge</p>
         <h4>Smoothing of the Objective Function in Stochastic Optimization for Large Scale Parallel Deep Learnin (Hiroki Naganuma)</h4>
         <p>Classical learning theory states that when the number of parameters of the model is too large compared to the data, the model will overfit and the generalization performance deteriorates. However, it has been empirically shown that deep neural networks (DNN) can achieve high generalization capability by training with extremely large amount of data and model parameters, which exceeds the predictions of classical learning theory. One drawback of this is that training of DNN requires enormous calculation time. Therefore, it is necessary to reduce the training time through large scale parallelization. Straightforward data-parallelization of DNN degrades convergence and generalization. In the present work, we investigate the possibility of using second order methods to solve this generalization gap in large-batch training. This is motivated by our observation that each mini-batch becomes more statistically stable, and thus the effect of considering the curvature plays a more important role in large-batch training. We have also found that naively adapting the natural gradient method causes the generalization performance to deteriorate further due to the lack of regularization capability. We propose an improved second order method by smoothing the loss function, which allows second order methods to generalize as well as mini-batch SGD.</p>
-        <p align="center"> <a href="../../jp/research/images2018/naganuma2.jpg"  rel="lightbox"><img loading="lazy" src="../../jp/research/images2018/naganuma2.jpg" alt="" width="95%"/></a><br>
+        <p align="center"> <a href="../../jp/research/images2018/naganuma2.jpg"  data-lightbox="hinadori"><img loading="lazy" src="../../jp/research/images2018/naganuma2.jpg" alt="" width="95%"/></a><br>
           ▲ Click to enlarge</p>
       </article>
       <article>

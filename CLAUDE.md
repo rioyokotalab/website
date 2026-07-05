@@ -22,7 +22,12 @@ structure one-to-one.
 - `images/` — shared images; section-specific photos live in e.g. `en/member/images/`.
 - `js/` — dropdown menu, mobile menu, back-to-top, language switcher, and a
   local jQuery 1.7.2 (pages load it from here; never from a CDN).
-- `lightbox/`, `lightbox2/` — image-popup library for the photo gallery.
+- Galleries (research figures, picture page, computers photos) all use
+  lightbox2 2.11 + jQuery 3.7 from cdnjs with SRI hashes pinned in each
+  page's head; there is no local copy. When bumping versions, recompute the
+  `integrity` hashes.
+- `.htaccess` — sets security headers (nosniff, SAMEORIGIN, referrer policy);
+  deployed to the web root and honored by the server.
 - `Templates/*.dwt` — Dreamweaver templates. Inert outside Dreamweaver; every
   HTML page carries its own full copy of the header/nav/footer. Site-wide
   changes (e.g. the nav menu) must be edited in every page (find-and-replace).
@@ -150,8 +155,8 @@ files. It does NOT delete remote files removed locally.
 - (Fixed 2026-07-05: the broken http:// jQuery now loads locally from `js/`,
   the dead Google Analytics snippet and IE8 shims were removed from every
   page, and `style.css` was modernized — same selectors, refreshed look.)
-- The research pages additionally load lightbox2 2.7.1 + jQuery 1.12.4 from
-  HTTPS CDNs for the figure pop-ups; these work and are left as-is.
+- External links carry rel="noopener noreferrer"; keep that on new
+  target="_blank" links.
 - The page HTML itself is still Dreamweaver-era (floats, table layouts);
   `style.css` is written against those existing selectors, so keep class/id
   names stable when editing pages.

@@ -77,9 +77,9 @@ a.rlist span {
 }
 -->
 </style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script> 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js" type="text/javascript"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet" integrity="sha384-MzHT0pgTPI8fjMvEz54yA7HmSVjLLsxl+ytGS13+EOr/L5uLaBakmchzKgDYsSQz" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js" integrity="sha384-jN3Qe7xtdnQxdyZWXD9gn2Z4oRyiFuU03xQATriSicCq2SKDikN9UEJMCx+9nsJM" crossorigin="anonymous"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -100,7 +100,7 @@ a.rlist span {
     
     <!-- 電話番号+受付時間 -->
     <div class="info">
-      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">ENGLISH</a> | <a href="../contact/index.html">連絡先・アクセス</a> | <a href="../links/index.html">リンク</a> |  <a href="https://rioyokotalab.github.io/" target="_blank">ブログ</a> | </p>
+      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">ENGLISH</a> | <a href="../contact/index.html">連絡先・アクセス</a> | <a href="../links/index.html">リンク</a> |  <a href="https://rioyokotalab.github.io/" target="_blank" rel="noopener noreferrer">ブログ</a> | </p>
     </div>
     <!-- / 電話番号+受付時間 --> 
     
@@ -166,7 +166,7 @@ a.rlist span {
     <section class="content">
       <h3 class="heading"><a name="r2026"></a>2026年度 主な研究テーマ</h3>
       <h4>大規模言語モデル(LLM)の事前学習 </h4>
-      <p>横田研では、岡崎研と産総研と共同で大規模言語モデル<a href="https://swallow-llm.github.io/" target="_blank">Swallow</a>を開発しています。一から事前学習すると膨大な計算資源が必要になるので、英語メインで学習されたgpt-ossやQwen3などのオープンなモデルから日本語メインの継続学習を行う方針を採用しています。2026年2月に公開した最新の<a href="https://swallow-llm.github.io/gptoss-swallow.ja.html" target="_blank">gpt-oss Swallow</a>（20B・120B）は、日本語・英語・数学・コードのバランスを取った4,000億トークンのコーパス（Swallow Corpus v3.2や新たに開発したSwallowMath-v2・SwallowCode-v2などを含む）による継続事前学習、教師ありファインチューニング（SFT）、検証可能な報酬による強化学習（RLVR）の3段階で構築されており、同規模のオープンなLLMの中で最高水準の性能を達成しています（特に数学や日本語知識のタスクで大きく向上）。モデルのパラメータは<a href="https://huggingface.co/tokyotech-llm" target="_blank">HuggingFace</a>上で公開されていますのでApache2.0ライセンスに従う限り、研究や商業目的などで利用できます。NIIの<a href="https://llmc.nii.ac.jp/en/" target="_blank">LLM研究開発センター</a>で開発している<a href="https://llm-jp.nii.ac.jp/en/" target="_blank">LLM-jp</a>モデルは、これとは対照的に一から日本語と英語で事前学習を行っています。また、モデルのパラメータだけでなく、学習に用いたデータや失敗したケースなども公開する方針です。</p>
+      <p>横田研では、岡崎研と産総研と共同で大規模言語モデル<a href="https://swallow-llm.github.io/" target="_blank" rel="noopener noreferrer">Swallow</a>を開発しています。一から事前学習すると膨大な計算資源が必要になるので、英語メインで学習されたgpt-ossやQwen3などのオープンなモデルから日本語メインの継続学習を行う方針を採用しています。2026年2月に公開した最新の<a href="https://swallow-llm.github.io/gptoss-swallow.ja.html" target="_blank" rel="noopener noreferrer">gpt-oss Swallow</a>（20B・120B）は、日本語・英語・数学・コードのバランスを取った4,000億トークンのコーパス（Swallow Corpus v3.2や新たに開発したSwallowMath-v2・SwallowCode-v2などを含む）による継続事前学習、教師ありファインチューニング（SFT）、検証可能な報酬による強化学習（RLVR）の3段階で構築されており、同規模のオープンなLLMの中で最高水準の性能を達成しています（特に数学や日本語知識のタスクで大きく向上）。モデルのパラメータは<a href="https://huggingface.co/tokyotech-llm" target="_blank" rel="noopener noreferrer">HuggingFace</a>上で公開されていますのでApache2.0ライセンスに従う限り、研究や商業目的などで利用できます。NIIの<a href="https://llmc.nii.ac.jp/en/" target="_blank" rel="noopener noreferrer">LLM研究開発センター</a>で開発している<a href="https://llm-jp.nii.ac.jp/en/" target="_blank" rel="noopener noreferrer">LLM-jp</a>モデルは、これとは対照的に一から日本語と英語で事前学習を行っています。また、モデルのパラメータだけでなく、学習に用いたデータや失敗したケースなども公開する方針です。</p>
 <p align="center"><a href="images2026/007.png" data-lightbox="research"><img loading="lazy" src="images2026/007.png" alt="" width="95%"/></a><br>
         ▲クリックすると拡大されます </p>
       <h4>MoEの論理推論能力の向上 <span style="color:#cc0000; font-weight:bold;">— ICLR 2026 Oral採択</span></h4>
@@ -174,7 +174,7 @@ a.rlist span {
 <p align="center"><a href="images2025/002.jpg"  data-lightbox="research"><img loading="lazy" src="images2025/002.jpg" alt="" width="638"/></a><br>
         ▲クリックすると拡大されます </p>
 <h4>PowerCLIP: 冪集合アラインメントによる細粒度な対照事前学習 (CVPR 2026) </h4>
-      <p>CLIPをはじめとする対照学習に基づく視覚言語事前学習は、様々な視覚言語タスクで優れたゼロショット性能を示している。近年、個々のテキストトークンを特定の画像パッチや領域と対応付けることで細粒度の構成的理解が向上することが示されてきたが、複数の画像領域にまたがる構成的な意味を捉えることは依然として困難である。本研究では、画像領域の冪集合（powerset）とテキストの構文木の間で定義される損失を最小化することで、領域とフレーズの対応付けを網羅的に最適化する新しい対照事前学習フレームワークPowerCLIPを提案する。素朴な冪集合の構築は領域部分集合の組合せ爆発により指数的な計算コストを要するため、領域数Mに対して計算量をO(2^M)からO(M)に削減しつつ、厳密な損失値を任意の精度で近似できる効率的な非線形アグリゲータ（NLA）を導入する。広範な実験により、PowerCLIPはゼロショット分類・検索タスクにおいて最先端手法を上回る性能を示し、その構成性と頑健性が確認された。本研究はIEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) 2026に採択されており、コードは<a href="https://github.com/Masakichi210/PowerCLIP" target="_blank">GitHub</a>で公開されている。</p>
+      <p>CLIPをはじめとする対照学習に基づく視覚言語事前学習は、様々な視覚言語タスクで優れたゼロショット性能を示している。近年、個々のテキストトークンを特定の画像パッチや領域と対応付けることで細粒度の構成的理解が向上することが示されてきたが、複数の画像領域にまたがる構成的な意味を捉えることは依然として困難である。本研究では、画像領域の冪集合（powerset）とテキストの構文木の間で定義される損失を最小化することで、領域とフレーズの対応付けを網羅的に最適化する新しい対照事前学習フレームワークPowerCLIPを提案する。素朴な冪集合の構築は領域部分集合の組合せ爆発により指数的な計算コストを要するため、領域数Mに対して計算量をO(2^M)からO(M)に削減しつつ、厳密な損失値を任意の精度で近似できる効率的な非線形アグリゲータ（NLA）を導入する。広範な実験により、PowerCLIPはゼロショット分類・検索タスクにおいて最先端手法を上回る性能を示し、その構成性と頑健性が確認された。本研究はIEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) 2026に採択されており、コードは<a href="https://github.com/Masakichi210/PowerCLIP" target="_blank" rel="noopener noreferrer">GitHub</a>で公開されている。</p>
 <p align="center"><a href="images2026/008.jpg"  data-lightbox="research"><img loading="lazy" src="images2026/008.jpg" alt="" width="70%"/></a><br>
         ▲クリックすると拡大されます </p>
 <h4>Masked Gated Linear Unit </h4>

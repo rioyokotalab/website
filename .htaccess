@@ -1,0 +1,6 @@
+# Security headers (server honors .htaccess with mod_headers; verified 2026-07-05)
+<IfModule mod_headers.c>
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

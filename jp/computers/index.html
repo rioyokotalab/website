@@ -24,24 +24,9 @@
 <script type="text/javascript" src="../../js/ddmenu_min.js"></script>
 
 <!-- InstanceBeginEditable name="head" -->
-<link href="../../lightbox/css/jquery.lightbox-0.5.css" type="text/css" rel="stylesheet" media="screen" />  
-<script src="../../lightbox/js/jquery.js" type="text/javascript"></script>  
-<script src="../../lightbox/js/jquery.lightbox-0.5.min.js" type="text/javascript"></script>  
-<script type="text/javascript">  
-  $(document).ready(function() {  
-    $('a[rel*=lightbox]').lightBox({  
-        overlayBgColor:'#FFF',  
-        overlayOpacity:0.6,  
-        imageLoading:'../../lightbox/images/lightbox-ico-loading.gif',  
-        imageBtnClose:'../../lightbox/images/lightbox-btn-close.gif',  
-        imageBtnPrev:'../../lightbox/images/lightbox-btn-prev.gif',  
-        imageBtnNext:'../../lightbox/images/lightbox-btn-next.gif',  
-        containerResizeSpeed:350,  
-        txtImage:'画像：',  
-        txtOf:'／' 
-    });  
-  });  
-</script>  
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet" integrity="sha384-MzHT0pgTPI8fjMvEz54yA7HmSVjLLsxl+ytGS13+EOr/L5uLaBakmchzKgDYsSQz" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js" integrity="sha384-jN3Qe7xtdnQxdyZWXD9gn2Z4oRyiFuU03xQATriSicCq2SKDikN9UEJMCx+9nsJM" crossorigin="anonymous"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -62,7 +47,7 @@
     
     <!-- 電話番号+受付時間 -->
     <div class="info">
-      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">ENGLISH</a> | <a href="../contact/index.html">連絡先・アクセス</a> | <a href="../links/index.html">リンク</a> |  <a href="https://rioyokotalab.github.io/" target="_blank">ブログ</a> | </p>
+      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">ENGLISH</a> | <a href="../contact/index.html">連絡先・アクセス</a> | <a href="../links/index.html">リンク</a> |  <a href="https://rioyokotalab.github.io/" target="_blank" rel="noopener noreferrer">ブログ</a> | </p>
     </div>
     <!-- / 電話番号+受付時間 --> 
     
@@ -133,12 +118,12 @@
           <br>
 例えば：</p>
         <ul>
-          <li><a href="https://www.r-ccs.riken.jp/jp/fugaku" target="_blank">理化学研究所 「富岳」</a></li>
-          <li><a href="https://www.olcf.ornl.gov/olcf-resources/compute-systems/frontier/" target="_blank">ORNL Frontier</a></li>
+          <li><a href="https://www.r-ccs.riken.jp/jp/fugaku" target="_blank" rel="noopener noreferrer">理化学研究所 「富岳」</a></li>
+          <li><a href="https://www.olcf.ornl.gov/olcf-resources/compute-systems/frontier/" target="_blank" rel="noopener noreferrer">ORNL Frontier</a></li>
           <li><a href="https://www.alcf.anl.gov/aurora">ANL Aurora</a></li>
-          <li><a href="https://abci.ai/" target="_blank">産業技術総合研究所 ABCI</a></li>
-          <li><a href="https://www.t4.gsic.titech.ac.jp/" target="_blank">東京科学大学 TSUBAME 4.0</a></li>
-          <li><a href="https://www.cc.u-tokyo.ac.jp/supercomputer/miyabi/service/index.php" target="_blank">東京大学 Miyabi</a></li>
+          <li><a href="https://abci.ai/" target="_blank" rel="noopener noreferrer">産業技術総合研究所 ABCI</a></li>
+          <li><a href="https://www.t4.gsic.titech.ac.jp/" target="_blank" rel="noopener noreferrer">東京科学大学 TSUBAME 4.0</a></li>
+          <li><a href="https://www.cc.u-tokyo.ac.jp/supercomputer/miyabi/service/index.php" target="_blank" rel="noopener noreferrer">東京大学 Miyabi</a></li>
         </ul>
         <p>このほかにも、研究室で運用する「ひなどりクラスタ」があります。</p>
         <h3 class="heading"><a name="sub002"></a>ひなどりクラスタ</h3>
@@ -242,31 +227,31 @@
         <p>（2026.07.05現在）</p>
         <p>&nbsp;</p>
     <p align="center">
-      <a href="images/images-1/hinadori-1.jpg"  rel="lightbox"><img loading="lazy" src="images/images-1/hinadori-1.jpg" alt="" width="220px"/></a>
-      <a href="images/images-1/hinadori-2.jpg"  rel="lightbox"><img loading="lazy" src="images/images-1/hinadori-2.jpg" alt="" width="220px"/></a>
-      <a href="images/images-1/hinadori-3.jpg"  rel="lightbox"><img loading="lazy" src="images/images-1/hinadori-3.jpg" alt="" width="220px"/></a>
+      <a href="images/images-1/hinadori-1.jpg"  data-lightbox="hinadori"><img loading="lazy" src="images/images-1/hinadori-1.jpg" alt="" width="220px"/></a>
+      <a href="images/images-1/hinadori-2.jpg"  data-lightbox="hinadori"><img loading="lazy" src="images/images-1/hinadori-2.jpg" alt="" width="220px"/></a>
+      <a href="images/images-1/hinadori-3.jpg"  data-lightbox="hinadori"><img loading="lazy" src="images/images-1/hinadori-3.jpg" alt="" width="220px"/></a>
       <br>
-		<a href="images/images-1/hinadori-4.jpg"  rel="lightbox"><img loading="lazy" src="images/images-1/hinadori-4.jpg" alt="" width="220px"/></a>
-		<a href="images/images-1/hinadori-5.jpg"  rel="lightbox"><img loading="lazy" src="images/images-1/hinadori-5.jpg" alt="" width="220px"/></a>
+		<a href="images/images-1/hinadori-4.jpg"  data-lightbox="hinadori"><img loading="lazy" src="images/images-1/hinadori-4.jpg" alt="" width="220px"/></a>
+		<a href="images/images-1/hinadori-5.jpg"  data-lightbox="hinadori"><img loading="lazy" src="images/images-1/hinadori-5.jpg" alt="" width="220px"/></a>
         <br>
         ▲クリックすると拡大されます</p>
         <h4 class="heading">ソフトウェア</h4>
         <h5> ジョブスケジューリング</h5>
-        <p> ジョブスケジューリングには<a href="https://slurm.schedmd.com/documentation.html" target="_blank">Slurm Workload Manager</a>をベースとし、より簡単にジョブの投入ができる独自のシステムを用いています。<br>
+        <p> ジョブスケジューリングには<a href="https://slurm.schedmd.com/documentation.html" target="_blank" rel="noopener noreferrer">Slurm Workload Manager</a>をベースとし、より簡単にジョブの投入ができる独自のシステムを用いています。<br>
           Slurmには1ノードに複数のジョブを割り当てる機能がありますが、これを簡単に利用するための機能が備わっています。</p>
         <h5>監視基盤</h5>
-        <p><a href="https://prometheus.io/" target="_blank">Prometheus</a>によるメトリクスの集約、<a href="https://grafana.com/" target="_blank">Grafana</a>によるメトリクスの可視化を行っています。</p>
+        <p><a href="https://prometheus.io/" target="_blank" rel="noopener noreferrer">Prometheus</a>によるメトリクスの集約、<a href="https://grafana.com/" target="_blank" rel="noopener noreferrer">Grafana</a>によるメトリクスの可視化を行っています。</p>
         <p> 監視している主なメトリクスには、CPU使用率やGPU使用率といった性能最適化に利用できるものや、ひなどりクラスタの利用履歴やGPUの温度、消費電力など管理者による監視に必要なものがあります。<br>
           ユーザは様々な情報にブラウザ経由でアクセスできます。</p>
         <p align="center">	<img loading="lazy" src="images/images-2/grafana.jpg" alt="" width="98%"/>
 </p>
         <h5>開発環境</h5>
-        <p> CUDA関係や各種コンパイラは<a href="https://modules.readthedocs.io/en/latest/" target="_blank">Environment Modules</a>で管理されており、好きなバージョンを指定して使うことができます。<br>
+        <p> CUDA関係や各種コンパイラは<a href="https://modules.readthedocs.io/en/latest/" target="_blank" rel="noopener noreferrer">Environment Modules</a>で管理されており、好きなバージョンを指定して使うことができます。<br>
           標準的なアプリケーション以外にも、プログラムの実行中にGPUの温度や消費電力などを記録していく独自のアプリケーションの提供も行っています。</p>
         <h4 class="heading">運用</h4>
         <p> 運用の上で「管理に時間をかけない」ことを大切にしています。<br>
           クラスタの運用は、学生や先生のボランティアによって行われておりますが、本業の研究が進まなくなってしまっては元も子もありません。<br>
-          そのため、構成管理ツールの<a href="https://www.ansible.com/" target="_blank">Ansible</a>や、リモート管理ツールのIPMI、ユーザ管理のためLDAPのSaaSを導入するなどして、できるだけ手が掛からないようにしています。<br>
+          そのため、構成管理ツールの<a href="https://www.ansible.com/" target="_blank" rel="noopener noreferrer">Ansible</a>や、リモート管理ツールのIPMI、ユーザ管理のためLDAPのSaaSを導入するなどして、できるだけ手が掛からないようにしています。<br>
           新たにノードをセットアップする処理も自動化されており、OSのインストールから30分程度でユーザが利用できます。<br>
         </p>
       </article>

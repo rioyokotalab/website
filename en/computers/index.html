@@ -23,24 +23,9 @@
 <script type="text/javascript" src="../../js/openclose.js"></script>
 <script type="text/javascript" src="../../js/ddmenu_min.js"></script>
 <!-- InstanceBeginEditable name="head" -->
-<link href="../../lightbox/css/jquery.lightbox-0.5.css" type="text/css" rel="stylesheet" media="screen" />  
-<script src="../../lightbox/js/jquery.js" type="text/javascript"></script>  
-<script src="../../lightbox/js/jquery.lightbox-0.5.min.js" type="text/javascript"></script>  
-<script type="text/javascript">  
-  $(document).ready(function() {  
-    $('a[rel*=lightbox]').lightBox({  
-        overlayBgColor:'#FFF',  
-        overlayOpacity:0.6,  
-        imageLoading:'../../lightbox/images/lightbox-ico-loading.gif',  
-        imageBtnClose:'../../lightbox/images/lightbox-btn-close.gif',  
-        imageBtnPrev:'../../lightbox/images/lightbox-btn-prev.gif',  
-        imageBtnNext:'../../lightbox/images/lightbox-btn-next.gif',  
-        containerResizeSpeed:350,  
-        txtImage:'Image：',  
-        txtOf:'／' 
-    });  
-  });  
-</script>  
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet" integrity="sha384-MzHT0pgTPI8fjMvEz54yA7HmSVjLLsxl+ytGS13+EOr/L5uLaBakmchzKgDYsSQz" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js" integrity="sha384-jN3Qe7xtdnQxdyZWXD9gn2Z4oRyiFuU03xQATriSicCq2SKDikN9UEJMCx+9nsJM" crossorigin="anonymous"></script>
 <!-- InstanceEndEditable -->
 </head>
 <body>
@@ -60,7 +45,7 @@
     
     <!-- 電話番号+受付時間 -->
     <div class="info">
-      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">JAPANESE</a> | <a href="../contact/index.html">CONTACT</a> | <a href="../links/index.html">LINKS</a> |  <a href="https://rioyokotalab.github.io/" target="_blank">BLOG</a> | </p>
+      <p> | <a href="../index.html">HOME</a> | <a href="javascript:void(0);" onclick="chglang();">JAPANESE</a> | <a href="../contact/index.html">CONTACT</a> | <a href="../links/index.html">LINKS</a> |  <a href="https://rioyokotalab.github.io/" target="_blank" rel="noopener noreferrer">BLOG</a> | </p>
     </div>
     <!-- / 電話番号+受付時間 --> 
     
@@ -121,12 +106,12 @@ Computers
       <article>
         <p>All members of our research group are provided with a laptop, display, keyboard, and mouse. They also have access to many supercomputers, such as:</p>
         <ul>
-          <li><a href="https://www.r-ccs.riken.jp/jp/fugaku" target="_blank">Fugaku (R-CCS)</a></li>
-          <li><a href="https://www.olcf.ornl.gov/olcf-resources/compute-systems/frontier/" target="_blank">Frontier (ORNL)</a></li>
-          <li><a href="https://www.alcf.anl.gov/aurora" target="_blank">Aurora (ANL)</a></li>
-          <li><a href="https://abci.ai/" target="_blank">ABCI (AIST)</a></li>
-          <li><a href="https://www.t4.gsic.titech.ac.jp/" target="_blank">TSUBAME 4.0 (Science Tokyo)</a></li>
-          <li><a href="https://www.cc.u-tokyo.ac.jp/supercomputer/miyabi/service/index.php" target="_blank">Miyabi (UTokyo)</a></li>
+          <li><a href="https://www.r-ccs.riken.jp/jp/fugaku" target="_blank" rel="noopener noreferrer">Fugaku (R-CCS)</a></li>
+          <li><a href="https://www.olcf.ornl.gov/olcf-resources/compute-systems/frontier/" target="_blank" rel="noopener noreferrer">Frontier (ORNL)</a></li>
+          <li><a href="https://www.alcf.anl.gov/aurora" target="_blank" rel="noopener noreferrer">Aurora (ANL)</a></li>
+          <li><a href="https://abci.ai/" target="_blank" rel="noopener noreferrer">ABCI (AIST)</a></li>
+          <li><a href="https://www.t4.gsic.titech.ac.jp/" target="_blank" rel="noopener noreferrer">TSUBAME 4.0 (Science Tokyo)</a></li>
+          <li><a href="https://www.cc.u-tokyo.ac.jp/supercomputer/miyabi/service/index.php" target="_blank" rel="noopener noreferrer">Miyabi (UTokyo)</a></li>
         </ul>
         <p>In addition, a private cluster &quot;Hinadori&quot; is maintained within the lab.</p>
         <h3 class="heading"><a name="sub002"></a>Hinadori Cluster</h3>
@@ -238,32 +223,32 @@ Hence, we provide multiple GPU servers (81 GPUs in total):</p>
         <p>&nbsp;</p>
         <p>These features enable students to conduct experiments remotely.</p>
         <p>Hinadori also supports multi-node parallel computing using MPI.</p>
-        <p align="center">		<a href="../../jp/computers/images/images-1/hinadori-1.jpg"  rel="lightbox"><img loading="lazy" src="../../jp/computers/images/images-1/hinadori-1.jpg" alt="" width="220px"/></a>
-		<a href="../../jp/computers/images/images-1/hinadori-2.jpg"  rel="lightbox"><img loading="lazy" src="../../jp/computers/images/images-1/hinadori-2.jpg" alt="" width="220px"/></a>
-		<a href="../../jp/computers/images/images-1/hinadori-3.jpg"  rel="lightbox"><img loading="lazy" src="../../jp/computers/images/images-1/hinadori-3.jpg" alt="" width="220px"/></a>
+        <p align="center">		<a href="../../jp/computers/images/images-1/hinadori-1.jpg"  data-lightbox="hinadori"><img loading="lazy" src="../../jp/computers/images/images-1/hinadori-1.jpg" alt="" width="220px"/></a>
+		<a href="../../jp/computers/images/images-1/hinadori-2.jpg"  data-lightbox="hinadori"><img loading="lazy" src="../../jp/computers/images/images-1/hinadori-2.jpg" alt="" width="220px"/></a>
+		<a href="../../jp/computers/images/images-1/hinadori-3.jpg"  data-lightbox="hinadori"><img loading="lazy" src="../../jp/computers/images/images-1/hinadori-3.jpg" alt="" width="220px"/></a>
 		<br>
-		<a href="../../jp/computers/images/images-1/hinadori-4.jpg"  rel="lightbox"><img loading="lazy" src="../../jp/computers/images/images-1/hinadori-4.jpg" alt="" width="220px"/></a>
-		<a href="../../jp/computers/images/images-1/hinadori-5.jpg"  rel="lightbox"><img loading="lazy" src="../../jp/computers/images/images-1/hinadori-5.jpg" alt="" width="220px"/></a>
+		<a href="../../jp/computers/images/images-1/hinadori-4.jpg"  data-lightbox="hinadori"><img loading="lazy" src="../../jp/computers/images/images-1/hinadori-4.jpg" alt="" width="220px"/></a>
+		<a href="../../jp/computers/images/images-1/hinadori-5.jpg"  data-lightbox="hinadori"><img loading="lazy" src="../../jp/computers/images/images-1/hinadori-5.jpg" alt="" width="220px"/></a>
         <br>
         ▲Click to enlarge</p>
 </p>
         <h4>Software</h4>
         <h5>Job Scheduling System</h5>
-        <p>Hinadori adopts a customized job scheduling system, with <a href="https://slurm.schedmd.com/documentation.html" target="_blank">Slurm Workload Manager</a> as the base, enabling users to submit jobs effortlessly.</p>
+        <p>Hinadori adopts a customized job scheduling system, with <a href="https://slurm.schedmd.com/documentation.html" target="_blank" rel="noopener noreferrer">Slurm Workload Manager</a> as the base, enabling users to submit jobs effortlessly.</p>
         <p> It is equipped with a feature to make easy use of Slurm's ability to assign multiple jobs to a single node.</p>
         <h5>Monitoring System</h5>
-        <p>Hinadori utilizes <a href="https://prometheus.io/" target="_blank">Prometheus</a> to aggregate metrics, and <a href="https://grafana.com/" target="_blank">Grafana</a> to visualize such metrics.</p>
+        <p>Hinadori utilizes <a href="https://prometheus.io/" target="_blank" rel="noopener noreferrer">Prometheus</a> to aggregate metrics, and <a href="https://grafana.com/" target="_blank" rel="noopener noreferrer">Grafana</a> to visualize such metrics.</p>
         <p> Metrics that are monitored include the usage rate of each CPU and GPU that can be used for performance optimization and metrics such as usage history, GPU temperature, and power consumption for administration purposes. </p>
         <p> All users can access this information via a browser. </p>
         <p align="center">	<img loading="lazy" src="../../jp/computers/images/images-2/grafana.jpg" alt="" width="98%"/>
 </p>
         <h5>Development Environment</h5>
-        <p> Users can specify appropriate versions of CUDA libraries and compilers, which are managed by <a href="https://modules.readthedocs.io/en/latest/" target="_blank">Environment Modules</a>. </p>
+        <p> Users can specify appropriate versions of CUDA libraries and compilers, which are managed by <a href="https://modules.readthedocs.io/en/latest/" target="_blank" rel="noopener noreferrer">Environment Modules</a>. </p>
         <p> Besides standard applications, Hinadori provides internal applications such as one that records GPU temperature, power consumption, etc., during program execution.</p>
         <h4>Operation</h4>
         <p>Operations are done with one simple but important rule: &quot;Don't waste time managing.&quot; <br>
           As the cluster is operated by students voluntarily, it is essential that we do not cut on research time.<br>
-          Hence, we have introduced <a href="https://www.ansible.com/" target="_blank">Ansible</a>, a configuration management tool, IPMI, a remote management tool, and LDAP's SaaS for user management, to minimize maintenance time.<br>
+          Hence, we have introduced <a href="https://www.ansible.com/" target="_blank" rel="noopener noreferrer">Ansible</a>, a configuration management tool, IPMI, a remote management tool, and LDAP's SaaS for user management, to minimize maintenance time.<br>
           Setting up a new node is also automated, and users can start using it within 30 minutes after OS installation.</p>
       </article>
   </section>
