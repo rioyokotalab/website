@@ -17,6 +17,10 @@ automatically.**
 git clone https://github.com/rioyokotalab/website
 ```
 
+Publishing pushes to this repository, so you need write access and git
+credentials for GitHub: either run `gh auth login` once, or use a personal
+access token, or clone with SSH instead if you have an SSH key on GitHub.
+
 You need `python3` (local preview), `lftp` (deploy), and
 [Claude Code](https://claude.com/claude-code).
 
