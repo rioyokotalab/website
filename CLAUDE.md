@@ -116,6 +116,18 @@ end-to-end on 2026-07-04, removing a member from the member page):
   (check the member/alumni lists), romaji for international students.
 - When changing a site-wide string, also update `Templates/*.dwt` so the
   inert templates stay consistent with the pages.
+- **Mirroring to researchmap/FIS**: after publishing changes that ADD
+  publications to the Achievements page, run `tools/researchmap-export.py`.
+  It diffs the page against `tools/researchmap-state.json` (baseline =
+   2026-07-06, when researchmap was assumed current), keeps only entries
+  with Rio Yokota as author, and writes researchmap V2 bulk-import JSON
+  Lines to `tools/out/researchmap-import.jsonl` (`similar_merge` +
+  `priority: similar_data`, so researchmap dedups). The user uploads that
+  file at researchmap 設定 > インポート (permalink: rioyokota); the
+  university FIS then syncs from researchmap automatically. Review the
+  printed NEW lines before upload — citation parsing is heuristic. Fully
+  automatic push via the WebAPI awaits a JST API key (as of 2026-07-06,
+  application pending).
 
 ## Content sources and figure tooling
 
