@@ -173,6 +173,12 @@ sftp://web` (remote made an exact mirror on 2026-07-05).
   `~/.ssh/authorized_keys` can be created on the server.
 - NEVER upload `.git` to the server. Its public copy was removed on 2026-07-04
   after being found downloadable over HTTPS; `deploy.sh` excludes it.
+- If `git push` fails with "Permission denied (publickey)": the GitHub key
+  (`~/.ssh/id_ed25519`) is passphrase-protected and the session's ssh-agent
+  has lost it. Ask the user to run `ssh-add ~/.ssh/id_ed25519` in a real
+  terminal, then find the agent that now holds the key and push through it:
+  `for s in /tmp/ssh-*/agent.*; do SSH_AUTH_SOCK=$s ssh-add -l ...; done`,
+  then `SSH_AUTH_SOCK=<that socket> git push`.
 
 ## Known issues (as of 2026-07)
 
