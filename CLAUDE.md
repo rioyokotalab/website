@@ -5,6 +5,18 @@ Source for https://www.rio.scrc.iir.isct.ac.jp — a hand-built static HTML site
 served exactly as they are here, and the URL structure mirrors the folder
 structure one-to-one.
 
+## Budget rule:
+
+- No agent for explanation-only answers.
+- No Fable/Opus in normal website workflow.
+- No parallel subagents.
+- No nested subagents.
+- No broad “check everything” unless requested.
+- Checker returns summaries, not raw outputs.
+- Editor receives exact edits, not goals.
+- Author returns final content plus edit specs, not file modifications.
+- Publisher runs one documented publish command after explicit approval.
+
 ## Structure
 
 - `index.html` — root page; only redirects to `jp/` or `en/` based on browser language.
