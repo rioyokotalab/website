@@ -103,6 +103,7 @@ body {
 html {
 	background: #002855;
 	scroll-behavior: smooth;
+	scroll-padding-top: 64px;
 }
 /* Links
 ------------------------------------------------------------*/

@@ -94,8 +94,9 @@ end-to-end on 2026-07-04, removing a member from the member page):
   layout, `yrun` (no args) lists resources with GPU models, and short `ybatch`
   jobs (`#YBATCH -r <resource>`; write output to `$HOME`, not `/tmp` — `/tmp`
   is node-local) give exact CPU/GPU models. Direct `srun` is blocked. Last
-  refreshed 2026-07-05: 81 GPUs; the two RTX 6000 Ada nodes' CPU models are
-  still unverified ("-" in the table).
+  refreshed 2026-07-05: 81 GPUs. The 2-GPU RTX 6000 Ada node's CPU (AMD EPYC
+  9654) was supplied by the user; the 8-GPU RTX 6000 Ada node's CPU is
+  unknown ("-" in the table, node was down).
 - **Research page** (`research/index.html`): "Current Research Topics YYYY"
   first (anchor `rYYYY`), then per-year thesis sections newest-first (anchors
   `rYYYYM`/`rYYYYB`), mirrored in the sidebar. Entry format: `<h4>Title（Name）
