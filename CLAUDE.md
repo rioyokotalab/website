@@ -59,6 +59,11 @@ end-to-end on 2026-07-04, removing a member from the member page):
    confirmation, then deploys to the web server and commits and pushes to
    GitHub in one step. When Claude runs it after the user's OK, pipe the
    confirmation: `echo y | ./publish.sh "message"`.
+   - It commits with `git add -A`, so FIRST check `git status` for pending
+     changes unrelated to the current edit (e.g. left over from an earlier
+     session); if any exist, mention them to the user and write a commit
+     message that covers everything being swept in. (Learned 2026-07-06,
+     when a leftover CSS change rode along under an unrelated message.)
 4. **Verify** — after publishing, curl the changed pages on
    https://www.rio.scrc.iir.isct.ac.jp and confirm the change is live.
 5. **Document** — if the change added or altered structure, conventions,
