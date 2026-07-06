@@ -99,7 +99,9 @@ end-to-end on 2026-07-04, removing a member from the member page):
    changes and exactly which files would be uploaded, asks one y/N
    confirmation, then deploys to the web server and commits and pushes to
    GitHub in one step. When Claude runs it after the user's OK, pipe the
-   confirmation: `echo y | ./publish.sh "message"`.
+   confirmation: `echo y | ./publish.sh "message"`. This no longer triggers
+   a ResearchMap export automatically — that is now a separate,
+   explicitly-requested step (see the researchmap/FIS bullet above).
    - It commits with `git add -A`, so FIRST check `git status` for pending
      changes unrelated to the current edit (e.g. left over from an earlier
      session); if any exist, mention them to the user and write a commit
@@ -157,15 +159,17 @@ end-to-end on 2026-07-04, removing a member from the member page):
   (check the member/alumni lists), romaji for international students.
 - When changing a site-wide string, also update `Templates/*.dwt` so the
   inert templates stay consistent with the pages.
-- **Mirroring to researchmap/FIS**: `publish.sh` automatically runs
-  `tools/researchmap-export.py` whenever a publish touches the
-  Achievements page. The tool diffs the page against
-  `tools/researchmap-state.json` (baseline = 2026-07-06, when researchmap
-  was made to match the page exactly via a one-off migration import; the
-  state update rides in the same commit), keeps only entries with Rio
-  Yokota as author, and writes researchmap V2 bulk-import JSON Lines to
-  `tools/out/researchmap-import.jsonl`
-  (`similar_merge` + `priority: similar_data`, so researchmap dedups).
+- **Mirroring to researchmap/FIS**: `researchmap-export.py` no longer runs
+  automatically from `publish.sh`. Run it on demand only when the user
+  explicitly asks to sync ResearchMap: `python3 tools/researchmap-export.py
+  --check-live`. This mode fetches the live public API
+  (`https://api.researchmap.jp/rioyokota/{published_papers,books_etc,
+  presentations,misc}`) and diffs it against ALL current Yokota-authored
+  Achievements entries on the website — not just entries added since the
+  last local run — because `tools/researchmap-state.json` can drift from
+  what's actually live (an export generated but never uploaded, or
+  uploaded partially). It writes the full set of missing entries to
+  `tools/out/researchmap-import.jsonl`.
   Category mapping (agreed 2026-07-06): peer-reviewed sections
   (sub001/004/005) → Papers; Book series + Books (sub002/003) → Books and
   Other Publications; non-peer-reviewed sections (sub006/007) →
@@ -187,6 +191,11 @@ end-to-end on 2026-07-04, removing a member from the member page):
   fully automatic push awaits a JST API key (as of 2026-07-06, the user
   is asking the URA office). Public READ needs no key:
   `https://api.researchmap.jp/rioyokota/{type}` (JSON).
+- **cv.tex sync**: `cv.tex` must stay in sync with the website, in both
+  directions. Whenever `achievements/index.html` or the CV sections of
+  `jp/member/yokota.html` (受賞歴/委員歴/研究課題) change, update the
+  matching section of `cv.tex` in the same edit — and vice versa, if
+  `cv.tex` is the source of a new item, add it to the website pages too.
 - **CV items on the personal page** are mirrored to researchmap the same
   way. Canonical source: `jp/member/yokota.html` sections 受賞歴 / 委員歴 /
   研究課題 (the en page mirrors them as Awards / Committee Memberships /
@@ -194,8 +203,9 @@ end-to-end on 2026-07-04, removing a member from the member page):
   (em-dash separators, 全角 space after dates):
   `2009年11月　AWARD_NAME` / `2024–2025　ROLE — ASSOCIATION` /
   `2025–2028　TITLE（FUNDING SYSTEM、FUNDER）`. When adding an item, add it
-  to BOTH language pages in that format; publish.sh exports it
-  automatically. Initial content was imported FROM researchmap on
+  to BOTH language pages in that format; run the on-demand export
+  described above to mirror it to researchmap. Initial content was
+  imported FROM researchmap on
   2026-07-06, so everything on the page as of then is in the baseline.
 
 ## Content sources and figure tooling
