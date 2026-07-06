@@ -36,11 +36,11 @@ echo
 echo "== Deploying =="
 ./deploy.sh
 
-# If this publish touches the Achievements page, export any new
-# Rio Yokota publications for researchmap. Runs before the commit so
-# the updated tools/researchmap-state.json rides in the same commit.
+# If this publish touches the Achievements page or the personal CV page,
+# export any new Rio Yokota items for researchmap. Runs before the commit
+# so the updated tools/researchmap-state.json rides in the same commit.
 RESEARCHMAP_NEW=0
-if git status --porcelain | grep -q "achievements/index.html"; then
+if git status --porcelain | grep -qE "achievements/index.html|member/yokota.html"; then
 	echo
 	echo "== researchmap mirror =="
 	rm -f tools/out/researchmap-import.jsonl

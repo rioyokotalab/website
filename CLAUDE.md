@@ -132,7 +132,18 @@ end-to-end on 2026-07-04, removing a member from the member page):
   researchmap website itself: its login path actively blocks non-browser
   clients (403), and the sanctioned automation route is the WebAPI —
   fully automatic push awaits a JST API key (as of 2026-07-06, the user
-  is asking the URA office).
+  is asking the URA office). Public READ needs no key:
+  `https://api.researchmap.jp/rioyokota/{type}` (JSON).
+- **CV items on the personal page** are mirrored to researchmap the same
+  way. Canonical source: `jp/member/yokota.html` sections 受賞歴 / 委員歴 /
+  研究課題 (the en page mirrors them as Awards / Committee Memberships /
+  Research Projects but is NOT parsed). Line formats the exporter expects
+  (em-dash separators, 全角 space after dates):
+  `2009年11月　AWARD_NAME` / `2024–2025　ROLE — ASSOCIATION` /
+  `2025–2028　TITLE（FUNDING SYSTEM、FUNDER）`. When adding an item, add it
+  to BOTH language pages in that format; publish.sh exports it
+  automatically. Initial content was imported FROM researchmap on
+  2026-07-06, so everything on the page as of then is in the baseline.
 
 ## Content sources and figure tooling
 

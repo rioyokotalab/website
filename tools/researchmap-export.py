@@ -22,6 +22,7 @@ import argparse, json, os, re, sys, unicodedata
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = os.path.join(ROOT, 'en', 'achievements', 'index.html')
+PROFILE = os.path.join(ROOT, 'jp', 'member', 'yokota.html')  # canonical for CV items
 STATE = os.path.join(ROOT, 'tools', 'researchmap-state.json')
 OUT = os.path.join(ROOT, 'tools', 'out', 'researchmap-import.jsonl')
 PERMALINK = 'rioyokota'
@@ -127,6 +128,68 @@ def to_record(text, rm_type, extra):
     return {'insert': {'type': rm_type, 'user_id': PERMALINK},
             'similar_merge': doc, 'priority': 'similar_data'}
 
+def profile_lines(heading):
+    """lines of the <p> blocks following an h3 heading on the profile page."""
+    c = open(PROFILE, newline='', encoding='utf-8').read()
+    m = re.search(r'<h3 class="heading">\s*%s.*?</h3>(.*?)(?=<h3|</article>)' % heading, c, re.S)
+    if not m:
+        return []
+    text = re.sub(r'<[^>]+>', '\n', m.group(1))
+    lines = [re.sub(r'\s+', ' ', unicodedata.normalize('NFKC', l)).strip()
+             for l in text.split('\n')]
+    return [l for l in lines if l and not l.startswith('&nbsp;')]
+
+def parse_range(prefix):
+    m = re.match(r'(\d{4})(?:年)?(?:(\d{1,2})月)?(?:[–―-](\d{4})(?:年)?)?$', prefix.strip())
+    if not m:
+        return None, None
+    frm = m.group(1) + ('-%02d' % int(m.group(2)) if m.group(2) else '')
+    return frm, m.group(3)
+
+def profile_records():
+    """CV items (awards / committee memberships / research projects) -> records."""
+    recs = []
+    for line in profile_lines('受賞歴'):
+        m = re.match(r'(\S+)\s+(.+)$', line)
+        if not m: continue
+        date, _ = parse_range(m.group(1))
+        name = m.group(2).strip()
+        lang = 'ja' if is_cjk(name) else 'en'
+        doc = {'award_name': {lang: name}}
+        if date: doc['award_date'] = date
+        recs.append((line, 'awards', doc))
+    for line in profile_lines('委員歴'):
+        m = re.match(r'(\S+)\s+(.+)$', line)
+        if not m: continue
+        frm, to = parse_range(m.group(1))
+        parts = [p.strip() for p in m.group(2).split(' — ', 1)]
+        name = parts[0] or (parts[1] if len(parts) > 1 else '')
+        assoc = parts[1] if len(parts) > 1 and parts[0] else ''
+        if not name: continue
+        lang = 'ja' if is_cjk(name + assoc) else 'en'
+        doc = {'committee_name': {lang: name}}
+        if assoc: doc['association'] = {lang: assoc}
+        if frm: doc['from_date'] = frm
+        if to: doc['to_date'] = to
+        recs.append((line, 'committee_memberships', doc))
+    for line in profile_lines('研究課題'):
+        m = re.match(r'(\S+)\s+(.+?)[（(](.+)[）)]$', line)
+        if not m: continue
+        frm, to = parse_range(m.group(1))
+        title = m.group(2).strip()
+        fund = m.group(3)
+        lang = 'ja' if is_cjk(title) else 'en'
+        doc = {'research_project_title': {lang: title}}
+        parts = [x.strip() for x in re.split(r'[、,]', fund) if x.strip()]
+        if parts:
+            doc['system_name'] = {lang: parts[0]}
+            if len(parts) > 1:
+                doc['offer_organization'] = {lang: parts[-1]}
+        if frm: doc['from_date'] = frm
+        if to: doc['to_date'] = to
+        recs.append((line, 'research_projects', doc))
+    return recs
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--init', action='store_true', help='snapshot baseline, export nothing')
@@ -151,6 +214,15 @@ def main():
                 new.append((text, rec))
             else:
                 print(f'WARNING: could not parse, add manually: {text[:90]}', file=sys.stderr)
+
+    # CV items on the personal page (awards, committees, research projects)
+    for text, rm_type, doc in profile_records():
+        k = key(text)
+        seen.append(k)
+        if k in state or args.init:
+            continue
+        new.append((text, {'insert': {'type': rm_type, 'user_id': PERMALINK},
+                           'similar_merge': doc, 'priority': 'similar_data'}))
 
     if args.init:
         json.dump(sorted(seen), open(STATE, 'w', encoding='utf-8'), indent=0, ensure_ascii=False)
