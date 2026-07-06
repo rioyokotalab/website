@@ -160,7 +160,11 @@ end-to-end on 2026-07-04, removing a member from the member page):
   Presentations when Rio Yokota is the SOLE author (invited talks), Misc.
   otherwise. The bulk-import grammar also supports `update` (+`doc`) and
   `delete` by `rm:id` (the public read API exposes the ids), which is how
-  the 2026-07-06 recategorization migration was built.
+  the 2026-07-06 recategorization migration was built. Insert lines must
+  NOT carry `user_id` — in a self-import the logged-in account is implied,
+  and a `user_id` (even the own permalink) means "another member's list"
+  and fails with 403 forbidden, which blocks the ENTIRE file (researchmap
+  validates all lines before applying any). Learned 2026-07-06.
   The user then downloads the file from
   http://localhost:8000/tools/out/researchmap-import.jsonl and uploads it
   at researchmap 設定 > インポート (permalink: rioyokota); the university

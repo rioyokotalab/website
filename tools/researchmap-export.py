@@ -149,7 +149,7 @@ def to_record(text, rm_type, extra):
     doc['languages'] = ['jpn' if japanese else 'eng']
     if rm_type != 'misc':   # misc gets no extras (extra is presentations-specific there)
         doc.update(extra)
-    return {'insert': {'type': rm_type, 'user_id': PERMALINK},
+    return {'insert': {'type': rm_type},
             'similar_merge': doc, 'priority': 'similar_data'}
 
 def profile_lines(heading):
@@ -245,7 +245,7 @@ def main():
         seen.append(k)
         if k in state or args.init:
             continue
-        new.append((text, {'insert': {'type': rm_type, 'user_id': PERMALINK},
+        new.append((text, {'insert': {'type': rm_type},
                            'similar_merge': doc, 'priority': 'similar_data'}))
 
     if args.init:
