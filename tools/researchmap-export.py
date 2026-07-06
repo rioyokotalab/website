@@ -13,12 +13,15 @@ Usage:
                                           with entries added since the baseline,
                                           and update the baseline
   tools/researchmap-export.py --dry-run   show what would be exported, no writes
+  tools/researchmap-export.py --check-live  diff against live researchmap.jp data
+                                          instead of the local state file, and
+                                          write tools/out/researchmap-import.jsonl
 
 The output file is uploaded on researchmap:  設定 > インポート
 (or pushed via the WebAPI once an API key is available).
 Format reference: https://researchmap.jp/outline/v2api/v2API.pdf
 """
-import argparse, json, os, re, sys, unicodedata
+import argparse, json, os, re, sys, unicodedata, urllib.request, urllib.error
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = os.path.join(ROOT, 'en', 'achievements', 'index.html')
@@ -59,8 +62,8 @@ def entries(anchor):
         out.append(re.sub(r'\s+', ' ', t).strip())
     return out
 
-def key(t):
-    return re.sub(r'[^0-9a-z぀-ヿ一-鿿]', '', t.lower())[:70]
+def key(t, limit=70):
+    return re.sub(r'[^0-9a-z぀-ヿ一-鿿]', '', t.lower())[:limit]
 
 def is_cjk(s):
     return bool(re.search(r'[぀-ヿ一-鿿]', s))
@@ -170,6 +173,170 @@ def parse_range(prefix):
     frm = m.group(1) + ('-%02d' % int(m.group(2)) if m.group(2) else '')
     return frm, m.group(3)
 
+
+API_BASE = 'https://api.researchmap.jp/%s/%%s' % PERMALINK
+LIVE_TYPES = ['published_papers', 'books_etc', 'presentations', 'misc']
+
+def fetch_live(rm_type):
+    """Fetch all pages of a live researchmap collection, return list of item dicts."""
+    items = []
+    url = API_BASE % rm_type
+    while url:
+        req = urllib.request.Request(url, headers={'Accept': 'application/json'})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+        if isinstance(data, list):
+            items.extend(data)
+            url = None
+        else:
+            batch = data.get('items') if isinstance(data, dict) else None
+            if batch is None:
+                # some responses use JSON-LD style with '@graph' or similar
+                batch = data.get('@graph', [])
+            items.extend(batch)
+            # researchmap's actual pagination lives under _links.next.href;
+            # data['next']/data['pagination']['next'] are kept as fallbacks
+            # in case other endpoints use a different shape.
+            links = data.get('_links') if isinstance(data, dict) else None
+            nxt = None
+            if isinstance(links, dict):
+                nxt_link = links.get('next')
+                if isinstance(nxt_link, dict):
+                    nxt = nxt_link.get('href')
+                elif isinstance(nxt_link, str):
+                    nxt = nxt_link
+            if nxt is None:
+                nxt = data.get('next') or (data.get('pagination') or {}).get('next')
+            url = nxt if isinstance(nxt, str) else None
+    if not items:
+        raise RuntimeError('fetch_live: got zero items back (empty or malformed response)')
+    return items
+
+def live_title(item):
+    """Extract a title string from a live researchmap item dict, any language."""
+    for field in ('paper_title', 'book_title', 'presentation_title',
+                  'title', 'misc_title'):
+        v = item.get(field)
+        if isinstance(v, dict):
+            for lang in ('ja', 'en'):
+                if v.get(lang):
+                    return v[lang]
+            for vv in v.values():
+                if vv:
+                    return vv
+        elif isinstance(v, str) and v:
+            return v
+    return ''
+
+def live_titles(item):
+    """Yield ALL title strings (every language variant) from a live item."""
+    for field in ('paper_title', 'book_title', 'presentation_title',
+                  'title', 'misc_title'):
+        v = item.get(field)
+        if isinstance(v, dict):
+            for vv in v.values():
+                if vv:
+                    yield vv
+        elif isinstance(v, str) and v:
+            yield v
+
+def live_title_keys(rm_type):
+    """Set of normalized title keys currently on researchmap for a given type.
+    Collects keys for EVERY language variant of every title-ish field, so a
+    website entry matching the non-preferred language variant still matches."""
+    keys = set()
+    for item in fetch_live(rm_type):
+        for t in live_titles(item):
+            keys.add(key(unicodedata.normalize('NFKC', t)))
+    return keys
+
+def website_records():
+    """All (text, title_key, rm_type_after_resolve, record) for Rio-Yokota
+    entries on the Achievements page plus the profile CV sections, in the
+    same categories used for live researchmap collections."""
+    out = []
+    for anchor, (rm_type, extra) in SECTIONS.items():
+        for text in entries(anchor):
+            if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
+                continue
+            rec = to_record(text, rm_type, extra)
+            if rec is None:
+                print(f'WARNING: could not parse, add manually: {text[:90]}', file=sys.stderr)
+                continue
+            parsed = parse(text)
+            title = parsed[1] if parsed else text
+            out.append((text, key(title), rec['insert']['type'], rec))
+    for text, rm_type, doc in profile_records():
+        rec = {'insert': {'type': rm_type}, 'similar_merge': doc, 'priority': 'similar_data'}
+        title = text
+        for field, val in doc.items():
+            if (field.endswith('_title') or field.endswith('_name')) and isinstance(val, dict):
+                title = next(iter(val.values()), text)
+                break
+        out.append((text, key(title), rm_type, rec))
+    return out
+
+def check_live():
+    """Diff website entries against live researchmap.jp data (instead of the
+    local state file) and write tools/out/researchmap-import.jsonl."""
+    live_keys = {}
+    for rm_type in LIVE_TYPES:
+        try:
+            live_keys[rm_type] = live_title_keys(rm_type)
+        except Exception as e:
+            print(f'ERROR: could not fetch live {rm_type} from researchmap API '
+                  f'({e.__class__.__name__}: {e}); aborting without writing {OUT} '
+                  f'(refusing to treat an unreachable API as "everything is new")',
+                  file=sys.stderr)
+            return 1
+
+    all_live = set().union(*live_keys.values()) if live_keys else set()
+
+    new = []
+    for text, tkey, rm_type, rec in website_records():
+        # awards/committee_memberships/research_projects have no live type to
+        # check against here (not in LIVE_TYPES); skip live-comparison for them.
+        if rm_type not in live_keys:
+            continue
+        # Match against ALL live types, not just the mapped one: an entry may be
+        # stored under a different researchmap category live than the site maps
+        # it to.
+        if tkey in all_live:
+            continue
+        # parse()'s venue-detection heuristic sometimes lumps extra trailing
+        # text (series name, page numbers) onto the parsed title, so an exact
+        # key match against the live (clean) title can miss a real match.
+        # Fall back to checking whether the live title's key is a contiguous
+        # substring of the full, unparsed citation text's key -- the true
+        # title's characters are always present intact there even when
+        # parse() over-captured.
+        # key() truncates to 70 chars by default; use an untruncated key here so
+        # a long author prefix cannot push the title out of the compared window.
+        full_key = key(text, limit=10**9)
+        # Also accept the REVERSE containment: items uploaded during the
+        # 2026-07-06 migration can carry over-captured long titles (title +
+        # venue etc.), so the live key may be longer than the clean parsed
+        # website title; accept if the website title key appears inside a
+        # live key.
+        if any(lk and (lk in full_key or (tkey and tkey in lk)) for lk in all_live):
+            continue
+        new.append((text, rec))
+
+    for text, rec in new:
+        print('NEW:', text[:100])
+
+    if new:
+        os.makedirs(os.path.dirname(OUT), exist_ok=True)
+        with open(OUT, 'w', encoding='utf-8') as f:
+            for _, rec in new:
+                f.write(json.dumps(rec, ensure_ascii=False) + '\n')
+        print(f'\n{len(new)} NEW entries not found live, written to {OUT}')
+    else:
+        if os.path.exists(OUT):
+            os.remove(OUT)
+        print('\n0 NEW entries found (website matches live researchmap)')
+    return 0
+
 def profile_records():
     """CV items (awards / committee memberships / research projects) -> records."""
     recs = []
@@ -218,7 +385,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--init', action='store_true', help='snapshot baseline, export nothing')
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--check-live', action='store_true',
+                     help='diff against live researchmap.jp data instead of the state file')
     args = ap.parse_args()
+
+    if args.check_live:
+        sys.exit(check_live())
 
     state = set()
     if os.path.exists(STATE):

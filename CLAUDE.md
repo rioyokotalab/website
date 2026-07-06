@@ -8,7 +8,7 @@ structure one-to-one.
 ## Budget rule:
 
 - No agent for explanation-only answers.
-- No Fable/Opus in normal website workflow.
+- No Fable/Opus in normal website workflow, EXCEPT for debugging escalation: if a bug persists after Sonnet-tier attempts, escalate to Opus; if Opus also cannot fix it, escalate to Fable.
 - No parallel subagents.
 - No nested subagents.
 - No broad “check everything” unless requested.
