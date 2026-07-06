@@ -77,7 +77,10 @@ end-to-end on 2026-07-04, removing a member from the member page):
 - **File quirks**: the HTML files have CRLF line endings and occasional
   non-breaking spaces, so the Edit tool's exact-match replace often fails.
   Edit them with a small `python3` script (`open(path, newline='')` to
-  preserve CRLF) instead.
+  preserve CRLF) instead. When parsing this Dreamweaver-era HTML with
+  scripts, match tags case-insensitively and do NOT assume closing tags
+  (legacy sections used unclosed uppercase `<LI>`; one such block hid a
+  duplicated run of entries on the jp achievements page until 2026-07-06).
 - **Institution naming** (renamed 2024): 東京科学大学 総合研究院 / Institute of
   Science Tokyo, IIR. Old names (東京工業大学, Tokyo Tech, 学術国際情報センター,
   GSIC) were replaced site-wide on 2026-07-05, EXCEPT in historical records —
