@@ -36,6 +36,18 @@ echo
 echo "== Deploying =="
 ./deploy.sh
 
+# If this publish touches the Achievements page, export any new
+# Rio Yokota publications for researchmap. Runs before the commit so
+# the updated tools/researchmap-state.json rides in the same commit.
+RESEARCHMAP_NEW=0
+if git status --porcelain | grep -q "achievements/index.html"; then
+	echo
+	echo "== researchmap mirror =="
+	rm -f tools/out/researchmap-import.jsonl
+	python3 tools/researchmap-export.py
+	[ -s tools/out/researchmap-import.jsonl ] && RESEARCHMAP_NEW=1
+fi
+
 echo
 echo "== Committing and pushing =="
 if git status --porcelain | grep -q .; then
@@ -48,3 +60,10 @@ fi
 
 echo
 echo "Published. Check https://www.rio.scrc.iir.isct.ac.jp/"
+if [ "$RESEARCHMAP_NEW" = "1" ]; then
+	echo
+	echo "New publications were exported for researchmap:"
+	echo "  1. Download: http://localhost:8000/tools/out/researchmap-import.jsonl"
+	echo "  2. Upload at: https://researchmap.jp/  設定 > インポート"
+	echo "(FIS syncs from researchmap automatically.)"
+fi
