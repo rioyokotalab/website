@@ -28,12 +28,17 @@ OUT = os.path.join(ROOT, 'tools', 'out', 'researchmap-import.jsonl')
 PERMALINK = 'rioyokota'
 
 SECTIONS = {   # anchor -> (rm type, extra fields)
+    # Mapping (agreed 2026-07-06): peer-reviewed sections -> Papers;
+    # book sections -> Books and Other Publications; non-peer-reviewed
+    # sections -> Presentations if Rio Yokota is the sole author (invited
+    # talks), Misc. otherwise ('talk_or_misc' is resolved per entry).
     'sub001': ('published_papers', {'published_paper_type': 'scientific_journal', 'referee': True}),
-    'sub002': ('published_papers', {'published_paper_type': 'in_book'}),
+    'sub002': ('books_etc', {}),
+    'sub003': ('books_etc', {}),
     'sub004': ('published_papers', {'published_paper_type': 'international_conference_proceedings', 'referee': True}),
     'sub005': ('published_papers', {'published_paper_type': 'symposium', 'referee': True}),
-    'sub006': ('presentations', {'is_international_presentation': True}),
-    'sub007': ('presentations', {'is_international_presentation': False}),
+    'sub006': ('talk_or_misc', {'is_international_presentation': True}),
+    'sub007': ('talk_or_misc', {'is_international_presentation': False}),
 }
 MONTHS = {m: i+1 for i, m in enumerate(
     ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'])}
@@ -104,7 +109,21 @@ def parse(text):
     venue = ', '.join(s.strip() for s in segs[venue_idx:])
     return authors, title, venue, date
 
+def sole_author(text):
+    """True if Rio Yokota is the only author of the citation (an invited talk)."""
+    if re.match(r'^(Rio\s+Yokota|横田\s*理央)\s*[.:：]', text):
+        return True
+    parsed = parse(text)
+    authors = parsed[0] if parsed else []
+    return len(authors) == 1 and bool(re.search(r'Rio\s+Yokota|横田\s*理央', authors[0]))
+
+def resolve_type(rm_type, text):
+    if rm_type == 'talk_or_misc':
+        return 'presentations' if sole_author(text) else 'misc'
+    return rm_type
+
 def to_record(text, rm_type, extra):
+    rm_type = resolve_type(rm_type, text)
     parsed = parse(text)
     if not parsed:
         return None
@@ -113,9 +132,13 @@ def to_record(text, rm_type, extra):
     lang = 'ja' if japanese else 'en'
     people = {lang: [{'name': a} for a in authors]}
     doc = {}
-    if rm_type == 'published_papers':
+    if rm_type in ('published_papers', 'misc'):
         doc['paper_title'] = {lang: title}
         doc['publication_name'] = {lang: venue}
+        doc['authors'] = people
+    elif rm_type == 'books_etc':
+        doc['book_title'] = {lang: title}
+        doc['publisher'] = {lang: venue}
         doc['authors'] = people
     else:
         doc['presentation_title'] = {lang: title}
@@ -124,7 +147,8 @@ def to_record(text, rm_type, extra):
     if date:
         doc['publication_date'] = date
     doc['languages'] = ['jpn' if japanese else 'eng']
-    doc.update(extra)
+    if rm_type != 'misc':   # misc gets no extras (extra is presentations-specific there)
+        doc.update(extra)
     return {'insert': {'type': rm_type, 'user_id': PERMALINK},
             'similar_merge': doc, 'priority': 'similar_data'}
 

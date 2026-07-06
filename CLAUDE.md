@@ -34,6 +34,35 @@ structure one-to-one.
   changes (e.g. the nav menu) must be edited in every page (find-and-replace).
 - `.dont-remove-me` — hosting marker file; keep it, deploy it, never delete it.
 
+## Delegation to subagents (save rate limit)
+
+Three custom agents exist in `.claude/agents/` (project-level; `.claude/` is
+gitignored, so they live on this machine only), tiered by model. The main session burns tokens fastest, so route work
+DOWN to the cheapest capable agent by default and keep the main session for
+orchestration, user-facing decisions, and final review:
+
+- **site-checker** (Haiku, read-only) — all verification and searching:
+  grepping/counting occurrences site-wide, EN/JP parity checks, curl checks
+  of localhost:8000 and the live site (workflow steps 2 and 4), git status
+  summaries, sinfo/yrun cluster queries.
+- **site-editor** (Sonnet) — executing fully-specified edits (workflow
+  step 1) and the publish run after the user's OK (step 3): give it the
+  exact strings/entries, target files, and insertion points; it knows the
+  CRLF/python3/both-languages rules. It stops and reports on ssh/publish
+  failures rather than touching credentials.
+- **site-author** (Opus) — judgment work that still doesn't need the main
+  session: composing news/achievements/research content in house style,
+  jp↔en translation, researchmap exporter changes, figure production,
+  failure diagnosis. It reads this file first.
+
+Subagents do NOT share the conversation, so every dispatch must be
+self-contained: exact content, file paths, and the acceptance check to run.
+Typical flow: main session decides what to change → site-editor (or
+site-author) makes it → site-checker verifies independently → user previews
+→ site-editor publishes → site-checker confirms live. Escalate up a tier
+when an agent reports ambiguity or failure; only credentials/ssh recovery
+and anything needing the user stay in the main session.
+
 ## Publishing workflow
 
 This is the standard cycle for every content change (first exercised
@@ -120,10 +149,18 @@ end-to-end on 2026-07-04, removing a member from the member page):
   `tools/researchmap-export.py` whenever a publish touches the
   Achievements page. The tool diffs the page against
   `tools/researchmap-state.json` (baseline = 2026-07-06, when researchmap
-  was assumed current; the state update rides in the same commit), keeps
-  only entries with Rio Yokota as author, and writes researchmap V2
-  bulk-import JSON Lines to `tools/out/researchmap-import.jsonl`
+  was made to match the page exactly via a one-off migration import; the
+  state update rides in the same commit), keeps only entries with Rio
+  Yokota as author, and writes researchmap V2 bulk-import JSON Lines to
+  `tools/out/researchmap-import.jsonl`
   (`similar_merge` + `priority: similar_data`, so researchmap dedups).
+  Category mapping (agreed 2026-07-06): peer-reviewed sections
+  (sub001/004/005) → Papers; Book series + Books (sub002/003) → Books and
+  Other Publications; non-peer-reviewed sections (sub006/007) →
+  Presentations when Rio Yokota is the SOLE author (invited talks), Misc.
+  otherwise. The bulk-import grammar also supports `update` (+`doc`) and
+  `delete` by `rm:id` (the public read API exposes the ids), which is how
+  the 2026-07-06 recategorization migration was built.
   The user then downloads the file from
   http://localhost:8000/tools/out/researchmap-import.jsonl and uploads it
   at researchmap 設定 > インポート (permalink: rioyokota); the university

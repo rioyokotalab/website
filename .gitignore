@@ -1,5 +1,6 @@
-# Claude Code local settings
-.claude/
+# Claude Code local settings (except the agent definitions, which are shared)
+.claude/*
+!.claude/agents/
 
 # Editor and OS junk
 .DS_Store
@@ -7,3 +8,4 @@ Thumbs.db
 *~
 *.swp
 /tools/out/
+__pycache__/
