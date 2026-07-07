@@ -695,6 +695,13 @@ h3.heading, #sub .grid h3 {
 #menubar {
 	display: none;
 }
+/* mobile menu panel: explicit dark background so links are never white-on-white */
+#menubar-s {
+	background: var(--navy);
+}
+#menubar-s ul#topnav a {
+	color: rgba(255,255,255,0.85);
+}
 /* hamburger button */
 #menubar_hdr {
 	display: block;
