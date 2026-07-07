@@ -237,6 +237,30 @@ end-to-end on 2026-07-04, removing a member from the member page):
     splitting there), and a trailing parenthetical after the date
     ("Dec. 2022. (Best paper)", "(学生奨励賞)") — the date is extracted and the
     note dropped from `publication_name`. Still heuristic: review the output.
+- **Mirroring to ORCID**: `tools/orcid-export.py` mirrors the website's
+  publication list to the user's ORCID record
+  (https://orcid.org/0000-0001-7573-7873). ORCID has no researchmap-style
+  JSON grammar; the sanctioned no-API route is ORCID's **Add works > Import
+  BibTeX** wizard, so the exporter emits a single BibTeX file at
+  `tools/out/orcid-works.bib` (repo-only; served for download at
+  http://localhost:8000/tools/out/orcid-works.bib). Run on demand:
+  `python3 tools/orcid-export.py`, then the user imports the .bib via ORCID
+  Add works > Import BibTeX. It reuses `researchmap-export.py`'s hardened
+  citation parser verbatim (loaded via importlib since that filename has a
+  hyphen), so both exporters split author/title/venue/date identically —
+  fixing a citation for one fixes it for both. Section -> BibTeX type map:
+  sub001 -> @article; sub002 -> @incollection; sub003 -> @book;
+  sub004/sub005 (peer-reviewed conferences) -> @inproceedings;
+  sub006/sub007 (non-reviewed) -> @misc. It generates the FULL Yokota-authored
+  set (no live diff — ORCID's public API is read-only without OAuth); ORCID
+  de-duplicates by grouping/merge on its side, so re-import is non-destructive.
+  First run 2026-07-07: 284 entries. A future OAuth/member-API auto-diff push
+  is possible but not built. Same on-demand pattern as the researchmap export
+  and cv build — kept OUT of publish.sh. NOTE: the exporter's parser is only as
+  good as the source citations; three malformed achievements entries
+  (colon-separated author, 全角 ．/「」 delimiters) were normalized in the
+  achievements pages 2026-07-07 so they parse — prefer fixing the source
+  citation over patching the .bib.
 - **cv.tex sync**: `cv.tex` must stay in sync with the website, in both
   directions. Whenever `achievements/index.html` or the CV sections of
   `jp/member/yokota.html` (受賞歴/委員歴/研究課題) change, update the
