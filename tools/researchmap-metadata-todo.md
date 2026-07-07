@@ -9,7 +9,7 @@ progress across sessions — read it first, update + commit it after each step.
 Rules live in CLAUDE.md: the `data-date` convention + no-year-only derivation
 rule (Content conventions), and the failure-driven workflow rules (Delegation to
 subagents). Section entry counts (en, 2026-07-08): sub001=42, sub002=2, sub003=2,
-sub004=115, sub005=32, sub006=45, sub007=79. EN and JP citations are identical for
+sub004=115, sub005=32, sub006=45, sub007=62. EN and JP citations are identical for
 international entries, so each attribute is written to BOTH language files.
 
 ## Legend
@@ -39,7 +39,7 @@ international entries, so each attribute is written to BOTH language files.
 - [x] sub005 domestic peer-reviewed (32)
 - [x] sub006 intl non-reviewed (45)
 - [x] sub007 domestic non-reviewed (62)
-- [ ] exporter prefers data-date over heuristic date parsing
+- [x] exporter prefers data-date over heuristic date parsing — live 2026-07-08 (researchmap-export.py + orcid-export.py read <li data-date>, override heuristic; offline dry-run OK)
 
 ### Field 2 — data-doi
 - [ ] sub001  - [ ] sub002  - [ ] sub003  - [ ] sub004  - [ ] sub005  - [ ] sub006  - [ ] sub007

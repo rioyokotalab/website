@@ -72,13 +72,18 @@ MONTH_ABBR = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
               'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
 def raw_items(anchor):
-    """Yield (clean_text, doi) for each <li> in a section, keeping the DOI
-    href (which entries() would strip along with the tags)."""
+    """Yield (clean_text, doi, data_date) for each <li> in a section, keeping
+    the DOI href (which entries() would strip) and the opening <li>'s
+    data-date attribute (which overrides the parsed date)."""
     c = open(PAGE, newline='', encoding='utf-8').read()
     a = c.index('name="%s"' % anchor)
     s = c.index('<ol>', a); e = c.index('</ol>', s)
-    parts = re.split(r'<li[^>]*>', c[s:e], flags=re.I)[1:]
-    for p in parts:
+    block = c[s:e]
+    tags = re.findall(r'<li[^>]*>', block, flags=re.I)
+    parts = re.split(r'<li[^>]*>', block, flags=re.I)[1:]
+    for tag, p in zip(tags, parts):
+        dm = rm.DATA_DATE.search(tag)
+        data_date = rm.norm_date(dm.group(1)) if dm else None
         m = re.search(r'href=["\'](https?://(?:dx\.)?doi\.org/[^"\']+)["\']', p, re.I)
         doi = None
         if m:
@@ -86,7 +91,7 @@ def raw_items(anchor):
         t = re.sub(r'</li>', '', re.sub(r'<[^>]+>', '', p), flags=re.I)
         t = (unicodedata.normalize('NFKC', t).replace('&amp;', '&')
              .replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"'))
-        yield re.sub(r'\s+', ' ', t).strip(), doi
+        yield re.sub(r'\s+', ' ', t).strip(), doi, data_date
 
 def extract_volpp(venue):
     """Pull Vol./No./pp. out of a venue string; return (clean_venue, fields)."""
@@ -193,7 +198,7 @@ def main():
     risky = []
     for anchor, etype in SECTION_TYPE.items():
         cnt = 0
-        for text, doi in raw_items(anchor):
+        for text, doi, data_date in raw_items(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             parsed = rm.parse(text)
@@ -201,7 +206,9 @@ def main():
                 risky.append(('UNPARSED', anchor, text))
                 continue
             authors, title, venue, date = parsed
-            if not date:
+            if data_date:                    # data-date attribute wins
+                date = data_date
+            elif not date:
                 date = fallback_year(text)  # recover year buried after vol/pages
             # flag suspicious parses for human review
             if not authors:

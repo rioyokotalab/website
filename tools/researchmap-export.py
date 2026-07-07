@@ -50,16 +50,42 @@ VENUE_WORDS = re.compile(
     r'NeurIPS|ICLR|ICML|CVPR|ICCV|ECCV|AAAI|EMNLP|COLM|COLING|LREC|ISC|SC\d|HPC|GTC|'
     r'IEEE|ACM|SIAM|Nature|学会|研究会|大会|シンポジウム|発表会|ワークショップ|研究発表会')
 
+# invisible data-date="YYYY-MM"(-DD) on the opening <li> = ResearchMap
+# publication_date; when present it OVERRIDES the heuristic date parse below.
+DATA_DATE = re.compile(r'\bdata-date\s*=\s*["\']([^"\']*)["\']', re.I)
+
+def norm_date(s):
+    """Normalize a data-date value to YYYY / YYYY-MM / YYYY-MM-DD, else None."""
+    if not s:
+        return None
+    m = re.match(r'\s*(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?\s*$', s)
+    if not m:
+        return None
+    out = m.group(1)
+    if m.group(2):
+        out += '-' + m.group(2)
+        if m.group(3):
+            out += '-' + m.group(3)
+    return out
+
 def entries(anchor):
+    """Yield (clean_text, data_date) for each <li>; data_date is None if the
+    opening <li> tag carries no (valid) data-date attribute."""
     c = open(PAGE, newline='', encoding='utf-8').read()
     a = c.index('name="%s"' % anchor)
     s = c.index('<ol>', a); e = c.index('</ol>', s)
-    parts = re.split(r'<li[^>]*>', c[s:e], flags=re.I)[1:]
+    block = c[s:e]
+    # keep the opening <li ...> tags (re.split drops them) so we can read
+    # data-date; tags[i] is the tag that precedes parts[i].
+    tags = re.findall(r'<li[^>]*>', block, flags=re.I)
+    parts = re.split(r'<li[^>]*>', block, flags=re.I)[1:]
     out = []
-    for p in parts:
+    for tag, p in zip(tags, parts):
+        dm = DATA_DATE.search(tag)
+        data_date = norm_date(dm.group(1)) if dm else None
         t = re.sub(r'</li>', '', re.sub(r'<[^>]+>', '', p), flags=re.I)
         t = unicodedata.normalize('NFKC', t).replace('&amp;', '&').replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"')
-        out.append(re.sub(r'\s+', ' ', t).strip())
+        out.append((re.sub(r'\s+', ' ', t).strip(), data_date))
     return out
 
 def key(t, limit=70):
@@ -168,12 +194,14 @@ def resolve_type(rm_type, text):
         return 'presentations' if sole_author(text) else 'misc'
     return rm_type
 
-def to_record(text, rm_type, extra):
+def to_record(text, rm_type, extra, data_date=None):
     rm_type = resolve_type(rm_type, text)
     parsed = parse(text)
     if not parsed:
         return None
     authors, title, venue, date = parsed
+    if data_date:            # data-date attribute overrides the heuristic date
+        date = data_date
     japanese = is_cjk(title)
     lang = 'ja' if japanese else 'en'
     people = {lang: [{'name': a} for a in authors]}
@@ -299,10 +327,10 @@ def website_records():
     same categories used for live researchmap collections."""
     out = []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text in entries(anchor):
+        for text, data_date in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
-            rec = to_record(text, rm_type, extra)
+            rec = to_record(text, rm_type, extra, data_date)
             if rec is None:
                 print(f'WARNING: could not parse, add manually: {text[:90]}', file=sys.stderr)
                 continue
@@ -441,14 +469,14 @@ def main():
 
     seen, new = [], []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text in entries(anchor):
+        for text, data_date in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             k = key(text)
             seen.append(k)
             if k in state or args.init:
                 continue
-            rec = to_record(text, rm_type, extra)
+            rec = to_record(text, rm_type, extra, data_date)
             if rec:
                 new.append((text, rec))
             else:
