@@ -678,6 +678,7 @@ img.frame, #gallery img {
 ul#topnav {
 	padding: 0;
 	display: block;
+	overflow: hidden;
 }
 ul#topnav li {
 	width: 50%;
@@ -701,6 +702,7 @@ h3.heading, #sub .grid h3 {
 #menubar-s {
 	background: #002855;
 	background: var(--navy);
+	overflow: hidden;
 }
 #menubar-s ul#topnav a {
 	color: rgba(255,255,255,0.85);
