@@ -35,7 +35,7 @@ international entries, so each attribute is written to BOTH language files.
 - [x] sub001 journal (42) — live 2026-07-08, commit 517df17 (4 Jan placeholders: TSIPN, TMLR, 2x JSCES)
 - [ ] sub002 book series (2)
 - [ ] sub003 books (2)
-- [ ] sub004 intl peer-reviewed (115) — conferences: first day of conference
+- [x] sub004 intl peer-reviewed (115) — conferences: first day of conference
 - [ ] sub005 domestic peer-reviewed (32)
 - [ ] sub006 intl non-reviewed (45)
 - [ ] sub007 domestic non-reviewed (79)
