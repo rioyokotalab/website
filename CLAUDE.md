@@ -189,6 +189,20 @@ end-to-end on 2026-07-04, removing a member from the member page):
   peer-reviewed / international non-reviewed / domestic non-reviewed), entries
   newest-first inside each `<ol>`. International citations are written in
   English on BOTH language pages; domestic ones in Japanese on both.
+- **Achievements `data-date` (ResearchMap metadata):** every Achievements
+  `<li>` carries an invisible `data-date` attribute on the opening `<li>` tag
+  (the ResearchMap `publication_date`); it does not change the rendered page.
+  Format `YYYY-MM` (or `YYYY-MM-DD` when the day is known). Derivation rule,
+  applied consistently to every entry AND when auto-filling a newly added entry
+  that lacks a date: (1) journals → published date; conferences → first day of
+  the conference; if neither applies, ask the user. (2) Resolve the month in
+  fixed priority: the date in the citation text, else the confirmed month from
+  the DOI/Crossref (print, else online-first), else the J-STAGE 発行日.
+  (3) YEAR-ONLY IS NEVER ALLOWED — if the month cannot be confirmed from any
+  source, default to `-01` (January of the known year) as the deterministic
+  placeholder. This attribute is being filled section by section (pilot:
+  sub001, 2026-07-08); the exporter should prefer `data-date` over its
+  heuristic date parsing when the attribute is present.
 - **News**: only top-conference acceptances (ICLR/NeurIPS/CVPR/AAAI level) and
   grants get news items — not workshops, GTC talks, or LREC-tier venues. Each
   item appears in four places: a dated row in the News table on both top pages
