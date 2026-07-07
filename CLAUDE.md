@@ -109,6 +109,12 @@ sessions. Failures logged so far:
   to recover the result even when the final message comes back empty. Applies
   especially to long research/lookup dispatches with many tool calls.
   (Learned 2026-07-08.)
+- Writing results to a file only "at the end" does not survive a mid-run
+  cutoff — these lookup agents repeatedly stop after ~15–20 tool calls with a
+  truncated final line and no file. Fix: instruct lookup agents to
+  append each result to the output file IMMEDIATELY after resolving that one
+  item (not batched at the end), and keep each lookup dispatch small (≤3–4
+  entries) so it finishes before being cut off. (Learned 2026-07-08.)
 
 ## Publishing workflow
 
