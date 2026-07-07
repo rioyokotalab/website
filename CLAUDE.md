@@ -118,6 +118,16 @@ sessions. Failures logged so far:
 
 ## Publishing workflow
 
+> **NON-NEGOTIABLE RULE — after EVERY `publish.sh` run, in the same turn:**
+> (1) update CLAUDE.md if anything documentable changed, and (2) `git add -A
+> && git commit && git push` so BOTH the website change and CLAUDE.md reach
+> GitHub. A publish is not complete until GitHub reflects it. `publish.sh`
+> already commits+pushes the website change; if that push fails (e.g. GitHub
+> key not in the ssh-agent), the publish is UNFINISHED — surface it to the
+> user and resolve before moving on. A PostToolUse hook in
+> `.claude/settings.local.json` prints a reminder after every publish, but
+> this rule holds even if the hook is absent.
+
 This is the standard cycle for every content change (first exercised
 end-to-end on 2026-07-04, removing a member from the member page):
 
@@ -205,6 +215,10 @@ end-to-end on 2026-07-04, removing a member from the member page):
   heuristic date parsing when the attribute is present. Progress across all
   fields/sections is tracked in `tools/researchmap-metadata-todo.md`
   (persistent, repo-only) — read and update it each step.
+  Field 1 (data-date) is COMPLETE across sub001–sub007 as of 2026-07-08
+  (sub001 42, sub004 115, sub005 32, sub006 45, sub007 62, sub002/sub003 4 —
+  all in en+jp); the only remaining Field-1 task is updating the exporter to
+  prefer `data-date` over heuristic date parsing.
 - **News**: only top-conference acceptances (ICLR/NeurIPS/CVPR/AAAI level) and
   grants get news items — not workshops, GTC talks, or LREC-tier venues. Each
   item appears in four places: a dated row in the News table on both top pages
