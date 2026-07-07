@@ -338,9 +338,14 @@ end-to-end on 2026-07-04, removing a member from the member page):
 
 `publish.sh` calls `./deploy.sh` (preview with `./deploy.sh --dry-run`). It mirrors
 this folder to `www/` on the server via lftp/SFTP, uploading only new/changed
-files. It does NOT delete remote files removed locally — after deleting
-files, remove them from the server with `lftp -e "rm -f www/<path>; bye"
-sftp://web` (remote made an exact mirror on 2026-07-05).
+files. It uses `mirror -R --delete`, so files removed locally are automatically
+removed from the remote on the next deploy — the server stays an exact
+mirror of the deployed set (no more manual `lftp rm`). Excluded paths
+(`-x` list: `.git`, `.claude`, `tools`, the scripts, `CLAUDE.md`,
+`cv.tex`/`cv.cls`/`build-cv.sh`, etc.) are never uploaded and never
+deleted remotely. Verified 2026-07-08 the live mirror had zero remote-only
+orphans. Because `--delete` is destructive, always preview with
+`./deploy.sh --dry-run` when a deploy includes deletions.
 
 - Server: `gsic0017@web-o3.noc.titech.ac.jp`, SFTP only (no shell), web root `www/`.
 - Auth: password-only via the `web` alias in `~/.ssh/config`, multiplexed over
