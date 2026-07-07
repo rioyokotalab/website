@@ -33,4 +33,4 @@ fi
 # --delete: files removed locally are also removed from the remote, so the
 # server stays an exact mirror of the deployed set. Excluded paths (-x below)
 # are never uploaded AND never deleted remotely.
-lftp -e "mirror -R --delete --verbose $DRY_RUN -x '^\.git/' -x '^\.claude/' -x '^tools/' -x '^deploy\.sh$' -x '^publish\.sh$' -x '^CLAUDE\.md$' -x '^README\.md$' -x '^\.gitignore$' -x '^cv\.tex$' -x '^cv\.cls$' -x '^build-cv\.sh$' . www; bye" sftp://web
+lftp -e "mirror -R --delete --verbose $DRY_RUN -x '^\.git/' -x '^\.claude/' -x '^tools/' -x '^deploy\.sh$' -x '^publish\.sh$' -x '^CLAUDE\.md$' -x '^README\.md$' -x '^\.gitignore$' -x '^cv/cv\.tex$' -x '^cv/cv\.cls$' -x '^cv/build-cv\.sh$' . www; bye" sftp://web
