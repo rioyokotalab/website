@@ -69,6 +69,11 @@ def is_cjk(s):
     return bool(re.search(r'[぀-ヿ一-鿿]', s))
 
 def parse_date(seg):
+    seg = seg.strip()
+    # tolerate a trailing parenthetical note after the date (e.g.
+    # "Dec. 2022. (Best paper)", "2022 (to appear)"); require content before
+    # the paren so a bare "(2022)" is left intact for the strip below.
+    seg = re.sub(r'(\S)\s*\([^)]*\)\s*$', r'\1', seg)
     seg = seg.strip(' .()')
     m = re.match(r'([A-Za-z]+)\.?,? ?(\d{4})$', seg)
     if m and m.group(1)[:3].lower() in MONTHS:
@@ -81,35 +86,73 @@ def looks_like_name(seg, japanese):
     if japanese and is_cjk(seg):
         return len(seg) <= 10 and not VENUE_WORDS.search(seg)
     words = seg.split()
-    return (1 < len(words) <= 5 and len(seg) < 45 and not re.search(r'\d', seg)
-            and not VENUE_WORDS.search(seg) and seg[0].isupper())
+    # A personal name ends in a capitalized surname; a title-cased phrase whose
+    # last word is lowercase (e.g. "N-body methods") is NOT a name.  Latin
+    # nobiliary particles (van/de/von...) are allowed mid-name.
+    if not (1 < len(words) <= 5 and len(seg) < 45 and not re.search(r'\d', seg)
+            and not VENUE_WORDS.search(seg) and seg[0].isupper()):
+        return False
+    return words[-1][0].isupper()
+
+# a "LastAuthor. Title" boundary: a period+space whose preceding char is NOT a
+# single-letter initial (so "David E. Keyes" is left intact, "Yokota. Title" splits).
+AUTHOR_DOT = re.compile(r'^(.+?[^A-Z\s])\.\s+(\S.*)$')
 
 def parse(text):
     """citation -> (authors, title, venue, date) — heuristic, review the output."""
     text = text.rstrip('.。 ')
     japanese = is_cjk(text)
-    segs = [s for s in re.split(r'[,、，]| 、', text) if s.strip()]
+    segs = [s.strip() for s in re.split(r'[,、，]| 、', text) if s.strip()]
     date = None
     while segs and (d := parse_date(segs[-1])):
         date = d; segs.pop()
-    # trailing volume/page segments stay attached to the venue
-    authors = []
-    while segs:
-        cand = re.sub(r'^and\s+', '', segs[0].strip())
-        if not looks_like_name(cand, japanese):
-            break
-        authors.append(cand)
-        segs[0:1] = []
     if not segs:
         return None
-    # venue = last segment(s) starting from the first venue-looking one after the title
-    venue_idx = len(segs) - 1
+    # first segment (after the first) that looks like a venue; authors+title live
+    # before it, so the author run must leave at least that last pre-venue segment
+    # for the title.
+    venue_idx = None
     for i in range(1, len(segs)):
         if VENUE_WORDS.search(segs[i]):
             venue_idx = i
             break
-    title = ', '.join(s.strip() for s in segs[:venue_idx]).strip(' 「」"')
-    venue = ', '.join(s.strip() for s in segs[venue_idx:])
+    # consume leading authors; an explicit "LastAuthor. Title" period ends the run
+    # and hands the text after the period to the title.
+    authors = []
+    title_prefix = None
+    i = 0
+    n = len(segs)
+    while i < n:
+        cand = re.sub(r'^and\s+', '', segs[i]).strip()
+        m = AUTHOR_DOT.match(cand)
+        if m and looks_like_name(m.group(1), japanese):
+            authors.append(m.group(1).strip())
+            title_prefix = m.group(2).strip()
+            i += 1
+            break
+        # never eat the last pre-venue segment (or the last segment) — it is the title
+        if (venue_idx is not None and i >= venue_idx - 1) or (venue_idx is None and i >= n - 1):
+            break
+        if not looks_like_name(cand, japanese):
+            break
+        authors.append(cand)
+        i += 1
+    rest = segs[i:]
+    if title_prefix is not None:
+        rest = [title_prefix] + rest
+    if not rest:
+        return None
+    # split title vs venue inside the remainder: prefer the first venue-looking
+    # segment, else keep the first segment as the title.
+    v = None
+    for j in range(1, len(rest)):
+        if VENUE_WORDS.search(rest[j]):
+            v = j
+            break
+    if v is None:
+        v = 1 if len(rest) > 1 else len(rest)
+    title = ', '.join(rest[:v]).strip(' 「」"')
+    venue = ', '.join(rest[v:])
     return authors, title, venue, date
 
 def sole_author(text):
