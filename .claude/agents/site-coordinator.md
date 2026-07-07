@@ -1,8 +1,8 @@
 ---
 name: site-coordinator
 description: Conservative coordinator for website maintenance. Use as the main session agent. Coordinates only bounded website tasks and minimizes subagent calls.
-model: sonnet
-effort: low
+model: opus
+effort: high
 tools: Agent(site-checker, site-editor, site-author, site-publisher), Read
 permissionMode: default
 ---

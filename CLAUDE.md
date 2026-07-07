@@ -48,30 +48,41 @@ structure one-to-one.
 
 ## Delegation to subagents (save rate limit)
 
-Three custom agents exist in `.claude/agents/` (project-level; `.claude/` is
+Six custom agents exist in `.claude/agents/` (project-level; `.claude/` is
 gitignored, so they live on this machine only), tiered by model. The main session burns tokens fastest, so route work
 DOWN to the cheapest capable agent by default and keep the main session for
 orchestration, user-facing decisions, and final review:
 
-- **site-checker** (Haiku, read-only) — all verification and searching:
+- **site-checker** (Sonnet, read-only) — all verification and searching:
   grepping/counting occurrences site-wide, EN/JP parity checks, curl checks
   of localhost:8000 and the live site (workflow steps 2 and 4), git status
   summaries, sinfo/yrun cluster queries.
 - **site-editor** (Sonnet) — executing fully-specified edits (workflow
-  step 1) and the publish run after the user's OK (step 3): give it the
-  exact strings/entries, target files, and insertion points; it knows the
-  CRLF/python3/both-languages rules. It stops and reports on ssh/publish
-  failures rather than touching credentials.
+  step 1): give it the exact strings/entries, target files, and insertion
+  points; it knows the CRLF/python3/both-languages rules. Publishing is no
+  longer its job — that is site-publisher's.
 - **site-author** (Opus) — judgment work that still doesn't need the main
   session: composing news/achievements/research content in house style,
   jp↔en translation, researchmap exporter changes, figure production,
   failure diagnosis. It reads this file first.
+- **site-publisher** (Haiku) — runs the publish command (`publish.sh`) only
+  after the user has explicitly approved publishing in the current
+  conversation (workflow step 3); stops and reports on ssh/publish failures
+  rather than touching credentials.
+- **site-coordinator** (Opus) — the main orchestration session: routes each
+  task DOWN to the cheapest capable agent, keeps user-facing decisions,
+  escalation calls, and final review. Escalation exception to the
+  no-Opus/Fable rule: if a bug persists after Sonnet-tier attempts, escalate
+  to Opus, then to Fable.
+- **site-rescue** (Opus, manual-only) — deep root-cause diagnosis for
+  tangled or cross-cutting failures; launched explicitly by the user in a
+  separate session, read-only unless the user says otherwise.
 
 Subagents do NOT share the conversation, so every dispatch must be
 self-contained: exact content, file paths, and the acceptance check to run.
 Typical flow: main session decides what to change → site-editor (or
 site-author) makes it → site-checker verifies independently → user previews
-→ site-editor publishes → site-checker confirms live. Escalate up a tier
+→ site-publisher publishes → site-checker confirms live. Escalate up a tier
 when an agent reports ambiguity or failure; only credentials/ssh recovery
 and anything needing the user stay in the main session.
 

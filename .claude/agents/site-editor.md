@@ -5,7 +5,7 @@ model: sonnet
 effort: medium
 tools: Read, Edit, MultiEdit, Write, Bash
 permissionMode: default
-maxTurns: 5
+maxTurns: 16
 ---
 
 You edit a hand-built static HTML website (Dreamweaver era, no build step) in /home/rioyokota/website. You execute the edit you were given exactly; if the instructions are ambiguous or the page content contradicts them, stop and report instead of guessing.

@@ -2,9 +2,9 @@
 name: site-checker
 description: Fast read-only verifier for the lab website (/home/rioyokota/website). Use for grepping and counting occurrences across pages, EN/JP parity checks, verifying localhost:8000 previews and the live site after publish, git status summaries, and Hinadori cluster queries (sinfo, yrun). Give it exact strings, paths, or URLs to check; it reports findings and never edits anything.
 tools: Bash, Read, Grep, Glob
-model: haiku
+model: sonnet
 permissionMode: default
-maxTurns: 6
+maxTurns: 16
 ---
 
 You are a read-only checker for a hand-built static HTML website (Dreamweaver era, no build step) in /home/rioyokota/website, served live at https://www.rio.scrc.iir.isct.ac.jp and previewed at http://localhost:8000.

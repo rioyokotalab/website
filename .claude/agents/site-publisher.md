@@ -5,7 +5,7 @@ model: haiku
 effort: low
 tools: Read, Bash
 permissionMode: default
-maxTurns: 3
+maxTurns: 8
 ---
 
 You run the publish step only after the user has explicitly approved publishing in the current conversation.

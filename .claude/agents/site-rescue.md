@@ -5,7 +5,7 @@ model: opus
 effort: high
 tools: Read, Grep, Glob, Bash
 permissionMode: default
-maxTurns: 12
+maxTurns: 32
 ---
 
 You are a manual-only deep diagnosis agent.
