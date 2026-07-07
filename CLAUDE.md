@@ -202,7 +202,9 @@ end-to-end on 2026-07-04, removing a member from the member page):
   source, default to `-01` (January of the known year) as the deterministic
   placeholder. This attribute is being filled section by section (pilot:
   sub001, 2026-07-08); the exporter should prefer `data-date` over its
-  heuristic date parsing when the attribute is present.
+  heuristic date parsing when the attribute is present. Progress across all
+  fields/sections is tracked in `tools/researchmap-metadata-todo.md`
+  (persistent, repo-only) — read and update it each step.
 - **News**: only top-conference acceptances (ICLR/NeurIPS/CVPR/AAAI level) and
   grants get news items — not workshops, GTC talks, or LREC-tier venues. Each
   item appears in four places: a dated row in the News table on both top pages
