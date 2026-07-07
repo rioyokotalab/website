@@ -266,6 +266,28 @@ end-to-end on 2026-07-04, removing a member from the member page):
   described above to mirror it to researchmap. Initial content was
   imported FROM researchmap on
   2026-07-06, so everything on the page as of then is in the baseline.
+- **ORCID BibTeX export**: `tools/orcid-export.py` exports the website's
+  Achievements publication list as BibTeX for ORCID import. ORCID has no
+  researchmap-style JSON bulk-import API; the sanctioned import path in the UI is
+  ORCID > Add works > Import BibTeX (the BibTeXImportWizard). This exporter
+  parses `en/achievements/index.html`, keeps only entries where Rio Yokota is an
+  author, and reuses the *same* hardened citation parser as `researchmap-export.py`
+  (loaded dynamically via importlib) so both exporters split author/title/venue/date
+  identically — ensuring consistency across mirrors.
+  Section-to-BibTeX mapping: sub001 (journal) → @article, sub002 (book series) →
+  @incollection, sub003 (books) → @book, sub004–005 (peer-reviewed) →
+  @inproceedings, sub006–007 (non-peer-reviewed) → @misc.
+  Usage:
+    `tools/orcid-export.py`         write tools/out/orcid-works.bib
+    `tools/orcid-export.py --dry-run` print counts + risky parses, no file
+  ORCID's public API is read-only without an OAuth token, so unlike the
+  researchmap exporter, this tool does NOT diff against live. It always writes
+  the complete Yokota-authored set from the website; ORCID de-duplicates on
+  import (groups works by identifier/title and lets the user merge). An
+  API-diff mode can be added later once a 3-legged OAuth token exists. The user
+  then downloads `tools/out/orcid-works.bib` and uploads it at ORCID > Add works >
+  Import BibTeX. Review the printed risky parses before import — citation parsing
+  is heuristic.
 
 ## Content sources and figure tooling
 
