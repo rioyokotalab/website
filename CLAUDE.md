@@ -215,6 +215,28 @@ end-to-end on 2026-07-04, removing a member from the member page):
   fully automatic push awaits a JST API key (as of 2026-07-06, the user
   is asking the URA office). Public READ needs no key:
   `https://api.researchmap.jp/rioyokota/{type}` (JSON).
+  - Import error granularity (learned 2026-07-07): a `user_id` on any insert
+    line 403s and blocks the ENTIRE file, but a per-entry validation error
+    (e.g. a `published_papers` line missing `publication_date`) returns a 400
+    for THAT line only while the other lines still import successfully.
+    researchmap emails/serves an errors CSV (`errors_researchmap-import-N.csv`)
+    listing the failing line number, field, and message. When one row fails,
+    do NOT re-upload the whole file (it would duplicate the rows that already
+    imported) — extract only the corrected failing line into a tiny one-line
+    jsonl and upload just that. The public READ API lags behind imports
+    (indexing delay), so `--check-live` will NOT immediately dedupe
+    just-imported entries; that lag is another reason to hand-extract the one
+    failed line rather than regenerate the full set.
+  - `published_papers` entries REQUIRE a `publication_date` (出版年月);
+    an entry whose citation buries the date behind a trailing note fails 400
+    until fixed.
+  - The exporter's citation parser is heuristic and was hardened 2026-07-07
+    to handle: author lists separated by either 、 or ASCII commas, the
+    "LastAuthor. Title" boundary (a period+space after the last author — the
+    fix keeps single-letter initials like "David E. Keyes" intact rather than
+    splitting there), and a trailing parenthetical after the date
+    ("Dec. 2022. (Best paper)", "(学生奨励賞)") — the date is extracted and the
+    note dropped from `publication_name`. Still heuristic: review the output.
 - **cv.tex sync**: `cv.tex` must stay in sync with the website, in both
   directions. Whenever `achievements/index.html` or the CV sections of
   `jp/member/yokota.html` (受賞歴/委員歴/研究課題) change, update the
