@@ -107,6 +107,10 @@ end-to-end on 2026-07-04, removing a member from the member page):
      session); if any exist, mention them to the user and write a commit
      message that covers everything being swept in. (Learned 2026-07-06,
      when a leftover CSS change rode along under an unrelated message.)
+     Debugging artifacts dropped into the repo folder (e.g. iPhone
+     screenshots like IMG_*.PNG) get swept in AND deployed to the public
+     web root — delete them before publishing, or remove them from the
+     server afterwards with lftp.
 4. **Verify** — after publishing, curl the changed pages on
    https://www.rio.scrc.iir.isct.ac.jp and confirm the change is live.
 5. **Document** — if the change added or altered structure, conventions,
@@ -264,6 +268,14 @@ sftp://web` (remote made an exact mirror on 2026-07-05).
 - (Fixed 2026-07-05: the broken http:// jQuery now loads locally from `js/`,
   the dead Google Analytics snippet and IE8 shims were removed from every
   page, and `style.css` was modernized — same selectors, refreshed look.)
+- (Fixed 2026-07-07: two mobile layout bugs found via iPhone screenshots — the
+  hamburger menu opened white-on-white because the floated 50%-width `li`s
+  collapsed `ul#topnav` to zero height (fix: `overflow: hidden` clearfix on
+  the mobile menu rules), and the top pages' `.slogan` overlay (absolute,
+  inline `width:500px`) overflowed the shrunken banner and covered the
+  header (fix: `position: static; width: auto !important` on mobile).
+  Literal `background: #002855` fallbacks now precede `var(--navy)` in the
+  nav rules as belt-and-braces.)
 - External links carry rel="noopener noreferrer"; keep that on new
   target="_blank" links.
 - The page HTML itself is still Dreamweaver-era (floats, table layouts);
