@@ -48,8 +48,7 @@ structure one-to-one.
 
 ## Delegation to subagents (save rate limit)
 
-Six custom agents exist in `.claude/agents/` (project-level; `.claude/` is
-gitignored, so they live on this machine only), tiered by model. The main session burns tokens fastest, so route work
+Six custom agents exist in `.claude/agents/` (project-level; `.claude/` is gitignored EXCEPT for a `!.claude/agents` un-ignore rule in `.gitignore`, so the agent definitions ARE tracked in git and versioned with the repo, while the rest of `.claude/` stays local-only), tiered by model. The main session burns tokens fastest, so route work
 DOWN to the cheapest capable agent by default and keep the main session for
 orchestration, user-facing decisions, and final review:
 
