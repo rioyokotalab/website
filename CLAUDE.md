@@ -102,6 +102,13 @@ sessions. Failures logged so far:
   Scholar, J-STAGE `api.jstage.jst.go.jp`, publisher DOI resolvers) and note
   that OpenReview / the researchmap login block non-browser clients.
   (Learned 2026-07-08.)
+- A subagent can finish with an EMPTY final message (work done internally but
+  nothing returned to the caller). For any task whose output matters, instruct
+  the agent to WRITE its result to a file as it works (e.g. under `tools/out/`)
+  AND print it as its final message; the main session can then `Read` that file
+  to recover the result even when the final message comes back empty. Applies
+  especially to long research/lookup dispatches with many tool calls.
+  (Learned 2026-07-08.)
 
 ## Publishing workflow
 
