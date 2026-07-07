@@ -210,6 +210,19 @@ end-to-end on 2026-07-04, removing a member from the member page):
   `jp/member/yokota.html` (受賞歴/委員歴/研究課題) change, update the
   matching section of `cv.tex` in the same edit — and vice versa, if
   `cv.tex` is the source of a new item, add it to the website pages too.
+- **CV PDF build**: `cv.tex` (+ its custom `cv.cls`, both in the repo root) is
+  compiled to `cv.pdf` by `./build-cv.sh`, which runs `tectonic` (XeTeX-based,
+  installed at `~/.local/bin/tectonic`). `cv.tex`'s preamble MUST keep
+  `\usepackage{xeCJK}` + `\setCJKmainfont{Noto Sans CJK JP}` (the CV contains
+  Japanese names/titles; the Noto CJK font is installed under
+  `~/.local/share/fonts`) — without it XeTeX silently drops every kanji. Run
+  `./build-cv.sh` on demand whenever `cv.tex` changes (kept OUT of `publish.sh`,
+  same on-demand pattern as the researchmap export); then a normal `publish.sh`
+  deploys the regenerated `cv.pdf`. The single English+Japanese `cv.pdf` lives at
+  the repo root and is linked from BOTH `en/member/yokota.html` and
+  `jp/member/yokota.html` as `../../cv.pdf` (target=_blank, rel=noopener).
+  `cv.tex`, `cv.cls`, and `build-cv.sh` are repo-only — excluded from deploy in
+  `deploy.sh`; only `cv.pdf` is served.
 - **CV items on the personal page** are mirrored to researchmap the same
   way. Canonical source: `jp/member/yokota.html` sections 受賞歴 / 委員歴 /
   研究課題 (the en page mirrors them as Awards / Committee Memberships /

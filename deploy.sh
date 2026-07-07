@@ -28,7 +28,8 @@ if ! ssh -O check web >/dev/null 2>&1; then
 fi
 
 # mirror -R: local -> remote; uploads new/changed files only.
-# Never uploads .git or repo-only files (this script, CLAUDE.md, .gitignore).
+# Never uploads .git or repo-only files (this script, CLAUDE.md, .gitignore,
+# cv.tex/cv.cls/build-cv.sh — only the built cv.pdf is served).
 # Does NOT delete remote files that were removed locally — add --delete
 # below if you want that.
-lftp -e "mirror -R --verbose $DRY_RUN -x '^\.git/' -x '^\.claude/' -x '^tools/' -x '^deploy\.sh$' -x '^publish\.sh$' -x '^CLAUDE\.md$' -x '^README\.md$' -x '^\.gitignore$' . www; bye" sftp://web
+lftp -e "mirror -R --verbose $DRY_RUN -x '^\.git/' -x '^\.claude/' -x '^tools/' -x '^deploy\.sh$' -x '^publish\.sh$' -x '^CLAUDE\.md$' -x '^README\.md$' -x '^\.gitignore$' -x '^cv\.tex$' -x '^cv\.cls$' -x '^build-cv\.sh$' . www; bye" sftp://web
