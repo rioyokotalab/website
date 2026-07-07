@@ -90,6 +90,16 @@ and anything needing the user stay in the main session.
 This is the standard cycle for every content change (first exercised
 end-to-end on 2026-07-04, removing a member from the member page):
 
+**Standing workflow rules:**
+
+- Always, on every change:
+  1. Preview at `http://localhost:8000/jp/index.html` before publishing.
+  2. Update CLAUDE.md immediately after publishing if anything documentable changed.
+  3. Commit and push CLAUDE.md to GitHub immediately after updating it.
+- Only when the user explicitly asks:
+  1. Mirror the website EN/JP pages to ResearchMap.
+  2. Mirror the website into `cv.tex`, compile `cv.pdf`, and publish.
+
 1. **Edit** — make the change; remember to update both `jp/` and `en/`
    counterparts. When Claude makes the edit, grep for other occurrences of
    the changed content (names, links) across the whole site, not just the
