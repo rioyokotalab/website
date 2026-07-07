@@ -85,6 +85,24 @@ site-author) makes it → site-checker verifies independently → user previews
 when an agent reports ambiguity or failure; only credentials/ssh recovery
 and anything needing the user stay in the main session.
 
+**Failure-driven workflow updates (standing rule):** every time a subagent
+fails or returns an incomplete or mistaken result, change the workflow so the
+same mistake cannot recur, and record the fix here so it persists across
+sessions. Failures logged so far:
+
+- A follow-up `Agent` call does NOT resume the previous agent — it spawns a
+  FRESH instance with no memory of the earlier dispatch (there is no
+  SendMessage tool available in the website session). So every dispatch,
+  including retries, must re-supply ALL context it needs (e.g. the full
+  index→citation mapping for a date-lookup task); never say "the list from
+  before". (Learned 2026-07-08, sub001 `data-date` pilot.)
+- Research/lookup subagents DECLINE to curl external hosts unless the prompt
+  explicitly authorizes them. When dispatching a metadata-lookup task, name
+  the allowed hosts up front (Crossref `api.crossref.org`, DBLP, Semantic
+  Scholar, J-STAGE `api.jstage.jst.go.jp`, publisher DOI resolvers) and note
+  that OpenReview / the researchmap login block non-browser clients.
+  (Learned 2026-07-08.)
+
 ## Publishing workflow
 
 This is the standard cycle for every content change (first exercised
