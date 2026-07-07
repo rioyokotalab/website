@@ -694,6 +694,15 @@ h3.heading, #sub .grid h3 {
 .slogan h2 {
 	font-size: 19px;
 }
+/* On phones the absolutely-positioned slogan overflows the small banner and
+   covers the header; place it in normal flow below the banner instead. */
+.slogan {
+	position: static;
+	width: auto !important;   /* beat the inline width:500px on the pages */
+	margin: 0;
+	border-radius: 0;
+	background: #002855;
+}
 /* hide desktop menu */
 #menubar {
 	display: none;
