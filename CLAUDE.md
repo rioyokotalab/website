@@ -31,7 +31,7 @@ structure one-to-one.
   cache-busting query (`style.css?v=YYYYMMDD`); when editing the CSS, bump the
   version in ALL pages and templates (scripted replace) or browsers will keep
   serving the stale sheet.
-- `images/` — shared icons (favicon.ico, apple-touch-icon.png) and section-specific photos (e.g. `en/member/images/`).
+- `images/` — shared images; section-specific photos live in e.g. `en/member/images/`. The site icons `favicon.ico` and `apple-touch-icon.png` live here too (moved from the repo root 2026-07-08); every page/template references them as `images/…` at the correct relative depth.
 - `js/` — dropdown menu, mobile menu, back-to-top (vanilla JS), language
   switcher. No local jQuery; the only jQuery is the SRI-pinned CDN copy on
   gallery pages.
@@ -139,7 +139,7 @@ end-to-end on 2026-07-04, removing a member from the member page):
   3. Commit and push CLAUDE.md to GitHub immediately after updating it.
 - Only when the user explicitly asks:
   1. Mirror the website EN/JP pages to ResearchMap.
-  2. Mirror the website into `cv.tex`, compile `cv.pdf`, and publish.
+  2. Mirror the website into `cv/cv.tex`, compile `cv/cv.pdf`, and publish.
 
 1. **Edit** — make the change; remember to update both `jp/` and `en/`
    counterparts. When Claude makes the edit, grep for other occurrences of
@@ -322,23 +322,23 @@ end-to-end on 2026-07-04, removing a member from the member page):
   (colon-separated author, 全角 ．/「」 delimiters) were normalized in the
   achievements pages 2026-07-07 so they parse — prefer fixing the source
   citation over patching the .bib.
-- **cv.tex sync**: `cv.tex` must stay in sync with the website, in both
+- **cv.tex sync**: `cv/cv.tex` must stay in sync with the website, in both
   directions. Whenever `achievements/index.html` or the CV sections of
   `jp/member/yokota.html` (受賞歴/委員歴/研究課題) change, update the
-  matching section of `cv.tex` in the same edit — and vice versa, if
-  `cv.tex` is the source of a new item, add it to the website pages too.
-- **CV PDF build**: `cv.tex` (+ its custom `cv.cls`, both in `cv/`) is
-  compiled to `cv.pdf` by `cv/build-cv.sh`, which runs `tectonic` (XeTeX-based,
-  installed at `~/.local/bin/tectonic`). `cv.tex`'s preamble MUST keep
+  matching section of `cv/cv.tex` in the same edit — and vice versa, if
+  `cv/cv.tex` is the source of a new item, add it to the website pages too.
+- **CV PDF build**: `cv/cv.tex` (+ its custom `cv/cv.cls`, both in the `cv/` folder) is
+  compiled to `cv/cv.pdf` by `cv/build-cv.sh`, which runs `tectonic` (XeTeX-based,
+  installed at `~/.local/bin/tectonic`). `cv/cv.tex`'s preamble MUST keep
   `\usepackage{xeCJK}` + `\setCJKmainfont{Noto Sans CJK JP}` (the CV contains
   Japanese names/titles; the Noto CJK font is installed under
   `~/.local/share/fonts`) — without it XeTeX silently drops every kanji. Run
-  `./build-cv.sh` on demand whenever `cv.tex` changes (kept OUT of `publish.sh`,
+  `./cv/build-cv.sh` on demand whenever `cv/cv.tex` changes (kept OUT of `publish.sh`,
   same on-demand pattern as the researchmap export); then a normal `publish.sh`
-  deploys the regenerated `cv.pdf`. The single English+Japanese `cv.pdf` lives in `cv/` and is linked from BOTH
+  deploys the regenerated `cv/cv.pdf`. The single English+Japanese `cv/cv.pdf` lives in the `cv/` folder and is linked from BOTH
   `en/member/yokota.html` and `jp/member/yokota.html` as `../../cv/cv.pdf`
-  (target=_blank, rel=noopener). `cv.tex`, `cv.cls`, and `build-cv.sh` are
-  repo-only — excluded from deploy in `deploy.sh`; only `cv.pdf` is served.
+  (target=_blank, rel=noopener). `cv/cv.tex`, `cv/cv.cls`, and `cv/build-cv.sh` are
+  repo-only — excluded from deploy in `deploy.sh`; only `cv/cv.pdf` is served.
 - **CV items on the personal page** are mirrored to researchmap the same
   way. Canonical source: `jp/member/yokota.html` sections 受賞歴 / 委員歴 /
   研究課題 (the en page mirrors them as Awards / Committee Memberships /
