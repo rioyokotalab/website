@@ -31,7 +31,7 @@ structure one-to-one.
   cache-busting query (`style.css?v=YYYYMMDD`); when editing the CSS, bump the
   version in ALL pages and templates (scripted replace) or browsers will keep
   serving the stale sheet.
-- `images/` — shared images; section-specific photos live in e.g. `en/member/images/`.
+- `images/` — shared icons (favicon.ico, apple-touch-icon.png) and section-specific photos (e.g. `en/member/images/`).
 - `js/` — dropdown menu, mobile menu, back-to-top (vanilla JS), language
   switcher. No local jQuery; the only jQuery is the SRI-pinned CDN copy on
   gallery pages.
@@ -327,19 +327,18 @@ end-to-end on 2026-07-04, removing a member from the member page):
   `jp/member/yokota.html` (受賞歴/委員歴/研究課題) change, update the
   matching section of `cv.tex` in the same edit — and vice versa, if
   `cv.tex` is the source of a new item, add it to the website pages too.
-- **CV PDF build**: `cv.tex` (+ its custom `cv.cls`, both in the repo root) is
-  compiled to `cv.pdf` by `./build-cv.sh`, which runs `tectonic` (XeTeX-based,
+- **CV PDF build**: `cv.tex` (+ its custom `cv.cls`, both in `cv/`) is
+  compiled to `cv.pdf` by `cv/build-cv.sh`, which runs `tectonic` (XeTeX-based,
   installed at `~/.local/bin/tectonic`). `cv.tex`'s preamble MUST keep
   `\usepackage{xeCJK}` + `\setCJKmainfont{Noto Sans CJK JP}` (the CV contains
   Japanese names/titles; the Noto CJK font is installed under
   `~/.local/share/fonts`) — without it XeTeX silently drops every kanji. Run
   `./build-cv.sh` on demand whenever `cv.tex` changes (kept OUT of `publish.sh`,
   same on-demand pattern as the researchmap export); then a normal `publish.sh`
-  deploys the regenerated `cv.pdf`. The single English+Japanese `cv.pdf` lives at
-  the repo root and is linked from BOTH `en/member/yokota.html` and
-  `jp/member/yokota.html` as `../../cv.pdf` (target=_blank, rel=noopener).
-  `cv.tex`, `cv.cls`, and `build-cv.sh` are repo-only — excluded from deploy in
-  `deploy.sh`; only `cv.pdf` is served.
+  deploys the regenerated `cv.pdf`. The single English+Japanese `cv.pdf` lives in `cv/` and is linked from BOTH
+  `en/member/yokota.html` and `jp/member/yokota.html` as `../../cv/cv.pdf`
+  (target=_blank, rel=noopener). `cv.tex`, `cv.cls`, and `build-cv.sh` are
+  repo-only — excluded from deploy in `deploy.sh`; only `cv.pdf` is served.
 - **CV items on the personal page** are mirrored to researchmap the same
   way. Canonical source: `jp/member/yokota.html` sections 受賞歴 / 委員歴 /
   研究課題 (the en page mirrors them as Awards / Committee Memberships /
@@ -403,7 +402,7 @@ files. It uses `mirror -R --delete`, so files removed locally are automatically
 removed from the remote on the next deploy — the server stays an exact
 mirror of the deployed set (no more manual `lftp rm`). Excluded paths
 (`-x` list: `.git`, `.claude`, `tools`, the scripts, `CLAUDE.md`,
-`cv.tex`/`cv.cls`/`build-cv.sh`, etc.) are never uploaded and never
+the source files `cv/cv.tex`/`cv/cv.cls`/`cv/build-cv.sh`, etc.) are never uploaded and never
 deleted remotely. Verified 2026-07-08 the live mirror had zero remote-only
 orphans. Because `--delete` is destructive, always preview with
 `./deploy.sh --dry-run` when a deploy includes deletions.
