@@ -219,6 +219,22 @@ end-to-end on 2026-07-04, removing a member from the member page):
   (sub001 42, sub004 115, sub005 32, sub006 45, sub007 62, sub002/sub003 4 —
   all in en+jp); the only remaining Field-1 task is updating the exporter to
   prefer `data-date` over heuristic date parsing.
+- **Achievements `data-doi` / `data-url` (Field 2, ResearchMap identifier):** each
+  Achievements `<li>` may carry an invisible `data-doi` (BARE DOI, e.g.
+  `10.1234/...`, no `https://doi.org/` prefix) OR, when no DOI exists, a `data-url`
+  (a canonical URL for the SAME paper — arXiv abs page, OpenReview forum, or the
+  言語処理学会/ANLP anthology PDF). Derivation priority: (1) DOI via
+  Crossref/J-STAGE, matching title+author+year; else (2) a confirmed same-paper
+  URL (arXiv/OpenReview/anthology); else (3) leave BOTH off (blank). Be
+  conservative — only record an identifier whose title actually matches; a
+  differing title means leave it blank. Lookups run in small (<=4-6) site-author
+  batches, authorized hosts Crossref/DBLP/Semantic Scholar/J-STAGE/arXiv (+anlp.jp
+  for ANLP), appending each result immediately to `tools/out/doi-subNNN.md`. The
+  Field-2 exporter step (not yet built) will map `data-doi`->DOI identifier and
+  `data-url`->see_also link. Progress (2026-07-08) in
+  `tools/researchmap-metadata-todo.md`: sub001 (37 doi + 2 url), sub002 (0),
+  sub003 (2 doi), sub005 (4 doi + 5 url) done; sub004 / sub006 / sub007 + the
+  exporter update remain.
 - **News**: only top-conference acceptances (ICLR/NeurIPS/CVPR/AAAI level) and
   grants get news items — not workshops, GTC talks, or LREC-tier venues. Each
   item appears in four places: a dated row in the News table on both top pages

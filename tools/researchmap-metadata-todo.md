@@ -62,3 +62,4 @@ international entries, so each attribute is written to BOTH language files.
 - Values that cannot be confirmed follow the no-year-only style rule per field
   (dates -> `-01` placeholder). Prefer fixing the source citation over guessing.
 - Keep this file and CLAUDE.md in sync when the plan changes.
+- PENDING (2026-07-08): sub005 #1 ANLP2025 paper 「新聞記事からつくる 時事と社会に強い日本語LLM」 — the official proceedings lists an extra author 川畑輝 not present on the website/CV/researchmap/ORCID entry. Title was mirrored to all targets 2026-07-08 (website EN/JP, cv.tex+cv.pdf, ORCID bib, researchmap update rm:id 50836989); the 川畑輝 author addition was flagged but NOT done — do it across all four targets if the user requests.
