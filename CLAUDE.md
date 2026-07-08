@@ -266,6 +266,18 @@ end-to-end on 2026-07-04, removing a member from the member page):
   and a `user_id` (even the own permalink) means "another member's list"
   and fails with 403 forbidden, which blocks the ENTIRE file (researchmap
   validates all lines before applying any). Learned 2026-07-06.
+  The exact bulk-import UPDATE grammar (verified 2026-07-08 against the
+  researchmap V2 API spec; `researchmap-export.py` has NO update code path,
+  so update/delete lines are hand-built): one JSON object per line,
+  `{"update": {"type": "<record-type>", "id": "<rm:id>"}, "doc": {<only the
+  changed fields>}}` — a PARTIAL update (unlisted fields are left untouched),
+  and like inserts it must carry NO `user_id`. The `rm:id`s come from the
+  public read API (e.g. `https://api.researchmap.jp/rioyokota/published_papers?
+  limit=1000`). Example used 2026-07-08 to fix an ANLP2025 paper title:
+  `{"update": {"type": "published_papers", "id": "50836989"}, "doc":
+  {"paper_title": {"ja": "..."}}}`. Note ORCID has no such update path — a
+  no-DOI title change adds a new BibTeX work on re-import, so the stale
+  old-title work must be removed manually in the ORCID UI.
   The user then downloads the file from
   http://localhost:8000/tools/out/researchmap-import.jsonl and uploads it
   at researchmap 設定 > インポート (permalink: rioyokota); the university
