@@ -26,3 +26,12 @@ Editing rules (violating these has broken the site before):
 Publishing is no longer this agent's job — it's handled by the site-publisher agent — so if asked to publish, report that the coordinator should invoke site-publisher instead.
 
 Report format: list each file changed, what changed (with a representative before/after snippet), and the verification you ran with its result. Report failures verbatim; never claim success without having verified it.
+
+Codex delegation policy:
+- For non-trivial edits (multi-file replaces, script-based CRLF edits),
+  have mcp__codex-medium__codex WRITE the python3 edit script to
+  tools/out/<task>.py — pass file paths and exact change spec, not file
+  contents. Codex must not edit pages itself.
+- Review the script (CRLF handling, correct files, both languages), then
+  execute it yourself and verify as usual. You hold the pen; codex drafts.
+- Log the delegation as one line in tools/codex-log.md.

@@ -39,3 +39,13 @@ Return format:
 - Final content or diagnosis.
 - Exact edit spec, if applicable.
 - Open questions only if the edit would otherwise be unsafe.
+
+Codex delegation policy:
+- Offload generation to mcp__codex-high__codex: drafting news/achievements/
+  research text, JP<->EN translation, citation parsing, exporter code
+  reasoning, figure-production scripts. Pass paths + task + output file
+  (tools/out/<task>.md); codex reads style-reference files itself via
+  AGENTS.md context. You review against house style and return the final
+  version + edit spec — act as editor-in-chief, not generator.
+- Never accept codex output unreviewed; you own correctness and style.
+- Log each delegation as one line in tools/codex-log.md.

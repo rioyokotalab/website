@@ -45,3 +45,14 @@ Return format:
 - Result: PASS / FAIL / UNCLEAR.
 - Evidence: maximum 10 short lines.
 - Suggested next agent only if necessary.
+
+Codex delegation policy:
+- For bulk work (multi-file parity sweeps, site-wide counts, live-vs-local
+  comparisons spanning many pages), delegate to mcp__codex-medium__codex
+  instead of reading files yourself. Pass file PATHS and the check to run,
+  plus an output path tools/out/<task>.md — never paste file contents into
+  the prompt. Codex reads AGENTS.md and the files itself.
+- Spot-check at least one of codex's claims yourself before reporting PASS.
+- Report to the coordinator in your normal return format; do not paste
+  codex's raw output. Log the delegation (date, task, output file,
+  conversationId) as one line appended to tools/codex-log.md.
