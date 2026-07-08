@@ -6,15 +6,11 @@ lossless context transfer (Claude↔codex and across sessions). Do steps in
 order; tick and commit after each.
 
 ## SESSION HANDOFF (update every time before a restart)
-Status 2026-07-08: starting C1. User is hand-editing .mcp.json to add
-`-c sandbox_mode="workspace-write"` to codex-high/medium/low, then cold-restarts
-Claude Code and approves the project MCP servers. FIRST ACTION of the next
-session: read this file top-to-bottom, then run the C1 verification (site-checker
-asks codex-low to write + read back tools/out/sandbox-test.md). If PASS: tick C1,
-then do C2 (backfill codex-log line, conversationId
-019f418a-ea0e-7062-b279-90bc4b4f711e) and C3 (re-run achievements parity sweep so
-tools/out/achievements-parity.md actually persists). This file is uncommitted —
-commit it when C1 is ticked.
+Status 2026-07-08 (updated): C1 DONE & VERIFIED — codex writes unblocked via .mcp.json workspace-write (conversationId 019f41a1-9084-7e93-be3e-2a401742ff5f). C2 DONE — tools/codex-log.md backfilled; codex self-logging duty added to AGENTS.md. C3 IN PROGRESS — output-file-first rule added to AGENTS.md and the achievements parity sweep was RE-RUN & PERSISTED (tools/out/achievements-parity.md; 317 content <li>/side, 0 data-date/data-doi/data-url mismatches), but the ".claude/agents/*.md prompt" half of C3/C4 is NOT done (hand-edit only). All of the above committed+pushed as b9c13a5. FIRST ACTION next session: read this file top-to-bottom, then continue C4–C7 (all require HAND-EDITing .claude/agents/*.md and a CLAUDE.md update — main-session/manual work).
+
+Investigations done 2026-07-08:
+- sub007 count: 62 is CORRECT (counted inside the <ol>); the "79" was a naive-regex boundary artifact spilling into the <aside id="sub"> sidebar nav. No change needed; keep 62 everywhere.
+- OPEN NAV BUG (awaiting user go-ahead to fix): the JP mobile <ul id="topnav"> is missing the Contact/連絡先 item that EN mobile has — SITE-WIDE across all 12 JP content pages (every JP page EXCEPT jp/contact/index.html, whose self-page omission mirrors EN's en/contact). Fix = add a `<li><a href="[depth]contact/index.html">連絡先</a></li>` to each JP page's MOBILE topnav block only (not desktop), matching EN's placement; relative depth = `contact/index.html` for jp/index.html, `../contact/index.html` for section pages and jp/member/*. Scope detail in tools/out/jp-mobile-contact-scope.md. Not yet edited — needs preview+approval before publish.
 
 - [x] C1 **Unblock codex writes** (root blocker, found 2026-07-08: codex sandbox
   rejected writing tools/out/achievements-parity.md, so the append-incrementally
@@ -24,14 +20,14 @@ commit it when C1 is ticked.
   servers, then verify: site-checker asks codex-low to write + read back
   tools/out/sandbox-test.md.
   VERIFIED 2026-07-08: codex-medium wrote+read-back tools/out/sandbox-test.md (conversationId 019f41a1-9084-7e93-be3e-2a401742ff5f). PASS.
-- [ ] C2 **Fix the logging contradiction**: site-checker is read-only yet its
+- [x] C2 **Fix the logging contradiction**: site-checker is read-only yet its
   prompt tells it to append to tools/codex-log.md (result: log empty despite a
   2026-07-08 delegation). New convention: CODEX appends its own log line
   (date | calling agent | task | output file | conversationId | outcome) as the
   last action of every task — add this duty to AGENTS.md; agents only relay the
   conversationId. Backfill the 2026-07-08 parity-sweep line
   (conversationId 019f418a-ea0e-7062-b279-90bc4b4f711e, no output file).
-- [ ] C3 **Enforce output-file-first**: standing rule in all four codex-enabled
+- [~] C3 **Enforce output-file-first**: standing rule in all four codex-enabled
   agent prompts + AGENTS.md — the tools/out/ file IS the deliverable; the Claude
   agent must confirm the file exists and is non-empty before reporting PASS;
   chat replies are pointers, not payloads. Re-run the achievements parity sweep
