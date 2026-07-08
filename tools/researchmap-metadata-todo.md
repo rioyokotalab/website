@@ -42,7 +42,7 @@ international entries, so each attribute is written to BOTH language files.
 - [x] exporter prefers data-date over heuristic date parsing — live 2026-07-08 (researchmap-export.py + orcid-export.py read <li data-date>, override heuristic; offline dry-run OK)
 
 ### Field 2 — data-doi
-- [x] sub001 (37 doi + 2 url; 3 blank: JP domestic 計算工学/シミュレーション + JSCES)  - [ ] sub002  - [ ] sub003  - [ ] sub004  - [ ] sub005  - [ ] sub006  - [ ] sub007
+- [x] sub001 (37 doi + 2 url; 3 blank: JP domestic 計算工学/シミュレーション + JSCES)  - [x] sub002 (0; 数学セミナー magazine, no DOI)  - [x] sub003 (2 doi; MK/Elsevier chapters)  - [ ] sub004  - [ ] sub005  - [ ] sub006  - [ ] sub007
 - [ ] exporter emits doi from data-doi
 
 ### Field 3 — data-volume / data-number / data-pages (journals & proceedings)
