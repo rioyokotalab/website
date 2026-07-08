@@ -116,6 +116,8 @@ sessions. Failures logged so far:
   item (not batched at the end), and keep each lookup dispatch small (≤3–4
   entries) so it finishes before being cut off. (Learned 2026-07-08.)
 
+**codex MCP backend for subagents:** the site-agents can delegate reasoning to the codex MCP servers. codex-{high,medium,low} must be registered at BOTH user scope (`~/.claude.json`) AND project scope (`/home/rioyokota/website/.mcp.json`) — user scope ALONE does NOT reach subagents (confirmed 2026-07-08: an actual `mcp__codex-medium__codex` call from site-checker returned only after `.mcp.json` was added). Each agent's frontmatter lists its tier under `mcpServers:` plus the `mcp__codex-<tier>__codex` and `codex-reply` tools: site-checker/site-editor→codex-medium, site-author→codex-high, site-publisher→codex-low. On startup Claude prompts to approve the project MCP servers. Editing `.claude/agents/*.md` or `.mcp.json` must be done BY HAND — subagents categorically refuse config edits regardless of the `.claude/config-edit-approved` marker/PreToolUse hook (site-editor refused twice, 2026-07-08); the marker+hook still serve as a hard block against accidental config edits, not as an authorization channel. `.mcp.json` is repo-only and is excluded from deploy (deploy.sh `-x '^\.mcp\.json$'`), so it is never served publicly.
+
 ## Publishing workflow
 
 > **NON-NEGOTIABLE RULE — after EVERY `publish.sh` run, in the same turn:**

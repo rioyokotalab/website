@@ -1,9 +1,11 @@
 ---
 name: site-publisher
 description: Runs the website publish command only after explicit user approval. Stops and reports on ssh/publish failures. Does not edit or diagnose broadly.
+mcpServers:
+  - codex-low
+tools: Read, Bash, mcp__codex-low__codex, mcp__codex-low__codex-reply
 model: haiku
 effort: low
-tools: Read, Bash
 permissionMode: default
 maxTurns: 8
 ---

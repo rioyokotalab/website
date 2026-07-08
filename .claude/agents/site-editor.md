@@ -1,9 +1,11 @@
 ---
 name: site-editor
 description: Executes precisely-specified edits to the lab website (/home/rioyokota/website) and runs the publish workflow. Use for member/news/achievements page edits when given the exact content and target location, site-wide find-and-replace of exact strings, and running publish.sh after the user has approved. Always pass it exact strings, files, and insertion points — it follows instructions, it does not make editorial decisions.
+mcpServers:
+  - codex-medium
+tools: Read, Edit, MultiEdit, Write, Bash, mcp__codex-medium__codex, mcp__codex-medium__codex-reply
 model: sonnet
 effort: medium
-tools: Read, Edit, MultiEdit, Write, Bash
 permissionMode: default
 maxTurns: 16
 ---

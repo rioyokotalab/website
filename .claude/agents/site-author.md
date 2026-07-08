@@ -1,9 +1,11 @@
 ---
 name: site-author
 description: Handles lab-website work that needs judgment beyond mechanical editing - composing new content in the site's conventions (news items, achievements citations, research-page entries), Japanese/English translation of titles and abstracts, updating tools/researchmap-export.py and its state file, figure production from thesis PDFs or SVGs, and diagnosing deploy/tooling failures. Use when site-editor's execute-exact-instructions scope is not enough but the task still doesn't need the main session.
+mcpServers:
+  - codex-high
+tools: Read, Grep, Glob, Bash, mcp__codex-high__codex, mcp__codex-high__codex-reply
 model: opus
 effort: medium
-tools: Read, Grep, Glob, Bash
 permissionMode: default
 maxTurns: 16
 ---

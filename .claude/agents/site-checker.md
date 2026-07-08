@@ -1,7 +1,9 @@
 ---
 name: site-checker
 description: Fast read-only verifier for the lab website (/home/rioyokota/website). Use for grepping and counting occurrences across pages, EN/JP parity checks, verifying localhost:8000 previews and the live site after publish, git status summaries, and Hinadori cluster queries (sinfo, yrun). Give it exact strings, paths, or URLs to check; it reports findings and never edits anything.
-tools: Bash, Read, Grep, Glob
+mcpServers:
+  - codex-medium
+tools: Bash, Read, Grep, Glob, mcp__codex-medium__codex, mcp__codex-medium__codex-reply
 model: sonnet
 permissionMode: default
 maxTurns: 16
