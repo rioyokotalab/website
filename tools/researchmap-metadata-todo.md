@@ -6,7 +6,7 @@ lossless context transfer (Claude↔codex and across sessions). Do steps in
 order; tick and commit after each.
 
 ## SESSION HANDOFF (update every time before a restart)
-Status 2026-07-08 (updated): C1 DONE & VERIFIED — codex writes unblocked via .mcp.json workspace-write (conversationId 019f41a1-9084-7e93-be3e-2a401742ff5f). C2 DONE — tools/codex-log.md backfilled; codex self-logging duty added to AGENTS.md. C3 IN PROGRESS — output-file-first rule added to AGENTS.md and the achievements parity sweep was RE-RUN & PERSISTED (tools/out/achievements-parity.md; 317 content <li>/side, 0 data-date/data-doi/data-url mismatches), but the ".claude/agents/*.md prompt" half of C3/C4 is NOT done (hand-edit only). All of the above committed+pushed as b9c13a5. FIRST ACTION next session: read this file top-to-bottom, then continue C4–C7 (all require HAND-EDITing .claude/agents/*.md and a CLAUDE.md update — main-session/manual work).
+Status 2026-07-08 (hard-reset handoff): CONFIG/OFFLOAD WORKFLOW NOW LIVE — the aggressive-codex-offload standing directive + config-hand-edit-only rules were applied. CLAUDE.md now carries the '## Standing directive: codex offload and config edits' block (top, before '## Budget rule:'). The 6 .claude/agents/site-*.md files, .claude/agents/codex-offload-policy.md (shared DRY policy; all agents reference it at /home/rioyokota/website/.claude/agents/codex-offload-policy.md), and repo-root AGENTS.md were replaced via tools/out proposals moved into place by the user with tools/out/apply-agent-proposals.sh. .claude/settings.local.json now has an airtight two-layer lock (permissions.deny + PreToolUse hook) so only the human can run apply-agent-proposals.sh. NEW WORKFLOW: CLAUDE.md/.claude/agents/*.md/.mcp.json/AGENTS.md are hand-edit-only; agents write proposed changes to tools/out/<same-filename> for the user to mv. tools/out/CLAUDE-standing-directive-snippet.md is now redundant (its content is in CLAUDE.md) and may be deleted. FIRST ACTION next session: read this file top-to-bottom, then resume Field 2 data-doi sub004 at entry 9 (see below).
 
 Investigations done 2026-07-08:
 - sub007 count: 62 is CORRECT (counted inside the <ol>); the "79" was a naive-regex boundary artifact spilling into the <aside id="sub"> sidebar nav. No change needed; keep 62 everywhere.
@@ -91,7 +91,7 @@ international entries, so each attribute is written to BOTH language files.
 - [x] exporter prefers data-date over heuristic date parsing — live 2026-07-08 (researchmap-export.py + orcid-export.py read <li data-date>, override heuristic; offline dry-run OK)
 
 ### Field 2 — data-doi
-- [x] sub001 (37 doi + 2 url; 3 blank: JP domestic 計算工学/シミュレーション + JSCES)  - [x] sub002 (0; 数学セミナー magazine, no DOI)  - [x] sub003 (2 doi; MK/Elsevier chapters)  - [ ] sub004  - [x] sub005 (4 doi + 5 url; rest domestic-only, no identifier; #1 left blank—ANLP title mismatch)  - [ ] sub006  - [ ] sub007
+- [x] sub001 (37 doi + 2 url; 3 blank: JP domestic 計算工学/シミュレーション + JSCES)  - [x] sub002 (0; 数学セミナー magazine, no DOI)  - [x] sub003 (2 doi; MK/Elsevier chapters)  - [~] sub004 (8/115 done; results in tools/out/doi-sub004.md — #1-3 blank future-2026 workshop papers; #4 doi 10.63317/47uvbxqph5ph; #5 url arxiv.org/abs/2508.18672; #6 url arxiv.org/abs/2505.02881; #7-8 GTC 2026 talks blank; NEXT: resume at entry 9)  - [x] sub005 (4 doi + 5 url; rest domestic-only, no identifier; #1 left blank—ANLP title mismatch)  - [ ] sub006  - [ ] sub007
 - [ ] exporter emits doi from data-doi
 
 ### Field 3 — data-volume / data-number / data-pages (journals & proceedings)
@@ -111,4 +111,5 @@ international entries, so each attribute is written to BOTH language files.
 - Values that cannot be confirmed follow the no-year-only style rule per field
   (dates -> `-01` placeholder). Prefer fixing the source citation over guessing.
 - Keep this file and CLAUDE.md in sync when the plan changes.
+- GTC talks ARE internally reviewed by NVIDIA (user confirmed 2026-07-08 — has had submissions rejected), so GTC-talk entries correctly belong in sub004 (intl peer-reviewed); do NOT move them to sub006.
 - PENDING (2026-07-08): sub005 #1 ANLP2025 paper 「新聞記事からつくる 時事と社会に強い日本語LLM」 — the official proceedings lists an extra author 川畑輝 not present on the website/CV/researchmap/ORCID entry. Title was mirrored to all targets 2026-07-08 (website EN/JP, cv.tex+cv.pdf, ORCID bib, researchmap update rm:id 50836989); the 川畑輝 author addition was flagged but NOT done — do it across all four targets if the user requests.

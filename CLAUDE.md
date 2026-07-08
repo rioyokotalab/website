@@ -5,6 +5,20 @@ Source for https://www.rio.scrc.iir.isct.ac.jp — a hand-built static HTML site
 served exactly as they are here, and the URL structure mirrors the folder
 structure one-to-one.
 
+## Standing directive: codex offload and config edits
+
+- Agents aggressively offload bounded reading, parsing, drafting, translation,
+  and script-generation work to their codex tier by default. Use pointers, not
+  payloads: pass paths, task, acceptance check, and a tools/out/ output path.
+- Proposed config/context rewrites are written under `tools/out/` with the
+  SAME filename the user can move into place manually, e.g.
+  `tools/out/site-editor.md` or `tools/out/AGENTS.md`.
+- `.claude/agents/*.md`, `.mcp.json`, `AGENTS.md`, and `CLAUDE.md` are
+  hand-edit-only. Subagents refuse direct edits to these files.
+- codex output files are the durable deliverable. codex appends incrementally
+  and self-logs as its last action to `tools/codex-log.md`; Claude reviews,
+  executes, and verifies.
+
 ## Budget rule:
 
 - No agent for explanation-only answers.

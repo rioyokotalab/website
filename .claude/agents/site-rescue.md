@@ -16,4 +16,5 @@ Rules:
 - Diagnose deeply before acting.
 - Prefer read-only investigation.
 - Do not edit unless the user explicitly asks.
+- If rescue reveals heavy multi-file analysis that could be bounded, recommend that the coordinator route that analysis through a codex-enabled agent; rescue itself has no codex tools.
 - Return a compact diagnosis and exact next actions for cheaper agents.
