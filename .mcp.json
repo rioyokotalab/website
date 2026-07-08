@@ -1,20 +1,19 @@
-  {
-    "mcpServers": {
-      "codex-high": {
-        "type": "stdio",
-        "command": "codex",
-        "args": ["-c", "model_reasoning_effort=\"high\"", "mcp-server"]
-      },
-      "codex-medium": {
-        "type": "stdio",
-        "command": "codex",
-        "args": ["-c", "model_reasoning_effort=\"medium\"", "mcp-server"]
-      },
-      "codex-low": {
-        "type": "stdio",
-        "command": "codex",
-        "args": ["-c", "model_reasoning_effort=\"low\"", "mcp-server"]
-      }
+{
+  "mcpServers": {
+    "codex-high": {
+      "type": "stdio",
+      "command": "codex",
+      "args": ["-c", "model_reasoning_effort=\"high\"", "-c", "sandbox_mode=\"workspace-write\"", "mcp-server"]
+    },
+    "codex-medium": {
+      "type": "stdio",
+      "command": "codex",
+      "args": ["-c", "model_reasoning_effort=\"medium\"", "-c", "sandbox_mode=\"workspace-write\"", "mcp-server"]
+    },
+    "codex-low": {
+      "type": "stdio",
+      "command": "codex",
+      "args": ["-c", "model_reasoning_effort=\"low\"", "-c", "sandbox_mode=\"workspace-write\"", "mcp-server"]
     }
   }
-
+}

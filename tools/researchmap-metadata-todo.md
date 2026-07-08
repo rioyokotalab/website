@@ -16,13 +16,14 @@ then do C2 (backfill codex-log line, conversationId
 tools/out/achievements-parity.md actually persists). This file is uncommitted —
 commit it when C1 is ticked.
 
-- [ ] C1 **Unblock codex writes** (root blocker, found 2026-07-08: codex sandbox
+- [x] C1 **Unblock codex writes** (root blocker, found 2026-07-08: codex sandbox
   rejected writing tools/out/achievements-parity.md, so the append-incrementally
   durability convention is dead). HAND-EDIT .mcp.json (main session/user only —
   subagents refuse config edits): add `-c sandbox_mode="workspace-write"` (and
   pin cwd to the repo if needed) to codex-high/medium/low args. Restart, approve
   servers, then verify: site-checker asks codex-low to write + read back
   tools/out/sandbox-test.md.
+  VERIFIED 2026-07-08: codex-medium wrote+read-back tools/out/sandbox-test.md (conversationId 019f41a1-9084-7e93-be3e-2a401742ff5f). PASS.
 - [ ] C2 **Fix the logging contradiction**: site-checker is read-only yet its
   prompt tells it to append to tools/codex-log.md (result: log empty despite a
   2026-07-08 delegation). New convention: CODEX appends its own log line

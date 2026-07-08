@@ -30,3 +30,13 @@ you; Claude retains final review, verification, and publishing.
   Japanese). News items: only top-conference acceptances and grants.
 - style.css is shared; pages reference it as style.css?v=YYYYMMDD.
 - External target="_blank" links need rel="noopener noreferrer".
+
+## codex self-logging & output-file-first (added 2026-07-08)
+- As the LAST action of every delegated task, codex must append one line to
+  `tools/codex-log.md` in the format: `date | calling agent | task | output
+  file | conversationId | outcome`. The calling Claude agent only relays the
+  conversationId; it does not write the log (site-checker is read-only).
+- The `tools/out/` file IS the deliverable, not the chat reply. codex must
+  append each result to its output file immediately as it works. The calling
+  agent must confirm the output file exists and is non-empty before
+  reporting PASS; chat replies are pointers, not payloads.
