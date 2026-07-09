@@ -53,6 +53,8 @@ VENUE_WORDS = re.compile(
 # invisible data-date="YYYY-MM"(-DD) on the opening <li> = ResearchMap
 # publication_date; when present it OVERRIDES the heuristic date parse below.
 DATA_DATE = re.compile(r'\bdata-date\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_DOI = re.compile(r'\bdata-doi\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_URL = re.compile(r'\bdata-url\s*=\s*["\']([^"\']*)["\']', re.I)
 
 def norm_date(s):
     """Normalize a data-date value to YYYY / YYYY-MM / YYYY-MM-DD, else None."""
@@ -69,8 +71,8 @@ def norm_date(s):
     return out
 
 def entries(anchor):
-    """Yield (clean_text, data_date) for each <li>; data_date is None if the
-    opening <li> tag carries no (valid) data-date attribute."""
+    """Yield (clean_text, data_date, data_doi, data_url) for each <li>;
+    data_* is None if the opening <li> tag carries no valid attribute."""
     c = open(PAGE, newline='', encoding='utf-8').read()
     a = c.index('name="%s"' % anchor)
     s = c.index('<ol>', a); e = c.index('</ol>', s)
@@ -83,9 +85,16 @@ def entries(anchor):
     for tag, p in zip(tags, parts):
         dm = DATA_DATE.search(tag)
         data_date = norm_date(dm.group(1)) if dm else None
+        doi_m = DATA_DOI.search(tag)
+        data_doi = None
+        if doi_m:
+            data_doi = re.sub(r'^https?://(?:dx\.)?doi\.org/', '', doi_m.group(1).strip(), flags=re.I) or None
+        url_m = DATA_URL.search(tag)
+        data_url = url_m.group(1).strip() if url_m else None
+        data_url = data_url or None
         t = re.sub(r'</li>', '', re.sub(r'<[^>]+>', '', p), flags=re.I)
         t = unicodedata.normalize('NFKC', t).replace('&amp;', '&').replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"')
-        out.append((re.sub(r'\s+', ' ', t).strip(), data_date))
+        out.append((re.sub(r'\s+', ' ', t).strip(), data_date, data_doi, data_url))
     return out
 
 def key(t, limit=70):
@@ -194,7 +203,7 @@ def resolve_type(rm_type, text):
         return 'presentations' if sole_author(text) else 'misc'
     return rm_type
 
-def to_record(text, rm_type, extra, data_date=None):
+def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_url=None):
     rm_type = resolve_type(rm_type, text)
     parsed = parse(text)
     if not parsed:
@@ -220,6 +229,10 @@ def to_record(text, rm_type, extra, data_date=None):
         doc['presenters'] = people
     if date:
         doc['publication_date'] = date
+    if data_doi:
+        doc['identifiers'] = {'doi': [data_doi]}
+    elif data_url:
+        doc['see_also'] = [{'@id': data_url}]
     doc['languages'] = ['jpn' if japanese else 'eng']
     if rm_type != 'misc':   # misc gets no extras (extra is presentations-specific there)
         doc.update(extra)
@@ -327,10 +340,10 @@ def website_records():
     same categories used for live researchmap collections."""
     out = []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text, data_date in entries(anchor):
+        for text, data_date, data_doi, data_url in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
-            rec = to_record(text, rm_type, extra, data_date)
+            rec = to_record(text, rm_type, extra, data_date, data_doi, data_url)
             if rec is None:
                 print(f'WARNING: could not parse, add manually: {text[:90]}', file=sys.stderr)
                 continue
@@ -469,14 +482,14 @@ def main():
 
     seen, new = [], []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text, data_date in entries(anchor):
+        for text, data_date, data_doi, data_url in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             k = key(text)
             seen.append(k)
             if k in state or args.init:
                 continue
-            rec = to_record(text, rm_type, extra, data_date)
+            rec = to_record(text, rm_type, extra, data_date, data_doi, data_url)
             if rec:
                 new.append((text, rec))
             else:

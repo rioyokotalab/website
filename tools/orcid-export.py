@@ -72,9 +72,9 @@ MONTH_ABBR = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
               'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
 def raw_items(anchor):
-    """Yield (clean_text, doi, data_date) for each <li> in a section, keeping
-    the DOI href (which entries() would strip) and the opening <li>'s
-    data-date attribute (which overrides the parsed date)."""
+    """Yield (clean_text, doi, url, data_date) for each <li> in a section,
+    keeping DOI/link attributes and the opening <li>'s data-date attribute
+    (which overrides the parsed date)."""
     c = open(PAGE, newline='', encoding='utf-8').read()
     a = c.index('name="%s"' % anchor)
     s = c.index('<ol>', a); e = c.index('</ol>', s)
@@ -84,14 +84,20 @@ def raw_items(anchor):
     for tag, p in zip(tags, parts):
         dm = rm.DATA_DATE.search(tag)
         data_date = rm.norm_date(dm.group(1)) if dm else None
-        m = re.search(r'href=["\'](https?://(?:dx\.)?doi\.org/[^"\']+)["\']', p, re.I)
+        doi_m = rm.DATA_DOI.search(tag)
         doi = None
-        if m:
+        if doi_m:
+            doi = re.sub(r'^https?://(?:dx\.)?doi\.org/', '', doi_m.group(1).strip(), flags=re.I) or None
+        url_m = rm.DATA_URL.search(tag)
+        url = url_m.group(1).strip() if url_m else None
+        url = url or None
+        m = re.search(r'href=["\'](https?://(?:dx\.)?doi\.org/[^"\']+)["\']', p, re.I)
+        if not doi and m:
             doi = re.sub(r'^https?://(?:dx\.)?doi\.org/', '', m.group(1)).strip()
         t = re.sub(r'</li>', '', re.sub(r'<[^>]+>', '', p), flags=re.I)
         t = (unicodedata.normalize('NFKC', t).replace('&amp;', '&')
              .replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"'))
-        yield re.sub(r'\s+', ' ', t).strip(), doi, data_date
+        yield re.sub(r'\s+', ' ', t).strip(), doi, url, data_date
 
 def extract_volpp(venue):
     """Pull Vol./No./pp. out of a venue string; return (clean_venue, fields)."""
@@ -153,7 +159,7 @@ def fallback_year(text):
     yrs = [y for y in re.findall(r'(?:19|20)\d{2}', text) if 1985 <= int(y) <= 2035]
     return yrs[-1] if yrs else None
 
-def make_entry(etype, authors, title, venue, date, doi, used):
+def make_entry(etype, authors, title, venue, date, doi, url, used):
     year = month = None
     if date:
         year = date[:4]
@@ -175,9 +181,11 @@ def make_entry(etype, authors, title, venue, date, doi, used):
         fields['month'] = month
     if doi:
         fields['doi'] = doi
+    elif url:
+        fields['url'] = url
     key = citekey(authors, title, year, used)
     order = ['author', 'title', venue_field, 'volume', 'number',
-             'pages', 'year', 'month', 'doi']
+             'pages', 'year', 'month', 'doi', 'url']
     lines = ['@%s{%s,' % (etype, key)]
     keys = [k for k in order if k in fields] + \
            [k for k in fields if k not in order]
@@ -198,7 +206,7 @@ def main():
     risky = []
     for anchor, etype in SECTION_TYPE.items():
         cnt = 0
-        for text, doi, data_date in raw_items(anchor):
+        for text, doi, url, data_date in raw_items(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             parsed = rm.parse(text)
@@ -217,7 +225,7 @@ def main():
                 risky.append(('NO-YEAR', anchor, text))
             elif not venue:
                 risky.append(('NO-VENUE', anchor, text))
-            entries.append(make_entry(etype, authors, title, venue, date, doi, used))
+            entries.append(make_entry(etype, authors, title, venue, date, doi, url, used))
             cnt += 1
         per_section[anchor] = cnt
 

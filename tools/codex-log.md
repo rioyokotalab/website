@@ -48,3 +48,5 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-09 | site-author | Field2 sub007 e37-45 | tools/out/doi-sub007-p5.md | unknown | done
 2026-07-09 | site-author | Field2 sub007 e46-54 | tools/out/doi-sub007-p6.md | unknown | done
 2026-07-09 | site-author | Field2 sub007 e55-62 | tools/out/doi-sub007-p7.md | unknown | done
+2026-07-10 | site-editor | sub007 Field-2 DOI/URL attrs (6/7, item 6 skipped: substring mismatch) | tools/out/sub007-field2.py | 019f4744-4477-78e1-aa40-d1f634e8e87c | success, appended by Claude (codex write approval was rejected)
+2026-07-10 | site-author | field2 exporter data-doi/data-url | tools/out/field2-exporter.md | unknown | PASS
