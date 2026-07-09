@@ -17,3 +17,34 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-09 | site-author | sub004 Field-2 entries 27-30 DOI correction | tools/out/doi-sub004.md | not-provided | corrected two appended lines from arXiv URLs to title-matching bare Crossref DOIs
 2026-07-09 | codex-high(coordinator) | add 3 remaining sub004 data-url attrs (en+jp) | tools/out/apply-sub004-field2-remainder.py | <this thread> | added 6 data-url attrs; verified en/jp data-url=33 each
 2026-07-09 | codex-high(coordinator) | draft config offload+fanout proposals | tools/out/{agent files,AGENTS.md,CLAUDE.md,codex-offload-policy.md,apply-config-offload.sh} | <thread> | wrote proposed config copies and apply script; verified non-empty outputs, verbatim agent frontmatter, and apply script syntax
+2026-07-09 | unknown | verify config proposal files safety | tools/out/verify-config-proposals.md | not-provided | completed: exact proposal files missing; all five pairs marked DANGER-STALE/do not apply
+2026-07-09 | site-author | doi-sub006 batch 1-6 | tools/out/doi-sub006.md | not-provided | done
+2026-07-09 | site-author | doi-sub006 batch 7-12 | tools/out/doi-sub006.md | not-provided | done
+2026-07-09 | site-author | doi-sub006 batch 13-18 | tools/out/doi-sub006.md | unknown | done
+2026-07-09 | site-author | doi-sub006 batch 19-24 | tools/out/doi-sub006.md | <conversationId> | done
+2026-07-09 | site-author | doi-sub006 batch 25-30 | tools/out/doi-sub006.md | <conversationId> | done
+2026-07-09 | site-author | doi-sub006 batch 31-36 | tools/out/doi-sub006.md | not-provided | done
+2026-07-09 | site-author | doi-sub006 batch 37-42 | tools/out/doi-sub006.md | not-provided | done
+2026-07-09 | site-author | doi-sub006 batch 43-45 | tools/out/doi-sub006.md | unknown | done
+2026-07-09 | direct-user | doi-sub006 refined DOI/URL rule update | tools/out/doi-sub006.md | unknown | updated entries 6,9,34 to BLANK; counts 0 doi/0 url/45 blank
+2026-07-09 | site-author | doi-sub007 b01 e1-6 | tools/out/doi-sub007-b01.md | unknown | completed: 1-2 BLANK, 3 DOI, 4-6 IPSJ URLs
+2026-07-09 | site-author | doi-sub007 b02 e7-12 | tools/out/doi-sub007-b02.md | not-provided | done: 6 entries resolved
+2026-07-09 | site-author | doi-sub007 b03 e13-18 | tools/out/doi-sub007-b03.md | conversationId-not-provided | completed 6 entries
+2026-07-09 | site-author | doi-sub007 b04 e19-24 | tools/out/doi-sub007-b04.md | unknown | completed 6 entries; 1 DOI, 5 blank
+2026-07-09 | site-author | doi-sub007 b05 e25-30 | tools/out/doi-sub007-b05.md | unknown | completed 6 entries: 2 data-url, 4 BLANK
+2026-07-09 | site-author | doi-sub007 b06 e31-36 | tools/out/doi-sub007-b06.md | 019f4584-bb55-74a2-8f44-8b81acbde79f | completed: 1 DOI, 2 IPSJ URLs, 3 BLANK
+2026-07-09 | site-author | doi-sub007 b07 e37-42 | tools/out/doi-sub007-b07.md | not-provided | completed: 6 entries resolved, all BLANK
+2026-07-09 | site-author | doi-sub007 b08 e43-48 | tools/out/doi-sub007-b08.md | unknown | completed 6 entries: 3 IPSJ data-url, 3 BLANK
+2026-07-09 | site-author | doi-sub007 b09 e49-54 | tools/out/doi-sub007-b09.md | unknown | completed 6 entries
+2026-07-09 | site-author | doi-sub007 b10 e55-60 | tools/out/doi-sub007-b10.md | conversationId not provided | completed 6 entries: 3 IPSJ data-url, 3 BLANK
+2026-07-09 | site-author | doi-sub007 b11 e61-62 | tools/out/doi-sub007-b11.md | unknown | both entries blank
+2026-07-09 | direct-user | aggregate doi-sub007 batches | tools/out/doi-sub007.md | unknown | PASS counts doi=4 url=24 blank=34 total=62; numbering ok; IPSJ forms listed
+2026-07-09 | site-coordinator | draft codex tier-selection config proposals | tools/out/codex-offload-policy.md; tools/out/site-author.md; tools/out/site-coordinator.md; tools/out/site-checker.md; tools/out/site-editor.md; tools/out/site-rescue.md; tools/out/AGENTS.md-tier-blocks.md; tools/out/CLAUDE.md-tier-blocks.md; tools/out/apply-tier-config.md | none | completed
+2026-07-09 | site-coordinator | create one-shot tier config apply script | tools/out/apply-tier-config.sh; tools/out/apply-tier-config.md | none | completed; bash -n passed
+2026-07-09 | site-author | Field2 sub007 e1-9 | tools/out/doi-sub007-p1.md | unknown | done
+2026-07-09 | site-author | Field2 sub007 e10-18 | tools/out/doi-sub007-p2.md | unknown | done
+2026-07-09 | site-author | Field2 sub007 e19-27 | tools/out/doi-sub007-p3.md | not-provided | done
+2026-07-09 | site-author | Field2 sub007 e28-36 | tools/out/doi-sub007-p4.md | unknown | done
+2026-07-09 | site-author | Field2 sub007 e37-45 | tools/out/doi-sub007-p5.md | unknown | done
+2026-07-09 | site-author | Field2 sub007 e46-54 | tools/out/doi-sub007-p6.md | unknown | done
+2026-07-09 | site-author | Field2 sub007 e55-62 | tools/out/doi-sub007-p7.md | unknown | done
