@@ -52,3 +52,10 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | site-author | field2 exporter data-doi/data-url | tools/out/field2-exporter.md | unknown | PASS
 2026-07-10 06:58 | site-author | field2-schema-check | tools/out/field2-schema-check.md | (none) | PASS-minor-fix
 2026-07-10 | site-editor | one-line see_also label fix in researchmap-export.py | tools/researchmap-export.py | n/a | done
+2026-07-10 | codex-high | CLAUDE.md dynamic-effort proposal | tools/out/CLAUDE.md | unknown | done
+2026-07-10 | codex-high | AGENTS.md dynamic-effort proposal | tools/out/AGENTS.md | <thread id> | done task_type=config-edit tier=codex-high duration_ms=240000 success=true
+2026-07-10 | codex-high | offload-policy dynamic-effort proposal | tools/out/codex-offload-policy.md | <thread id> | done
+2026-07-10 | codex-low | agent-files A dynamic-effort proposal | tools/out/site-{checker,editor,publisher}.md | thread id unavailable | done
+2026-07-10 | codex-low | agent-files B dynamic-effort proposal | tools/out/site-{author,coordinator,rescue}.md | unknown-thread-id | done
+2026-07-10 | codex-low | task-metrics/policy/apply-script created | tools/out/{task-tier-policy.md,task-metrics.jsonl,apply-effort-config.sh} | <thread id> | done
+2026-07-10 | site-editor | move sub005->sub007 achievements entry | tools/out/move-sub005-to-sub007.py | <conversationId> | drafted

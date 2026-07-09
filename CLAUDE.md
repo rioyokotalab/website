@@ -8,22 +8,37 @@ structure one-to-one.
 ## Standing directive: codex offload and config edits
 
 - Agents aggressively offload bounded reading, parsing, drafting, translation,
-  and script-generation work to their codex tier by default. This explicitly
-  includes site-coordinator, which offloads directly to codex-high before
-  spending main-session context on bounded analysis or drafting. Use pointers,
-  not payloads: pass paths, task, acceptance check, and a tools/out/ output path.
+  and script-generation work to the cheapest capable codex tier by default.
+  This explicitly includes site-coordinator, which offloads directly to
+  codex-low for simple/mechanical bounded work and reserves codex-high for
+  judgment before spending main-session context on bounded analysis or
+  drafting. Use pointers, not payloads: pass paths, task, acceptance check,
+  and a tools/out/ output path.
 - OFFLOAD BY DEFAULT is mandatory for any task involving reading more than 2
   files or more than about 100 lines, multi-page analysis, non-trivial
   drafting/translation, counting/parsing, citation reasoning, or edit-script
-  generation. It applies to retries too: retry as smaller or fanned-out codex
-  tasks, not by doing the bulk work in Claude context. Claude reads only the
-  tools/out/ deliverable plus minimal spot-checks and keeps replies short.
+  generation. Tier selection seed defaults: codex-low is DEFAULT for simple/mechanical
+  bounded work (metadata/DOI/URL lookups, Crossref/J-STAGE/arXiv resolution,
+  counting, grepping/parsing, aggregating tools/out files, format/URL
+  normalization, and straightforward CRLF-safe edit-script drafting);
+  codex-medium is for moderate parsing/verification; codex-high is reserved
+  for genuine judgment (house-style content drafting, JP<->EN translation,
+  exporter/citation-parser logic, deep failure/root-cause diagnosis). Prefer
+  the cheapest tier that can do the task. Reserve codex-high for judgment; do
+  NOT use codex-high for lookups, counting, aggregation, or mechanical edits.
+  These fixed examples are SEED DEFAULTS overridden by dynamic per-task
+  selection from the metrics-derived policy below.
+  It applies to retries too: retry as smaller or fanned-out codex tasks, not
+  by doing the bulk work in Claude context. Claude reads only the tools/out/
+  deliverable plus minimal spot-checks and keeps replies short.
 - FAN OUT codex: when work decomposes into independent bounded subtasks, issue
-  multiple `mcp__codex-<tier>__codex` calls in a SINGLE turn rather than serializing them or
-  spending more Claude subagent budget. Prefer many small parallel codex
-  sessions over many Claude subagents. Each codex session gets pointers not
-  payloads, writes its own tools/out/ deliverable, appends incrementally, and
-  self-logs to tools/codex-log.md.
+  multiple `mcp__codex-<tier>__codex` calls in a SINGLE turn rather than
+  serializing them or spending more Claude subagent budget. Fan out MANY
+  parallel codex-low sessions for simple lookup, parse, aggregate, normalize,
+  and mechanical edit-script work. Prefer many small parallel codex sessions
+  over many Claude subagents. Each codex session gets pointers not payloads,
+  writes its own tools/out/ deliverable, appends incrementally, and self-logs
+  to tools/codex-log.md.
 - Proposed config/context rewrites are written under `tools/out/` with the
   SAME filename the user can move into place manually, e.g.
   `tools/out/site-editor.md` or `tools/out/AGENTS.md`.
@@ -41,12 +56,50 @@ structure one-to-one.
   `codex-offload-policy.md`) that push that work down to codex -- always
   delivered as `tools/out/` proposals with an exact copy-paste apply command.
 
+## Dynamic codex effort selection and task metrics
+
+- All five codex-using site agents (`site-checker`, `site-editor`,
+  `site-author`, `site-coordinator`, `site-rescue`) now have all three codex
+  tiers available: `codex-low`, `codex-medium`, and `codex-high`.
+  `site-publisher` keeps NO codex tier in the website workflow. `.mcp.json`
+  already registers all three servers (`model_reasoning_effort` low, medium,
+  high), so no `.mcp.json` change is needed.
+- The orchestrator (`site-coordinator` / main session) chooses the codex tier
+  (`low`, `medium`, or `high`) for each dispatched task based on task type and
+  the metrics-derived policy, and states the chosen tier explicitly in every
+  dispatch. Subagents MUST use exactly that tier and MUST NOT change it up or
+  down. On a hard failure they report back; the orchestrator escalates the
+  tier (`low` -> `medium` -> `high`), then follows the existing Claude-side
+  escalation ladder (`Opus` -> `Fable`) for persistent Claude-side bugs.
+- Permanent metrics store: `tools/task-metrics.jsonl` (repo-tracked, one JSON
+  object per line):
+  `{"date":"YYYY-MM-DD","task_type":"<enum>","agent":"<agent>","tier":"low|medium|high","duration_ms":<int>,"success":true|false,"note":"<short>"}`.
+  The orchestrator appends one line after each task completes; `duration_ms`
+  and token counts come from the subagent task-notification.
+- Policy file: `tools/task-tier-policy.md` maps `task_type` to the recommended
+  default tier plus rolling median `duration_ms` and success rate. The
+  orchestrator reads it before choosing a tier, prefers the LOWEST tier that
+  meets the success bar while minimizing completion time, and periodically
+  updates the table from `tools/task-metrics.jsonl`.
+- Task-type enum: `mechanical-edit`, `content-draft`, `translation`,
+  `metadata-lookup`, `verify-parity`, `git-summary`, `deploy-publish`,
+  `exporter-logic`, `diagnosis`, `figure-production`, `config-edit`, `other`.
+- Seed policy before data exists: `mechanical-edit=low`,
+  `metadata-lookup=low`, `verify-parity=low`, `git-summary=low`,
+  `deploy-publish=low`, `content-draft=high`, `translation=high`,
+  `exporter-logic=high`, `diagnosis=high`, `figure-production=high`,
+  `config-edit=high`, `other=medium`.
+- The older fixed tier maps are SEED DEFAULTS only, overridden by dynamic
+  per-task selection. The point is to minimize task completion time by using
+  the cheapest/fastest effort that still succeeds for each task type, learned
+  empirically from the metrics store.
+
 ## Budget rule:
 
 - No agent for explanation-only answers.
 - No Fable/Opus in normal website workflow, EXCEPT for debugging escalation: if a bug persists after Sonnet-tier attempts, escalate to Opus; if Opus also cannot fix it, escalate to Fable.
 - Claude subagent capacity is a scarce weekly-limited resource; codex capacity is not. Prefer bounded work via codex fan-out inside as few Claude subagents as possible.
-- Coordinator should offload directly to codex-high instead of spawning a subagent whenever the task is codex-eligible.
+- Coordinator should offload directly to codex-low for simple bounded work instead of spawning a subagent whenever the task is codex-eligible, and reserve codex-high for judgment-heavy work; these are seed defaults overridden by dynamic per-task selection.
 - No parallel Claude subagents. Do fan out codex sessions in parallel for independent bounded subtasks.
 - No nested subagents.
 - No broad “check everything” unless requested.
@@ -154,7 +207,7 @@ sessions. Failures logged so far:
   item (not batched at the end), and keep each lookup dispatch small (≤3–4
   entries) so it finishes before being cut off. (Learned 2026-07-08.)
 
-**codex MCP backend for site-agents:** the site-agents and site-coordinator can delegate reasoning to the codex MCP servers. codex-{high,medium,low} must be registered at BOTH user scope (`~/.claude.json`) AND project scope (`/home/rioyokota/website/.mcp.json`) — user scope ALONE does NOT reach project agents or the project-scoped coordinator tools (confirmed 2026-07-08: an actual `mcp__codex-medium__codex` call from site-checker returned only after `.mcp.json` was added). Each codex-enabled agent's frontmatter lists its tier under `mcpServers:` plus the `mcp__codex-<tier>__codex` and `codex-reply` tools: site-author/site-coordinator/site-rescue→codex-high, site-checker/site-editor→codex-medium;
+**codex MCP backend for site-agents:** the site-agents and site-coordinator can delegate reasoning to the codex MCP servers. codex-{high,medium,low} must be registered at BOTH user scope (`~/.claude.json`) AND project scope (`/home/rioyokota/website/.mcp.json`) — user scope ALONE does NOT reach project agents or the project-scoped coordinator tools (confirmed 2026-07-08: an actual `mcp__codex-medium__codex` call from site-checker returned only after `.mcp.json` was added). Each codex-enabled agent's frontmatter now lists all three tiers under `mcpServers:` and includes the `mcp__codex-<tier>__codex` and `codex-reply` tools; the earlier fixed pairings remain seed defaults for dynamic per-task selection: site-author/site-coordinator/site-rescue→codex-low+codex-high, site-checker/site-editor→codex-low+codex-medium;
 site-publisher has no codex tier in the website workflow. On startup Claude prompts to approve the project MCP servers. Editing `.claude/agents/*.md` or `.mcp.json` must be done BY HAND — subagents categorically refuse config edits regardless of the `.claude/config-edit-approved` marker/PreToolUse hook (site-editor refused twice, 2026-07-08); the marker+hook still serve as a hard block against accidental config edits, not as an authorization channel. `.mcp.json` is repo-only and is excluded from deploy (deploy.sh `-x '^\.mcp\.json$'`), so it is never served publicly.
   Collaboration pattern (2026-07-08): OFFLOAD BY DEFAULT; PASS POINTERS, NOT PAYLOADS — codex has
   its own file access and reads `AGENTS.md` (repo root, deploy-excluded)
@@ -166,12 +219,13 @@ site-publisher has no codex tier in the website workflow. On startup Claude prom
   lost on cutoff, so lookup batches stay <=2 items. When independent bounded
   subtasks exist, fan out multiple `mcp__codex-<tier>__codex` calls in a single turn and then
   aggregate the tools/out/ files plus minimal spot-checks. site-coordinator
-  offloads directly to codex-high for bounded reading, parsing, multi-page
-  analysis, substantial drafting/translation, and edit-script drafting, then
-  reads only the tools/out deliverable plus minimal spot-checks. site-rescue
-  offloads bounded reading/parsing/analysis to codex-high during deep
-  root-cause diagnosis while staying read-only unless the user explicitly asks
-  otherwise. Division of
+  offloads directly to codex-low for simple bounded reading, parsing, counting,
+  aggregation, and mechanical edit-script drafting, and to codex-high for
+  judgment-heavy drafting/translation, exporter/citation-parser logic, and
+  deep diagnosis, then reads only the tools/out deliverable plus minimal
+  spot-checks. site-rescue uses codex-low for simple bounded reads during
+  diagnosis and codex-high for deep root-cause diagnosis while staying
+  read-only unless the user explicitly asks otherwise. Division of
   labor: codex generates (drafts, translations, analysis, edit scripts),
   Claude reviews/executes/verifies — codex never edits pages directly, never
   publishes, and never verifies its own work (site-checker stays the

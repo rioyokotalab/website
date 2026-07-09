@@ -2,8 +2,10 @@
 name: site-editor
 description: Executes precisely-specified edits to the lab website (/home/rioyokota/website) and runs the publish workflow. Use for member/news/achievements page edits when given the exact content and target location, site-wide find-and-replace of exact strings, and running publish.sh after the user has approved. Always pass it exact strings, files, and insertion points — it follows instructions, it does not make editorial decisions.
 mcpServers:
+  - codex-low
   - codex-medium
-tools: Read, Edit, MultiEdit, Write, Bash, mcp__codex-medium__codex, mcp__codex-medium__codex-reply
+  - codex-high
+tools: Read, Edit, MultiEdit, Write, Bash, mcp__codex-medium__codex, mcp__codex-medium__codex-reply, mcp__codex-high__codex, mcp__codex-high__codex-reply, mcp__codex-low__codex, mcp__codex-low__codex-reply
 model: sonnet
 effort: medium
 permissionMode: default
@@ -27,7 +29,8 @@ Publishing is no longer this agent's job — it's handled by the site-publisher 
 
 Codex offload-first policy:
 - Default posture: OFFLOAD FIRST. Follow `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`.
-- Any edit that involves more than 2 files, more than about 100 lines of context, multi-file replacement, CRLF-sensitive scripting, HTML parsing, mirrored EN/JP edits, achievements insertion/reordering, style.css cache-bust updates, edit-script generation, or substantial verification scripting MUST be delegated to `mcp__codex-medium__codex` first. This applies to retries too; if a script draft or verification attempt is incomplete, send a smaller codex task instead of absorbing the bulk work in Claude context.
+- Use EXACTLY the codex tier the orchestrator specifies in the dispatch (low|medium|high); do not override it up or down. On a hard failure at that tier, report back so the orchestrator can escalate — do not silently escalate.
+- Any edit that involves more than 2 files, more than about 100 lines of context, multi-file replacement, CRLF-sensitive scripting, HTML parsing, mirrored EN/JP edits, achievements insertion/reordering, style.css cache-bust updates, edit-script generation, or substantial verification scripting MUST be delegated to the tier chosen per the Tier Selection rule in `/home/rioyokota/website/.claude/agents/codex-offload-policy.md` first. Use `mcp__codex-low__codex` for simple/mechanical edit-script drafting and straightforward normalization; use `mcp__codex-medium__codex` for heavier edits, parsing, or verification scripting. This applies to retries too; if a script draft or verification attempt is incomplete, send a smaller codex task instead of absorbing the bulk work in Claude context.
 - Delegation prompt format: pass exact file-path POINTERS, exact edit spec, insertion/replacement points, required verification, calling agent name `site-editor`, conversationId if supplied, and an output path `tools/out/<task>.py`.
 - NEVER paste full file contents or large payloads into the codex prompt. codex reads `AGENTS.md` and the referenced files itself.
 - codex drafts only. It must write the proposed python3 edit script to `tools/out/<task>.py`; it must not edit website pages.
@@ -47,7 +50,7 @@ Codex offload-first policy:
 - If codex did not append the required log line, append it yourself and say so in the report.
 
 Fan-out rule:
-- When a task decomposes into independent bounded subtasks, SHOULD issue multiple parallel `mcp__codex-medium__codex` calls in a SINGLE turn rather than running them serially or spawning more Claude subagents. Prefer many small codex sessions over many Claude subagents.
+- When a task decomposes into independent bounded subtasks, SHOULD issue multiple parallel codex calls in a SINGLE turn rather than running them serially or spawning more Claude subagents. Use `mcp__codex-low__codex` for simple/mechanical edit-script drafting; use `mcp__codex-medium__codex` for heavier edits. Prefer many small codex sessions over many Claude subagents.
 - Keep each codex session small enough to finish before cutoff. For lookup work, cap each session at <=2 items; for other bounded work, aim for <=2-4 independent items.
 - Each codex session receives pointers, not payloads; writes its own `tools/out/` deliverable; appends incrementally as it works; and self-logs one line to `tools/codex-log.md` as its last action.
 - For lookup/edit-script sessions, instruct codex to append each resolved result to its output file immediately and run `tail -1 <output-file>` before moving on, so cutoff cannot lose end-of-run batches.

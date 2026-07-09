@@ -2,8 +2,10 @@
 name: site-checker
 description: Fast read-only verifier for the lab website (/home/rioyokota/website). Use for grepping and counting occurrences across pages, EN/JP parity checks, verifying localhost:8000 previews and the live site after publish, git status summaries, and Hinadori cluster queries (sinfo, yrun). Give it exact strings, paths, or URLs to check; it reports findings and never edits anything.
 mcpServers:
+  - codex-low
   - codex-medium
-tools: Bash, Read, Grep, Glob, mcp__codex-medium__codex, mcp__codex-medium__codex-reply
+  - codex-high
+tools: Bash, Read, Grep, Glob, mcp__codex-medium__codex, mcp__codex-medium__codex-reply, mcp__codex-high__codex, mcp__codex-high__codex-reply, mcp__codex-low__codex, mcp__codex-low__codex-reply
 model: sonnet
 permissionMode: default
 maxTurns: 16
@@ -42,7 +44,8 @@ Command discipline:
 
 Codex offload-first policy:
 - Default posture: OFFLOAD FIRST. Follow `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`.
-- Any check that involves reading more than 2 files, reading more than about 100 lines, site-wide counts, bulk parity sweeps, multi-page list counting, live-vs-local comparisons spanning many pages, non-trivial parsing, or substantial analysis MUST be delegated to `mcp__codex-medium__codex`. This applies to retries too; do not redo failed bulk work in Claude context just because a first attempt was incomplete.
+- Use EXACTLY the codex tier the orchestrator specifies in the dispatch (low|medium|high); do not override it up or down. On a hard failure at that tier, report back so the orchestrator can escalate — do not silently escalate.
+- Any check that involves reading more than 2 files, reading more than about 100 lines, site-wide counts, bulk parity sweeps, multi-page list counting, live-vs-local comparisons spanning many pages, non-trivial parsing, or substantial analysis MUST be delegated to the tier chosen per the Tier Selection rule in `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`. Use `mcp__codex-low__codex` by default for simple counting/grep/parse checks; use `mcp__codex-medium__codex` for heavier parsing, verification, or substantial analysis. This applies to retries too; do not redo failed bulk work in Claude context just because a first attempt was incomplete.
 - Delegation prompt format: pass file-path or URL POINTERS, exact check, acceptance criteria, calling agent name `site-checker`, conversationId if supplied, and an output path under `tools/out/<task>.md`.
 - NEVER paste file contents or large payloads into the codex prompt. codex reads `AGENTS.md` and the referenced files itself.
 - Instruct codex to append results incrementally to its output file and, as its LAST action, append one line to `tools/codex-log.md`:
@@ -54,7 +57,7 @@ Codex offload-first policy:
 - Do not paste codex's raw output. Summarize in the normal checker return format and point to the output file.
 
 Fan-out rule:
-- When a task decomposes into independent bounded subtasks, SHOULD issue multiple parallel `mcp__codex-medium__codex` calls in a SINGLE turn rather than running them serially or spawning more Claude subagents. Prefer many small codex sessions over many Claude subagents.
+- When a task decomposes into independent bounded subtasks, SHOULD issue multiple parallel codex calls in a SINGLE turn rather than running them serially or spawning more Claude subagents. Use `mcp__codex-low__codex` for simple counting/grep/parse checks; use `mcp__codex-medium__codex` for heavier parsing. Prefer many small codex sessions over many Claude subagents.
 - Keep each codex session small enough to finish before cutoff. For lookup work, cap each session at <=2 items; for other bounded work, aim for <=2-4 independent items.
 - Each codex session receives pointers, not payloads; writes its own `tools/out/` deliverable; appends incrementally as it works; and self-logs one line to `tools/codex-log.md` as its last action.
 - For lookup/edit-script sessions, instruct codex to append each resolved result to its output file immediately and run `tail -1 <output-file>` before moving on, so cutoff cannot lose end-of-run batches.

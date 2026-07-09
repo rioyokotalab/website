@@ -4,15 +4,28 @@ Shared standing policy for YOKOTA Lab website agents with codex MCP access.
 
 ## Codex-Enabled Agents
 
-- site-checker/site-editor -> codex-medium.
-- site-author, site-coordinator, site-rescue -> codex-high.
+- site-checker, site-editor, site-author, site-coordinator, and site-rescue all have codex-low, codex-medium, and codex-high available.
 - site-publisher -> NO codex tier.
-- site-coordinator offloads directly to `mcp__codex-high__codex` for bounded reading, parsing, drafting, translation, analysis, and edit-script drafting, not only by instructing subagents to offload.
+- site-coordinator offloads directly to the tier chosen per the Tier Selection rule for bounded reading, parsing, drafting, translation, analysis, and edit-script drafting, not only by instructing subagents to offload.
+
+## Tier Selection
+
+- The ORCHESTRATOR chooses the codex tier (low|medium|high) per task from task type plus the policy table `tools/task-tier-policy.md`, and states it in the dispatch. The subagent uses EXACTLY that tier and does NOT override it; on hard failure it reports back and the orchestrator escalates low->medium->high, then Opus->Fable for persistent Claude-side bugs.
+- Goal: minimize task completion time by using the cheapest/fastest effort that still succeeds for each task type, learned empirically from `tools/task-metrics.jsonl`.
+- SEED DEFAULTS until data: mechanical-edit=low, metadata-lookup=low, verify-parity=low, git-summary=low, deploy-publish=low, content-draft=high, translation=high, exporter-logic=high, diagnosis=high, figure-production=high, config-edit=high, other=medium.
+- TASK-TYPE ENUM: mechanical-edit, content-draft, translation, metadata-lookup, verify-parity, git-summary, deploy-publish, exporter-logic, diagnosis, figure-production, config-edit, other.
+- METRICS DUTY: after each task the orchestrator appends one line to `tools/task-metrics.jsonl`:
+
+```json
+{"date","task_type","agent","tier","duration_ms","success","note"}
+```
+
+- The orchestrator periodically refreshes `tools/task-tier-policy.md` from `tools/task-metrics.jsonl`.
 
 ## Default Posture
 
 - OFFLOAD FIRST.
-- If a task involves reading more than 2 files, reading more than about 100 lines, site-wide or multi-page analysis, parsing substantial HTML, counting/parsing, generating substantial content, non-trivial drafting, translating, citation parsing, exporter reasoning, figure/script drafting, or drafting a CRLF-preserving edit script, delegate to the agent's own codex tier.
+- If a task involves reading more than 2 files, reading more than about 100 lines, site-wide or multi-page analysis, parsing substantial HTML, counting/parsing, generating substantial content, non-trivial drafting, translating, citation parsing, exporter reasoning, figure/script drafting, or drafting a CRLF-preserving edit script, delegate to the orchestrator-selected codex tier.
 - This applies to retries too. If a first attempt is incomplete, narrow or fan out codex work; do not consume Claude context by doing the same bulk reading, parsing, drafting, or lookup work manually.
 - Do not spend expensive Claude agent context doing bulk reading, counting, parsing, drafting, or first-pass reasoning when codex can read the repository itself. This applies to the site-coordinator directly as well as to codex-enabled subagents.
 - The Claude agent reads the `tools/out/` deliverable plus minimal spot-check evidence, then keeps its reply short.
@@ -20,7 +33,7 @@ Shared standing policy for YOKOTA Lab website agents with codex MCP access.
 ## Fan-Out Rule
 
 - When a task decomposes into independent bounded subtasks, issue multiple `mcp__codex-<tier>__codex` calls in a SINGLE turn rather than doing them serially or spawning more Claude subagents.
-- Prefer many parallel codex sessions over many Claude subagents. Claude subagent capacity is scarce weekly-limited capacity; codex capacity is cheap and encouraged.
+- Prefer many parallel codex sessions over many Claude subagents. Fan out many parallel codex-low sessions for simple lookup/parse/aggregate work when the orchestrator-selected tier for that task type is low. Claude subagent capacity is scarce weekly-limited capacity; codex capacity is cheap and encouraged.
 - Keep each codex session small enough to finish before cutoff. For lookup work, cap each session at <=2 items. For other bounded work, aim for <=2-4 independent items per session.
 - Each codex session must receive pointers, not payloads; write its own `tools/out/` deliverable; append incrementally; and self-log one line to `tools/codex-log.md` as its last action.
 - The calling Claude agent aggregates the `tools/out/` files plus minimal spot-checks and does not paste codex payloads into chat.
@@ -34,6 +47,8 @@ Shared standing policy for YOKOTA Lab website agents with codex MCP access.
 - Pass pointers, not payloads.
 - A codex prompt must include:
   - calling agent name;
+  - task type from the Tier Selection enum;
+  - orchestrator-selected codex tier;
   - concrete task;
   - file paths or URL pointers to inspect;
   - acceptance criteria;
