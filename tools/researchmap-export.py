@@ -232,7 +232,7 @@ def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_url=None
     if data_doi:
         doc['identifiers'] = {'doi': [data_doi]}
     elif data_url:
-        doc['see_also'] = [{'@id': data_url}]
+        doc['see_also'] = [{'label': 'url', '@id': data_url}]
     doc['languages'] = ['jpn' if japanese else 'eng']
     if rm_type != 'misc':   # misc gets no extras (extra is presentations-specific there)
         doc.update(extra)
