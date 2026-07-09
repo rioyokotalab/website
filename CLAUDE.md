@@ -8,16 +8,26 @@ structure one-to-one.
 ## Standing directive: codex offload and config edits
 
 - Agents aggressively offload bounded reading, parsing, drafting, translation,
-  and script-generation work to their codex tier by default. Use pointers, not
-  payloads: pass paths, task, acceptance check, and a tools/out/ output path.
+  and script-generation work to their codex tier by default. This explicitly
+  includes site-coordinator, which offloads directly to codex-high before
+  spending main-session context on bounded analysis or drafting. Use pointers,
+  not payloads: pass paths, task, acceptance check, and a tools/out/ output path.
 - Proposed config/context rewrites are written under `tools/out/` with the
   SAME filename the user can move into place manually, e.g.
   `tools/out/site-editor.md` or `tools/out/AGENTS.md`.
 - `.claude/agents/*.md`, `.mcp.json`, `AGENTS.md`, and `CLAUDE.md` are
   hand-edit-only. Subagents refuse direct edits to these files.
+- When proposing changes to any hand-edit-only config file (.claude/agents/*.md, .mcp.json, AGENTS.md, CLAUDE.md), the agent MUST give the user an EXACT copy-paste shell command (mv/apply) to move the tools/out/ proposals into place. This apply-command duty is itself documented in the config files for high visibility.
 - codex output files are the durable deliverable. codex appends incrementally
   and self-logs as its last action to `tools/codex-log.md`; Claude reviews,
   executes, and verifies.
+- Continuously and frequently improve the configuration to offload as much work
+  as possible from Claude to codex. On an ongoing basis, the coordinator should
+  look for Claude-side work (reading, parsing, counting, drafting, translating,
+  analysis, script-generation) that codex could do instead, and propose config
+  updates (to `.claude/agents/*.md`, `AGENTS.md`, `CLAUDE.md`,
+  `codex-offload-policy.md`) that push that work down to codex -- always
+  delivered as `tools/out/` proposals with an exact copy-paste apply command.
 
 ## Budget rule:
 
@@ -130,16 +140,23 @@ sessions. Failures logged so far:
   item (not batched at the end), and keep each lookup dispatch small (≤3–4
   entries) so it finishes before being cut off. (Learned 2026-07-08.)
 
-**codex MCP backend for subagents:** the site-agents can delegate reasoning to the codex MCP servers. codex-{high,medium,low} must be registered at BOTH user scope (`~/.claude.json`) AND project scope (`/home/rioyokota/website/.mcp.json`) — user scope ALONE does NOT reach subagents (confirmed 2026-07-08: an actual `mcp__codex-medium__codex` call from site-checker returned only after `.mcp.json` was added). Each agent's frontmatter lists its tier under `mcpServers:` plus the `mcp__codex-<tier>__codex` and `codex-reply` tools: site-checker/site-editor→codex-medium, site-author→codex-high, site-publisher→codex-low. On startup Claude prompts to approve the project MCP servers. Editing `.claude/agents/*.md` or `.mcp.json` must be done BY HAND — subagents categorically refuse config edits regardless of the `.claude/config-edit-approved` marker/PreToolUse hook (site-editor refused twice, 2026-07-08); the marker+hook still serve as a hard block against accidental config edits, not as an authorization channel. `.mcp.json` is repo-only and is excluded from deploy (deploy.sh `-x '^\.mcp\.json$'`), so it is never served publicly.
-  Collaboration pattern (2026-07-08): PASS POINTERS, NOT PAYLOADS — codex has
+**codex MCP backend for site-agents:** the site-agents and site-coordinator can delegate reasoning to the codex MCP servers. codex-{high,medium,low} must be registered at BOTH user scope (`~/.claude.json`) AND project scope (`/home/rioyokota/website/.mcp.json`) — user scope ALONE does NOT reach project agents or the project-scoped coordinator tools (confirmed 2026-07-08: an actual `mcp__codex-medium__codex` call from site-checker returned only after `.mcp.json` was added). Each codex-enabled agent's frontmatter lists its tier under `mcpServers:` plus the `mcp__codex-<tier>__codex` and `codex-reply` tools: site-author/site-coordinator/site-rescue→codex-high, site-checker/site-editor→codex-medium;
+site-publisher has no codex tier in the website workflow. On startup Claude prompts to approve the project MCP servers. Editing `.claude/agents/*.md` or `.mcp.json` must be done BY HAND — subagents categorically refuse config edits regardless of the `.claude/config-edit-approved` marker/PreToolUse hook (site-editor refused twice, 2026-07-08); the marker+hook still serve as a hard block against accidental config edits, not as an authorization channel. `.mcp.json` is repo-only and is excluded from deploy (deploy.sh `-x '^\.mcp\.json$'`), so it is never served publicly.
+  Collaboration pattern (2026-07-08): OFFLOAD BY DEFAULT; PASS POINTERS, NOT PAYLOADS — codex has
   its own file access and reads `AGENTS.md` (repo root, deploy-excluded)
   automatically, so delegation prompts carry file paths + task + an output
   path under `tools/out/`, never pasted file contents; codex appends results
-  to the output file incrementally and replies in a few lines. Division of
+  to the output file incrementally and replies in a few lines. site-coordinator
+  offloads directly to codex-high for bounded reading, parsing, multi-page
+  analysis, substantial drafting/translation, and edit-script drafting, then
+  reads only the tools/out deliverable plus minimal spot-checks. site-rescue
+  offloads bounded reading/parsing/analysis to codex-high during deep
+  root-cause diagnosis while staying read-only unless the user explicitly asks
+  otherwise. Division of
   labor: codex generates (drafts, translations, analysis, edit scripts),
   Claude reviews/executes/verifies — codex never edits pages directly, never
   publishes, and never verifies its own work (site-checker stays the
-  independent verifier). site-publisher has no codex access. Every delegation
+  independent verifier). Every delegation
   is logged as one line in `tools/codex-log.md` (date, agent, task, output
   file, conversationId) — output files are the durable cross-session memory;
   conversationIds (resumable via codex-reply) are an optimization. Escalation

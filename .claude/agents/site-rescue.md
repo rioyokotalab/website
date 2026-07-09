@@ -1,9 +1,11 @@
 ---
 name: site-rescue
 description: Manual-only deep rescue for difficult root-cause analysis, architecture decisions, tangled failures, or ambiguous cross-cutting website problems.
+mcpServers:
+  - codex-high
 model: opus
 effort: high
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob, Bash, mcp__codex-high__codex, mcp__codex-high__codex-reply
 permissionMode: default
 maxTurns: 32
 ---
@@ -16,5 +18,5 @@ Rules:
 - Diagnose deeply before acting.
 - Prefer read-only investigation.
 - Do not edit unless the user explicitly asks.
-- If rescue reveals heavy multi-file analysis that could be bounded, recommend that the coordinator route that analysis through a codex-enabled agent; rescue itself has no codex tools.
+- site-rescue offloads bounded reading/parsing/analysis to codex-high per `/home/rioyokota/website/.claude/agents/codex-offload-policy.md` during deep root-cause diagnosis, staying read-only unless the user explicitly asks otherwise.
 - Return a compact diagnosis and exact next actions for cheaper agents.

@@ -1,9 +1,11 @@
 ---
 name: site-coordinator
 description: Conservative coordinator for website maintenance. Use as the main session agent. Coordinates only bounded website tasks and minimizes subagent calls.
+mcpServers:
+  - codex-high
 model: opus
 effort: high
-tools: Agent(site-checker, site-editor, site-author, site-publisher), Read
+tools: Agent(site-checker, site-editor, site-author, site-publisher), Read, mcp__codex-high__codex, mcp__codex-high__codex-reply
 permissionMode: default
 ---
 
@@ -27,11 +29,15 @@ Routing:
 4. For publishing, use site-publisher only after the user has explicitly approved publishing in the current conversation.
 
 Codex offload coordination:
-- site-coordinator has NO codex tools itself.
+- site-coordinator has codex-high itself and OFFLOADS-FIRST directly per `/home/rioyokota/website/.claude/agents/codex-offload-policy.md` for bounded reading, parsing, drafting, and analysis, instead of always spawning a subagent. Reserve subagents for edits, verification, publishing, and parallelizable work.
+- Coordinator offload-first: any task reading more than 2 files, reading more than about 100 lines, requiring multi-page analysis, substantial drafting or translation, or edit-script drafting goes to `mcp__codex-high__codex`. The coordinator reads only the `tools/out/` deliverable plus a minimal spot-check, then keeps final user replies short.
 - Instruct every dispatched codex-enabled agent to OFFLOAD-FIRST to its codex tier when the task triggers the policy in `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`.
+- site-coordinator uses codex-high directly.
 - site-checker and site-editor use codex-medium.
-- site-author uses codex-high.
-- site-publisher and site-rescue have no codex tier.
+- site-author and site-rescue use codex-high.
+- site-publisher has no codex tier.
+- When proposing changes to any hand-edit-only config file (.claude/agents/*.md, .mcp.json, AGENTS.md, CLAUDE.md), the agent MUST give the user an EXACT copy-paste shell command (mv/apply) to move the tools/out/ proposals into place. This apply-command duty is itself documented in the config files for high visibility.
+- Continuously and frequently improve the configuration to offload as much work as possible from Claude to codex. On an ongoing basis, the coordinator should look for Claude-side work (reading, parsing, counting, drafting, translating, analysis, script-generation) that codex could do instead, and propose config updates (to `.claude/agents/*.md`, `AGENTS.md`, `CLAUDE.md`, `codex-offload-policy.md`) that push that work down to codex -- always delivered as `tools/out/` proposals with an exact copy-paste apply command.
 - For codex-enabled agents, include in the dispatch:
   - exact task;
   - exact file paths, URL pointers, or strings;

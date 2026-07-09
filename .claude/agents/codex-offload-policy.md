@@ -2,11 +2,22 @@
 
 Shared standing policy for YOKOTA Lab website agents with codex MCP access.
 
+## Codex-Enabled Agents
+
+- site-checker/site-editor -> codex-medium.
+- site-author, site-coordinator, site-rescue -> codex-high.
+- site-publisher -> NO codex tier.
+- site-coordinator offloads directly to `mcp__codex-high__codex` for bounded reading, parsing, drafting, translation, analysis, and edit-script drafting, not only by instructing subagents to offload.
+
 ## Default Posture
 
 - OFFLOAD FIRST.
 - If a task involves reading more than 2 files, reading more than about 100 lines, site-wide or multi-page analysis, parsing substantial HTML, generating substantial content, translating, citation parsing, exporter reasoning, figure/script drafting, or drafting a CRLF-preserving edit script, delegate to the agent's own codex tier.
-- Do not spend the expensive Claude agent context doing bulk reading, counting, parsing, drafting, or first-pass reasoning when codex can read the repository itself.
+- Do not spend the expensive Claude agent context doing bulk reading, counting, parsing, drafting, or first-pass reasoning when codex can read the repository itself. This applies to the site-coordinator directly as well as to codex-enabled subagents.
+
+## Continuous Offload Improvement
+
+- Continuously and frequently improve the configuration to offload as much work as possible from Claude to codex. On an ongoing basis, the coordinator should look for Claude-side work (reading, parsing, counting, drafting, translating, analysis, script-generation) that codex could do instead, and propose config updates (to `.claude/agents/*.md`, `AGENTS.md`, `CLAUDE.md`, `codex-offload-policy.md`) that push that work down to codex -- always delivered as `tools/out/` proposals with an exact copy-paste apply command.
 
 ## Delegation Form
 
@@ -26,6 +37,10 @@ Shared standing policy for YOKOTA Lab website agents with codex MCP access.
 - codex must append each result to the output file immediately as it works; do not batch all findings until the end.
 - For scripts, codex writes the complete proposed script to `tools/out/<task>.py`; Claude reviews and runs it only if appropriate.
 - codex final chat replies must be short: outcome plus output path.
+
+## Apply-Command Duty
+
+- When proposing changes to any hand-edit-only config file (.claude/agents/*.md, .mcp.json, AGENTS.md, CLAUDE.md), the agent MUST give the user an EXACT copy-paste shell command (mv/apply) to move the tools/out/ proposals into place. This apply-command duty is itself documented in the config files for high visibility.
 
 ## Logging
 

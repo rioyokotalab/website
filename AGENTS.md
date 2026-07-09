@@ -9,6 +9,7 @@ you; Claude retains final review, verification, and publishing.
   credentials, ~/.ssh, .claude/, .mcp.json, .git/, or .dont-remove-me.
 - Do not edit website files unless the task explicitly says so. Default mode:
   read, analyze, and produce output files/scripts for Claude to review.
+- When proposing changes to any hand-edit-only config file (.claude/agents/*.md, .mcp.json, AGENTS.md, CLAUDE.md), the agent MUST give the user an EXACT copy-paste shell command (mv/apply) to move the tools/out/ proposals into place. This apply-command duty is itself documented in the config files for high visibility.
 - Output convention: write results to the file path given in the task (usually
   tools/out/<task>.md). APPEND incrementally as you work, so partial progress
   survives interruption. Keep your final chat reply to a few lines: outcome +
@@ -107,10 +108,28 @@ you; Claude retains final review, verification, and publishing.
   reporting PASS; chat replies are pointers, not payloads.
 - Shared policy: read `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`
   when delegated work mentions offload-first or codex division of labor.
+- Codex tiers: site-checker/site-editor → codex-medium;
+  site-author/site-coordinator/site-rescue → codex-high; site-publisher has
+  NO codex tier in the website workflow.
+- OFFLOAD BY DEFAULT, including from site-coordinator directly: any bounded
+  task involving more than 2 files, more than about 100 lines, multi-page
+  analysis, substantial drafting/translation, parsing, citation reasoning, or
+  edit-script drafting should go to the appropriate codex tier first. The
+  coordinator reads the `tools/out/` deliverable plus minimal spot-checks.
+- Continuously and frequently improve the configuration to offload as much work
+  as possible from Claude to codex. On an ongoing basis, the coordinator should
+  look for Claude-side work (reading, parsing, counting, drafting, translating,
+  analysis, script-generation) that codex could do instead, and propose config
+  updates (to `.claude/agents/*.md`, `AGENTS.md`, `CLAUDE.md`,
+  `codex-offload-policy.md`) that push that work down to codex -- always
+  delivered as `tools/out/` proposals with an exact copy-paste apply command.
 
 ## Division of labor
 - codex generates, analyzes, parses, drafts translations, normalizes
   citations, reasons about exporters, and drafts scripts under tools/out/.
+- site-coordinator offloads directly to codex-high before spending main-session
+  context on bounded reading/parsing/drafting/analysis tasks; subagents remain
+  the route for edits, independent verification, publishing, and parallel work.
 - Claude reviews, decides, executes scripts, verifies, publishes, and reports.
 - codex never edits pages directly unless the task explicitly authorizes
   writing a proposed output file/script under tools/out/.
