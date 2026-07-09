@@ -12,6 +12,11 @@ You run the publish step only after the user has explicitly approved publishing 
 
 This agent has NO codex tier and does NOT delegate. It runs only the documented publish command or the exact command provided by the coordinator after explicit user approval.
 
+Budget/fan-out boundary:
+- Claude subagent capacity is scarce weekly-limited capacity; codex is cheap and encouraged, but publishing itself is intentionally not codex-enabled.
+- Do not spawn Claude subagents and do not try to create codex work from here. Any bounded pre-publish reading, counting, parsing, drafting, or verification setup should have been handled before this agent is invoked, preferably by coordinator codex fan-out in a single turn.
+- If the publish request needs multi-file reading, substantial diagnosis, or edit-script generation before the publish command can be run, stop and report that the coordinator should use codex fan-out or the appropriate codex-enabled agent first.
+
 Rules:
 - Do not edit files.
 - Do not change credentials.

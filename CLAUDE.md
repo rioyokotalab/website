@@ -12,6 +12,18 @@ structure one-to-one.
   includes site-coordinator, which offloads directly to codex-high before
   spending main-session context on bounded analysis or drafting. Use pointers,
   not payloads: pass paths, task, acceptance check, and a tools/out/ output path.
+- OFFLOAD BY DEFAULT is mandatory for any task involving reading more than 2
+  files or more than about 100 lines, multi-page analysis, non-trivial
+  drafting/translation, counting/parsing, citation reasoning, or edit-script
+  generation. It applies to retries too: retry as smaller or fanned-out codex
+  tasks, not by doing the bulk work in Claude context. Claude reads only the
+  tools/out/ deliverable plus minimal spot-checks and keeps replies short.
+- FAN OUT codex: when work decomposes into independent bounded subtasks, issue
+  multiple `mcp__codex-<tier>__codex` calls in a SINGLE turn rather than serializing them or
+  spending more Claude subagent budget. Prefer many small parallel codex
+  sessions over many Claude subagents. Each codex session gets pointers not
+  payloads, writes its own tools/out/ deliverable, appends incrementally, and
+  self-logs to tools/codex-log.md.
 - Proposed config/context rewrites are written under `tools/out/` with the
   SAME filename the user can move into place manually, e.g.
   `tools/out/site-editor.md` or `tools/out/AGENTS.md`.
@@ -33,7 +45,9 @@ structure one-to-one.
 
 - No agent for explanation-only answers.
 - No Fable/Opus in normal website workflow, EXCEPT for debugging escalation: if a bug persists after Sonnet-tier attempts, escalate to Opus; if Opus also cannot fix it, escalate to Fable.
-- No parallel subagents.
+- Claude subagent capacity is a scarce weekly-limited resource; codex capacity is not. Prefer bounded work via codex fan-out inside as few Claude subagents as possible.
+- Coordinator should offload directly to codex-high instead of spawning a subagent whenever the task is codex-eligible.
+- No parallel Claude subagents. Do fan out codex sessions in parallel for independent bounded subtasks.
 - No nested subagents.
 - No broad “check everything” unless requested.
 - Checker returns summaries, not raw outputs.
@@ -146,7 +160,12 @@ site-publisher has no codex tier in the website workflow. On startup Claude prom
   its own file access and reads `AGENTS.md` (repo root, deploy-excluded)
   automatically, so delegation prompts carry file paths + task + an output
   path under `tools/out/`, never pasted file contents; codex appends results
-  to the output file incrementally and replies in a few lines. site-coordinator
+  to the output file incrementally and replies in a few lines. For lookup/edit
+  codex sessions, append each resolved result immediately and run
+  `tail -1 <output-file>` before moving on; batching or end-of-run writes get
+  lost on cutoff, so lookup batches stay <=2 items. When independent bounded
+  subtasks exist, fan out multiple `mcp__codex-<tier>__codex` calls in a single turn and then
+  aggregate the tools/out/ files plus minimal spot-checks. site-coordinator
   offloads directly to codex-high for bounded reading, parsing, multi-page
   analysis, substantial drafting/translation, and edit-script drafting, then
   reads only the tools/out deliverable plus minimal spot-checks. site-rescue
@@ -277,10 +296,10 @@ end-to-end on 2026-07-04, removing a member from the member page):
   batches, authorized hosts Crossref/DBLP/Semantic Scholar/J-STAGE/arXiv (+anlp.jp
   for ANLP), appending each result immediately to `tools/out/doi-subNNN.md`. The
   Field-2 exporter step (not yet built) will map `data-doi`->DOI identifier and
-  `data-url`->see_also link. Progress (2026-07-08) in
+  `data-url`->see_also link. Progress (2026-07-09) in
   `tools/researchmap-metadata-todo.md`: sub001 (37 doi + 2 url), sub002 (0),
-  sub003 (2 doi), sub005 (4 doi + 5 url) done; sub004 / sub006 / sub007 + the
-  exporter update remain.
+  sub003 (2 doi), sub004 (48 doi + 25 url; 42 blank posters/talks), sub005 (4 doi + 5 url) done; sub006 / sub007 + the
+  exporter update remain. For 7 sub004 entries whose website title differed from the published version, the PUBLISHED title was mirrored onto the website (en+jp) on 2026-07-09 (e.g. Aurora-M, Formula-Supervised, RePOSE, BiCGStab, N-Body Problems with Boundary Distributions, Task Parallel Implementation, k-th Eigenvalue).
 - **News**: only top-conference acceptances (ICLR/NeurIPS/CVPR/AAAI level) and
   grants get news items — not workshops, GTC talks, or LREC-tier venues. Each
   item appears in four places: a dated row in the News table on both top pages

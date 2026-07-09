@@ -16,10 +16,10 @@ Core policy:
 - Push work DOWN to the cheapest capable agent by default.
 - Do not use general-purpose, Explore, Plan, forks, or nested agents. Do not use Fable or Opus in normal workflow, EXCEPT for debugging escalation: if a bug persists after Sonnet-tier attempts, escalate to Opus; if Opus also cannot fix it, escalate to Fable.
 - Escalation ladder for stuck work: Sonnet → codex-medium/high → Opus → Fable.
-- Do not spawn agents in parallel.
+- Do not spawn Claude subagents in parallel; fan out codex in parallel for independent bounded subtasks.
 - Do not ask for broad audits unless the user explicitly asks.
 - Do not request full-file dumps from subagents.
-- Prefer one bounded agent call per phase.
+- Prefer one bounded Claude agent call per phase; inside that phase, use codex fan-out for independent bounded subtasks.
 - If a task can be answered without repository inspection, answer directly.
 
 Routing:
@@ -29,9 +29,16 @@ Routing:
 4. For publishing, use site-publisher only after the user has explicitly approved publishing in the current conversation.
 
 Codex offload coordination:
-- site-coordinator has codex-high itself and OFFLOADS-FIRST directly per `/home/rioyokota/website/.claude/agents/codex-offload-policy.md` for bounded reading, parsing, drafting, and analysis, instead of always spawning a subagent. Reserve subagents for edits, verification, publishing, and parallelizable work.
-- Coordinator offload-first: any task reading more than 2 files, reading more than about 100 lines, requiring multi-page analysis, substantial drafting or translation, or edit-script drafting goes to `mcp__codex-high__codex`. The coordinator reads only the `tools/out/` deliverable plus a minimal spot-check, then keeps final user replies short.
-- Instruct every dispatched codex-enabled agent to OFFLOAD-FIRST to its codex tier when the task triggers the policy in `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`.
+- site-coordinator has codex-high itself and OFFLOADS-FIRST directly per `/home/rioyokota/website/.claude/agents/codex-offload-policy.md` for bounded reading, parsing, drafting, translation, analysis, and edit-script drafting, instead of spawning a Claude subagent whenever the task is codex-eligible.
+- Claude subagent capacity is a scarce weekly-limited resource; codex capacity is cheap and encouraged. Prefer doing bounded work via codex fan-out inside as few Claude subagents as possible.
+- Do NOT spawn Claude subagents in parallel. DO fan out codex in parallel when the work decomposes into independent bounded subtasks.
+- Coordinator offload-first: any task reading more than 2 files, reading more than about 100 lines, requiring multi-page analysis, non-trivial drafting/translation, counting/parsing, or edit-script generation MUST go to `mcp__codex-high__codex`. This applies to retries too; failed or incomplete attempts should be retried as smaller codex tasks rather than absorbed into coordinator context.
+- The coordinator reads only the `tools/out/` deliverable plus a minimal spot-check, then keeps final user replies short.
+- FAN-OUT: when a task decomposes into independent bounded subtasks, issue multiple `mcp__codex-high__codex` calls in a SINGLE turn rather than doing them serially or spending Claude subagent budget. Prefer many small parallel codex sessions over many Claude subagents.
+- Keep each codex session small enough to finish before cutoff. For lookup work, cap each session at <=2 items; for other bounded work, aim for <=2-4 independent items.
+- Each codex session receives pointers, not payloads; writes its own `tools/out/` deliverable; appends incrementally; for lookup/edit sessions appends each resolved result immediately and runs `tail -1 <output-file>` before moving on; and self-logs one line to `tools/codex-log.md`.
+- Aggregate fan-out by reading the `tools/out/` files plus minimal spot-checks.
+- Instruct every dispatched codex-enabled agent to OFFLOAD-FIRST to its codex tier when the task triggers the policy in `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`, including retries.
 - site-coordinator uses codex-high directly.
 - site-checker and site-editor use codex-medium.
 - site-author and site-rescue use codex-high.
@@ -45,6 +52,7 @@ Codex offload coordination:
   - output path under `tools/out/<task>.md` or `tools/out/<task>.py`;
   - instruction to pass pointers, not payloads, to codex;
   - instruction that codex appends incrementally and self-logs to `tools/codex-log.md`;
+  - instruction that lookup/edit codex sessions append each result immediately and run `tail -1` after each write;
   - instruction that the Claude agent verifies independently and keeps its final message short.
 - Every dispatch must be self-contained. Subagents do not share memory, and a follow-up `Agent` call spawns a fresh instance. Never say "use the list from before"; repeat all paths, content, acceptance checks, and output-file requirements.
 

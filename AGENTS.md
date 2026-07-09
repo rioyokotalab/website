@@ -106,6 +106,11 @@ you; Claude retains final review, verification, and publishing.
   append each result to its output file immediately as it works. The calling
   agent must confirm the output file exists and is non-empty before
   reporting PASS; chat replies are pointers, not payloads.
+- Reliability rule for lookup/edit codex sessions: append each resolved result
+  to the `tools/out/` file the instant it is resolved and run
+  `tail -1 <output-file>` to confirm the write landed BEFORE moving on.
+  Batching or end-of-run writes get lost on cutoff. Keep lookup batches to
+  <=2 items.
 - Shared policy: read `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`
   when delegated work mentions offload-first or codex division of labor.
 - Codex tiers: site-checker/site-editor → codex-medium;
@@ -113,9 +118,25 @@ you; Claude retains final review, verification, and publishing.
   NO codex tier in the website workflow.
 - OFFLOAD BY DEFAULT, including from site-coordinator directly: any bounded
   task involving more than 2 files, more than about 100 lines, multi-page
-  analysis, substantial drafting/translation, parsing, citation reasoning, or
-  edit-script drafting should go to the appropriate codex tier first. The
-  coordinator reads the `tools/out/` deliverable plus minimal spot-checks.
+  analysis, non-trivial drafting/translation, counting/parsing, citation
+  reasoning, or edit-script generation MUST go to the appropriate codex tier
+  first. This applies to retries too: if a first attempt is incomplete, narrow
+  or fan out codex work instead of doing the bulk work in Claude context. The
+  coordinator reads only the `tools/out/` deliverable plus minimal spot-checks
+  and keeps its reply short.
+- FAN OUT codex: when work decomposes into independent bounded subtasks, the
+  Claude agent SHOULD issue multiple `mcp__codex(...)` calls in a SINGLE turn
+  rather than doing them serially or spawning more Claude subagents. Prefer many
+  small parallel codex sessions over many Claude subagents. Each session gets
+  pointers not payloads, writes its own `tools/out/` deliverable, appends
+  incrementally, verifies writes with `tail -1` for lookup/edit work, and
+  self-logs to `tools/codex-log.md`. Keep each codex scope small (lookup
+  batches <=2 items; other bounded batches <=2-4 items).
+- Claude subagent capacity is a scarce weekly-limited resource; codex capacity
+  is not. Prefer bounded work via codex fan-out inside as FEW Claude subagents
+  as possible, and prefer coordinator direct codex-high offload whenever the
+  task is codex-eligible. Do NOT spawn Claude subagents in parallel; DO fan out
+  codex in parallel.
 - Continuously and frequently improve the configuration to offload as much work
   as possible from Claude to codex. On an ongoing basis, the coordinator should
   look for Claude-side work (reading, parsing, counting, drafting, translating,
@@ -129,7 +150,9 @@ you; Claude retains final review, verification, and publishing.
   citations, reasons about exporters, and drafts scripts under tools/out/.
 - site-coordinator offloads directly to codex-high before spending main-session
   context on bounded reading/parsing/drafting/analysis tasks; subagents remain
-  the route for edits, independent verification, publishing, and parallel work.
+  the route for edits, independent verification, and publishing. For parallel
+  bounded subtasks, prefer codex fan-out in a single turn over spawning more
+  Claude subagents.
 - Claude reviews, decides, executes scripts, verifies, publishes, and reports.
 - codex never edits pages directly unless the task explicitly authorizes
   writing a proposed output file/script under tools/out/.

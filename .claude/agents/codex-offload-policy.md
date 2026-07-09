@@ -12,8 +12,18 @@ Shared standing policy for YOKOTA Lab website agents with codex MCP access.
 ## Default Posture
 
 - OFFLOAD FIRST.
-- If a task involves reading more than 2 files, reading more than about 100 lines, site-wide or multi-page analysis, parsing substantial HTML, generating substantial content, translating, citation parsing, exporter reasoning, figure/script drafting, or drafting a CRLF-preserving edit script, delegate to the agent's own codex tier.
-- Do not spend the expensive Claude agent context doing bulk reading, counting, parsing, drafting, or first-pass reasoning when codex can read the repository itself. This applies to the site-coordinator directly as well as to codex-enabled subagents.
+- If a task involves reading more than 2 files, reading more than about 100 lines, site-wide or multi-page analysis, parsing substantial HTML, counting/parsing, generating substantial content, non-trivial drafting, translating, citation parsing, exporter reasoning, figure/script drafting, or drafting a CRLF-preserving edit script, delegate to the agent's own codex tier.
+- This applies to retries too. If a first attempt is incomplete, narrow or fan out codex work; do not consume Claude context by doing the same bulk reading, parsing, drafting, or lookup work manually.
+- Do not spend expensive Claude agent context doing bulk reading, counting, parsing, drafting, or first-pass reasoning when codex can read the repository itself. This applies to the site-coordinator directly as well as to codex-enabled subagents.
+- The Claude agent reads the `tools/out/` deliverable plus minimal spot-check evidence, then keeps its reply short.
+
+## Fan-Out Rule
+
+- When a task decomposes into independent bounded subtasks, issue multiple `mcp__codex-<tier>__codex` calls in a SINGLE turn rather than doing them serially or spawning more Claude subagents.
+- Prefer many parallel codex sessions over many Claude subagents. Claude subagent capacity is scarce weekly-limited capacity; codex capacity is cheap and encouraged.
+- Keep each codex session small enough to finish before cutoff. For lookup work, cap each session at <=2 items. For other bounded work, aim for <=2-4 independent items per session.
+- Each codex session must receive pointers, not payloads; write its own `tools/out/` deliverable; append incrementally; and self-log one line to `tools/codex-log.md` as its last action.
+- The calling Claude agent aggregates the `tools/out/` files plus minimal spot-checks and does not paste codex payloads into chat.
 
 ## Continuous Offload Improvement
 
@@ -35,6 +45,8 @@ Shared standing policy for YOKOTA Lab website agents with codex MCP access.
 
 - The `tools/out/` file is the deliverable.
 - codex must append each result to the output file immediately as it works; do not batch all findings until the end.
+- Lookup/edit codex sessions must append each resolved result to their `tools/out/` file the instant it is resolved and run `tail -1 <output-file>` to confirm the write landed BEFORE moving on. Batching or end-of-run writes get lost on cutoff.
+- Keep lookup batches to <=2 items.
 - For scripts, codex writes the complete proposed script to `tools/out/<task>.py`; Claude reviews and runs it only if appropriate.
 - codex final chat replies must be short: outcome plus output path.
 

@@ -46,17 +46,25 @@ Rules:
 
 Codex offload-first policy:
 - Default posture: OFFLOAD FIRST. Follow `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`.
-- Any task involving more than 2 files, more than about 100 lines, substantial generation, substantial analysis, citation parsing, metadata lookup planning, exporter reasoning, figure/script drafting, or JP↔EN translation MUST be delegated to `mcp__codex-high__codex`.
+- Any task involving more than 2 files, more than about 100 lines, multi-page analysis, non-trivial drafting, substantial generation, substantial analysis, citation parsing, metadata lookup planning, exporter reasoning, figure/script drafting, or JP↔EN translation MUST be delegated to `mcp__codex-high__codex`. This applies to retries too; retry by narrowing or fanning out codex work, not by doing the bulk task in Claude context.
 - Offload drafting news, achievements citations, research descriptions, captions, translations, citation normalization, data-date/data-doi/data-url reasoning, researchmap exporter reasoning, ORCID/exporter reasoning, and figure-production scripts.
 - Delegation prompt format: pass file-path POINTERS, exact task, relevant style-reference paths, acceptance criteria, calling agent name `site-author`, conversationId if supplied, and an output path under `tools/out/<task>.md`.
 - NEVER paste full file contents or large payloads into the codex prompt. codex reads `AGENTS.md`, `CLAUDE.md` if pointed to it, and the referenced files itself.
 - Instruct codex to append results incrementally to its output file and, as its LAST action, append one line to `tools/codex-log.md`:
   `date | site-author | task | output file | conversationId | outcome`.
+- For lookup/edit-script sessions, instruct codex to append each resolved result immediately and run `tail -1 <output-file>` before moving on.
 - After codex returns, confirm the output file exists and is non-empty.
 - Read codex's output file plus only minimal spot-check lines from referenced files.
 - Independently spot-check at least one codex claim before using the result.
 - Review and revise codex output; never pass it through unreviewed.
 - If codex did not append the required log line, append it yourself and say so in the report.
+
+Fan-out rule:
+- When a task decomposes into independent bounded subtasks, SHOULD issue multiple parallel `mcp__codex-high__codex` calls in a SINGLE turn rather than running them serially or spawning more Claude subagents. Prefer many small codex sessions over many Claude subagents.
+- Keep each codex session small enough to finish before cutoff. For lookup work, cap each session at <=2 items; for other bounded work, aim for <=2-4 independent items.
+- Each codex session receives pointers, not payloads; writes its own `tools/out/` deliverable; appends incrementally as it works; and self-logs one line to `tools/codex-log.md` as its last action.
+- For lookup/edit-script sessions, instruct codex to append each resolved result to its output file immediately and run `tail -1 <output-file>` before moving on, so cutoff cannot lose end-of-run batches.
+- After fan-out returns, aggregate only the `tools/out/` deliverables plus minimal spot-checks. Keep the Claude reply short and point to the output files.
 
 Return format:
 - Final content or diagnosis.

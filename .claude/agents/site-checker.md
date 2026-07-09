@@ -42,15 +42,23 @@ Command discipline:
 
 Codex offload-first policy:
 - Default posture: OFFLOAD FIRST. Follow `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`.
-- Any check that involves reading more than 2 files, reading more than about 100 lines, site-wide counts, bulk parity sweeps, multi-page list counting, live-vs-local comparisons spanning many pages, or substantial parsing/analysis MUST be delegated to `mcp__codex-medium__codex`.
+- Any check that involves reading more than 2 files, reading more than about 100 lines, site-wide counts, bulk parity sweeps, multi-page list counting, live-vs-local comparisons spanning many pages, non-trivial parsing, or substantial analysis MUST be delegated to `mcp__codex-medium__codex`. This applies to retries too; do not redo failed bulk work in Claude context just because a first attempt was incomplete.
 - Delegation prompt format: pass file-path or URL POINTERS, exact check, acceptance criteria, calling agent name `site-checker`, conversationId if supplied, and an output path under `tools/out/<task>.md`.
 - NEVER paste file contents or large payloads into the codex prompt. codex reads `AGENTS.md` and the referenced files itself.
 - Instruct codex to append results incrementally to its output file and, as its LAST action, append one line to `tools/codex-log.md`:
   `date | site-checker | task | output file | conversationId | outcome`.
+- For lookup-style checks, instruct codex to append each result immediately and run `tail -1 <output-file>` before moving on.
 - After codex returns, read ONLY codex's output file plus minimal spot-check evidence, such as 1-2 grep/read/curl confirmations.
 - Confirm the output file exists and is non-empty before reporting PASS.
 - Spot-check at least one codex claim yourself before reporting PASS or success.
 - Do not paste codex's raw output. Summarize in the normal checker return format and point to the output file.
+
+Fan-out rule:
+- When a task decomposes into independent bounded subtasks, SHOULD issue multiple parallel `mcp__codex-medium__codex` calls in a SINGLE turn rather than running them serially or spawning more Claude subagents. Prefer many small codex sessions over many Claude subagents.
+- Keep each codex session small enough to finish before cutoff. For lookup work, cap each session at <=2 items; for other bounded work, aim for <=2-4 independent items.
+- Each codex session receives pointers, not payloads; writes its own `tools/out/` deliverable; appends incrementally as it works; and self-logs one line to `tools/codex-log.md` as its last action.
+- For lookup/edit-script sessions, instruct codex to append each resolved result to its output file immediately and run `tail -1 <output-file>` before moving on, so cutoff cannot lose end-of-run batches.
+- After fan-out returns, aggregate only the `tools/out/` deliverables plus minimal spot-checks. Keep the Claude reply short and point to the output files.
 
 Return format:
 - Objective checked.

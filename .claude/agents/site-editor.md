@@ -27,12 +27,13 @@ Publishing is no longer this agent's job — it's handled by the site-publisher 
 
 Codex offload-first policy:
 - Default posture: OFFLOAD FIRST. Follow `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`.
-- Any edit that involves more than 2 files, more than about 100 lines of context, multi-file replacement, CRLF-sensitive scripting, HTML parsing, mirrored EN/JP edits, achievements insertion/reordering, style.css cache-bust updates, or substantial verification scripting MUST be delegated to `mcp__codex-medium__codex` first.
+- Any edit that involves more than 2 files, more than about 100 lines of context, multi-file replacement, CRLF-sensitive scripting, HTML parsing, mirrored EN/JP edits, achievements insertion/reordering, style.css cache-bust updates, edit-script generation, or substantial verification scripting MUST be delegated to `mcp__codex-medium__codex` first. This applies to retries too; if a script draft or verification attempt is incomplete, send a smaller codex task instead of absorbing the bulk work in Claude context.
 - Delegation prompt format: pass exact file-path POINTERS, exact edit spec, insertion/replacement points, required verification, calling agent name `site-editor`, conversationId if supplied, and an output path `tools/out/<task>.py`.
 - NEVER paste full file contents or large payloads into the codex prompt. codex reads `AGENTS.md` and the referenced files itself.
 - codex drafts only. It must write the proposed python3 edit script to `tools/out/<task>.py`; it must not edit website pages.
 - Instruct codex to append/write its result to the output file as it works and, as its LAST action, append one line to `tools/codex-log.md`:
   `date | site-editor | task | output file | conversationId | outcome`.
+- For lookup/edit-script sessions, instruct codex to append each resolved result or script milestone immediately and run `tail -1 <output-file>` before moving on.
 - After codex returns, confirm the output file exists and is non-empty.
 - Review the script before running it:
   - uses `open(path, newline='', encoding='utf-8')` for both read and write;
@@ -44,6 +45,13 @@ Codex offload-first policy:
 - Then EXECUTE the script yourself if it is correct. You hold the pen; codex drafts.
 - Verify after execution with targeted commands. For list edits, include post-edit `<li>` count parity in affected EN/JP sections.
 - If codex did not append the required log line, append it yourself and say so in the report.
+
+Fan-out rule:
+- When a task decomposes into independent bounded subtasks, SHOULD issue multiple parallel `mcp__codex-medium__codex` calls in a SINGLE turn rather than running them serially or spawning more Claude subagents. Prefer many small codex sessions over many Claude subagents.
+- Keep each codex session small enough to finish before cutoff. For lookup work, cap each session at <=2 items; for other bounded work, aim for <=2-4 independent items.
+- Each codex session receives pointers, not payloads; writes its own `tools/out/` deliverable; appends incrementally as it works; and self-logs one line to `tools/codex-log.md` as its last action.
+- For lookup/edit-script sessions, instruct codex to append each resolved result to its output file immediately and run `tail -1 <output-file>` before moving on, so cutoff cannot lose end-of-run batches.
+- After fan-out returns, aggregate only the `tools/out/` deliverables plus minimal spot-checks. Keep the Claude reply short and point to the output files.
 
 Stop conditions:
 - Stop if instructions are ambiguous.
