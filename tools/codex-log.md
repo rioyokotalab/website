@@ -208,3 +208,6 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | codex-spark-low | tools/out/CLAUDE.md parity + spark-final-report check | N/A | N/A | blocked_missing_out_file
 2026-07-11 | site-coordinator | metrics+policy refresh | tools/task-metrics.jsonl | N/A | success
 2026-07-11 | site-editor | metrics+policy refresh (git-summary) | tools/task-metrics.jsonl, tools/task-tier-policy.md, tools/codex-log.md | N/A | success
+2026-07-11 | site-editor | git-summary metrics+policy refresh | tools/task-metrics.jsonl, tools/task-tier-policy.md, tools/codex-log.md | N/A | success
+2026-07-11 | codex-spark-low | delete legacy SPARK artifacts | n/a | manual | blocked
+2026-07-11 | site-editor | refresh task-tier-policy mechanical-edit row | tools/task-tier-policy.md | N/A | success

@@ -32,7 +32,7 @@ Note: historical medians predate the worker rename; `tier` in metrics now record
 | mechanical-edit | codex-spark-low | 308956 | 90.91 | 11 | 2026-07-11 |
 | metadata-lookup | codex-spark-low | 120000 | 60.0 | 20 | 2026-07-11 |
 | verify-parity | codex-spark-low | 53897 | 100.0 | 10 | 2026-07-11 |
-| git-summary | codex-spark-low | 39050 | 100.0 | 15 | 2026-07-11 |
+| git-summary | codex-spark-low | 37621 | 100.0 | 16 | 2026-07-11 |
 | deploy-publish | codex-spark-low | 36728 | 85.71 | 7 | 2026-07-11 |
 | content-draft | codex-high | - | - | 0 | 2026-07-11 |
 | translation | codex-high | - | - | 0 | 2026-07-11 |

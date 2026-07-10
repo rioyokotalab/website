@@ -96,3 +96,5 @@
 {"date":"2026-07-11","task_type":"other","agent":"site-coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"SPARK.md remaining-work audit vs DoD"}
 {"date":"2026-07-11","task_type":"other","agent":"site-coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"confirm tools/out/CLAUDE.md not pending; final report present"}
 {"date":"2026-07-11","task_type":"git-summary","agent":"site-editor","tier":"codex-spark-low","duration_ms":25575,"success":true,"note":"commit+push SPARK housekeeping (metrics/policy/log)"}
+{"date": "2026-07-11", "task_type": "git-summary", "agent": "site-editor", "tier": "codex-spark-low", "duration_ms": 25367, "success": true, "note": "commit+push leftover SPARK metrics files"}
+{"date":"2026-07-11","task_type":"mechanical-edit","agent":"site-editor","tier":"codex-spark-low","duration_ms":16521,"success":true,"note":"delete SPARK.md + tools/out spark scratch"}
