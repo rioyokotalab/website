@@ -49,12 +49,19 @@ Shared standing policy for YOKOTA Lab website agents with codex MCP access.
   - calling agent name;
   - task type from the Tier Selection enum;
   - orchestrator-selected codex tier;
+  - sandbox mode (workspace-write for any write task; read-only otherwise);
   - concrete task;
   - file paths or URL pointers to inspect;
   - acceptance criteria;
   - output path under `tools/out/<task>.md` or `tools/out/<task>.py`;
   - conversationId from the caller when available.
 - Never paste whole file contents, large snippets, or generated payloads into the codex prompt. codex reads `AGENTS.md` and the referenced files itself.
+
+## Sandbox Parameter (mandatory)
+
+- The codex MCP tool's per-call `sandbox` argument OVERRIDES the `sandbox_mode` in `.mcp.json`/`~/.claude.json` and DEFAULTS TO `read-only` when omitted. Confirmed 2026-07-10: a codex-low call with no `sandbox` arg failed to write `tools/out/` with "Read-only file system" even though both config scopes set `sandbox_mode="workspace-write"` and `approval_policy="never"`.
+- Therefore EVERY codex dispatch that must write a file (all `tools/out/` deliverables, edit scripts, and self-logging to `tools/codex-log.md`) MUST pass `sandbox: "workspace-write"` explicitly. Read-only lookups/inspections may omit it or pass `sandbox: "read-only"`.
+- `cwd` defaults to the repo root `/home/rioyokota/website`; `approval_policy="never"` from config IS honored, so no `approval-policy` arg is normally needed. This is why several 2026-07-10 codex sessions could not persist their `tools/out/` files or log lines — they were dispatched without `sandbox: "workspace-write"`. Retries and all future write-capable dispatches must include it.
 
 ## Output-File-First
 

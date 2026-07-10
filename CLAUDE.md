@@ -218,8 +218,7 @@ tiers under `mcpServers:` and includes `mcp__codex-<tier>__codex` and
 `codex-reply`. Earlier fixed pairings remain seed defaults for dynamic
 selection: site-author/site-coordinator/site-rescue ->
 codex-low+codex-high; site-checker/site-editor -> codex-low+codex-medium;
-site-publisher has no codex tier. On startup Claude prompts to approve project
-MCP servers. Editing `.claude/agents/*.md` or `.mcp.json` must be BY HAND:
+site-publisher has no codex tier. Claude prompts to approve project MCP servers only ONCE per project; acceptance is recorded as "hasTrustDialogAccepted": true for /home/rioyokota/website in ~/.claude.json, so later `claude` starts silently load the project servers and DO NOT re-prompt — this is expected, not a failure (do not ask the user to approve MCP servers again). Verify connection with `/mcp` in-session or `claude mcp list`. Separately, the codex MCP tool's per-call `sandbox` arg OVERRIDES config `sandbox_mode` and defaults to `read-only` when omitted, so every write-capable codex dispatch MUST pass sandbox="workspace-write" (confirmed 2026-07-10). Editing `.claude/agents/*.md` or `.mcp.json` must be BY HAND:
 subagents categorically refuse config edits regardless of
 `.claude/config-edit-approved` marker/PreToolUse hook (site-editor refused
 twice, 2026-07-08); marker+hook remain a hard block against accidental config

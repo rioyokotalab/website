@@ -67,3 +67,23 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | codex-low | extract sub007 item6 + verify sub005->sub007 move | tools/out/item6-and-move.md | <thread> | done
 2026-07-10 | site-author | sub007-item6 Field-2 identifier lookup | tools/out/doi-sub007-item6.md | (none, host curls only) | URL resolved (IPSJ, no DOI)
 2026-07-10 | codex-low | tick Field-2 todo + append task metrics | tools/researchmap-metadata-todo.md,tools/task-metrics.jsonl | <thread> | done
+2026-07-10 | codex-low | delete verified sub007-item6 scratch | none | <thread> | done
+2026-07-10 | codex-low | patch ~/.claude.json codex approval_policy/sandbox | ~/.claude.json | <thread> | done
+2026-07-10 | site-author | field3-sub001-b1 | tools/out/field3-sub001-b1.md | <conversationId> | done
+2026-07-10 | site-author | field3-sub001-b2 | tools/out/field3-sub001-b2.md | unknown | done
+2026-07-10 | site-author | field3-sub001-b3 | tools/out/field3-sub001-b3.md | unknown | done
+2026-07-10 | site-author | field3-sub001-b4 | tools/out/field3-sub001-b4.md | 019f4a7c-7298-73d0-afd9-a701ea8174d9 | done
+2026-07-10 | site-author | field3-sub001-b5 | tools/out/field3-sub001-b5.md | unknown | done
+2026-07-10 | site-author | field3-sub001-b6 | tools/out/field3-sub001-b6.md | unknown | done
+2026-07-10 | site-author | field3-sub001-b7 | tools/out/field3-sub001-b7.md | unknown | done
+2026-07-10 | site-author | field3-sub001-b8 | tools/out/field3-sub001-b8.md | unknown | done
+2026-07-10 | site-author | field3-sub001-b9 | tools/out/field3-sub001-b9.md | unknown | done
+2026-07-10 | site-author | field3-sub001-b10 | tools/out/field3-sub001-b10.md | unknown | done
+2026-07-10 | site-editor | field3-sub001-attrs | tools/out/apply-field3-sub001.py | 019f4a8b-e24c-7e11-af7c-1e740281d002 | drafted
+2026-07-10 | site-editor | mechanical-edit field3 sub001 attrs | tools/out/apply-field3-sub001.py | unknown | drafted
+2026-07-10 | site-author | field3-sub005 batch A+C | tools/out/field3-sub005-ac.md | unknown | success; task_type=metadata-lookup tier=codex duration_ms=unknown success=true
+2026-07-10 | site-author | field3-sub005 batch B (12-22) | tools/out/field3-sub005-b.md | unknown | success: 11 rows, blanks where citation text had no literal volume/number/pages
+2026-07-10 | site-editor | mechanical-edit sub005-field3 | tools/out/sub005-field3-result.md | unknown | success
+2026-07-10 | coordinator | update Field-3 todo | researchmap-metadata-todo.md | unknown | ok
+2026-07-10 | coordinator | sandbox-param policy proposal | tools/out/codex-offload-policy.md | outcome ok
+2026-07-10 | coordinator | CLAUDE.md MCP-trust+sandbox note | tools/out/CLAUDE.md | n/a | ok | task_type=config-edit | tier=codex | duration_ms=0 | success=true
