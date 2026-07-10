@@ -199,14 +199,14 @@ you; Claude retains final review, verification, and publishing.
   dispatching a tier, unless the caller explicitly specifies the tier.
 - Codex sessions and codex-enabled agents should self-load
   `tools/task-metrics.jsonl`, `tools/task-tier-policy.md`, and
-  `tools/researchmap-metadata-todo.md` as durable context for ongoing work
+  `tools/todo.md` as durable context for ongoing work
   when relevant to the delegated task.
 - Fixed task_type enum: `mechanical-edit`, `content-draft`, `translation`,
   `metadata-lookup`, `verify-parity`, `git-summary`, `deploy-publish`,
   `exporter-logic`, `diagnosis`, `figure-production`, `config-edit`, `other`.
 
 ## Persistent task pointers
-- Metadata progress tracker: tools/researchmap-metadata-todo.md.
+- Metadata progress tracker: tools/todo.md.
 - Active or recent tools/out/ task files:
   - tools/out/doi-sub001.md
   - tools/out/doi-sub002-003.md

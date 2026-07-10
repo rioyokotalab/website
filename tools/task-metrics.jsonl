@@ -55,3 +55,12 @@
 {"date":"2026-07-10","task_type":"mechanical-edit","agent":"site-editor","tier":"medium","duration_ms":308956,"success":true,"note":"field5 write event 108/location 2/invited 44 (sole-Yokota)/publisher 4 en+jp"}
 {"date":"2026-07-10","task_type":"exporter-logic","agent":"site-author","tier":"high","duration_ms":326339,"success":true,"note":"researchmap+orcid exporters emit event/location/invited/publisher from Field-5 data-* attrs; offline dry-run OK"}
 {"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"low","duration_ms":12901,"success":true,"note":"field5 parity PASS: event 108/location 2/invited 44/publisher 4 en=jp, li 337"}
+{"date":"2026-07-10","task_type":"deploy-publish","agent":"site-editor","tier":"n/a","duration_ms":77813,"success":true,"note":"Field-5 achievements publish + push"}
+{"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"n/a","duration_ms":19723,"success":true,"note":"Field-5 live verify EN/JP parity PASS"}
+{"date":"2026-07-10","task_type":"config-edit","agent":"codex-high","tier":"high","duration_ms":0,"success":true,"note":"moved future exporter refinements from CLAUDE proposal to todo"}
+{"date":"2026-07-10","task_type":"config-edit","agent":"codex-high","tier":"high","duration_ms":0,"success":true,"note":"move future-refinement notes CLAUDE.md->todo + trimmed CLAUDE.md proposal"}
+{"date":"2026-07-10","task_type":"exporter-logic","agent":"site-author","tier":"high","duration_ms":276645,"success":true,"note":"start ja/en author split: plan + sub005 pilot"}
+{"date":"2026-07-10","task_type":"config-edit","agent":"codex-high","tier":"high","duration_ms":0,"success":true,"note":"rename todo->tools/todo.md + extract CLAUDE.md todos + proposals"}
+{"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"high","duration_ms":1671128,"success":false,"note":"romaji lookup cut off before persisting corrections; resume as distinct-name map"}
+{"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"high","duration_ms":1743702,"success":true,"note":"romaji distinct-name map: 36 names resolved+confirmed from source papers"}
+{"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"high","duration_ms":239265,"success":false,"note":"4 remaining romaji not persisted; filled BESTGUESS Hepburn"}

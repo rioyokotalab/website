@@ -307,11 +307,10 @@ Standard cycle for every content change (first exercised end-to-end on
   else J-STAGE 発行日. (3) YEAR-ONLY IS NEVER ALLOWED; if month cannot be
   confirmed, default deterministically to January (`-01`) of known year.
   Exporter should prefer `data-date` over heuristic parsing when present.
-  Progress is tracked in `tools/researchmap-metadata-todo.md` (persistent,
+  Progress is tracked in `tools/todo.md` (persistent,
   repo-only); read/update it each step. Field 1 complete across sub001-sub007
   as of 2026-07-08 (pilot sub001, 2026-07-08; sub001 42, sub004 115, sub005
-  32, sub006 45, sub007 62, sub002/sub003 4, all en+jp). Remaining Field-1
-  task: update exporter to prefer `data-date`.
+  32, sub006 45, sub007 62, sub002/sub003 4, all en+jp).
 - **Achievements `data-doi` / `data-url` (Field 2, ResearchMap identifier):**
   each `<li>` may carry invisible `data-doi` (BARE DOI, e.g. `10.1234/...`,
   no `https://doi.org/`) OR, if no DOI, `data-url` for the SAME paper:
@@ -321,11 +320,11 @@ Standard cycle for every content change (first exercised end-to-end on
   blank. Be conservative: differing title means blank. Lookups run in small
   (<=4-6) site-author batches, authorized hosts Crossref/DBLP/Semantic
   Scholar/J-STAGE/arXiv (+anlp.jp for ANLP), appending each result immediately
-  to `tools/out/doi-subNNN.md`. Future Field-2 exporter maps `data-doi` -> DOI
+  to `tools/out/doi-subNNN.md`. Exporter maps `data-doi` -> DOI
   identifier and `data-url` -> `see_also`. Progress (2026-07-09) in
-  `tools/researchmap-metadata-todo.md`: sub001 (37 doi + 2 url), sub002 (0),
+  `tools/todo.md`: sub001 (37 doi + 2 url), sub002 (0),
   sub003 (2 doi), sub004 (48 doi + 25 url; 42 blank posters/talks), sub005
-  (4 doi + 5 url) done; sub006/sub007 plus exporter update remain. For 7
+  (4 doi + 5 url) done. For 7
   sub004 entries with website title differing from published title, the
   PUBLISHED title was mirrored onto website en+jp on 2026-07-09, e.g. Aurora-M,
   Formula-Supervised, RePOSE, BiCGStab, N-Body Problems with Boundary
@@ -371,8 +370,7 @@ Standard cycle for every content change (first exercised end-to-end on
   logged-in account is implied, and `user_id` (even own permalink) means
   "another member's list", fails 403, and blocks the ENTIRE file because
   researchmap validates all lines before applying any. Learned 2026-07-06.
-  Verified 2026-07-08 exact UPDATE grammar against researchmap V2 API spec
-  (`researchmap-export.py` has NO update path; update/delete hand-built): one
+  Verified 2026-07-08 exact UPDATE grammar against researchmap V2 API spec: one
   JSON object per line,
   `{"update": {"type": "<record-type>", "id": "<rm:id>"}, "doc": {<only the changed fields>}}`;
   partial update leaves unlisted fields untouched and carries NO `user_id`.
@@ -387,8 +385,7 @@ Standard cycle for every content change (first exercised end-to-end on
   researchmap 設定 > インポート (permalink: rioyokota); university FIS syncs
   from researchmap automatically. Review printed NEW lines before upload.
   Do NOT script researchmap website: login blocks non-browser clients (403).
-  Sanctioned automation is WebAPI; automatic push awaits JST API key (as of
-  2026-07-06 user is asking URA office). Public READ needs no key:
+  Sanctioned automation is WebAPI. Public READ needs no key:
   `https://api.researchmap.jp/rioyokota/{type}` (JSON).
   Import error granularity (learned 2026-07-07): `user_id` on any insert line
   403s and blocks the ENTIRE file; per-entry validation errors (e.g.
@@ -418,10 +415,10 @@ Standard cycle for every content change (first exercised end-to-end on
   prints counts + risky parses, no file. Section -> BibTeX mapping: sub001 ->
   `@article`; sub002 -> `@incollection`; sub003 -> `@book`; sub004/sub005 ->
   `@inproceedings`; sub006/sub007 -> `@misc`. ORCID public API is read-only
-  without OAuth, so no live diff; re-import is non-destructive because ORCID
-  groups/merges by identifier/title. First run 2026-07-07: 284 entries. Future
-  OAuth/member-API or 3-legged OAuth token auto-diff push is possible but not
-  built. Same on-demand pattern as researchmap export and CV build; kept OUT of
+  without OAuth; re-import is non-destructive because ORCID
+  groups/merges by identifier/title. First run 2026-07-07: 284 entries.
+  Optional future refinements are tracked in `tools/todo.md`.
+  Same on-demand pattern as researchmap export and CV build; kept OUT of
   `publish.sh`. Review risky parses; parser is only as good as source
   citations. Three malformed achievements entries (colon-separated author,
   全角 ．/「」 delimiters) were normalized in achievements pages 2026-07-07; prefer

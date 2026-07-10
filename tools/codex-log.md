@@ -66,7 +66,7 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | codex-low | resume-state git/count inspection | tools/out/resume-state.md | <thread> | done
 2026-07-10 | codex-low | extract sub007 item6 + verify sub005->sub007 move | tools/out/item6-and-move.md | <thread> | done
 2026-07-10 | site-author | sub007-item6 Field-2 identifier lookup | tools/out/doi-sub007-item6.md | (none, host curls only) | URL resolved (IPSJ, no DOI)
-2026-07-10 | codex-low | tick Field-2 todo + append task metrics | tools/researchmap-metadata-todo.md,tools/task-metrics.jsonl | <thread> | done
+2026-07-10 | codex-low | tick Field-2 todo + append task metrics | tools/todo.md,tools/task-metrics.jsonl | <thread> | done
 2026-07-10 | codex-low | delete verified sub007-item6 scratch | none | <thread> | done
 2026-07-10 | codex-low | patch ~/.claude.json codex approval_policy/sandbox | ~/.claude.json | <thread> | done
 2026-07-10 | site-author | field3-sub001-b1 | tools/out/field3-sub001-b1.md | <conversationId> | done
@@ -84,7 +84,7 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | site-author | field3-sub005 batch A+C | tools/out/field3-sub005-ac.md | unknown | success; task_type=metadata-lookup tier=codex duration_ms=unknown success=true
 2026-07-10 | site-author | field3-sub005 batch B (12-22) | tools/out/field3-sub005-b.md | unknown | success: 11 rows, blanks where citation text had no literal volume/number/pages
 2026-07-10 | site-editor | mechanical-edit sub005-field3 | tools/out/sub005-field3-result.md | unknown | success
-2026-07-10 | coordinator | update Field-3 todo | researchmap-metadata-todo.md | unknown | ok
+2026-07-10 | coordinator | update Field-3 todo | todo.md | unknown | ok
 2026-07-10 | coordinator | sandbox-param policy proposal | tools/out/codex-offload-policy.md | outcome ok
 2026-07-10 | coordinator | CLAUDE.md MCP-trust+sandbox note | tools/out/CLAUDE.md | n/a | ok | task_type=config-edit | tier=codex | duration_ms=0 | success=true
 2026-07-10 | site-checker | verify-parity-live-achievements | tools/out/verify-achievements-live.md | conversationId unavailable | completed; counts parity PASS; expected check FAIL: sub005 data-pages en=4 jp=4 expected=3; sandbox curl DNS failed
@@ -143,4 +143,12 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | site-author | field5-exporter | tools/out/field5-exporter.md | <none> | success: updated researchmap/orcid exporters and verified offline
 2026-07-10 | coordinator | metrics log field5 exporter | task-metrics.jsonl+policy | none | ok
 2026-07-10 | coordinator | field5 complete metrics+todo | multiple | none | ok
-2026-07-10 | coordinator | cold-restart handoff written | tools/researchmap-metadata-todo.md | none | ok
+2026-07-10 | coordinator | cold-restart handoff written | tools/todo.md | none | ok
+2026-07-10 | codex-low | Field-5 publish metrics+policy+todo update | (files: task-metrics.jsonl, task-tier-policy.md, todo.md) | 019f4ba7-dbee-7721-a281-8ce6c0bd3887 | done
+2026-07-10 | codex-high | move future-refinement notes CLAUDE.md->todo + trimmed CLAUDE.md proposal | (files: tools/todo.md, tools/out/CLAUDE.md) | unknown | done
+2026-07-10 | site-author | authors-jaen-sub005 pilot | tools/out/authors-jaen-sub005.md | unknown-not-provided | success; task_type=metadata-lookup; tier=unspecified; duration_ms=unknown
+2026-07-10 | codex-low | log metrics + refresh policy (future-refinement start) | (files: task-metrics.jsonl, task-tier-policy.md) | unknown-not-provided | done
+2026-07-10 | codex-high | rename todo + extract CLAUDE.md todos + rename-propagation proposals | (files: tools/todo.md, tools/out/CLAUDE.md, tools/out/AGENTS.md) | unknown | done
+2026-07-10 | codex-low | log metrics + refresh policy (reorg + romaji partial) | (files: task-metrics.jsonl, task-tier-policy.md) | unknown-not-provided | done
+2026-07-10 | codex-low | log metrics romaji map | (files: task-metrics.jsonl, task-tier-policy.md) | unknown-not-provided | done
+2026-07-10 | codex-low | append 4 BESTGUESS romaji + metrics | (files: authors-jaen-romaji-map.md, task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done

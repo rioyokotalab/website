@@ -7,11 +7,11 @@ order; tick and commit after each.
 
 ## SESSION HANDOFF (update every time before a restart)
 >>> COLD-RESTART HANDOFF 2026-07-10 (READ FIRST) <<<
-STATE: ResearchMap metadata Fields 1-5 are ALL written to en/ + jp/ achievements pages and verified (localhost parity PASS), but Field-5 is UNCOMMITTED and NOT published. Fields 1-4 are already live/committed.
-UNCOMMITTED FILES on disk (persist across restart): en/achievements/index.html, jp/achievements/index.html, tools/researchmap-export.py, tools/orcid-export.py, tools/researchmap-metadata-todo.md, tools/task-metrics.jsonl, tools/task-tier-policy.md, tools/codex-log.md. Field-5 added: data-publisher x4 (sub002 日本評論社, sub003 Morgan Kaufmann), data-event x108, data-location x2, data-invited x44 (sole-Yokota). Exporters emit event/location/invited/publisher; offline dry-run OK.
-FIRST ACTION AFTER RESTART: publish Field-5 only after the user re-confirms. Sequence (site-editor): (1) rm -f the transient scratch tools/out/field5-sub006.md tools/out/field5-sub007.md tools/out/field5-books.md tools/out/field5-apply.py tools/out/field5-exporter.md tools/out/orcid-works.bib tools/out/researchmap-import.jsonl ; (2) git status --short ; (3) SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git pull --rebase --autostash origin main (resolve non-overlapping conflicts keeping both; abort+report on overlapping/ambiguous) ; (4) echo y | ./publish.sh "achievements Field-5: data-event/location/invited (sub006/007) + data-publisher (sub002/003) en+jp; exporters emit them" ; (5) verify live via site-checker ; (6) log metric to tools/task-metrics.jsonl + refresh tools/task-tier-policy.md.
+STATE: ResearchMap metadata Fields 1-5 are fully DONE. Field-5 is PUBLISHED and LIVE at commit c190e48; EN/JP parity PASS.
+UNCOMMITTED FILES on disk (persist across restart): tools/todo.md, tools/task-metrics.jsonl, tools/task-tier-policy.md, tools/codex-log.md.
+FIRST ACTION AFTER RESTART: no Field-1-5 metadata action remains. Only handle future exporter refinements if explicitly requested.
 REMINDERS: MCP approval dialog will NOT reappear (hasTrustDialogAccepted=true) — that is expected, do not worry. Every write-capable codex call MUST pass sandbox:"workspace-write". codex sandbox has NO network (metadata lookups via Bash only). After EVERY task append a line to tools/task-metrics.jsonl and refresh tools/task-tier-policy.md (PostToolUse Task hook reminds). Pull --rebase before every push (multi-committer repo).
-AFTER FIELD-5 PUBLISHED: the metadata todo (Fields 1-5) is fully DONE; remaining optional work is only future exporter refinements if requested.
+AFTER FIELD-5 PUBLISHED: DONE 2026-07-10 at commit c190e48; remaining optional work is only future exporter refinements if requested.
 >>> END COLD-RESTART HANDOFF <<<
 
 Status 2026-07-10: sub007 Field-2 fully applied (item 6 IPSJ URL added en+jp, NOT yet published). sub005->sub007 move (深層学習における低精度演算…PRMU 2017) verified live in repo (sub005=31, sub007=63). Exporters emit data-doi/data-url. tools/out scratch cleared.
@@ -57,7 +57,7 @@ Investigations done 2026-07-08:
   + this todo as the durable truth. Validate once on a real task and note the
   result here.
 - [ ] C6 **AGENTS.md upkeep**: add (a) the codex self-logging duty (C2), (b) the
-  output-file-first rule (C3), (c) a pointer to tools/researchmap-metadata-todo.md
+  output-file-first rule (C3), (c) a pointer to tools/todo.md
   and any active tools/out/ task files so codex self-loads ongoing context.
 - [ ] C7 **Document + commit**: record the finalized division of labor and the
   C1–C6 outcomes in CLAUDE.md (codex MCP section), commit and push.
@@ -121,6 +121,21 @@ international entries, so each attribute is written to BOTH language files.
 - [x] data-publisher for sub002 (日本評論社) + sub003 (Morgan Kaufmann); data-isbn skipped (not in citation text, per user 2026-07-10) — NOT yet published
 - [x] data-event (108) + data-location (2: Heidelberg, Kobe) + data-invited (44, marked where Rio Yokota is SOLE author per data-authors) for sub006/sub007 — NOT yet published
 - [x] exporter emits event/location/invited/publisher (researchmap + orcid, offline dry-run OK) — NOT yet published
+
+## Extracted from CLAUDE.md (2026-07-10)
+- [x] Field 1 exporter preference — CLAUDE.md still said "Remaining Field-1 task: update exporter to prefer `data-date`"; this was already completed and live per Field 1 above, so the pending note was removed from CLAUDE.md.
+- [x] Field 2 completion/exporter mapping — CLAUDE.md still said "Future Field-2 exporter maps `data-doi` -> DOI identifier and `data-url` -> `see_also`" and that sub006/sub007 plus exporter update remained; this was already completed and live per Field 2 above, so the stale pending note was removed from CLAUDE.md.
+- [ ] researchmap update/delete automation — CLAUDE.md noted that `researchmap-export.py` has no update path and update/delete JSONL is hand-built; keep the stable import grammar in CLAUDE.md, but track the automated update/delete exporter work under Future exporter refinements below.
+- [ ] Automatic researchmap push — CLAUDE.md noted that automatic push awaits a JST WebAPI key from the URA office; keep the stable sanctioned WebAPI/read-API rule in CLAUDE.md, but track the blocked push work under Future exporter refinements below.
+- [ ] ORCID auto-diff / OAuth push — CLAUDE.md noted that future OAuth/member-API or 3-legged OAuth token auto-diff push is possible but not built; keep the stable no-OAuth/public-API rule in CLAUDE.md, but track the push work under Future exporter refinements below.
+
+## Future exporter refinements (optional — added 2026-07-10, moved from CLAUDE.md)
+- [~] ja/en author split — APPROVED design: add two attributes `data-authors-ja` / `data-authors-en` on every Achievements `<li>`; exporter maps them to `authors.ja` / `authors.en` with fallback to legacy `data-authors`. Current state: `data-authors` is one normalized semicolon-separated string.
+- [ ] researchmap update/delete path — researchmap-export.py only generates insert lines; update/delete JSONL is hand-built; future work is adding an automated update path.
+- [ ] ORCID auto-diff / OAuth push — ORCID export is one-way BibTeX, no live diff (public API read-only without OAuth); future work is 3-legged OAuth member-API auto-diff + push.
+- [ ] data-isbn for books — skipped in Field-5 (not in citation text); future work is adding data-isbn + exporter field when ISBNs are sourced.
+- [ ] Automatic researchmap push — blocked on JST WebAPI key (URA office); until then upload is manual via 設定 > インポート.
+- [ ] 川畑輝 extra author on sub005 #1 (ANLP2025) — flagged but never added across the four targets (website EN/JP, cv.tex+cv.pdf, ORCID bib, researchmap); do only if user requests. See existing PENDING note below.
 
 ## Notes
 - Values that cannot be confirmed follow the no-year-only style rule per field
