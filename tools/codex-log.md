@@ -204,3 +204,6 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-coordinator | S12 apply router-policy gap fixes (A prefer determinism, B terminal retry) | tools/task-tier-policy.md,tools/out/codex-offload-policy.md | this-thread | done
 2026-07-11 | site-coordinator | S14 final report | tools/out/spark-final-report.md | this-thread | done
 2026-07-11 | site-coordinator | S14 wrap-up: strip comment, mark todo done, rm scratch | .claude/agents/codex-offload-policy.md,tools/todo.md,tools/out | this-thread | done
+ | codex-spark-low | spark-remaining-check | tools/out/spark-remaining-check.md | N/A | success
+2026-07-11 | codex-spark-low | tools/out/CLAUDE.md parity + spark-final-report check | N/A | N/A | blocked_missing_out_file
+2026-07-11 | site-coordinator | metrics+policy refresh | tools/task-metrics.jsonl | N/A | success
