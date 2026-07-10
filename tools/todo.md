@@ -6,8 +6,8 @@ Cross-session source of truth. Keep this file concise, current, and actionable.
 >>> HANDOFF 2026-07-11 (READ FIRST) <<<
 SPARK migration (S0-S14) is COMPLETE and committed (unchanged fact).
 C3 part 1 DONE & APPLIED 2026-07-11: output-file-first rule added to all 5 codex-enabled agent .md files (site-checker/editor/author/coordinator/rescue); `AGENTS.md` already compliant; `CLAUDE.md` untouched. User applied via `apply-c3-output-file-first.sh` and cold-restarted.
-NEXT TASK: none pending in C-checklist — apply C7 (mv tools/out/CLAUDE.md CLAUDE.md) + commit+push completes it. C4 already applied.
-ALSO PENDING 2026-07-11: CLAUDE.md condensed to 34089B (tools/out/CLAUDE.md, folds in C7 — apply with `mv tools/out/CLAUDE.md CLAUDE.md`); size guard tools/check-claude-size.py created (budget 35000B) but pre-commit hook needs user install: `cp tools/out/pre-commit-claude-size.sh .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit`.
+NEXT TASK: none. C-checklist C1-C7 COMPLETE + committed (commit a55d3e2, pushed to main 2026-07-11). Only user-request-only items remain (Future exporter refinements + ANLP2025 川畑輝 author).
+DONE 2026-07-11: CLAUDE.md condensed to 34089B (applied) + size guard tools/check-claude-size.py (budget 35000B) committed; pre-commit hook installed locally by user (not git-tracked — re-run `cp tools/out/pre-commit-claude-size.sh .git/hooks/pre-commit && chmod +x` on fresh clones). All committed in a55d3e2.
 DONE 2026-07-11: C3 part 2 achievements parity sweep persisted -> tools/out/achievements-parity.md (sub001-007 all EN==JP; sub007=63/63 confirmed via tools/out/achievements-sub007-audit.md; full data-date coverage).
 REMINDERS: MCP approval dialog will NOT reappear (`hasTrustDialogAccepted=true`); every write-capable codex call MUST pass `sandbox:"workspace-write"`; codex sandbox has NO network; pull --rebase before push; log metrics + refresh tier policy after every task.
 >>> END HANDOFF <<<
@@ -48,11 +48,8 @@ Checklist (execute in order; stop at every USER GATE):
 - [ ] not started
 
 ## Future exporter refinements
-- [ ] Optional later: extend explicit split attributes to international sections (sub001-004,006); currently covered by exporter fallback.
 - [ ] researchmap update/delete path: `tools/researchmap-export.py` only generates insert lines; update/delete JSONL is hand-built. Future work is adding an automated update path while preserving the stable import grammar in `CLAUDE.md`.
-- [ ] ORCID auto-diff / OAuth push: ORCID export is one-way BibTeX, no live diff. Future work is 3-legged OAuth/member-API auto-diff + push while preserving the current no-OAuth/public-API rule.
-- [ ] `data-isbn` for books: skipped in Field-5 because ISBNs were not in citation text; future work is adding sourced ISBNs and exporter support.
-- [ ] Automatic ResearchMap push: blocked on JST WebAPI key from the URA office; until then upload remains manual via ResearchMap settings/import.
+- [x] `data-isbn` for books DONE 2026-07-11 (pending preview+publish): ISBNs sourced via Crossref (N-body methods/HPP Pearls 978-0-12-802118-7; Treecode&FMM/GPU Gems Emerald 978-0-12-384988-5; 数学セミナー periodicals = no ISBN); added invisible data-isbn to both sub003 entries en+jp; exporter support added to researchmap-export.py (field name `isbn` — CONFIRM against V2 schema before real import) + orcid-export.py (BibTeX isbn). See tools/out/isbn-exporter.md.
 - [ ] 川畑輝 extra author on sub005 #1 (ANLP2025): flagged but never added across the four targets (website EN/JP, `cv.tex` + `cv.pdf`, ORCID bib, ResearchMap). Do only if user requests; detail preserved below.
 
 ## Claude x codex workflow checklist
@@ -60,7 +57,7 @@ Checklist (execute in order; stop at every USER GATE):
 - [x] C4 **Make codex-by-default explicit**: update site-checker/editor/author prompts so any task reading >2 files or >~100 lines goes to codex; the Claude agent reads only codex's output file plus minimal spot-check lines; cap subagent final messages at ~15 lines. `.claude/agents/*.md` are HAND-EDIT only. DONE 2026-07-11 as proposals: tools/out/{site-checker,site-editor,site-author}.md + apply-c4-codex-by-default.sh; APPLIED by user 2026-07-11 (takes effect next restart).
 - [x] C5 **Exercise cross-session resumption**: for follow-up work on a logged task, resume via codex-reply with the logged conversationId instead of re-supplying context. Treat conversationIds as optimization; `tools/out/` files + this todo remain the durable truth. Validate once on a real task and note the result here. DONE 2026-07-11: validated same-thread continuation via codex-reply — step1 metrics summary + step2 tier-policy refresh on threadId 019f4dfb-076a-7b80-ad8e-702cbb2ed8e1 without re-supplying context; see tools/out/c5-metrics-summary.md.
 - [x] C6 **AGENTS.md upkeep** DONE 2026-07-11: audited AGENTS.md (codex-high) — duties (a) self-logging, (b) output-file-first + structured result block, (c) self-load tools/todo.md + tools/out pointers all already present/adequate; no change needed. See tools/out/c6-agents-upkeep.md.
-- [x] C7 **Document + commit**: record the finalized division of labor and the C1-C6 outcomes in `CLAUDE.md` (codex MCP section), commit and push. DONE 2026-07-11 as proposal: tools/out/CLAUDE.md (+25/-0, adds C1-C6 validated-workflow subsection to codex MCP section); PENDING user apply (mv tools/out/CLAUDE.md CLAUDE.md) then commit+push.
+- [x] C7 **Document + commit**: record the finalized division of labor and the C1-C6 outcomes in `CLAUDE.md` (codex MCP section), commit and push. DONE 2026-07-11 as proposal: tools/out/CLAUDE.md (+25/-0, adds C1-C6 validated-workflow subsection to codex MCP section); APPLIED + committed+pushed 2026-07-11 (commit a55d3e2); folded into the condensed CLAUDE.md.
 
 ## Persistent notes / reference
 - Placeholder rules: values that cannot be confirmed follow the no-year-only style rule per field; for dates use the deterministic `-01` placeholder when only year/month logic requires it. Prefer fixing the source citation over guessing.

@@ -232,3 +232,6 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | codex-high(coordinator C7) | CLAUDE.md C1-C6 outcomes + division of labor proposal | tools/out/CLAUDE.md | <this thread> | done
 2026-07-11 | codex-high(coordinator) | condense CLAUDE.md (preserve all facts) | tools/out/CLAUDE.md | <this thread> | done
 2026-07-11 | codex-medium(coordinator) | deploy CLAUDE.md size guard (script + pre-commit hook) | tools/check-claude-size.py | <this thread> | done
+2026-07-11 | user | remaining exporter todo scoping and ANLP2025 diagnosis | tools/out/remaining-todo-plan.md | not-provided | success; task_type=exporter-logic; tier=codex-high; duration_ms=unknown; success=true
+2026-07-11 | site-author | remaining-lookups (ANLP2025 authors + book ISBNs) | tools/out/remaining-lookups.md | none | success
+2026-07-11 | user | add data-isbn support to ResearchMap and ORCID exporters | tools/out/isbn-exporter.md | not-provided | success; task_type=exporter-logic; tier=codex-high; duration_ms=unknown; success=true

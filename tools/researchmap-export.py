@@ -54,6 +54,7 @@ VENUE_WORDS = re.compile(
 # publication_date; when present it OVERRIDES the heuristic date parse below.
 DATA_DATE = re.compile(r'\bdata-date\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_DOI = re.compile(r'\bdata-doi\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_ISBN = re.compile(r'\bdata-isbn\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_URL = re.compile(r'\bdata-url\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_VOLUME = re.compile(r'\bdata-volume\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_NUMBER = re.compile(r'\bdata-number\s*=\s*["\']([^"\']*)["\']', re.I)
@@ -84,7 +85,7 @@ def norm_date(s):
     return out
 
 def entries(anchor):
-    """Yield (clean_text, data_date, data_doi, data_url, data_volume,
+    """Yield (clean_text, data_date, data_doi, data_isbn, data_url, data_volume,
     data_number, data_pages, data_authors, data_authors_ja, data_authors_en,
     data_event, data_location, data_invited, data_publisher) for each <li>;
     data_* is None if the opening <li> tag carries no valid attribute."""
@@ -104,6 +105,9 @@ def entries(anchor):
         data_doi = None
         if doi_m:
             data_doi = re.sub(r'^https?://(?:dx\.)?doi\.org/', '', doi_m.group(1).strip(), flags=re.I) or None
+        isbn_m = DATA_ISBN.search(tag)
+        data_isbn = isbn_m.group(1).strip() if isbn_m else None
+        data_isbn = data_isbn or None
         url_m = DATA_URL.search(tag)
         data_url = url_m.group(1).strip() if url_m else None
         data_url = data_url or None
@@ -138,7 +142,7 @@ def entries(anchor):
         data_publisher = data_publisher or None
         t = re.sub(r'</li>', '', re.sub(r'<[^>]+>', '', p), flags=re.I)
         t = unicodedata.normalize('NFKC', t).replace('&amp;', '&').replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"')
-        out.append((re.sub(r'\s+', ' ', t).strip(), data_date, data_doi, data_url,
+        out.append((re.sub(r'\s+', ' ', t).strip(), data_date, data_doi, data_isbn, data_url,
                     data_volume, data_number, data_pages, data_authors,
                     data_authors_ja, data_authors_en, data_event, data_location,
                     data_invited, data_publisher))
@@ -250,7 +254,8 @@ def resolve_type(rm_type, text):
         return 'presentations' if sole_author(text) else 'misc'
     return rm_type
 
-def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_url=None,
+def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_isbn=None,
+              data_url=None,
               data_volume=None, data_number=None, data_pages=None, data_authors=None,
               data_authors_ja=None, data_authors_en=None, data_event=None,
               data_location=None, data_invited=None, data_publisher=None):
@@ -293,6 +298,8 @@ def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_url=None
         doc['book_title'] = {lang: title}
         doc['publisher'] = {lang: data_publisher or venue}
         doc['authors'] = people
+        if data_isbn:
+            doc['isbn'] = data_isbn
     else:
         doc['presentation_title'] = {lang: title}
         doc['event'] = {lang: data_event or venue}
@@ -414,10 +421,10 @@ def website_records():
     same categories used for live researchmap collections."""
     out = []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text, data_date, data_doi, data_url, data_volume, data_number, data_pages, data_authors, data_authors_ja, data_authors_en, data_event, data_location, data_invited, data_publisher in entries(anchor):
+        for text, data_date, data_doi, data_isbn, data_url, data_volume, data_number, data_pages, data_authors, data_authors_ja, data_authors_en, data_event, data_location, data_invited, data_publisher in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
-            rec = to_record(text, rm_type, extra, data_date, data_doi, data_url,
+            rec = to_record(text, rm_type, extra, data_date, data_doi, data_isbn, data_url,
                             data_volume, data_number, data_pages, data_authors,
                             data_authors_ja, data_authors_en, data_event,
                             data_location, data_invited, data_publisher)
@@ -559,14 +566,14 @@ def main():
 
     seen, new = [], []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text, data_date, data_doi, data_url, data_volume, data_number, data_pages, data_authors, data_authors_ja, data_authors_en, data_event, data_location, data_invited, data_publisher in entries(anchor):
+        for text, data_date, data_doi, data_isbn, data_url, data_volume, data_number, data_pages, data_authors, data_authors_ja, data_authors_en, data_event, data_location, data_invited, data_publisher in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             k = key(text)
             seen.append(k)
             if k in state or args.init:
                 continue
-            rec = to_record(text, rm_type, extra, data_date, data_doi, data_url,
+            rec = to_record(text, rm_type, extra, data_date, data_doi, data_isbn, data_url,
                             data_volume, data_number, data_pages, data_authors,
                             data_authors_ja, data_authors_en, data_event,
                             data_location, data_invited, data_publisher)

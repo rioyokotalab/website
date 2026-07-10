@@ -72,7 +72,7 @@ MONTH_ABBR = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
               'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
 def raw_items(anchor):
-    """Yield (clean_text, doi, url, data_date, data_volume, data_number,
+    """Yield (clean_text, doi, isbn, url, data_date, data_volume, data_number,
     data_pages, data_authors, data_authors_en, data_event, data_location,
     data_publisher)
     for each <li> in a section,
@@ -91,6 +91,9 @@ def raw_items(anchor):
         doi = None
         if doi_m:
             doi = re.sub(r'^https?://(?:dx\.)?doi\.org/', '', doi_m.group(1).strip(), flags=re.I) or None
+        isbn_m = rm.DATA_ISBN.search(tag)
+        isbn = isbn_m.group(1).strip() if isbn_m else None
+        isbn = isbn or None
         url_m = rm.DATA_URL.search(tag)
         url = url_m.group(1).strip() if url_m else None
         url = url or None
@@ -124,7 +127,7 @@ def raw_items(anchor):
         t = re.sub(r'</li>', '', re.sub(r'<[^>]+>', '', p), flags=re.I)
         t = (unicodedata.normalize('NFKC', t).replace('&amp;', '&')
              .replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"'))
-        yield (re.sub(r'\s+', ' ', t).strip(), doi, url, data_date,
+        yield (re.sub(r'\s+', ' ', t).strip(), doi, isbn, url, data_date,
                data_volume, data_number, data_pages, data_authors,
                data_authors_en, data_event, data_location, data_publisher)
 
@@ -188,7 +191,7 @@ def fallback_year(text):
     yrs = [y for y in re.findall(r'(?:19|20)\d{2}', text) if 1985 <= int(y) <= 2035]
     return yrs[-1] if yrs else None
 
-def make_entry(etype, authors, title, venue, date, doi, url, used,
+def make_entry(etype, authors, title, venue, date, doi, isbn, url, used,
                data_volume=None, data_number=None, data_pages=None,
                data_event=None, data_location=None, data_publisher=None):
     year = month = None
@@ -218,6 +221,8 @@ def make_entry(etype, authors, title, venue, date, doi, url, used,
         venue = data_event
     if etype in ('incollection', 'book') and data_publisher:
         fields['publisher'] = bib_escape(data_publisher)
+    if etype in ('incollection', 'book') and isbn:
+        fields['isbn'] = isbn
     if etype in ('misc', 'inproceedings') and data_location:
         fields['address'] = bib_escape(data_location)
     if venue:
@@ -235,7 +240,7 @@ def make_entry(etype, authors, title, venue, date, doi, url, used,
     order = ['author', 'title', venue_field]
     if venue_field != 'publisher':
         order.append('publisher')
-    order += ['address', 'volume', 'number', 'pages', 'year', 'month', 'doi', 'url']
+    order += ['isbn', 'address', 'volume', 'number', 'pages', 'year', 'month', 'doi', 'url']
     lines = ['@%s{%s,' % (etype, key)]
     keys = [k for k in order if k in fields] + \
            [k for k in fields if k not in order]
@@ -256,7 +261,7 @@ def main():
     risky = []
     for anchor, etype in SECTION_TYPE.items():
         cnt = 0
-        for text, doi, url, data_date, data_volume, data_number, data_pages, data_authors, data_authors_en, data_event, data_location, data_publisher in raw_items(anchor):
+        for text, doi, isbn, url, data_date, data_volume, data_number, data_pages, data_authors, data_authors_en, data_event, data_location, data_publisher in raw_items(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             parsed = rm.parse(text)
@@ -277,7 +282,7 @@ def main():
                 risky.append(('NO-YEAR', anchor, text))
             elif not venue:
                 risky.append(('NO-VENUE', anchor, text))
-            entries.append(make_entry(etype, authors, title, venue, date, doi, url, used,
+            entries.append(make_entry(etype, authors, title, venue, date, doi, isbn, url, used,
                                       data_volume, data_number, data_pages,
                                       data_event, data_location, data_publisher))
             cnt += 1
