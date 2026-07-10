@@ -1,0 +1,79 @@
+{
+  "_meta": {
+    "note": "single source of truth for codex MCP workers; edit here then run tools/gen-codex-mcp.py",
+    "dispatch_contract": "codex mcp-server ignores startup model/effort config; EVERY codex call MUST pass model=<worker.model> and config={\"model_reasoning_effort\":<worker.effort>} from this registry (plus sandbox as needed). Server names are routing labels only; they do NOT set the model.",
+    "gpt56_migration": "VERIFIED live on codex-cli 0.144.1: per-call gpt-5.6-terra and gpt-5.6-sol both run correctly; startup model pin does not work, so model is passed per-call.",
+    "generated_targets": [
+      ".mcp.json (project scope)",
+      "user-scope claude mcp add-json commands"
+    ]
+  },
+  "codex-spark-low": {
+    "pool": "spark",
+    "model": "gpt-5.3-codex-spark",
+    "effort": "low",
+    "status": "active",
+    "fallback": [
+      {
+        "model": "gpt-5.6-terra",
+        "effort": "medium"
+      }
+    ]
+  },
+  "codex-spark-medium": {
+    "pool": "spark",
+    "model": "gpt-5.3-codex-spark",
+    "effort": "medium",
+    "status": "active",
+    "fallback": [
+      {
+        "model": "gpt-5.6-terra",
+        "effort": "medium"
+      }
+    ]
+  },
+  "codex-medium": {
+    "pool": "standard",
+    "model": "gpt-5.6-terra",
+    "effort": "medium",
+    "status": "active",
+    "fallback": [
+      {
+        "model": "gpt-5.5",
+        "effort": "medium"
+      },
+      {
+        "model": "gpt-5.4",
+        "effort": "medium"
+      }
+    ]
+  },
+  "codex-high": {
+    "pool": "standard",
+    "model": "gpt-5.6-sol",
+    "effort": "high",
+    "status": "active",
+    "fallback": [
+      {
+        "model": "gpt-5.5",
+        "effort": "high"
+      },
+      {
+        "model": "gpt-5.4",
+        "effort": "high"
+      }
+    ]
+  },
+  "codex-low": {
+    "pool": "standard",
+    "model": "gpt-5.6-terra",
+    "effort": "low",
+    "status": "legacy",
+    "fallback": [
+      {
+        "model": "gpt-5.5",
+        "effort": "low"
+      }
+    ]
+  }
+}

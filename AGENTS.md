@@ -97,6 +97,67 @@ you; Claude retains final review, verification, and publishing.
 - lftp, ssh, and git push are forbidden to codex.
 - Credentials and ~/.ssh are forbidden to codex.
 
+## SPARK Option-1 codex architecture (2026-07-11)
+
+`tools/codex-workers.json` is the single source of truth for logical worker
+definitions. Load it before dispatch rather than copying model or effort values
+from prose. The five logical workers are:
+
+| Worker | Pool | Model | Effort | Status |
+| --- | --- | --- | --- | --- |
+| `codex-spark-low` | spark | `gpt-5.3-codex-spark` | low | active |
+| `codex-spark-medium` | spark | `gpt-5.3-codex-spark` | medium | active |
+| `codex-medium` | standard | `gpt-5.6-terra` | medium | active |
+| `codex-high` | standard | `gpt-5.6-sol` | high | active |
+| `codex-low` | standard | `gpt-5.6-terra` | low | legacy |
+
+### MANDATORY per-call dispatch contract
+
+- VERIFIED 2026-07-11 with codex-cli 0.144.1: `codex mcp-server` ignores
+  startup `-c model=...` and `-c model_reasoning_effort=...` settings and logs
+  them as null. Per-call overrides work. Therefore EVERY codex call MUST pass
+  `model=<worker.model>` and
+  `config={"model_reasoning_effort":<worker.effort>}` from
+  `tools/codex-workers.json`. If these are omitted, the call runs the account
+  default `gpt-5.5` rather than the model implied by the server name.
+- MCP server names are routing/tool-grant labels only; they do not select a
+  model or reasoning effort. A dispatched worker must use exactly its registry
+  model and effort and report a hard failure instead of silently changing them.
+- Every call that can write a deliverable, script, log, or repository file MUST
+  also pass `sandbox: "workspace-write"`; read-only calls may explicitly use
+  `sandbox: "read-only"`. Use `cwd: "/home/rioyokota/website"`.
+
+### Output and safe handoff
+
+- Every codex `tools/out/` deliverable MUST end with this populated block:
+
+```markdown
+## Structured result
+
+- status: success | partial | blocked | failed
+- summary: ...
+- changed_files: ...
+- commands: ...
+- verification: ...
+- evidence:
+  - confirmed: ...
+  - hypotheses: ...
+- remaining: ...
+```
+
+  If later findings are appended, move or repeat the updated block so it
+  remains the final content.
+- The task's `tools/out/` file carries the complete handoff package: work
+  completed, changed files, commands, verification evidence, failure evidence,
+  and remaining work. Before rerouting, inspect `git status` and identify any
+  partial worker output. Never auto-revert, overwrite, or discard partial work;
+  Claude decides how to reconcile it.
+- Never run two write-capable workers concurrently on one task. Fan-out is
+  permitted only for independent bounded subtasks with separate output files
+  and non-overlapping write scopes.
+- Codex should self-load `tools/todo.md` and the active/recent `tools/out/` task
+  files named under Persistent task pointers before continuing related work.
+
 ## codex self-logging & output-file-first (added 2026-07-08)
 - As the LAST action of every delegated task, codex must append one line to
   `tools/codex-log.md` in the format: `date | calling agent | task | output
@@ -119,20 +180,24 @@ you; Claude retains final review, verification, and publishing.
   <=2 items.
 - Shared policy: read `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`
   when delegated work mentions offload-first or codex division of labor.
-- Codex tiers: codex-low is available to every codex-enabled agent for
-  simple/mechanical bounded work. site-checker/site-editor also keep
-  codex-medium for moderate parsing/verification/edit-script drafting;
-  site-author/site-coordinator/site-rescue also keep codex-high for judgment;
-  site-publisher has NO codex tier in the website workflow.
-- OFFLOAD BY DEFAULT, including from site-coordinator directly: any bounded
+- Codex workers are selected through `tools/codex-workers.json` and
+  `tools/task-tier-policy.md`. MECHANICAL-LOW defaults to `codex-spark-low`;
+  ROUTINE-MEDIUM chooses `codex-spark-medium` for tightly bounded,
+  limited-context, cheap-retry tasks or `codex-medium` for broader,
+  context-heavy work; COMPLEX-HIGH judgment classes default to `codex-high`.
+  `codex-low` remains a legacy registry entry. site-publisher has NO codex
+  worker in the website workflow.
+- OFFLOAD BY DEFAULT and MAXIMIZE offload, including from site-coordinator
+  directly: any bounded
   task involving more than 2 files, more than about 100 lines, multi-page
   analysis, non-trivial drafting/translation, counting/parsing, citation
   reasoning, or edit-script generation MUST go to the cheapest capable codex
-  tier first. Tier selection: codex-low is DEFAULT for simple/mechanical
+  worker first. Worker selection: codex-spark-low is DEFAULT for simple/mechanical
   bounded work (metadata/DOI/URL lookups, Crossref/J-STAGE/arXiv resolution,
   counting, grepping/parsing, aggregating tools/out files, format/URL
   normalization, and straightforward CRLF-safe edit-script drafting);
-  codex-medium is for moderate parsing/verification; codex-high is reserved
+  codex-spark-medium or codex-medium handles routine/moderate work according
+  to task shape; codex-high is reserved
   for genuine judgment (house-style content drafting, JP<->EN translation,
   exporter/citation-parser logic, deep failure/root-cause diagnosis). Prefer
   the cheapest tier that can do the task. Reserve codex-high for judgment; do
@@ -141,24 +206,24 @@ you; Claude retains final review, verification, and publishing.
   out codex work instead of doing the bulk work in Claude context. The
   coordinator reads only the `tools/out/` deliverable plus minimal spot-checks
   and keeps its reply short.
-- Dynamic-effort tier rule: a subagent MUST use exactly the codex tier the
-  orchestrator specifies in its dispatch, and MUST NOT override that tier up
-  or down. On hard failure at that tier, the subagent reports the failure and
+- Dynamic-effort worker rule: a subagent MUST use exactly the logical worker,
+  per-call model, and effort the orchestrator specifies in its dispatch, and
+  MUST NOT override them. On hard failure at that worker, the subagent reports the failure and
   evidence back to the orchestrator so the orchestrator can decide whether to
   escalate the tier. A subagent must not silently escalate itself.
 - FAN OUT codex: when work decomposes into independent bounded subtasks, the
   Claude agent SHOULD issue multiple `mcp__codex-<tier>__codex` calls in a
   SINGLE turn rather than doing them serially or spawning more Claude
-  subagents. Fan out MANY parallel codex-low sessions for simple lookup,
+  subagents. Fan out MANY parallel codex-spark-low sessions for simple lookup,
   parse, aggregate, normalize, and mechanical edit-script work. Prefer many
   small parallel codex sessions over many Claude subagents. Each session gets
   pointers not payloads, writes its own `tools/out/` deliverable, appends
   incrementally, verifies writes with `tail -1` for lookup/edit work, and
   self-logs to `tools/codex-log.md`. Keep each codex scope small (lookup
   batches <=2 items; other bounded batches <=2-4 items).
-- Claude subagent capacity is a scarce weekly-limited resource; codex capacity
-  is not. Prefer bounded work via codex fan-out inside as FEW Claude subagents
-  as possible, and prefer coordinator direct codex-low offload for simple
+- Claude subagent capacity is a scarce weekly-limited resource. Prefer bounded
+  work via codex fan-out inside as FEW Claude subagents as possible, and prefer
+  coordinator direct codex-spark-low offload for simple
   bounded work whenever the task is codex-eligible. Use codex-high only for
   judgment-heavy work. Do NOT spawn Claude subagents in parallel; DO fan out
   codex in parallel.
@@ -173,9 +238,9 @@ you; Claude retains final review, verification, and publishing.
 ## Division of labor
 - codex generates, analyzes, parses, drafts translations, normalizes
   citations, reasons about exporters, and drafts scripts under tools/out/.
-- site-coordinator offloads directly to the cheapest capable codex tier before
+- site-coordinator offloads directly to the cheapest capable codex worker before
   spending main-session context on bounded reading/parsing/drafting/analysis
-  tasks; use codex-low for simple lookups, counting, aggregation, parsing, and
+  tasks; use codex-spark-low for simple lookups, counting, aggregation, parsing, and
   mechanical edit-script drafting, and reserve codex-high for judgment,
   drafting, translation, exporter/citation-parser logic, and deep diagnosis.
   Subagents remain the route for edits, independent verification, and
@@ -191,6 +256,9 @@ you; Claude retains final review, verification, and publishing.
 - Durable metrics store: `tools/task-metrics.jsonl` is the permanent per-task
   metrics log, one JSON object per line with keys:
   `{"date","task_type","agent","tier","duration_ms","success","note"}`.
+  Under D8, `tier` records the logical WORKER name (for example,
+  `codex-spark-low` or `codex-high`); legacy `low`/`medium`/`high` values remain
+  valid history.
   The orchestrator writes the task-metrics line for each dispatched task and
   uses it to tune future tier selection.
 - Durable tier policy: `tools/task-tier-policy.md` maps each `task_type` to
@@ -218,3 +286,15 @@ you; Claude retains final review, verification, and publishing.
   - tools/out/jp-mobile-contact-scope.md
 - When continuing a task, read the relevant output file and append new results
   immediately; do not rely on chat memory.
+
+## Structured result
+
+- status: success
+- summary: Full AGENTS.md proposal updated for SPARK Option-1 worker routing, mandatory per-call dispatch, structured deliverables, and safe handoff.
+- changed_files: `tools/out/AGENTS.md`
+- commands: Apply after review with `mv tools/out/AGENTS.md AGENTS.md`.
+- verification: Full-copy and size checks are recorded in `tools/out/spark-s10-verify.md`; independent Claude review remains required.
+- evidence:
+  - confirmed: The proposal retains the original site rules and adds all five registry workers, the verified gpt-5.5 fallback warning, workspace-write requirement, structured result schema, and persistent task pointers.
+  - hypotheses: None.
+- remaining: Calling Claude agent should review and run the top apply command if approved.

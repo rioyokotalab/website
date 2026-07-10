@@ -178,3 +178,24 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | codex-low | log metric commit todo handoff | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
 2026-07-10 | codex-low | remove duration outliers from task-metrics + refresh policy | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
 2026-07-10 | codex-low | log metric outlier removal | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-low | log metric commit outlier cleanup | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | site-coordinator | mechanical-edit: insert SPARK migration plan (D1-D8, S0-S14) at top of tools/todo.md | tools/todo.md | this-thread | done
+2026-07-11 | site-coordinator | S0 baseline+deploy-exclude SPARK.md | tools/out/spark-baseline.md | this-thread | done
+2026-07-11 | site-coordinator | S1 read-only SPARK discovery: CLI/auth/config/MCP entries | tools/out/spark-discovery.md | this-thread | done
+2026-07-11 | site-coordinator | S2 probes + S3 install-mechanism | tools/out/spark-probes.md | this-thread | done
+2026-07-11 | site-coordinator | git-summary: append metrics and refresh task-tier-policy | tools/task-tier-policy.md | this-thread | done
+2026-07-11 | site-coordinator | S4 registry+generator | tools/codex-workers.json,tools/gen-codex-mcp.py | this-thread | done
+2026-07-11 | site-coordinator | S6 effective-model verify | tools/out/spark-smoke.md | this-thread | done
+2026-07-11 | site-coordinator | S6 marker-traced model verify | tools/out/spark-smoke.md | this-thread | done
+2026-07-11 | site-coordinator | S6 per-call vs server-arg model pin | tools/out/spark-smoke.md | this-thread | done
+2026-07-11 | site-coordinator | git-summary: append metrics and refresh task-tier-policy | tools/task-tier-policy.md | this-thread | done
+2026-07-11 | site-coordinator | S6 effort startup-vs-percall | tools/out/spark-smoke.md | this-thread | done
+2026-07-11 | site-coordinator | S4b pivot registry+generator to per-call Option1 | tools/codex-workers.json,tools/gen-codex-mcp.py,tools/out/.mcp.json | this-thread | done
+2026-07-11 | site-coordinator | S7 rewrite task-tier-policy for Option1 workers | tools/task-tier-policy.md | this-thread | done
+2026-07-11 | site-coordinator | S8 offload-policy proposal (Option1) | tools/out/codex-offload-policy.md | this-thread | done
+2026-07-11 | site-coordinator | git-summary: append two metrics and refresh task-tier-policy table | tools/task-metrics.jsonl,tools/task-tier-policy.md | this-thread | done; task_type=git-summary tier=low success=true
+2026-07-11 | site-coordinator | S9 agent-config proposals (spark tools + per-call contract) | tools/out/site-*.md,tools/out/apply-spark-agents.sh | this-thread | done
+2026-07-11 | site-coordinator | S10 AGENTS.md + CLAUDE.md proposals (Option1) | tools/out/AGENTS.md,tools/out/CLAUDE.md | this-thread | done
+2026-07-11 | site-coordinator | append S8-S10 config metrics and refresh task-tier-policy | tools/task-metrics.jsonl,tools/task-tier-policy.md | this-thread | done; task_type=git-summary tier=low duration_ms=120000 success=true config-edit_n_samples=15
+2026-07-11 | site-coordinator | S11 spark model-trace + gen --check drift | tools/out/spark-s11-verify.md | this-thread | done
+2026-07-11 | site-coordinator | S10 strip stray apply-comment from CLAUDE.md/AGENTS.md | CLAUDE.md,AGENTS.md | this-thread | done

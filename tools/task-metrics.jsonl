@@ -70,3 +70,18 @@
 {"date":"2026-07-10","task_type":"git-summary","agent":"site-editor","tier":"n/a","duration_ms":31627,"success":true,"note":"commit+push all modified except SPARK.md (commit 2cc790f)"}
 {"date":"2026-07-10","task_type":"git-summary","agent":"site-editor","tier":"n/a","duration_ms":43001,"success":true,"note":"commit+push todo handoff for SPARK.md cold restart (commit 601a6f0)"}
 {"date":"2026-07-10","task_type":"other","agent":"codex-low","tier":"low","duration_ms":0,"success":true,"note":"removed 12 duration outliers from task-metrics (83->71), refreshed policy"}
+{"date":"2026-07-10","task_type":"git-summary","agent":"site-editor","tier":"n/a","duration_ms":43165,"success":true,"note":"commit+push outlier-cleaned metrics, SPARK.md untracked (commit 79b84ae)"}
+{"date":"2026-07-10","task_type":"mechanical-edit","agent":"site-coordinator","tier":"low","duration_ms":180000,"success":true,"note":"insert SPARK migration plan into todo.md"}
+{"date":"2026-07-11","task_type":"config-edit","agent":"site-coordinator","tier":"codex-low","duration_ms":60000,"success":true,"note":"S0 baseline plus SPARK.md deploy exclude; deploy dry-run skipped due AGENTS deploy.sh prohibition; static exclude verified"}
+{"date":"2026-07-11","task_type":"git-summary","agent":"site-coordinator","tier":"codex-low","duration_ms":240000,"success":true,"note":"S1 read-only SPARK discovery: CLI/auth/config/MCP entries; schema probe blocked by readonly Codex state DB"}
+{"date":"2026-07-11","task_type":"git-summary","agent":"site-coordinator","tier":"low","duration_ms":60000,"success":true,"note":"S1 codex/CLI discovery"}
+{"date":"2026-07-11","task_type":"config-edit","agent":"site-coordinator","tier":"low","duration_ms":90000,"success":true,"note":"S0 deploy-exclude SPARK.md"}
+{"date":"2026-07-11","task_type":"metadata-lookup","agent":"site-coordinator","tier":"low","duration_ms":120000,"success":true,"note":"S2 probes + S3 install mechanism"}
+{"date":"2026-07-11","task_type":"exporter-logic","agent":"site-coordinator","tier":"medium","duration_ms":180000,"success":true,"note":"S4 codex-workers registry + gen-codex-mcp.py"}
+{"date":"2026-07-11","task_type":"verify-parity","agent":"site-coordinator","tier":"low","duration_ms":120000,"success":true,"note":"S6 model-pin root-cause: startup -c model ignored, per-call works"}
+{"date":"2026-07-11","task_type":"exporter-logic","agent":"site-coordinator/codex-medium","tier":"codex-medium","duration_ms":84111,"success":true,"note":"S4b pivot registry+generator to per-call Option1; live .mcp.json untouched, --check reports expected drift"}
+{"date":"2026-07-11","task_type":"exporter-logic","agent":"site-coordinator","tier":"medium","duration_ms":150000,"success":true,"note":"S4b pivot registry+generator per-call Option1"}
+{"date":"2026-07-11","task_type":"config-edit","agent":"site-coordinator","tier":"medium","duration_ms":150000,"success":true,"note":"S7 rewrite task-tier-policy for Option1"}
+{"date":"2026-07-11","task_type":"config-edit","agent":"site-coordinator","tier":"high","duration_ms":180000,"success":true,"note":"S8 offload-policy proposal"}
+{"date":"2026-07-11","task_type":"config-edit","agent":"site-coordinator","tier":"high","duration_ms":240000,"success":true,"note":"S9 five agent-config proposals"}
+{"date":"2026-07-11","task_type":"config-edit","agent":"site-coordinator","tier":"high","duration_ms":300000,"success":true,"note":"S10 AGENTS.md + CLAUDE.md proposals"}

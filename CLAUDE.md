@@ -6,7 +6,7 @@ exactly as stored, and URL structure mirrors the folder tree one-to-one.
 
 ## Standing directive: codex offload and config edits
 
-- OFFLOAD BY DEFAULT. Agents, including `site-coordinator`, must send bounded
+- OFFLOAD BY DEFAULT and MAXIMIZE offload. Agents, including `site-coordinator`, must send bounded
   reading, parsing, counting, aggregation, drafting, translation, citation
   reasoning, and script-generation work to the cheapest capable codex tier
   before spending main-session context. Mandatory triggers: more than 2 files,
@@ -16,19 +16,18 @@ exactly as stored, and URL structure mirrors the folder tree one-to-one.
   `tools/out/` output path. codex has repo file access and reads root
   `AGENTS.md` (deploy-excluded). Claude reads only the `tools/out/`
   deliverable plus minimal spot-checks and keeps replies short.
-- Seed tier defaults, overridden by the dynamic metrics policy below:
-  `codex-low` for simple/mechanical bounded work (metadata/DOI/URL lookups,
-  Crossref/J-STAGE/arXiv resolution, counting, grepping/parsing, aggregating
-  `tools/out` files, format/URL normalization, straightforward CRLF-safe
-  edit-script drafting); `codex-medium` for moderate parsing/verification;
-  `codex-high` for genuine judgment (house-style content drafting, JP<->EN
-  translation, exporter/citation-parser logic, deep failure/root-cause
-  diagnosis). Use the cheapest tier that can succeed; do NOT use `codex-high`
-  for lookups, counting, aggregation, or mechanical edits. Retries should be
-  smaller or fanned out, not moved back into Claude context.
+- Worker definitions come from `tools/codex-workers.json`, the single source of
+  truth. Five logical workers span two capacity pools: `codex-spark-low`
+  (spark, `gpt-5.3-codex-spark`, low), `codex-spark-medium` (spark,
+  `gpt-5.3-codex-spark`, medium), `codex-medium` (standard,
+  `gpt-5.6-terra`, medium), `codex-high` (standard, `gpt-5.6-sol`, high),
+  and legacy `codex-low` (standard, `gpt-5.6-terra`, low). Task routing uses
+  worker names, not bare effort tiers. Judgment-heavy classes default to
+  `codex-high` to fulfill the user directive to maximize offload; do not pull
+  them back into Claude context merely to conserve codex usage.
 - FAN OUT codex when independent bounded subtasks exist: issue multiple
   `mcp__codex-<tier>__codex` calls in a SINGLE turn. Prefer many small
-  parallel `codex-low` sessions over serial work or Claude subagent budget for
+  parallel `codex-spark-low` sessions over serial work or Claude subagent budget for
   lookup, parse, aggregate, normalize, and mechanical edit-script work. No
   parallel Claude subagents.
 - Every codex session writes its own `tools/out/` deliverable, appends
@@ -36,6 +35,15 @@ exactly as stored, and URL structure mirrors the folder tree one-to-one.
   lookup/edit codex sessions, append each resolved result immediately and run
   `tail -1 <output-file>` before moving on; batching or end-of-run writes get
   lost on cutoff, so lookup batches stay <=2 items.
+- Every codex `tools/out/` deliverable ends with the mandatory structured result
+  block: `status`, `summary`, `changed_files`, `commands`, `verification`,
+  `evidence` (`confirmed` and `hypotheses`), and `remaining`. The output file is
+  also the safe-handoff package between workers. Never run two write-capable
+  workers concurrently on one task, never auto-revert partial work, and inspect
+  `git status` plus partial outputs before rerouting.
+- Codex sessions self-load `tools/todo.md` and relevant active/recent
+  `tools/out/` task files when continuing work; repository pointers replace
+  chat-memory assumptions.
 - `tools/out/` lifecycle: classify files as TRANSIENT SCRATCH (lookup notes,
   parse/apply helper scripts, investigation/parity notes, batch working files)
   or PENDING DELIVERABLES (files awaiting user action, including
@@ -68,45 +76,75 @@ exactly as stored, and URL structure mirrors the folder tree one-to-one.
 ## Dynamic codex effort selection and task metrics
 
 - Codex-using site agents `site-checker`, `site-editor`, `site-author`,
-  `site-coordinator`, and `site-rescue` have all three tiers: `codex-low`,
-  `codex-medium`, `codex-high`. `site-publisher` has NO codex tier in the
-  website workflow. `.mcp.json` already registers all three servers
-  (`model_reasoning_effort` low, medium, high).
-- The orchestrator (`site-coordinator` / main session) chooses `low`, `medium`,
-  or `high` per dispatched task from task type plus metrics-derived policy, and
-  states the tier explicitly. Subagents MUST use exactly that tier and MUST NOT
-  change it up or down; on hard failure they report back. The orchestrator may
-  escalate `low` -> `medium` -> `high`, then the Claude-side ladder `Opus` ->
-  `Fable` for persistent Claude-side bugs.
+  `site-coordinator`, and `site-rescue` use the five logical workers registered
+  in `tools/codex-workers.json`; `site-publisher` has NO codex worker in the
+  website workflow. The two capacity pools are spark
+  (`gpt-5.3-codex-spark`) and standard (`gpt-5.6-terra` /
+  `gpt-5.6-sol`). `codex-low` is legacy rather than a current default.
+- VERIFIED FACT (2026-07-11, codex-cli 0.144.1): startup
+  `-c model=...` and `-c model_reasoning_effort=...` are IGNORED by
+  `codex mcp-server` and logged as null, while per-call `model` and `config`
+  overrides work. `.mcp.json` server names are label-only. EVERY codex call
+  MUST pass `model=<worker.model>` and
+  `config={"model_reasoning_effort":<worker.effort>}` resolved from the
+  registry; omitting them silently runs account-default `gpt-5.5`. Every
+  write-capable call also passes `sandbox: "workspace-write"`.
+- The orchestrator chooses and states a logical worker from task type, task
+  shape, and metrics policy. Subagents MUST use exactly that worker's per-call
+  model/effort and MUST NOT silently change them; hard failures return evidence
+  to the orchestrator.
+- Three task classes map to workers: MECHANICAL-LOW -> `codex-spark-low`;
+  ROUTINE-MEDIUM -> `codex-spark-medium` for tightly bounded,
+  limited-context, cheap-retry work or `codex-medium` for broader,
+  context-heavy, ambiguous, or long-running work; COMPLEX-HIGH -> `codex-high`.
+  Judgment classes (`content-draft`, `translation`, `exporter-logic`,
+  `diagnosis`, `figure-production`, `config-edit`) default to
+  `codex-high=gpt-5.6-sol` to MAXIMIZE offload and are never downgraded to spark
+  under capacity pressure.
+- Failover is `spark-*` -> `codex-medium` -> `codex-high` -> Opus -> Fable,
+  exactly one hop per task failure and at most one cross-pool failover per task.
+  Classify failures as capacity, task, or environment; fix environment failures
+  and retry the same worker once. A run-scoped circuit breaker marks a pool
+  unavailable after an explicit capacity/rate-limit/entitlement error and does
+  not probe it again in that run. `tools/task-tier-policy.md` owns
+  `pool_preference` (`auto|prefer-spark|prefer-standard`) and `spark_status`
+  (`available|unavailable`). No proactive numerical quota telemetry exists, so
+  routing reacts only to explicit capacity errors.
 - Permanent metrics store: `tools/task-metrics.jsonl`, repo-tracked, one JSON
   object per line:
-  `{"date":"YYYY-MM-DD","task_type":"<enum>","agent":"<agent>","tier":"low|medium|high","duration_ms":<int>,"success":true|false,"note":"<short>"}`.
+  `{"date":"YYYY-MM-DD","task_type":"<enum>","agent":"<agent>","tier":"<worker-name>","duration_ms":<int>,"success":true|false,"note":"<short>"}`.
+  Under D8, `tier` records WORKER names such as `codex-spark-low` and
+  `codex-high`; legacy `low`/`medium`/`high` entries remain valid history.
   MANDATORY, EVERY TASK: immediately after ANY task finishes (subagent OR direct codex call), the orchestrator MUST (1) append one line to `tools/task-metrics.jsonl` with duration_ms from the task-notification, and (2) refresh `tools/task-tier-policy.md` medians/success-rates/n_samples from the full metrics file, before ending the turn. This is not optional or periodic; a task is not complete until both files are updated. A PostToolUse `Task` hook prints this reminder after every subagent task.
 - Policy file: `tools/task-tier-policy.md` maps `task_type` to recommended
-  default tier, rolling median `duration_ms`, and success rate. The orchestrator
-  reads it before choosing a tier, prefers the LOWEST tier meeting the success
-  bar while minimizing completion time, and periodically updates it from
-  `tools/task-metrics.jsonl`.
+  default worker, rolling median `duration_ms`, success rate, pool preference,
+  and spark status. The orchestrator reads it before choosing a worker and
+  refreshes it from `tools/task-metrics.jsonl`.
 - Task-type enum: `mechanical-edit`, `content-draft`, `translation`,
   `metadata-lookup`, `verify-parity`, `git-summary`, `deploy-publish`,
   `exporter-logic`, `diagnosis`, `figure-production`, `config-edit`, `other`.
-- Seed policy before data: `mechanical-edit=low`, `metadata-lookup=low`,
-  `verify-parity=low`, `git-summary=low`, `deploy-publish=low`,
-  `content-draft=high`, `translation=high`, `exporter-logic=high`,
-  `diagnosis=high`, `figure-production=high`, `config-edit=high`,
-  `other=medium`. Older fixed tier maps are seed defaults only.
+- Registry/generator contract: edit `tools/codex-workers.json` first, then use
+  `tools/gen-codex-mcp.py` to regenerate the `.mcp.json` proposal and exact
+  user-scope `claude mcp add-json`/rollback commands. Use its `--check` mode for
+  drift detection. CLI must be >=0.144.0 for gpt-5.6; installed version is
+  0.144.1.
+- Seed policy before data: mechanical classes use `codex-spark-low`, routine
+  medium work uses the spark/standard substitution boundary, and judgment
+  classes use `codex-high`. Older fixed bare-tier maps remain historical seed
+  defaults only.
 
 ## Budget rule:
 
 - No agent for explanation-only answers.
-- No Fable/Opus in normal website workflow except debugging escalation: if a
-  bug persists after Sonnet-tier attempts, escalate to Opus; if Opus also
-  cannot fix it, escalate to Fable.
-- Claude subagent capacity is scarce weekly-limited capacity; codex capacity is
-  not. Prefer bounded work via codex fan-out inside as few Claude subagents as
-  possible. Coordinator should offload directly to `codex-low` for simple
-  bounded codex-eligible work and reserve `codex-high` for judgment-heavy work,
-  subject to dynamic per-task selection.
+- No Fable/Opus in normal website workflow except after the codex failover
+  ladder: spark -> `codex-medium` -> `codex-high` -> Opus -> Fable, one hop per
+  failure and at most one cross-pool failover.
+- Claude subagent capacity is scarce weekly-limited capacity. Prefer bounded
+  work via codex fan-out inside as few Claude subagents as possible. Coordinator
+  offloads simple bounded work to `codex-spark-low`, uses the routine-medium
+  substitution boundary for moderate work, and defaults judgment-heavy work to
+  `codex-high` to maximize offload. No proactive codex quota telemetry exists;
+  use explicit capacity errors and the run-scoped circuit breaker.
 - No parallel Claude subagents. No nested subagents. No broad "check
   everything" unless requested.
 - Checker returns summaries, not raw outputs. Editor receives exact edits, not
@@ -207,27 +245,53 @@ recur; record the fix here.
   dispatches small (<=3-4 entries) so they finish. (Learned 2026-07-08.)
 
 **codex MCP backend for site-agents:** site-agents and site-coordinator can
-delegate to codex MCP servers. `codex-{high,medium,low}` must be registered at
-BOTH user scope (`~/.claude.json`) AND project scope
+delegate through five logical MCP routing labels defined only by
+`tools/codex-workers.json`: `codex-spark-low`, `codex-spark-medium`,
+`codex-medium`, `codex-high`, and legacy `codex-low`. These must be registered
+at BOTH user scope (`~/.claude.json`) AND project scope
 (`/home/rioyokota/website/.mcp.json`); user scope alone does NOT reach project
 agents or project-scoped coordinator tools (confirmed 2026-07-08 when an actual
 `mcp__codex-medium__codex` call from site-checker returned only after
-`.mcp.json` was added). Each codex-enabled agent frontmatter lists all three
-tiers under `mcpServers:` and includes `mcp__codex-<tier>__codex` and
-`codex-reply`. Earlier fixed pairings remain seed defaults for dynamic
-selection: site-author/site-coordinator/site-rescue ->
-codex-low+codex-high; site-checker/site-editor -> codex-low+codex-medium;
-site-publisher has no codex tier. Claude prompts to approve project MCP servers only ONCE per project; acceptance is recorded as "hasTrustDialogAccepted": true for /home/rioyokota/website in ~/.claude.json, so later `claude` starts silently load the project servers and DO NOT re-prompt — this is expected, not a failure (do not ask the user to approve MCP servers again). Verify connection with `/mcp` in-session or `claude mcp list`. Separately, the codex MCP tool's per-call `sandbox` arg OVERRIDES config `sandbox_mode` and defaults to `read-only` when omitted, so every write-capable codex dispatch MUST pass sandbox="workspace-write" (confirmed 2026-07-10). Editing `.claude/agents/*.md` or `.mcp.json` must be BY HAND:
-subagents categorically refuse config edits regardless of
-`.claude/config-edit-approved` marker/PreToolUse hook (site-editor refused
-twice, 2026-07-08); marker+hook remain a hard block against accidental config
-edits, not an authorization channel. `.mcp.json` is repo-only and excluded from
-deploy (`deploy.sh` `-x '^\.mcp\.json$'`), so it is never public. Every
-delegation logs one line in `tools/codex-log.md` (date, agent, task, output
-file, conversationId); `tools/codex-log.md` plus committed pages are durable
+`.mcp.json` was added). Each codex-enabled agent frontmatter lists its granted
+routing labels under `mcpServers:` and includes the corresponding
+`mcp__<worker>__codex` tools and `codex-reply`; site-publisher has no codex
+worker.
+
+**MANDATORY dispatch contract:** VERIFIED 2026-07-11 on codex-cli 0.144.1:
+startup `-c model=...` / `-c model_reasoning_effort=...` values are ignored by
+`codex mcp-server` and logged as null. PER-CALL `model` plus `config` overrides
+work. Therefore every call resolves the worker in `tools/codex-workers.json`
+and explicitly passes `model=<worker.model>` and
+`config={"model_reasoning_effort":<worker.effort>}`. Without both, the call
+runs `gpt-5.5`. Server names are routing labels only, never model selectors.
+The per-call `sandbox` argument also overrides startup `sandbox_mode` and
+defaults to read-only when omitted, so every write-capable dispatch MUST pass
+`sandbox: "workspace-write"` (confirmed 2026-07-10). CLI >=0.144.0 is required
+for gpt-5.6; installed version is 0.144.1.
+
+`tools/gen-codex-mcp.py` reads the registry and regenerates the project-scope
+`.mcp.json` proposal plus exact user-scope `claude mcp add-json` and rollback
+commands; run `tools/gen-codex-mcp.py --check` for drift detection. Both
+`.mcp.json` and `.claude/agents/*.md` remain hand-edit-only: proposals go under
+`tools/out/` with an exact copy-paste apply command. Subagents categorically
+refuse live config edits regardless of `.claude/config-edit-approved` marker or
+PreToolUse hook (site-editor refused twice, 2026-07-08); marker+hook remain a
+hard block against accidental edits, not an authorization channel. `.mcp.json`
+is repo-only and excluded from deploy (`deploy.sh` `-x '^\.mcp\.json$'`), so it
+is never public.
+
+Claude prompts to approve project MCP servers only ONCE per project; acceptance
+is recorded as `"hasTrustDialogAccepted": true` for
+`/home/rioyokota/website` in `~/.claude.json`, so later `claude` starts silently
+load the project servers and DO NOT re-prompt—this is expected, not a failure.
+Verify connection with `/mcp` in-session or `claude mcp list`. Every delegation
+logs one line in `tools/codex-log.md` (date, agent, task, output file,
+conversationId); `tools/codex-log.md` plus committed pages are durable
 cross-session memory, while conversationIds resumable via `codex-reply` are an
-optimization. Escalation ladder for stuck tasks: Sonnet -> codex-medium/high
--> Opus -> Fable.
+optimization. Safe rerouting uses the `tools/out/` handoff package, inspects
+`git status`, never auto-reverts partial work, and never overlaps two
+write-capable workers. Escalation is spark -> `codex-medium` -> `codex-high` ->
+Opus -> Fable, one hop per failure and no more than one cross-pool failover.
 
 ## Publishing workflow
 
@@ -527,3 +591,15 @@ orphans. Because `--delete` is destructive, always preview with
 - Page HTML remains Dreamweaver-era (floats, table layouts); `style.css` is
   written against existing selectors, so keep class/id names stable when
   editing pages.
+
+## Structured result
+
+- status: success
+- summary: Full CLAUDE.md proposal surgically updates the codex-related sections for SPARK Option-1 while retaining unrelated site history and conventions.
+- changed_files: `tools/out/CLAUDE.md`
+- commands: Apply after review with `mv tools/out/CLAUDE.md CLAUDE.md`.
+- verification: Full-copy and size checks are recorded in `tools/out/spark-s10-verify.md`; independent Claude review remains required.
+- evidence:
+  - confirmed: The proposal documents five workers/two pools, verified per-call overrides, class routing, D8 worker-name metrics, failover/circuit-breaker policy, registry generator, and CLI minimum.
+  - hypotheses: None.
+- remaining: Calling Claude agent should review and run the top apply command if approved.

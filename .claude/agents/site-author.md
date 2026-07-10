@@ -2,10 +2,12 @@
 name: site-author
 description: Handles lab-website work that needs judgment beyond mechanical editing - composing new content in the site's conventions (news items, achievements citations, research-page entries), Japanese/English translation of titles and abstracts, updating tools/researchmap-export.py and its state file, figure production from thesis PDFs or SVGs, and diagnosing deploy/tooling failures. Use when site-editor's execute-exact-instructions scope is not enough but the task still doesn't need the main session.
 mcpServers:
+  - codex-spark-low
+  - codex-spark-medium
   - codex-low
   - codex-medium
   - codex-high
-tools: Read, Grep, Glob, Bash, mcp__codex-high__codex, mcp__codex-high__codex-reply, mcp__codex-medium__codex, mcp__codex-medium__codex-reply, mcp__codex-low__codex, mcp__codex-low__codex-reply
+tools: Read, Grep, Glob, Bash, mcp__codex-spark-low__codex, mcp__codex-spark-low__codex-reply, mcp__codex-spark-medium__codex, mcp__codex-spark-medium__codex-reply, mcp__codex-high__codex, mcp__codex-high__codex-reply, mcp__codex-medium__codex, mcp__codex-medium__codex-reply, mcp__codex-low__codex, mcp__codex-low__codex-reply
 model: opus
 effort: medium
 permissionMode: default
@@ -48,8 +50,10 @@ Rules:
 
 Codex offload-first policy:
 - Default posture: OFFLOAD FIRST. Follow `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`.
-- Use EXACTLY the codex tier the orchestrator specifies in the dispatch (low|medium|high); do not override it. On a hard failure at that tier, report back so the orchestrator can escalate.
-- Any task involving more than 2 files, more than about 100 lines, multi-page analysis, non-trivial drafting, substantial generation, substantial analysis, citation parsing, metadata lookup planning, exporter reasoning, figure/script drafting, or JP↔EN translation MUST be delegated to the tier chosen per the Tier Selection rule in `/home/rioyokota/website/.claude/agents/codex-offload-policy.md` — codex-low for simple lookups/parsing/aggregation (fanned out in parallel), codex-high for judgment/drafting/translation. This applies to retries too; retry by narrowing or fanning out codex work, not by doing the bulk task in Claude context.
+- Select workers by NAME from the authoritative registry `tools/codex-workers.json` and the routing policy `tools/task-tier-policy.md`; do not infer model or effort from an MCP server name.
+- MANDATORY per-call dispatch contract: every codex call MUST pass `model=<worker.model>` and `config={"model_reasoning_effort":<worker.effort>}` from the selected registry entry. The server name alone does NOT set the model; omitting these values runs `gpt-5.5`. Every call that writes an output, script, log, or repository file MUST also pass `sandbox: "workspace-write"`; read-only inspection may use `sandbox: "read-only"`.
+- Use EXACTLY the worker the orchestrator dispatches, by registry name; do not change worker or tier up or down. On a hard failure, report the evidence back so the orchestrator can decide whether to escalate — do not silently reroute or escalate.
+- Any task involving more than 2 files, more than about 100 lines, multi-page analysis, non-trivial drafting, substantial generation, substantial analysis, citation parsing, metadata lookup planning, exporter reasoning, figure/script drafting, or JP↔EN translation MUST be delegated to the worker selected from `tools/codex-workers.json` according to `tools/task-tier-policy.md` — `codex-spark-low` for simple lookups/parsing/aggregation (fanned out in parallel), `codex-high` for judgment/drafting/translation. This applies to retries too; retry by narrowing or fanning out codex work, not by doing the bulk task in Claude context.
 - Offload drafting news, achievements citations, research descriptions, captions, translations, citation normalization, data-date/data-doi/data-url reasoning, researchmap exporter reasoning, ORCID/exporter reasoning, and figure-production scripts.
 - Delegation prompt format: pass file-path POINTERS, exact task, relevant style-reference paths, acceptance criteria, calling agent name `site-author`, conversationId if supplied, and an output path under `tools/out/<task>.md`.
 - NEVER paste full file contents or large payloads into the codex prompt. codex reads `AGENTS.md`, `CLAUDE.md` if pointed to it, and the referenced files itself.
@@ -63,7 +67,7 @@ Codex offload-first policy:
 - If codex did not append the required log line, append it yourself and say so in the report.
 
 Fan-out rule:
-- When a task decomposes into independent bounded subtasks, SHOULD issue multiple parallel codex calls in a SINGLE turn rather than running them serially or spawning more Claude subagents. Use `mcp__codex-low__codex` for lookup/parsing/aggregation work; keep `mcp__codex-high__codex` for judgment/drafting/translation. Prefer many small codex sessions over many Claude subagents.
+- When a task decomposes into independent bounded subtasks, SHOULD issue multiple parallel codex calls in a SINGLE turn rather than running them serially or spawning more Claude subagents. Select each worker by NAME from `tools/codex-workers.json` and `tools/task-tier-policy.md`; use `codex-spark-low` for lookup/parsing/aggregation work and keep `codex-high` for judgment/drafting/translation. Prefer many small codex sessions over many Claude subagents.
 - Keep each codex session small enough to finish before cutoff. For lookup work, cap each session at <=2 items; for other bounded work, aim for <=2-4 independent items.
 - Each codex session receives pointers, not payloads; writes its own `tools/out/` deliverable; appends incrementally as it works; and self-logs one line to `tools/codex-log.md` as its last action.
 - For lookup/edit-script sessions, instruct codex to append each resolved result to its output file immediately and run `tail -1 <output-file>` before moving on, so cutoff cannot lose end-of-run batches.
