@@ -132,3 +132,5 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | site-author | data-authors exporter update | tools/out/data-authors-exporters.md | unknown | success; task_type=exporter-logic tier=codex duration_ms=600000
 2026-07-10 | coordinator | metrics log field4 exporter | task-metrics.jsonl+policy | none | ok
 2026-07-10 | coordinator | field4 complete metrics+todo | multiple | none | ok
+2026-07-10 | coordinator | metrics log publish field4 | task-metrics.jsonl+policy | none | ok
+2026-07-10 | coordinator | metrics log field4 live verify | task-metrics.jsonl+policy | none | ok

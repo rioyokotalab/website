@@ -46,3 +46,5 @@
 {"date":"2026-07-10","task_type":"exporter-logic","agent":"site-author","tier":"codex","duration_ms":600000,"success":true,"note":"data-authors exporter override in researchmap/orcid output=tools/out/data-authors-exporters.md"}
 {"date":"2026-07-10","task_type":"exporter-logic","agent":"site-author","tier":"high","duration_ms":285507,"success":true,"note":"researchmap+orcid exporters emit authors from data-authors (prefer over heuristic); offline dry-run OK"}
 {"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"low","duration_ms":57908,"success":true,"note":"field4 data-authors full parity PASS: 300 total en=jp, per-section correct, domestic spot-check identical"}
+{"date":"2026-07-10","task_type":"deploy-publish","agent":"site-editor","tier":"medium","duration_ms":37923,"success":true,"note":"clean scratch + pull --rebase + publish field4 data-authors -> e915c57"}
+{"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"low","duration_ms":9664,"success":true,"note":"field4 data-authors LIVE verify PASS: 300 en=jp, spot-check identical"}
