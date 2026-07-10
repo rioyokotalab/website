@@ -31,3 +31,6 @@
 {"date":"2026-07-10","task_type":"mechanical-edit","agent":"site-editor","tier":"medium","duration_ms":420460,"success":true,"note":"field3 sub004 write 48 entries en+jp; data-pages x48, volume x4, number x4"}
 {"date":"2026-07-10","task_type":"exporter-logic","agent":"site-author","tier":"high","duration_ms":224063,"success":true,"note":"researchmap+orcid exporters emit volume/number/pages from data-volume/data-number/data-pages; offline dry-run OK"}
 {"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"low","duration_ms":159251,"success":true,"note":"sub004 field3 localhost parity PASS: volume 4/number 4/pages 48 en=jp, li 115"}
+{"date":"2026-07-10","task_type":"deploy-publish","agent":"site-editor","tier":"medium","duration_ms":201068,"success":true,"note":"pull --rebase --autostash (already up to date) + publish field3 sub004 -> 5b89b3b"}
+{"date": "2026-07-10", "task_type": "config-edit", "agent": "coordinator", "tier": "codex-low", "duration_ms": 34209, "success": true, "note": "CLAUDE.md pull-rebase-before-push rule -> tools/out/CLAUDE.md"}
+{"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"low","duration_ms":58499,"success":true,"note":"sub004 field3 LIVE verify PASS: volume 4/number 4/pages 48 en=jp, li 115"}

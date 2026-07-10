@@ -113,3 +113,6 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | site-author | field3-exporters | tools/out/field3-exporters.md | unknown | success; task_type=exporter-logic tier=unspecified duration_ms=unknown; implemented data-volume/data-number/data-pages in researchmap and ORCID exporters; offline checks passed
 2026-07-10 | coordinator | field3 complete: metrics+todo | multiple | n/a | ok
 2026-07-10 | coordinator | metrics log sub004 verify | task-metrics.jsonl+policy | n/a | ok
+2026-07-10 | coordinator | metrics log publish sub004 | task-metrics.jsonl+policy | n/a | ok
+2026-07-10 | coordinator | CLAUDE.md pull-rebase-before-push rule | tools/out/CLAUDE.md | conversationId n/a | outcome ok | task_type=config-edit | tier=codex-low | duration_ms=34209 | success=true
+2026-07-10 | coordinator | metrics log sub004 live verify | task-metrics.jsonl+policy | n/a | ok

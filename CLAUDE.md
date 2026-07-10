@@ -240,6 +240,8 @@ optimization. Escalation ladder for stuck tasks: Sonnet -> codex-medium/high
 > user and resolve before moving on. A PostToolUse hook in
 > `.claude/settings.local.json` prints a reminder after every publish.
 
+> **PULL-REBASE BEFORE PUSH (multi-committer repo):** other people also commit to this repository, so BEFORE any push -- including the push inside `publish.sh` -- run `SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git pull --rebase --autostash origin main` to integrate remote commits first. Resolve NON-overlapping conflicts (different files or regions) by keeping BOTH sides, then `git add` + `git rebase --continue`. If a conflict OVERLAPS the current edits or is otherwise ambiguous, run `git rebase --abort` and escalate to the user rather than guessing on content.
+
 Standard cycle for every content change (first exercised end-to-end on
 2026-07-04, removing a member from the member page):
 
