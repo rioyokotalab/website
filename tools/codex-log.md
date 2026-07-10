@@ -167,3 +167,5 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | codex-low | log metric write domestic ja/en attrs | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
 2026-07-10 | codex-low | log verify metric + update todo ja/en progress | (files: task-metrics.jsonl, task-tier-policy.md, tools/todo.md) | <conversationId> | done
 2026-07-10 | codex-low | log metric site-editor publish refusal | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-low | log metric publish ja/en split | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-low | log live-verify metric + mark ja/en split done in todo | (files: task-metrics.jsonl, task-tier-policy.md, tools/todo.md) | <conversationId> | done

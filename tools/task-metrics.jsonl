@@ -74,3 +74,5 @@
 {"date":"2026-07-10","task_type":"mechanical-edit","agent":"site-editor","tier":"n/a","duration_ms":483007,"success":true,"note":"write data-authors-ja/en to sub005+sub007 en+jp (376 attrs), CRLF preserved, guard passed"}
 {"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"n/a","duration_ms":235159,"success":true,"note":"ja/en author attrs sub005+sub007: 94/94 both langs, parity PASS, 0 stray, 0 unresolved"}
 {"date":"2026-07-10","task_type":"deploy-publish","agent":"site-editor","tier":"n/a","duration_ms":6395,"success":false,"note":"site-editor now refuses publish; must route to site-publisher"}
+{"date":"2026-07-10","task_type":"deploy-publish","agent":"site-publisher","tier":"n/a","duration_ms":29817,"success":true,"note":"publish ja/en author split sub005+sub007 (commit a4bdefc)"}
+{"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"n/a","duration_ms":49887,"success":true,"note":"live verify ja/en author split: 94/94 both langs, parity PASS, 0 unresolved (commit a4bdefc)"}

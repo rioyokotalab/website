@@ -5,10 +5,10 @@ Cross-session source of truth. Keep this file concise, current, and actionable.
 ## SESSION HANDOFF / current state
 >>> COLD-RESTART HANDOFF 2026-07-10 (READ FIRST) <<<
 STATE: ResearchMap metadata Fields 1-5 are DONE, published, and live. Fields 1-5 are `data-date`, `data-doi`/`data-url`, `data-volume`/`data-number`/`data-pages`, `data-authors`, and publisher/event/location/invited; exporters emit them. Field-5 published at commit c190e48.
-ACTIVE TASK: ja/en author split, a Field-4 refinement. APPROVED design is `data-authors-ja` / `data-authors-en` on every Achievements `<li>`, with exporter fallback to legacy `data-authors`.
-CURRENT TASK STATUS: romaji distinct-name map is ready at `tools/out/authors-jaen-romaji-map.md`: 36 CONFIRMED from source papers + 4 BESTGUESS (`Kai Ueki`, `Takuya Asakura`, `Yoshifumi Sugiyama`, `Akira Sato`). The map corrects several earlier pilot guesses: Shiotani, Ohtani, Satoh, Nakashima, Koshi Makihara.
-UNCOMMITTED/PENDING STATE: `git status --short` currently shows modified `tools/codex-log.md`, `tools/task-metrics.jsonl`, and `tools/task-tier-policy.md`; this todo edit will also leave `tools/todo.md` modified. No Achievements HTML/exporter edits for the ja/en split have been applied yet.
-NEXT ACTION AFTER RESTART: continue the ja/en author split only if requested: extend derivation beyond the completed distinct-name map, write `data-authors-ja` and `data-authors-en` to both `en/achievements/index.html` and `jp/achievements/index.html`, update exporters, verify EN/JP parity and exporter output, then publish.
+ACTIVE TASK: ja/en author split, a Field-4 refinement. Domestic `data-authors-ja` / `data-authors-en` split is published and live for sub005+sub007 at commit a4bdefc; live parity PASS on 2026-07-10.
+CURRENT TASK STATUS: DONE & LIVE. Exporters prefer explicit split attributes with fallback to legacy `data-authors`.
+UNCOMMITTED/PENDING STATE: only bookkeeping updates may remain in `tools/codex-log.md`, `tools/task-metrics.jsonl`, `tools/task-tier-policy.md`, and `tools/todo.md`.
+NEXT ACTION AFTER RESTART: optional only if requested: extend explicit split attributes to international sections (sub001-004,006), currently covered by exporter fallback.
 REMINDERS: MCP approval dialog will NOT reappear (`hasTrustDialogAccepted=true`). Every write-capable codex call MUST pass `sandbox:"workspace-write"`. Codex sandbox has NO network; metadata lookups that need network must run via Bash/site-author/site-checker, not codex. Pull --rebase before every push in this multi-committer repo.
 >>> END COLD-RESTART HANDOFF <<<
 
@@ -21,15 +21,13 @@ REMINDERS: MCP approval dialog will NOT reappear (`hasTrustDialogAccepted=true`)
 - [x] Fields 1-5 (`data-date`, `data-doi`/`data-url`, `data-volume`/`data-number`/`data-pages`, `data-authors`, publisher/event/location/invited) are complete, live, and emitted by the ResearchMap/ORCID exporters; Field-5 published at commit c190e48.
 
 ## Active task: ja/en author split
-- [~] APPROVED design: add `data-authors-ja` and `data-authors-en` where needed; exporters map them to `authors.ja` / `authors.en` with fallback to legacy `data-authors`.
+- [x] APPROVED design: add `data-authors-ja` and `data-authors-en` where needed; exporters map them to `authors.ja` / `authors.en` with fallback to legacy `data-authors`.
 - [x] Distinct-name romaji map complete at `tools/out/authors-jaen-romaji-map.md`: 36 CONFIRMED from source papers + 4 BESTGUESS (`Kai Ueki`, `Takuya Asakura`, `Yoshifumi Sugiyama`, `Akira Sato`).
 - [x] Derivation for domestic sub005+sub007 complete: zero unresolved.
-- [x] `data-authors-ja` / `data-authors-en` WRITTEN to sub005+sub007 in both EN+JP: 94 each per file, verified parity PASS, UNCOMMITTED/UNPUBLISHED.
+- [x] `data-authors-ja` / `data-authors-en` WRITTEN to sub005+sub007 in both EN+JP: 94 each per file, verified parity PASS, published commit a4bdefc, live parity PASS 2026-07-10.
 - [x] `tools/researchmap-export.py` and `tools/orcid-export.py` updated to prefer `data-authors-ja` / `data-authors-en` with fallback to `data-authors`; dry-run OK.
 Note: SCOPING DECISION — international sections (sub001-004,006) intentionally NOT given explicit split attributes; exporter fallback to `data-authors` covers them (romaji in both JA+EN).
-- [ ] User preview.
-- [ ] Publish after user approval.
-- [ ] Verify live.
+- [x] User preview / publish / verify live: published commit a4bdefc, live parity PASS 2026-07-10.
 - [ ] Optional later: extend explicit split attributes to international sections.
 
 ## Future exporter refinements
