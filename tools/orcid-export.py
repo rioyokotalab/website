@@ -73,7 +73,7 @@ MONTH_ABBR = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
 
 def raw_items(anchor):
     """Yield (clean_text, doi, url, data_date, data_volume, data_number,
-    data_pages) for each <li> in a section,
+    data_pages, data_authors) for each <li> in a section,
     keeping DOI/link attributes and the opening <li>'s data-date attribute
     (which overrides the parsed date)."""
     c = open(PAGE, newline='', encoding='utf-8').read()
@@ -101,6 +101,9 @@ def raw_items(anchor):
         pages_m = rm.DATA_PAGES.search(tag)
         data_pages = pages_m.group(1).strip() if pages_m else None
         data_pages = data_pages or None
+        authors_m = rm.DATA_AUTHORS.search(tag)
+        data_authors = [a.strip() for a in authors_m.group(1).split(';') if a.strip()] if authors_m else None
+        data_authors = data_authors or None
         m = re.search(r'href=["\'](https?://(?:dx\.)?doi\.org/[^"\']+)["\']', p, re.I)
         if not doi and m:
             doi = re.sub(r'^https?://(?:dx\.)?doi\.org/', '', m.group(1)).strip()
@@ -108,7 +111,7 @@ def raw_items(anchor):
         t = (unicodedata.normalize('NFKC', t).replace('&amp;', '&')
              .replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"'))
         yield (re.sub(r'\s+', ' ', t).strip(), doi, url, data_date,
-               data_volume, data_number, data_pages)
+               data_volume, data_number, data_pages, data_authors)
 
 def extract_volpp(venue):
     """Pull Vol./No./pp. out of a venue string; return (clean_venue, fields)."""
@@ -228,7 +231,7 @@ def main():
     risky = []
     for anchor, etype in SECTION_TYPE.items():
         cnt = 0
-        for text, doi, url, data_date, data_volume, data_number, data_pages in raw_items(anchor):
+        for text, doi, url, data_date, data_volume, data_number, data_pages, data_authors in raw_items(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             parsed = rm.parse(text)
@@ -236,6 +239,8 @@ def main():
                 risky.append(('UNPARSED', anchor, text))
                 continue
             authors, title, venue, date = parsed
+            if data_authors:
+                authors = data_authors
             if data_date:                    # data-date attribute wins
                 date = data_date
             elif not date:

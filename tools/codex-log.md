@@ -116,3 +116,19 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | coordinator | metrics log publish sub004 | task-metrics.jsonl+policy | n/a | ok
 2026-07-10 | coordinator | CLAUDE.md pull-rebase-before-push rule | tools/out/CLAUDE.md | conversationId n/a | outcome ok | task_type=config-edit | tier=codex-low | duration_ms=34209 | success=true
 2026-07-10 | coordinator | metrics log sub004 live verify | task-metrics.jsonl+policy | n/a | ok
+2026-07-10 | coordinator | metrics log 39e6e12 push | task-metrics.jsonl+policy | n/a | ok
+2026-07-10 | site-coordinator | field4 authors sub001 extract | tools/out/authors-sub001.md | n/a | outcome ok | task_type=metadata-lookup tier=codex duration_ms=n/a success=true
+2026-07-10 | site-editor | add data-authors sub001 | tools/out/add-data-authors-sub001.py | no conversationId | success; dry-run matched 42 rows uniquely in both files
+2026-07-10 | coordinator | metrics log field4 sub001 | task-metrics.jsonl+policy | n/a | ok
+2026-07-10 | coordinator | metrics log sub001 authors verify | task-metrics.jsonl+policy | n/a | ok
+2026-07-10 | site-coordinator | field4 authors sub002-003 extract | tools/out/authors-sub002-003.md | n/a | outcome ok | task_type=metadata-lookup tier=low duration_ms=180000 success=true
+2026-07-10 | site-coordinator | field4 authors sub004a (1-58) extract | tools/out/authors-sub004a.md | conversationId=n/a | ok | task_type=metadata-lookup | tier=codex-low | duration_ms=0 | success=true
+2026-07-10 | site-coordinator | field4 authors sub004b (59-115) extract | tools/out/authors-sub004b.md | unknown | ok | task_type=metadata-lookup tier=codex-low duration_ms=unknown success=true
+2026-07-10 | site-coordinator | field4 authors sub005 extract | tools/out/authors-sub005.md | unknown | outcome ok | task_type=metadata-lookup tier=codex-low duration_ms=300000 success=true
+2026-07-10 | site-coordinator | field4 authors sub006 extract | tools/out/authors-sub006.md | conversationId=none | outcome ok | task_type=metadata-lookup | tier=codex-low | duration_ms=104000 | success=true
+2026-07-10 | site-coordinator | field4 authors sub007 extract | tools/out/authors-sub007.md | none | ok task_type=metadata-lookup tier=codex-low duration_ms=unknown success=true
+2026-07-10 | site-editor | add-data-authors-sub002-007 | tools/out/add-data-authors.py | <conversationId> | drafted
+2026-07-10 | coordinator | metrics log field4 write | task-metrics.jsonl+policy | none | ok
+2026-07-10 | site-author | data-authors exporter update | tools/out/data-authors-exporters.md | unknown | success; task_type=exporter-logic tier=codex duration_ms=600000
+2026-07-10 | coordinator | metrics log field4 exporter | task-metrics.jsonl+policy | none | ok
+2026-07-10 | coordinator | field4 complete metrics+todo | multiple | none | ok

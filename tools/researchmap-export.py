@@ -58,6 +58,7 @@ DATA_URL = re.compile(r'\bdata-url\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_VOLUME = re.compile(r'\bdata-volume\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_NUMBER = re.compile(r'\bdata-number\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_PAGES = re.compile(r'\bdata-pages\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_AUTHORS = re.compile(r'\bdata-authors\s*=\s*["\']([^"\']*)["\']', re.I)
 
 def norm_date(s):
     """Normalize a data-date value to YYYY / YYYY-MM / YYYY-MM-DD, else None."""
@@ -75,7 +76,7 @@ def norm_date(s):
 
 def entries(anchor):
     """Yield (clean_text, data_date, data_doi, data_url, data_volume,
-    data_number, data_pages) for each <li>;
+    data_number, data_pages, data_authors) for each <li>;
     data_* is None if the opening <li> tag carries no valid attribute."""
     c = open(PAGE, newline='', encoding='utf-8').read()
     a = c.index('name="%s"' % anchor)
@@ -105,10 +106,13 @@ def entries(anchor):
         pages_m = DATA_PAGES.search(tag)
         data_pages = pages_m.group(1).strip() if pages_m else None
         data_pages = data_pages or None
+        authors_m = DATA_AUTHORS.search(tag)
+        data_authors = [a.strip() for a in authors_m.group(1).split(';') if a.strip()] if authors_m else None
+        data_authors = data_authors or None
         t = re.sub(r'</li>', '', re.sub(r'<[^>]+>', '', p), flags=re.I)
         t = unicodedata.normalize('NFKC', t).replace('&amp;', '&').replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"')
         out.append((re.sub(r'\s+', ' ', t).strip(), data_date, data_doi, data_url,
-                    data_volume, data_number, data_pages))
+                    data_volume, data_number, data_pages, data_authors))
     return out
 
 def key(t, limit=70):
@@ -218,12 +222,14 @@ def resolve_type(rm_type, text):
     return rm_type
 
 def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_url=None,
-              data_volume=None, data_number=None, data_pages=None):
+              data_volume=None, data_number=None, data_pages=None, data_authors=None):
     rm_type = resolve_type(rm_type, text)
     parsed = parse(text)
     if not parsed:
         return None
     authors, title, venue, date = parsed
+    if data_authors:
+        authors = data_authors
     if data_date:            # data-date attribute overrides the heuristic date
         date = data_date
     japanese = is_cjk(title)
@@ -366,11 +372,11 @@ def website_records():
     same categories used for live researchmap collections."""
     out = []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text, data_date, data_doi, data_url, data_volume, data_number, data_pages in entries(anchor):
+        for text, data_date, data_doi, data_url, data_volume, data_number, data_pages, data_authors in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             rec = to_record(text, rm_type, extra, data_date, data_doi, data_url,
-                            data_volume, data_number, data_pages)
+                            data_volume, data_number, data_pages, data_authors)
             if rec is None:
                 print(f'WARNING: could not parse, add manually: {text[:90]}', file=sys.stderr)
                 continue
@@ -509,7 +515,7 @@ def main():
 
     seen, new = [], []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text, data_date, data_doi, data_url, data_volume, data_number, data_pages in entries(anchor):
+        for text, data_date, data_doi, data_url, data_volume, data_number, data_pages, data_authors in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             k = key(text)
@@ -517,7 +523,7 @@ def main():
             if k in state or args.init:
                 continue
             rec = to_record(text, rm_type, extra, data_date, data_doi, data_url,
-                            data_volume, data_number, data_pages)
+                            data_volume, data_number, data_pages, data_authors)
             if rec:
                 new.append((text, rec))
             else:
