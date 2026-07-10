@@ -4,10 +4,10 @@ Cross-session source of truth. Keep this file concise, current, and actionable.
 
 ## SESSION HANDOFF / current state
 >>> COLD-RESTART HANDOFF 2026-07-10 (READ FIRST) <<<
-STATE: ResearchMap metadata Fields 1-5 and the domestic ja/en author split are DONE, published, and live. Latest live commit: a4bdefc.
-ACTIVE TASK: none.
-NEXT WORK: optional/future only; see Future exporter refinements.
-REMINDERS: MCP approval dialog will NOT reappear (`hasTrustDialogAccepted=true`). Every write-capable codex call MUST pass `sandbox:"workspace-write"`. Codex sandbox has NO network; metadata lookups that need network must run via Bash/site-author/site-checker, not codex. Pull --rebase before every push in this multi-committer repo.
+NEXT TASK: read `/home/rioyokota/website/SPARK.md` (untracked, at repo root) — that is the task to work on after this restart. Follow its instructions.
+PRIOR WORK STATE (all DONE & LIVE, nothing in progress): ResearchMap metadata Fields 1-5 and the domestic ja/en author split (`data-authors-ja`/`data-authors-en` on sub005+sub007, en+jp) are complete, published, and live; latest related commit a4bdefc. Tooling/todo committed through commit 2cc790f. There is NO active website-metadata task in progress.
+RESUME AFTER SPARK.md: the remaining OPTIONAL/open website work is in the sections below — "Future exporter refinements" (incl. extending explicit ja/en split attributes to international sections sub001-004,006, currently covered by exporter fallback) and the "Claude x codex workflow checklist" (C3-C7). Pick these up only when returning from the SPARK.md task.
+REMINDERS: MCP approval dialog will NOT reappear (`hasTrustDialogAccepted=true`); every write-capable codex call MUST pass `sandbox:"workspace-write"`; codex sandbox has NO network so metadata lookups run via Bash/site-author/site-checker; pull --rebase before every push (multi-committer repo); after EVERY task append to `tools/task-metrics.jsonl` and refresh `tools/task-tier-policy.md`.
 >>> END COLD-RESTART HANDOFF <<<
 
 ## Legend
