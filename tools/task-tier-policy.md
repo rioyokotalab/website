@@ -7,7 +7,7 @@ This table maps `task_type` to the default codex tier the orchestrator should ch
 | mechanical-edit | low | 413566.5 | 90% | 10 | 2026-07-10 |
 | metadata-lookup | low | 180000 | 65.4% | 26 | 2026-07-10 |
 | verify-parity | low | 58499 | 100% | 11 | 2026-07-10 |
-| git-summary | low | 36377.5 | 100% | 8 | 2026-07-10 |
+| git-summary | low | 36193 | 100% | 9 | 2026-07-10 |
 | deploy-publish | low | 33870 | 83.3% | 6 | 2026-07-10 |
 | content-draft | high | - | - | 0 | - |
 | translation | high | - | - | 0 | - |

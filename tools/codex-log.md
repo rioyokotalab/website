@@ -172,3 +172,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | codex-low | log metric commit tooling files | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
 2026-07-10 | codex-low | prune done items from tools/todo.md | (files: tools/todo.md) | <conversationId> | done
 2026-07-10 | codex-low | log metric prune todo | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-low | log metric commit pruned todo | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
