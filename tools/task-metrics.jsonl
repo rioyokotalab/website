@@ -64,3 +64,5 @@
 {"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"high","duration_ms":1671128,"success":false,"note":"romaji lookup cut off before persisting corrections; resume as distinct-name map"}
 {"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"high","duration_ms":1743702,"success":true,"note":"romaji distinct-name map: 36 names resolved+confirmed from source papers"}
 {"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"high","duration_ms":239265,"success":false,"note":"4 remaining romaji not persisted; filled BESTGUESS Hepburn"}
+{"date":"2026-07-10","task_type":"git-summary","agent":"site-editor","tier":"n/a","duration_ms":33705,"success":true,"note":"commit+push todo rename + CLAUDE.md/AGENTS.md cleanup (commit 8fbd012)"}
+{"date":"2026-07-10","task_type":"config-edit","agent":"codex-high","tier":"high","duration_ms":0,"success":true,"note":"restructure tools/todo.md: remove done items, reorder sections"}

@@ -152,3 +152,6 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | codex-low | log metrics + refresh policy (reorg + romaji partial) | (files: task-metrics.jsonl, task-tier-policy.md) | unknown-not-provided | done
 2026-07-10 | codex-low | log metrics romaji map | (files: task-metrics.jsonl, task-tier-policy.md) | unknown-not-provided | done
 2026-07-10 | codex-low | append 4 BESTGUESS romaji + metrics | (files: authors-jaen-romaji-map.md, task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-low | log metric git commit rename | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-high | restructure tools/todo.md (remove done, reorder) | (files: tools/todo.md) | <conversationId> | done
+2026-07-10 | codex-low | log metric todo restructure | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
