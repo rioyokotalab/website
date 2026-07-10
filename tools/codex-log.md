@@ -59,3 +59,6 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | codex-low | agent-files B dynamic-effort proposal | tools/out/site-{author,coordinator,rescue}.md | unknown-thread-id | done
 2026-07-10 | codex-low | task-metrics/policy/apply-script created | tools/out/{task-tier-policy.md,task-metrics.jsonl,apply-effort-config.sh} | <thread id> | done
 2026-07-10 | site-editor | move sub005->sub007 achievements entry | tools/out/move-sub005-to-sub007.py | <conversationId> | drafted
+2026-07-10 | site-coordinator | compress-CLAUDE.md | tools/out/CLAUDE.md | conversationId unavailable | done; task_type=config-edit tier=low duration_ms=900000 success=true
+2026-07-10 | site-coordinator | tools-out-cleanup-rule | tools/out/CLAUDE.md | conversationId unavailable | done; task_type=config-edit tier=low duration_ms=0 success=true
+2026-07-10 | site-coordinator | clear-tools-out-scratch | none | unknown | success: tools/out empty after requested clear
