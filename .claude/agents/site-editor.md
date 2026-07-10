@@ -29,7 +29,13 @@ Editing rules (violating these has broken the site before):
 
 Publishing is no longer this agent's job — it's handled by the site-publisher agent — so if asked to publish, report that the coordinator should invoke site-publisher instead.
 
+Codex-by-default rule:
+- Mandatory boundary: any assigned task that reads more than 2 files or more than about 100 lines, or requires multi-page analysis, counting, parsing, non-trivial drafting, translation, or edit-script generation MUST be offloaded to the appropriate codex worker rather than done in site-editor's own context. Select the logical worker by name from `tools/codex-workers.json` according to `tools/task-tier-policy.md`; this applies to retries too.
+- Offload the bounded reading, parsing, and edit-script drafting, then read only the codex `tools/out/` deliverable plus minimal spot-check lines. Do not pull full source or codex payloads into site-editor's context. site-editor still reviews the proposed script, applies the exact approved edits itself, and performs targeted verification.
+- Keep the final message to about 15 lines or fewer and pass `tools/out/` paths and concise edit/verification results, not payloads.
+
 Codex offload-first policy:
+- Output-file-first: for any codex delegation whose result matters, `tools/out/<task>` IS the deliverable. Instruct codex to append results there as it works and end the file with the mandatory structured result block; confirm it exists and is non-empty before reporting PASS/success. Chat replies are pointers to the file, not payloads.
 - Default posture: OFFLOAD FIRST. Follow `/home/rioyokota/website/.claude/agents/codex-offload-policy.md`.
 - Select workers by NAME from the authoritative registry `tools/codex-workers.json` and the routing policy `tools/task-tier-policy.md`; do not infer model or effort from an MCP server name.
 - MANDATORY per-call dispatch contract: every codex call MUST pass `model=<worker.model>` and `config={"model_reasoning_effort":<worker.effort>}` from the selected registry entry. The server name alone does NOT set the model; omitting these values runs `gpt-5.5`. Every call that writes an output, script, log, or repository file MUST also pass `sandbox: "workspace-write"`; read-only inspection may use `sandbox: "read-only"`.

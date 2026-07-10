@@ -1,605 +1,144 @@
 # YOKOTA Laboratory website
 
-Source for https://www.rio.scrc.iir.isct.ac.jp -- a hand-built static HTML site
-(originally Adobe Dreamweaver). No build step or framework: files are served
-exactly as stored, and URL structure mirrors the folder tree one-to-one.
+Source for https://www.rio.scrc.iir.isct.ac.jp: hand-built static HTML (originally Adobe Dreamweaver), no build/framework; stored files and folder tree are served one-to-one.
 
 ## Standing directive: codex offload and config edits
 
-- OFFLOAD BY DEFAULT and MAXIMIZE offload. Agents, including `site-coordinator`, must send bounded
-  reading, parsing, counting, aggregation, drafting, translation, citation
-  reasoning, and script-generation work to the cheapest capable codex tier
-  before spending main-session context. Mandatory triggers: more than 2 files,
-  more than about 100 lines, multi-page analysis, non-trivial drafting or
-  translation, counting/parsing, citation reasoning, or edit-script generation.
-- Collaboration pattern (2026-07-08): pass pointers, not payloads: task, acceptance check, file paths, and a
-  `tools/out/` output path. codex has repo file access and reads root
-  `AGENTS.md` (deploy-excluded). Claude reads only the `tools/out/`
-  deliverable plus minimal spot-checks and keeps replies short.
-- Worker definitions come from `tools/codex-workers.json`, the single source of
-  truth. Five logical workers span two capacity pools: `codex-spark-low`
-  (spark, `gpt-5.3-codex-spark`, low), `codex-spark-medium` (spark,
-  `gpt-5.3-codex-spark`, medium), `codex-medium` (standard,
-  `gpt-5.6-terra`, medium), `codex-high` (standard, `gpt-5.6-sol`, high),
-  and legacy `codex-low` (standard, `gpt-5.6-terra`, low). Task routing uses
-  worker names, not bare effort tiers. Judgment-heavy classes default to
-  `codex-high` to fulfill the user directive to maximize offload; do not pull
-  them back into Claude context merely to conserve codex usage.
-- FAN OUT codex when independent bounded subtasks exist: issue multiple
-  `mcp__codex-<tier>__codex` calls in a SINGLE turn. Prefer many small
-  parallel `codex-spark-low` sessions over serial work or Claude subagent budget for
-  lookup, parse, aggregate, normalize, and mechanical edit-script work. No
-  parallel Claude subagents.
-- Every codex session writes its own `tools/out/` deliverable, appends
-  incrementally, and self-logs as its last action to `tools/codex-log.md`. For
-  lookup/edit codex sessions, append each resolved result immediately and run
-  `tail -1 <output-file>` before moving on; batching or end-of-run writes get
-  lost on cutoff, so lookup batches stay <=2 items.
-- Every codex `tools/out/` deliverable ends with the mandatory structured result
-  block: `status`, `summary`, `changed_files`, `commands`, `verification`,
-  `evidence` (`confirmed` and `hypotheses`), and `remaining`. The output file is
-  also the safe-handoff package between workers. Never run two write-capable
-  workers concurrently on one task, never auto-revert partial work, and inspect
-  `git status` plus partial outputs before rerouting.
-- Codex sessions self-load `tools/todo.md` and relevant active/recent
-  `tools/out/` task files when continuing work; repository pointers replace
-  chat-memory assumptions.
-- `tools/out/` lifecycle: classify files as TRANSIENT SCRATCH (lookup notes,
-  parse/apply helper scripts, investigation/parity notes, batch working files)
-  or PENDING DELIVERABLES (files awaiting user action, including
-  export/import payloads the user uploads such as `researchmap-import.jsonl`
-  or `orcid-works.bib`, and hand-edit-only config proposals such as
-  `tools/out/CLAUDE.md`, `tools/out/AGENTS.md`, `.claude/agents/*.md`, and
-  `apply-*.sh`). Once a task is fully VERIFIED and its result is committed to
-  the pages, or the exporter can regenerate it, the coordinator deletes that
-  task's TRANSIENT SCRATCH files in the SAME turn with `rm` of specific files,
-  never a blind wipe. PENDING DELIVERABLES stay until the user confirms the
-  upload/apply is done, then are removed. `tools/codex-log.md` plus committed
-  pages are the durable audit trail, so deleting scratch does not lose
-  provenance.
-- Division of labor: codex generates drafts, translations, analysis, edit
-  scripts, and lookup results; Claude reviews, executes, and verifies. codex
-  never edits pages directly, never publishes, and never verifies its own work
-  (site-checker remains the independent verifier).
-- Proposed config/context rewrites go under `tools/out/` with the SAME filename
-  the user can move into place manually, e.g. `tools/out/site-editor.md` or
-  `tools/out/AGENTS.md`. `.claude/agents/*.md`, `.mcp.json`, `AGENTS.md`, and
-  `CLAUDE.md` are hand-edit-only; subagents refuse direct edits. When proposing
-  changes to any hand-edit-only config file (`.claude/agents/*.md`, `.mcp.json`,
-  `AGENTS.md`, `CLAUDE.md`), give the user an EXACT copy-paste shell command
-  (`mv`/apply) to move the `tools/out/` proposal into place.
-- Continuously improve configuration to offload more Claude-side work to codex.
-  Propose updates to `.claude/agents/*.md`, `AGENTS.md`, `CLAUDE.md`, and
-  `codex-offload-policy.md` as `tools/out/` proposals with exact apply
-  commands.
+- OFFLOAD BY DEFAULT; MAXIMIZE offload. Before using main-session context, all agents including `site-coordinator` send bounded reading, parsing/counting/aggregation, drafting/translation, citation reasoning, and script generation to the cheapest capable codex worker. Mandatory when work exceeds 2 files or about 100 lines, spans pages, or needs non-trivial drafting/translation, counting/parsing, citation reasoning, or edit-script generation. Judgment work stays offloaded even to conserve codex usage.
+- Pass pointers, not payloads: task, acceptance check, paths, and a `tools/out/` output path. codex reads repo root `AGENTS.md` (deploy-excluded); Claude reads the deliverable plus minimal spot-checks and replies briefly.
+- Fan out independent bounded work with multiple `mcp__codex-<tier>__codex` calls in one turn. Prefer small parallel `codex-spark-low` lookup/parse/aggregate/normalize/mechanical-script sessions to serial work or Claude subagents. Never parallelize Claude subagents or overlapping writes.
+- Every codex session appends its own `tools/out/` deliverable incrementally and, last, self-logs to `tools/codex-log.md`. Lookup/edit sessions append each resolved item and run `tail -1 <output-file>` immediately; lookup batches are <=2 because end-only writes can be lost on cutoff.
+- Every deliverable ends with populated `status`, `summary`, `changed_files`, `commands`, `verification`, `evidence` (`confirmed`, `hypotheses`), and `remaining`. It is the safe handoff: before rerouting inspect `git status` and partial output; never auto-revert/overwrite it or overlap write-capable workers. Continuing sessions self-load `tools/todo.md` and relevant active/recent `tools/out/` files, not chat memory.
+- `tools/out/` classes: TRANSIENT SCRATCH (lookup, parse/apply scripts, investigation/parity notes, batch files) and PENDING DELIVERABLES (awaiting user action: `researchmap-import.jsonl`, `orcid-works.bib`, `tools/out/CLAUDE.md`, `tools/out/AGENTS.md`, `.claude/agents/*.md`, `apply-*.sh`). After results are VERIFIED and committed or regenerable, delete that task's scratch in the SAME turn with specific-file `rm`, never a blind wipe. Keep pending files until upload/apply confirmation, then remove. `tools/codex-log.md` and committed pages retain provenance.
+- Codex drafts/translates/analyzes, looks up data, and proposes scripts; Claude reviews, decides, executes, reconciles, verifies, publishes, and reports. codex never directly edits pages, publishes, or verifies itself; site-checker verifies independently.
+- Put config/context proposals under `tools/out/` with the SAME filename, e.g. `tools/out/site-editor.md` or `tools/out/AGENTS.md`. `.claude/agents/*.md`, `.mcp.json`, `AGENTS.md`, and `CLAUDE.md` are hand-edit-only: subagents refuse direct edits and provide an EXACT copy-paste `mv`/apply command. Continuously propose terse `tools/out/` config improvements for `.claude/agents/*.md`, `AGENTS.md`, `CLAUDE.md`, and `codex-offload-policy.md` that increase offload.
 
 ## Dynamic codex effort selection and task metrics
 
-- Codex-using site agents `site-checker`, `site-editor`, `site-author`,
-  `site-coordinator`, and `site-rescue` use the five logical workers registered
-  in `tools/codex-workers.json`; `site-publisher` has NO codex worker in the
-  website workflow. The two capacity pools are spark
-  (`gpt-5.3-codex-spark`) and standard (`gpt-5.6-terra` /
-  `gpt-5.6-sol`). `codex-low` is legacy rather than a current default.
-- VERIFIED FACT (2026-07-11, codex-cli 0.144.1): startup
-  `-c model=...` and `-c model_reasoning_effort=...` are IGNORED by
-  `codex mcp-server` and logged as null, while per-call `model` and `config`
-  overrides work. `.mcp.json` server names are label-only. EVERY codex call
-  MUST pass `model=<worker.model>` and
-  `config={"model_reasoning_effort":<worker.effort>}` resolved from the
-  registry; omitting them silently runs account-default `gpt-5.5`. Every
-  write-capable call also passes `sandbox: "workspace-write"`.
-- The orchestrator chooses and states a logical worker from task type, task
-  shape, and metrics policy. Subagents MUST use exactly that worker's per-call
-  model/effort and MUST NOT silently change them; hard failures return evidence
-  to the orchestrator.
-- Three task classes map to workers: MECHANICAL-LOW -> `codex-spark-low`;
-  ROUTINE-MEDIUM -> `codex-spark-medium` for tightly bounded,
-  limited-context, cheap-retry work or `codex-medium` for broader,
-  context-heavy, ambiguous, or long-running work; COMPLEX-HIGH -> `codex-high`.
-  Judgment classes (`content-draft`, `translation`, `exporter-logic`,
-  `diagnosis`, `figure-production`, `config-edit`) default to
-  `codex-high=gpt-5.6-sol` to MAXIMIZE offload and are never downgraded to spark
-  under capacity pressure.
-- Failover is `spark-*` -> `codex-medium` -> `codex-high` -> Opus -> Fable,
-  exactly one hop per task failure and at most one cross-pool failover per task.
-  Classify failures as capacity, task, or environment; fix environment failures
-  and retry the same worker once. A run-scoped circuit breaker marks a pool
-  unavailable after an explicit capacity/rate-limit/entitlement error and does
-  not probe it again in that run. `tools/task-tier-policy.md` owns
-  `pool_preference` (`auto|prefer-spark|prefer-standard`) and `spark_status`
-  (`available|unavailable`). No proactive numerical quota telemetry exists, so
-  routing reacts only to explicit capacity errors.
-- Permanent metrics store: `tools/task-metrics.jsonl`, repo-tracked, one JSON
-  object per line:
-  `{"date":"YYYY-MM-DD","task_type":"<enum>","agent":"<agent>","tier":"<worker-name>","duration_ms":<int>,"success":true|false,"note":"<short>"}`.
-  Under D8, `tier` records WORKER names such as `codex-spark-low` and
-  `codex-high`; legacy `low`/`medium`/`high` entries remain valid history.
-  MANDATORY, EVERY TASK: immediately after ANY task finishes (subagent OR direct codex call), the orchestrator MUST (1) append one line to `tools/task-metrics.jsonl` with duration_ms from the task-notification, and (2) refresh `tools/task-tier-policy.md` medians/success-rates/n_samples from the full metrics file, before ending the turn. This is not optional or periodic; a task is not complete until both files are updated. A PostToolUse `Task` hook prints this reminder after every subagent task.
-- Policy file: `tools/task-tier-policy.md` maps `task_type` to recommended
-  default worker, rolling median `duration_ms`, success rate, pool preference,
-  and spark status. The orchestrator reads it before choosing a worker and
-  refreshes it from `tools/task-metrics.jsonl`.
-- Task-type enum: `mechanical-edit`, `content-draft`, `translation`,
-  `metadata-lookup`, `verify-parity`, `git-summary`, `deploy-publish`,
-  `exporter-logic`, `diagnosis`, `figure-production`, `config-edit`, `other`.
-- Registry/generator contract: edit `tools/codex-workers.json` first, then use
-  `tools/gen-codex-mcp.py` to regenerate the `.mcp.json` proposal and exact
-  user-scope `claude mcp add-json`/rollback commands. Use its `--check` mode for
-  drift detection. CLI must be >=0.144.0 for gpt-5.6; installed version is
-  0.144.1.
-- Seed policy before data: mechanical classes use `codex-spark-low`, routine
-  medium work uses the spark/standard substitution boundary, and judgment
-  classes use `codex-high`. Older fixed bare-tier maps remain historical seed
-  defaults only.
+- `tools/codex-workers.json` is the sole worker registry: `codex-spark-low` (spark, `gpt-5.3-codex-spark`, low), `codex-spark-medium` (spark, `gpt-5.3-codex-spark`, medium), `codex-medium` (standard, `gpt-5.6-terra`, medium), `codex-high` (standard, `gpt-5.6-sol`, high), legacy `codex-low` (standard, `gpt-5.6-terra`, low). Worker names, not bare effort, route tasks. Enabled agents: `site-checker`, `site-editor`, `site-author`, `site-coordinator`, `site-rescue`; `site-publisher` has NO codex worker.
+- MANDATORY (verified 2026-07-11, codex-cli 0.144.1): `codex mcp-server` ignores startup `-c model=...` and `-c model_reasoning_effort=...` (logged null); per-call `model` and `config` overrides work. Every call resolves the registry worker and passes `model=<worker.model>` plus `config={"model_reasoning_effort":<worker.effort>}`, or silently uses account default `gpt-5.5`. Server names are routing/tool-grant labels, never model selectors. Per-call `sandbox` overrides startup `sandbox_mode` and defaults read-only; every write-capable call passes `sandbox: "workspace-write"`. CLI >=0.144.0 is required for gpt-5.6; installed: 0.144.1. Subagents use exactly the stated worker/model/effort; hard failures return evidence, never silently switch.
+- Classes: MECHANICAL-LOW -> `codex-spark-low`; ROUTINE-MEDIUM -> `codex-spark-medium` for tightly bounded, limited-context, cheap-retry work or `codex-medium` for broader/context-heavy/ambiguous/long work; COMPLEX-HIGH -> `codex-high`. Judgment task types `content-draft`, `translation`, `exporter-logic`, `diagnosis`, `figure-production`, `config-edit` default to `codex-high=gpt-5.6-sol` and never downgrade to spark under capacity pressure. Seed mechanical=`codex-spark-low`, routine=substitution boundary, judgment=`codex-high`; old bare-tier maps are historical only.
+- Failover: `spark-*` -> `codex-medium` -> `codex-high` -> Opus -> Fable, exactly one hop per task failure and <=1 cross-pool failover/task. Classify capacity/task/environment; fix environment and retry the same worker once. After explicit capacity/rate-limit/entitlement error, a run-scoped circuit breaker marks that pool unavailable and never reprobes it that run. `tools/task-tier-policy.md` owns `pool_preference` (`auto|prefer-spark|prefer-standard`) and `spark_status` (`available|unavailable`). No proactive numerical quota telemetry; react only to explicit errors.
+- `tools/task-metrics.jsonl` is permanent/repo-tracked, one line: `{"date":"YYYY-MM-DD","task_type":"<enum>","agent":"<agent>","tier":"<worker-name>","duration_ms":<int>,"success":true|false,"note":"<short>"}`. D8 `tier` uses worker names (e.g. `codex-spark-low`, `codex-high`); legacy `low`/`medium`/`high` history remains valid. After EVERY subagent or direct-codex task, before turn end, the orchestrator immediately appends duration_ms from task-notification and refreshes `tools/task-tier-policy.md` medians/success-rates/n_samples from the full file; completion requires both. PostToolUse `Task` reminds after every subagent task.
+- `tools/task-tier-policy.md` maps `task_type` to default worker, rolling median `duration_ms`, success rate, pool preference, spark status; read it before selection and refresh from metrics. Enum: `mechanical-edit`, `content-draft`, `translation`, `metadata-lookup`, `verify-parity`, `git-summary`, `deploy-publish`, `exporter-logic`, `diagnosis`, `figure-production`, `config-edit`, `other`.
+- Edit `tools/codex-workers.json` first; `tools/gen-codex-mcp.py` regenerates the `.mcp.json` proposal and exact user-scope `claude mcp add-json`/rollback commands; use `tools/gen-codex-mcp.py --check` (`--check`) for drift.
 
 ## Budget rule:
 
-- No agent for explanation-only answers.
-- No Fable/Opus in normal website workflow except after the codex failover
-  ladder: spark -> `codex-medium` -> `codex-high` -> Opus -> Fable, one hop per
-  failure and at most one cross-pool failover.
-- Claude subagent capacity is scarce weekly-limited capacity. Prefer bounded
-  work via codex fan-out inside as few Claude subagents as possible. Coordinator
-  offloads simple bounded work to `codex-spark-low`, uses the routine-medium
-  substitution boundary for moderate work, and defaults judgment-heavy work to
-  `codex-high` to maximize offload. No proactive codex quota telemetry exists;
-  use explicit capacity errors and the run-scoped circuit breaker.
-- No parallel Claude subagents. No nested subagents. No broad "check
-  everything" unless requested.
-- Checker returns summaries, not raw outputs. Editor receives exact edits, not
-  goals. Author returns final content plus edit specs, not file modifications.
-  Publisher runs one documented publish command after explicit approval.
+- CLAUDE.md has a size budget enforced by tools/check-claude-size.py (git pre-commit); keep it terse — compress or move detail out rather than appending.
+- No agent for explanation-only answers. No Fable/Opus normally except after the failover ladder above. Claude capacity is weekly-limited: use codex fan-out in as few Claude subagents as possible; simple=`codex-spark-low`, moderate=routine substitution boundary, judgment=`codex-high`. No proactive quota inference; use explicit errors/circuit breaker.
+- No parallel or nested Claude subagents; no broad "check everything" unless requested. Checker returns summaries, not raw output; Editor gets exact edits, not goals; Author returns final content plus edit specs, not file modifications; Publisher runs one documented publish command only after explicit approval.
 
 ## Structure
 
-- `index.html` -- root page; redirects only to `jp/` or `en/` based on browser
-  language.
-- `en/` and `jp/` are mirrored language trees. Every page must exist at the
-  same path in both because the JAPANESE/ENGLISH header toggle
-  (`js/chglang.js`) swaps `/jp/` <-> `/en/` in the URL. Creating or moving a
-  page in one language without the counterpart breaks the toggle with a 404.
-- Sections: `about`, `research`, `achievements`, `member`, `computers`,
-  `teaching`, `picture` (top nav), plus `contact`, `links` (header bar).
-  `news` and `software` exist but are unlinked from navigation.
-- `style.css` is the single site-wide stylesheet. Pages reference
-  `style.css?v=YYYYMMDD`; CSS edits require bumping that version in ALL pages
-  and templates with a scripted replace or browsers serve stale CSS.
-- `images/` holds shared images; section-specific photos live in paths such as
-  `en/member/images/`. `favicon.ico` and `apple-touch-icon.png` live in
-  `images/` (moved from repo root 2026-07-08); every page/template references
-  them as `images/…` at the correct relative depth.
-- `js/` holds dropdown menu, mobile menu, back-to-top, and language switcher
-  vanilla JS. There is no local jQuery; gallery pages use only the SRI-pinned
-  CDN copy.
-- Galleries (research figures, picture page, computers photos) use lightbox2
-  2.11 + jQuery 3.7 from cdnjs with SRI hashes pinned in each page head. There
-  is no local copy; recompute `integrity` hashes when bumping versions.
-- `.htaccess` sets security headers (`nosniff`, `SAMEORIGIN`, referrer policy);
-  it is deployed to web root and honored by the server.
-- `Templates/*.dwt` are Dreamweaver templates, inert outside Dreamweaver. Every
-  HTML page carries its own full header/nav/footer copy. Site-wide changes
-  (e.g. nav menu) must be edited in every page, usually by find-and-replace,
-  and in templates too.
-- `.dont-remove-me` is a hosting marker file; keep it, deploy it, never delete
-  it.
+- `index.html` redirects only to `jp/` or `en/` by browser language. `en/` and `jp/` mirror every path: the JAPANESE/ENGLISH header toggle (`js/chglang.js`) swaps `/jp/` <-> `/en/`; missing counterparts 404. Top nav: `about`, `research`, `achievements`, `member`, `computers`, `teaching`, `picture`; header: `contact`, `links`; unlinked: `news`, `software`.
+- `style.css` is site-wide; pages use `style.css?v=YYYYMMDD`. CSS changes require scripted version replacement in ALL pages/templates to prevent stale caches.
+- `images/` holds shared images, `favicon.ico`, `apple-touch-icon.png`; section photos include `en/member/images/`. Every page/template uses correct-depth `images/…`. `js/` contains vanilla dropdown/mobile/back-to-top/language-switcher code; no local jQuery.
+- Research/picture/computers galleries use lightbox2 2.11 + jQuery 3.7 from cdnjs, SRI hashes pinned per head; no local copy. Recompute `integrity` on version bumps.
+- `.htaccess` deploys web-root security headers (`nosniff`, `SAMEORIGIN`, referrer policy). `Templates/*.dwt` are Dreamweaver-only; every page duplicates full header/nav/footer, so site-wide changes update every page (usually find/replace) and templates. Keep/deploy/never delete hosting marker `.dont-remove-me`.
 
 ## Delegation to subagents (save rate limit)
 
-Six project agents exist in `.claude/agents/`; `.claude/` is gitignored EXCEPT
-for a `!.claude/agents` un-ignore rule in `.gitignore`, so agent definitions
-ARE tracked while the rest of `.claude/` stays local-only. Route work DOWN to
-the cheapest capable agent by default; keep the main session for orchestration,
-user-facing decisions, escalation, and final review.
+Six agents live in `.claude/agents/`; `.gitignore` ignores `.claude/` except tracked `!.claude/agents`. Route down to the cheapest capable agent; reserve main context for orchestration, decisions, escalation, final review.
 
-- **site-checker** (Sonnet, read-only): verification/searching, site-wide
-  grepping/counting, EN/JP parity, curl checks of localhost:8000 and live site
-  (workflow steps 2 and 4), git status summaries, and `sinfo`/`yrun` cluster
-  queries.
-- **site-editor** (Sonnet): fully specified edits (workflow step 1). Give exact
-  strings/entries, target files, insertion points; it knows CRLF/python3/both
-  language rules. Publishing is site-publisher's job.
-- **site-author** (Opus): judgment work that does not need the main session:
-  news/achievements/research content in house style, jp<->en translation,
-  researchmap exporter changes, figure production, failure diagnosis. It reads
-  this file first.
-- **site-publisher** (Haiku): runs `publish.sh` only after explicit user
-  approval in the current conversation (workflow step 3); stops and reports on
-  ssh/publish failures rather than touching credentials.
-- **site-coordinator** (Opus): main orchestration; routes each task to the
-  cheapest capable agent, keeps user-facing decisions, escalation, and final
-  review. Escalation exception: if a bug persists after Sonnet-tier attempts,
-  escalate to Opus, then Fable.
-- **site-rescue** (Opus, manual-only): deep root-cause diagnosis for tangled or
-  cross-cutting failures; launched explicitly by the user in a separate
-  session, read-only unless told otherwise.
+- **site-checker** (Sonnet, read-only): verify/search/grep/count, EN/JP parity, curl localhost:8000/live (steps 2/4), git summaries, `sinfo`/`yrun` queries.
+- **site-editor** (Sonnet): exact strings/entries/files/insertion points for step 1; knows CRLF/python3/both-language rules; never publishes.
+- **site-author** (Opus): house-style news/achievements/research, jp<->en translation, researchmap exporter, figures, failure diagnosis; reads this file first.
+- **site-publisher** (Haiku): runs `publish.sh` only after explicit current-conversation approval (step 3); on ssh/publish failure stops/reports without credentials.
+- **site-coordinator** (Opus): routes cheapest, retains decisions/escalation/final review; persistent Sonnet bugs escalate Opus then Fable.
+- **site-rescue** (Opus, manual-only): user launches separately for deep tangled/cross-cutting diagnosis; read-only unless directed.
 
-Subagents do NOT share conversation state, so every dispatch must be
-self-contained: exact content, file paths, and acceptance check. Typical flow:
-main decides change -> site-editor/site-author makes it -> site-checker verifies
-independently -> user previews -> site-publisher publishes -> site-checker
-confirms live. Escalate up a tier when ambiguity/failure is reported; only
-credentials/ssh recovery and user decisions stay in the main session.
+Subagents share no conversation state: every dispatch/retry supplies exact content, paths, acceptance check. Flow: main decides -> site-editor/site-author changes -> site-checker independently verifies -> user previews -> site-publisher publishes -> site-checker checks live. Escalate on ambiguity/failure; only credentials/ssh recovery and user decisions stay main.
 
-**Failure-driven workflow updates (standing rule):** every subagent failure,
-incomplete result, or mistaken result must change the workflow so it cannot
-recur; record the fix here.
+**Failure-driven workflow updates (standing rule):** record a workflow prevention after every failed, incomplete, or mistaken result.
 
-- A follow-up `Agent` call does NOT resume a previous agent; it spawns a fresh
-  instance with no memory (no SendMessage tool in website session). Every
-  dispatch and retry must re-supply ALL context, e.g. full index->citation
-  mapping for date lookup; never say "the list from before". (Learned 2026-07-08,
-  sub001 `data-date` pilot.)
-- Research/lookup subagents decline to curl external hosts unless explicitly
-  authorized. Metadata-lookup prompts must name allowed hosts up front:
-  Crossref `api.crossref.org`, DBLP, Semantic Scholar, J-STAGE
-  `api.jstage.jst.go.jp`, publisher DOI resolvers; note OpenReview and the
-  researchmap login block non-browser clients. (Learned 2026-07-08.)
-- A subagent can finish with an EMPTY final message. For any output that
-  matters, instruct it to WRITE results under `tools/out/` as it works AND
-  print them as final message so the main session can `Read` that file to recover the result.
-  Especially important for long research/lookup dispatches. (Learned 2026-07-08.)
-- Writing only at the end does not survive mid-run cutoff; lookup agents stop
-  after ~15-20 tool calls with a truncated final line and no file. Fix:
-  append each result immediately after resolving that item and keep lookup
-  dispatches small (<=3-4 entries) so they finish. (Learned 2026-07-08.)
+- Follow-up `Agent` starts fresh (no SendMessage tool); resupply ALL context, e.g. index->citation date mapping, never "the list from before".
+- Lookup subagents curl only explicitly authorized hosts. Prompts name Crossref `api.crossref.org`, DBLP, Semantic Scholar, J-STAGE `api.jstage.jst.go.jp`, publisher DOI resolvers; OpenReview and researchmap login block non-browser clients.
+- Finals may be EMPTY. Important work must be written incrementally under `tools/out/` and printed finally for `Read` recovery. Because agents may cut off after ~15-20 tool calls with a truncated line, append per item and keep lookup dispatches <=3-4 entries.
 
-**codex MCP backend for site-agents:** site-agents and site-coordinator can
-delegate through five logical MCP routing labels defined only by
-`tools/codex-workers.json`: `codex-spark-low`, `codex-spark-medium`,
-`codex-medium`, `codex-high`, and legacy `codex-low`. These must be registered
-at BOTH user scope (`~/.claude.json`) AND project scope
-(`/home/rioyokota/website/.mcp.json`); user scope alone does NOT reach project
-agents or project-scoped coordinator tools (confirmed 2026-07-08 when an actual
-`mcp__codex-medium__codex` call from site-checker returned only after
-`.mcp.json` was added). Each codex-enabled agent frontmatter lists its granted
-routing labels under `mcpServers:` and includes the corresponding
-`mcp__<worker>__codex` tools and `codex-reply`; site-publisher has no codex
-worker.
+**codex MCP backend for site-agents:** register all five registry labels at user `~/.claude.json` AND project `/home/rioyokota/website/.mcp.json`; user scope alone cannot reach project agents/coordinator. Enabled-agent frontmatter grants labels in `mcpServers:` plus matching `mcp__<worker>__codex` (e.g. `mcp__codex-medium__codex`) and `codex-reply`; site-publisher has none. The MANDATORY dispatch contract above applies.
 
-**MANDATORY dispatch contract:** VERIFIED 2026-07-11 on codex-cli 0.144.1:
-startup `-c model=...` / `-c model_reasoning_effort=...` values are ignored by
-`codex mcp-server` and logged as null. PER-CALL `model` plus `config` overrides
-work. Therefore every call resolves the worker in `tools/codex-workers.json`
-and explicitly passes `model=<worker.model>` and
-`config={"model_reasoning_effort":<worker.effort>}`. Without both, the call
-runs `gpt-5.5`. Server names are routing labels only, never model selectors.
-The per-call `sandbox` argument also overrides startup `sandbox_mode` and
-defaults to read-only when omitted, so every write-capable dispatch MUST pass
-`sandbox: "workspace-write"` (confirmed 2026-07-10). CLI >=0.144.0 is required
-for gpt-5.6; installed version is 0.144.1.
+`tools/gen-codex-mcp.py` generates project `.mcp.json` proposal plus exact user-scope `claude mcp add-json`/rollback; check with `tools/gen-codex-mcp.py --check`. `.mcp.json` and `.claude/agents/*.md` remain hand-edit-only proposals in `tools/out/` with exact apply command. `.claude/config-edit-approved` and PreToolUse remain hard accidental-edit blocks, never authorization. `.mcp.json` is repo-only/deploy-excluded by `deploy.sh` `-x '^\.mcp\.json$'`, never public.
 
-`tools/gen-codex-mcp.py` reads the registry and regenerates the project-scope
-`.mcp.json` proposal plus exact user-scope `claude mcp add-json` and rollback
-commands; run `tools/gen-codex-mcp.py --check` for drift detection. Both
-`.mcp.json` and `.claude/agents/*.md` remain hand-edit-only: proposals go under
-`tools/out/` with an exact copy-paste apply command. Subagents categorically
-refuse live config edits regardless of `.claude/config-edit-approved` marker or
-PreToolUse hook (site-editor refused twice, 2026-07-08); marker+hook remain a
-hard block against accidental edits, not an authorization channel. `.mcp.json`
-is repo-only and excluded from deploy (`deploy.sh` `-x '^\.mcp\.json$'`), so it
-is never public.
+Project MCP trust prompts once: `~/.claude.json` records `"hasTrustDialogAccepted": true` for `/home/rioyokota/website`, so later `claude` starts load silently; verify via `/mcp` or `claude mcp list`. Every delegation's final action logs date, agent, task, output file, conversationId in `tools/codex-log.md`; committed pages plus this log are durable, while `codex-reply` conversationIds optimize resumption. Safe rerouting follows the handoff and failover rules above.
 
-Claude prompts to approve project MCP servers only ONCE per project; acceptance
-is recorded as `"hasTrustDialogAccepted": true` for
-`/home/rioyokota/website` in `~/.claude.json`, so later `claude` starts silently
-load the project servers and DO NOT re-prompt—this is expected, not a failure.
-Verify connection with `/mcp` in-session or `claude mcp list`. Every delegation
-logs one line in `tools/codex-log.md` (date, agent, task, output file,
-conversationId); `tools/codex-log.md` plus committed pages are durable
-cross-session memory, while conversationIds resumable via `codex-reply` are an
-optimization. Safe rerouting uses the `tools/out/` handoff package, inspects
-`git status`, never auto-reverts partial work, and never overlaps two
-write-capable workers. Escalation is spark -> `codex-medium` -> `codex-high` ->
-Opus -> Fable, one hop per failure and no more than one cross-pool failover.
+**Validated collaboration workflow (C1-C6, finalized 2026-07-11):**
+
+- C1: codex write/read-back under `tools/out/` validated workspace-write; every write call still passes `sandbox: "workspace-write"`.
+- C2: codex, not read-only Claude checker, appends its `tools/codex-log.md` line last; Claude relays conversationId.
+- C3: all five enabled prompts and `AGENTS.md` enforce output-file-first. `tools/out/achievements-parity.md` confirms sub001-sub007 EN==JP, sub007 63/63.
+- C4: site-checker/editor/author send >2-file or ~100-line reads to codex; Claude minimally spot-checks the file; finals stay near 15 lines.
+- C5: `codex-reply` resumed a two-step thread without context resend; conversationIds optimize, while `tools/out/` and `tools/todo.md` are durable truth.
+- C6: `AGENTS.md` already had self-logging, output-file-first, structured results, and durable-pointer self-loading; no audit change.
 
 ## Publishing workflow
 
-> **NON-NEGOTIABLE RULE -- after EVERY `publish.sh` run, in the same turn:**
-> (1) update CLAUDE.md if anything documentable changed, and (2) `git add -A
-> && git commit && git push` so BOTH the website change and CLAUDE.md reach
-> GitHub. A publish is not complete until GitHub reflects it. `publish.sh`
-> already commits+pushes the website change; if that push fails (e.g. GitHub
-> key not in the ssh-agent), the publish is UNFINISHED -- surface it to the
-> user and resolve before moving on. A PostToolUse hook in
-> `.claude/settings.local.json` prints a reminder after every publish.
+> **NON-NEGOTIABLE RULE -- after EVERY `publish.sh` run, in the same turn:** (1) update CLAUDE.md if anything documentable changed, and (2) `git add -A && git commit && git push` so BOTH the website change and CLAUDE.md reach GitHub. A publish is not complete until GitHub reflects it. `publish.sh` already commits+pushes the website change; if that push fails (e.g. GitHub key not in the ssh-agent), the publish is UNFINISHED -- surface it to the user and resolve before moving on. A PostToolUse hook in `.claude/settings.local.json` prints a reminder after every publish.
 
 > **PULL-REBASE BEFORE PUSH (multi-committer repo):** other people also commit to this repository, so BEFORE any push -- including the push inside `publish.sh` -- run `SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git pull --rebase --autostash origin main` to integrate remote commits first. Resolve NON-overlapping conflicts (different files or regions) by keeping BOTH sides, then `git add` + `git rebase --continue`. If a conflict OVERLAPS the current edits or is otherwise ambiguous, run `git rebase --abort` and escalate to the user rather than guessing on content.
 
-Standard cycle for every content change (first exercised end-to-end on
-2026-07-04, removing a member from the member page):
+Standard cycle for every content change:
 
 **Standing workflow rules:**
 
-- Always: preview at `http://localhost:8000/jp/index.html` before publishing;
-  update CLAUDE.md immediately after publishing if anything documentable
-  changed; commit and push CLAUDE.md to GitHub immediately after updating it.
-- Only when explicitly asked: mirror website EN/JP pages to ResearchMap; mirror
-  website into `cv/cv.tex`, compile `cv/cv.pdf`, and publish.
+- Always: preview at `http://localhost:8000/jp/index.html` before publishing; update CLAUDE.md immediately after publishing if anything documentable changed; commit and push CLAUDE.md to GitHub immediately after updating it.
+- Only when explicitly asked: mirror website EN/JP pages to ResearchMap; mirror website into `cv/cv.tex`, compile `cv/cv.pdf`, and publish.
 
-1. **Edit** -- make the change and update both `jp/` and `en/` counterparts.
-   When Claude edits, grep for other occurrences of changed content (names,
-   links) site-wide. When asked to remove someone from member list, also add
-   them to the TOP of Alumni on both member pages (jp form: `姓 名 (Romaji Name)`).
-   Historical records (news, publication lists) are never edited when
-   members leave or change grade.
-2. **Preview** -- user checks `http://localhost:8000/jp/index.html`.
-   `.claude/settings.local.json` SessionStart/SessionEnd hook starts/stops
-   `python3 -m http.server 8000` automatically (PID `.claude/http-server.pid`);
-   if down mid-session, start it the same way. Wait
-   for user OK before publishing.
-3. **Publish** -- `./publish.sh "what changed"`. It shows pending git changes
-   and upload list, asks one y/N confirmation, deploys, commits, and pushes.
-   When Claude runs it after OK, pipe confirmation:
-   `echo y | ./publish.sh "message"`. This no longer triggers ResearchMap
-   export automatically. FIRST check `git status` because `git add -A` sweeps
-   unrelated pending changes; if any exist, mention them and use a commit
-   message covering everything. (Learned 2026-07-06, leftover CSS rode along.)
-   Debugging artifacts in repo (e.g. iPhone screenshots `IMG_*.PNG`) get swept
-   in AND deployed to public web root; delete them before publishing or remove
-   them later from server with `lftp`.
-4. **Verify** -- after publishing, curl changed pages on
-   https://www.rio.scrc.iir.isct.ac.jp and confirm live.
-5. **Document** -- if structure, conventions, workflow, or tooling changed,
-   update CLAUDE.md in the same turn and commit/push it. PostToolUse in
-   `.claude/settings.local.json` reminds after every `publish.sh`.
+1. **Edit** -- make the change and update both `jp/` and `en/` counterparts. When Claude edits, grep for other occurrences of changed content (names, links) site-wide. When asked to remove someone from member list, also add them to the TOP of Alumni on both member pages (jp form: `姓 名 (Romaji Name)`). Historical records (news, publication lists) are never edited when members leave or change grade.
+2. **Preview** -- user checks `http://localhost:8000/jp/index.html`. `.claude/settings.local.json` SessionStart/SessionEnd hook starts/stops `python3 -m http.server 8000` automatically (PID `.claude/http-server.pid`); if down mid-session, start it the same way. Wait for user OK before publishing.
+3. **Publish** -- `./publish.sh "what changed"`. It shows pending git changes and upload list, asks one y/N confirmation, deploys, commits, and pushes. When Claude runs it after OK, pipe confirmation: `echo y | ./publish.sh "message"`. This no longer triggers ResearchMap export automatically. FIRST check `git status` because `git add -A` sweeps unrelated pending changes; if any exist, mention them and use a commit message covering everything. Debugging artifacts in repo (e.g. iPhone screenshots `IMG_*.PNG`) get swept in AND deployed to public web root; delete them before publishing or remove them later from server with `lftp`.
+4. **Verify** -- after publishing, curl changed pages on https://www.rio.scrc.iir.isct.ac.jp and confirm live.
+5. **Document** -- if structure, conventions, workflow, or tooling changed, update CLAUDE.md in the same turn and commit/push it. PostToolUse in `.claude/settings.local.json` reminds after every `publish.sh`.
 
 ## Content conventions
 
-- **File quirks**: HTML files have CRLF line endings and occasional
-  non-breaking spaces. Edit with small `python3` scripts using
-  `open(path, newline='')` to preserve CRLF; use `newline=''` for read and
-  write. Parse tags case-insensitively and do NOT assume closing tags: legacy
-  sections used unclosed uppercase `<LI>`, and one such block hid duplicated
-  entries on `jp` achievements until 2026-07-06.
-- **Institution naming** (renamed 2024): 東京科学大学 総合研究院 / Institute of
-  Science Tokyo, IIR. Old names (東京工業大学, Tokyo Tech, 学術国際情報センター,
-  GSIC) were replaced site-wide on 2026-07-05 EXCEPT historical records -- CV
-  on `member/yokota.html`, old news items -- and live URLs
-  (`t4.gsic.titech.ac.jp`, SuperCon links).
-- **Achievements** (`achievements/index.html`): sections `sub001`-`sub007`
-  map to journal / book series / books / international peer-reviewed /
-  domestic peer-reviewed / international non-reviewed / domestic non-reviewed.
-  Entries are newest-first inside each `<ol>`. International citations are
-  English on BOTH language pages; domestic citations are Japanese on both.
-- **Achievements `data-date` (ResearchMap metadata):** every Achievements
-  `<li>` carries invisible `data-date` on the opening `<li>`; rendered page
-  unchanged. Format `YYYY-MM` or `YYYY-MM-DD` when day known. Derivation for
-  all entries and new entries lacking dates: (1) journals -> published date;
-  conferences -> first conference day; otherwise ask user. (2) Month priority:
-  citation text, else DOI/Crossref confirmed month (print, else online-first),
-  else J-STAGE 発行日. (3) YEAR-ONLY IS NEVER ALLOWED; if month cannot be
-  confirmed, default deterministically to January (`-01`) of known year.
-  Exporter should prefer `data-date` over heuristic parsing when present.
-  Progress is tracked in `tools/todo.md` (persistent,
-  repo-only); read/update it each step. Field 1 complete across sub001-sub007
-  as of 2026-07-08 (pilot sub001, 2026-07-08; sub001 42, sub004 115, sub005
-  32, sub006 45, sub007 62, sub002/sub003 4, all en+jp).
-- **Achievements `data-doi` / `data-url` (Field 2, ResearchMap identifier):**
-  each `<li>` may carry invisible `data-doi` (BARE DOI, e.g. `10.1234/...`,
-  no `https://doi.org/`) OR, if no DOI, `data-url` for the SAME paper:
-  arXiv abs page, OpenReview forum, or 言語処理学会/ANLP anthology PDF.
-  Derivation priority: (1) DOI via Crossref/J-STAGE matching title+author+year;
-  (2) confirmed same-paper URL (arXiv/OpenReview/anthology); (3) leave BOTH
-  blank. Be conservative: differing title means blank. Lookups run in small
-  (<=4-6) site-author batches, authorized hosts Crossref/DBLP/Semantic
-  Scholar/J-STAGE/arXiv (+anlp.jp for ANLP), appending each result immediately
-  to `tools/out/doi-subNNN.md`. Exporter maps `data-doi` -> DOI
-  identifier and `data-url` -> `see_also`. Progress (2026-07-09) in
-  `tools/todo.md`: sub001 (37 doi + 2 url), sub002 (0),
-  sub003 (2 doi), sub004 (48 doi + 25 url; 42 blank posters/talks), sub005
-  (4 doi + 5 url) done. For 7
-  sub004 entries with website title differing from published title, the
-  PUBLISHED title was mirrored onto website en+jp on 2026-07-09, e.g. Aurora-M,
-  Formula-Supervised, RePOSE, BiCGStab, N-Body Problems with Boundary
-  Distributions, Task Parallel Implementation, k-th Eigenvalue.
-- **News**: only top-conference acceptances (ICLR/NeurIPS/CVPR/AAAI level) and
-  grants get news items, not workshops, GTC talks, or LREC-tier venues. Each
-  item appears in four places: dated row in News table on both top pages
-  (`en/index.html`, `jp/index.html`) linking to `news/index.html#evYYMMDD`,
-  and full anchored entry on both news pages. Dates are announcement dates;
-  member grades are as of that date, e.g. "(2nd year PhD)"/"(D2)".
-- **Computers page**: Hinadori section is generated from live cluster data;
-  this machine IS the Hinadori login node. `sinfo`/`slurm.conf` give node
-  layout, `yrun` (no args) lists resources with GPU models, and short `ybatch`
-  jobs (`#YBATCH -r <resource>`; output to `$HOME`, not `/tmp` because `/tmp`
-  is node-local) give exact CPU/GPU models. Direct `srun` is blocked. Last
-  refreshed 2026-07-05: 81 GPUs. 2-GPU RTX 6000 Ada CPU (AMD EPYC 9654) was
-  supplied by user; 8-GPU RTX 6000 Ada CPU is unknown ("-" in table, node down).
-- **Research page** (`research/index.html`): "Current Research Topics YYYY"
-  first (anchor `rYYYY`), then per-year thesis sections newest-first (anchors
-  `rYYYYM`/`rYYYYB`), mirrored in sidebar. Entry format: `<h4>Title（Name）
-  </h4>` + abstract `<p>` + lightbox figure. Figures for BOTH language pages
-  live in `jp/research/images20XX/NNN.jpg` (numbering continues within folder).
-  Unlike Achievements, Research pages are monolingual since 2026-07-05:
-  English only on `en/`, Japanese only on `jp/`; translate titles/abstracts;
-  use kanji names where known (check member/alumni), romaji for international
-  students.
+- **File quirks**: HTML files have CRLF line endings and occasional non-breaking spaces. Edit with small `python3` scripts using `open(path, newline='')` to preserve CRLF; use `newline=''` for read and write. Parse tags case-insensitively and do NOT assume closing tags: legacy sections used unclosed uppercase `<LI>`, and one such block hid duplicated entries on `jp` achievements until 2026-07-06.
+- **Institution naming** (renamed 2024): 東京科学大学 総合研究院 / Institute of Science Tokyo, IIR. Old names (東京工業大学, Tokyo Tech, 学術国際情報センター, GSIC) were replaced site-wide on 2026-07-05 EXCEPT historical records -- CV on `member/yokota.html`, old news items -- and live URLs (`t4.gsic.titech.ac.jp`, SuperCon links).
+- **Achievements** (`achievements/index.html`): sections `sub001`-`sub007` map to journal / book series / books / international peer-reviewed / domestic peer-reviewed / international non-reviewed / domestic non-reviewed. Entries are newest-first inside each `<ol>`. International citations are English on BOTH language pages; domestic citations are Japanese on both.
+- **Achievements `data-date` (ResearchMap metadata):** every Achievements `<li>` carries invisible `data-date` on the opening `<li>`; rendered page unchanged. Format `YYYY-MM` or `YYYY-MM-DD` when day known. Derivation for all entries and new entries lacking dates: (1) journals -> published date; conferences -> first conference day; otherwise ask user. (2) Month priority: citation text, else DOI/Crossref confirmed month (print, else online-first), else J-STAGE 発行日. (3) YEAR-ONLY IS NEVER ALLOWED; if month cannot be confirmed, default deterministically to January (`-01`) of known year. Exporter should prefer `data-date` over heuristic parsing when present. Progress is tracked in `tools/todo.md` (persistent, repo-only); read/update it each step. Field 1 complete across sub001-sub007 as of 2026-07-08 (pilot sub001, 2026-07-08; sub001 42, sub004 115, sub005 32, sub006 45, sub007 62, sub002/sub003 4, all en+jp).
+- **Achievements `data-doi` / `data-url` (Field 2, ResearchMap identifier):** each `<li>` may carry invisible `data-doi` (BARE DOI, e.g. `10.1234/...`, no `https://doi.org/`) OR, if no DOI, `data-url` for the SAME paper: arXiv abs page, OpenReview forum, or 言語処理学会/ANLP anthology PDF. Derivation priority: (1) DOI via Crossref/J-STAGE matching title+author+year; (2) confirmed same-paper URL (arXiv/OpenReview/anthology); (3) leave BOTH blank. Be conservative: differing title means blank. Lookups run in small (<=4-6) site-author batches, authorized hosts Crossref/DBLP/Semantic Scholar/J-STAGE/arXiv (+anlp.jp for ANLP), appending each result immediately to `tools/out/doi-subNNN.md`. Exporter maps `data-doi` -> DOI identifier and `data-url` -> `see_also`. Progress (2026-07-09) in `tools/todo.md`: sub001 (37 doi + 2 url), sub002 (0), sub003 (2 doi), sub004 (48 doi + 25 url; 42 blank posters/talks), sub005 (4 doi + 5 url) done. For 7 sub004 entries with website title differing from published title, the PUBLISHED title was mirrored onto website en+jp on 2026-07-09, e.g. Aurora-M, Formula-Supervised, RePOSE, BiCGStab, N-Body Problems with Boundary Distributions, Task Parallel Implementation, k-th Eigenvalue.
+- **News**: only top-conference acceptances (ICLR/NeurIPS/CVPR/AAAI level) and grants get news items, not workshops, GTC talks, or LREC-tier venues. Each item appears in four places: dated row in News table on both top pages (`en/index.html`, `jp/index.html`) linking to `news/index.html#evYYMMDD`, and full anchored entry on both news pages. Dates are announcement dates; member grades are as of that date, e.g. "(2nd year PhD)"/"(D2)".
+- **Computers page**: Hinadori section is generated from live cluster data; this machine IS the Hinadori login node. `sinfo`/`slurm.conf` give node layout, `yrun` (no args) lists resources with GPU models, and short `ybatch` jobs (`#YBATCH -r <resource>`; output to `$HOME`, not `/tmp` because `/tmp` is node-local) give exact CPU/GPU models. Direct `srun` is blocked. Last refreshed 2026-07-05: 81 GPUs. 2-GPU RTX 6000 Ada CPU (AMD EPYC 9654) was supplied by user; 8-GPU RTX 6000 Ada CPU is unknown ("-" in table, node down).
+- **Research page** (`research/index.html`): "Current Research Topics YYYY" first (anchor `rYYYY`), then per-year thesis sections newest-first (anchors `rYYYYM`/`rYYYYB`), mirrored in sidebar. Entry format: `<h4>Title（Name） </h4>` + abstract `<p>` + lightbox figure. Figures for BOTH language pages live in `jp/research/images20XX/NNN.jpg` (numbering continues within folder). Unlike Achievements, Research pages are monolingual since 2026-07-05: English only on `en/`, Japanese only on `jp/`; translate titles/abstracts; use kanji names where known (check member/alumni), romaji for international students.
 - Site-wide strings must also update `Templates/*.dwt`.
-- **Mirroring to researchmap/FIS**: `researchmap-export.py` no longer runs from
-  `publish.sh`. Run only on explicit sync request:
-  `python3 tools/researchmap-export.py --check-live`. It fetches public API
-  `https://api.researchmap.jp/rioyokota/{published_papers,books_etc,presentations,misc}`
-  and diffs against ALL current Yokota-authored Achievements entries, not only
-  local-state additions, because `tools/researchmap-state.json` can drift from
-  live (generated but never uploaded, or partially uploaded). It writes missing
-  entries to `tools/out/researchmap-import.jsonl`.
-  Category mapping (agreed 2026-07-06): peer-reviewed sections
-  (sub001/004/005) -> Papers; Book series + Books (sub002/003) -> Books and
-  Other Publications; non-peer-reviewed sections (sub006/007) ->
-  Presentations when Rio Yokota is SOLE author (invited talks), Misc otherwise.
-  Bulk-import grammar supports insert, `update` (+`doc`), and `delete` by
-  `rm:id` from public read API; this built the 2026-07-06 recategorization
-  migration. Insert/update lines must NOT carry `user_id`: in self-import the
-  logged-in account is implied, and `user_id` (even own permalink) means
-  "another member's list", fails 403, and blocks the ENTIRE file because
-  researchmap validates all lines before applying any. Learned 2026-07-06.
-  Verified 2026-07-08 exact UPDATE grammar against researchmap V2 API spec: one
-  JSON object per line,
-  `{"update": {"type": "<record-type>", "id": "<rm:id>"}, "doc": {<only the changed fields>}}`;
-  partial update leaves unlisted fields untouched and carries NO `user_id`.
-  `rm:id`s come from public read API, e.g.
-  `https://api.researchmap.jp/rioyokota/published_papers?limit=1000`. Example
-  used 2026-07-08 for ANLP2025 title:
-  `{"update": {"type": "published_papers", "id": "50836989"}, "doc": {"paper_title": {"ja": "..."}}}`.
-  ORCID has no such update path: a no-DOI title change adds a new BibTeX work
-  on re-import, so stale old-title work must be removed manually in ORCID UI.
-  User downloads
-  `http://localhost:8000/tools/out/researchmap-import.jsonl` and uploads at
-  researchmap 設定 > インポート (permalink: rioyokota); university FIS syncs
-  from researchmap automatically. Review printed NEW lines before upload.
-  Do NOT script researchmap website: login blocks non-browser clients (403).
-  Sanctioned automation is WebAPI. Public READ needs no key:
-  `https://api.researchmap.jp/rioyokota/{type}` (JSON).
-  Import error granularity (learned 2026-07-07): `user_id` on any insert line
-  403s and blocks the ENTIRE file; per-entry validation errors (e.g.
-  `published_papers` missing `publication_date`) return 400 for THAT line only
-  while others import. researchmap emails/serves
-  `errors_researchmap-import-N.csv` with failing line number, field, message.
-  When one row fails, do NOT re-upload whole file; extract corrected failing
-  line into a tiny one-line jsonl. Public READ API lags behind imports, so
-  `--check-live` will NOT immediately dedupe just-imported entries.
-  `published_papers` entries REQUIRE `publication_date` (出版年月); trailing-note
-  dates can fail 400 until fixed. Parser hardened 2026-07-07 for author lists
-  separated by either 、 or ASCII commas, "LastAuthor. Title" boundary
-  (period+space after last author, preserving initials like "David E. Keyes"),
-  and trailing parenthetical after date ("Dec. 2022. (Best paper)",
-  "(学生奨励賞)") by extracting date and dropping note from `publication_name`.
-  Still heuristic: review output.
-- **Mirroring to ORCID / ORCID BibTeX export**: `tools/orcid-export.py` mirrors
-  website Achievements publications where Rio Yokota is an author to ORCID
-  https://orcid.org/0000-0001-7573-7873. ORCID has no researchmap-style JSON
-  bulk-import API; sanctioned no-API route is ORCID > Add works > Import BibTeX
-  (BibTeXImportWizard). Exporter parses `en/achievements/index.html`, reuses
-  `researchmap-export.py` hardened citation parser via importlib (hyphenated
-  filename), and writes complete Yokota-authored set to
-  `tools/out/orcid-works.bib`, served at
-  `http://localhost:8000/tools/out/orcid-works.bib`. Usage:
-  `python3 tools/orcid-export.py`; dry run: `tools/orcid-export.py --dry-run`
-  prints counts + risky parses, no file. Section -> BibTeX mapping: sub001 ->
-  `@article`; sub002 -> `@incollection`; sub003 -> `@book`; sub004/sub005 ->
-  `@inproceedings`; sub006/sub007 -> `@misc`. ORCID public API is read-only
-  without OAuth; re-import is non-destructive because ORCID
-  groups/merges by identifier/title. First run 2026-07-07: 284 entries.
-  Optional future refinements are tracked in `tools/todo.md`.
-  Same on-demand pattern as researchmap export and CV build; kept OUT of
-  `publish.sh`. Review risky parses; parser is only as good as source
-  citations. Three malformed achievements entries (colon-separated author,
-  全角 ．/「」 delimiters) were normalized in achievements pages 2026-07-07; prefer
-  fixing source citation over patching `.bib`. User downloads
-  `tools/out/orcid-works.bib` and imports via ORCID Add works > Import BibTeX.
-- **cv.tex sync**: `cv/cv.tex` must stay in sync with website both directions.
-  Whenever `achievements/index.html` or CV sections of `jp/member/yokota.html`
-  (受賞歴/委員歴/研究課題) change, update matching section of `cv/cv.tex` in same
-  edit; if `cv/cv.tex` is source of a new item, add it to website pages too.
-- **CV PDF build**: `cv/cv.tex` plus custom `cv/cv.cls` in `cv/` compiles to
-  `cv/cv.pdf` via `cv/build-cv.sh`, which runs XeTeX-based `tectonic`
-  installed at `~/.local/bin/tectonic`. `cv/cv.tex` preamble MUST keep
-  `\usepackage{xeCJK}` + `\setCJKmainfont{Noto Sans CJK JP}` because the CV
-  contains Japanese names/titles; Noto CJK font is in `~/.local/share/fonts`;
-  without it XeTeX silently drops kanji. Run `./cv/build-cv.sh` on demand
-  whenever `cv/cv.tex` changes (kept OUT of `publish.sh`); normal `publish.sh`
-  then deploys regenerated `cv/cv.pdf`. Single English+Japanese `cv/cv.pdf`
-  lives in `cv/` and is linked from BOTH `en/member/yokota.html` and
-  `jp/member/yokota.html` as `../../cv/cv.pdf` (`target=_blank`,
-  `rel=noopener`). `cv/cv.tex`, `cv/cv.cls`, `cv/build-cv.sh` are repo-only and
-  excluded from deploy in `deploy.sh`; only `cv/cv.pdf` is served.
-- **CV items on personal page** are mirrored to researchmap. Canonical source:
-  `jp/member/yokota.html` sections 受賞歴 / 委員歴 / 研究課題; `en` page mirrors
-  Awards / Committee Memberships / Research Projects but is NOT parsed. Exporter
-  line formats (em-dash separators, 全角 space after dates):
-  `2009年11月　AWARD_NAME` / `2024–2025　ROLE — ASSOCIATION` /
-  `2025–2028　TITLE（FUNDING SYSTEM、FUNDER）`. Add items to BOTH language pages
-  in that format; run on-demand export. Initial content imported FROM
-  researchmap on 2026-07-06, so page contents as of then are baseline.
+- **Mirroring to researchmap/FIS**: `researchmap-export.py` no longer runs from `publish.sh`. Run only on explicit sync request: `python3 tools/researchmap-export.py --check-live`. It fetches public API `https://api.researchmap.jp/rioyokota/{published_papers,books_etc,presentations,misc}` and diffs against ALL current Yokota-authored Achievements entries, not only local-state additions, because `tools/researchmap-state.json` can drift from live (generated but never uploaded, or partially uploaded). It writes missing entries to `tools/out/researchmap-import.jsonl`. Category mapping (agreed 2026-07-06): peer-reviewed sections (sub001/004/005) -> Papers; Book series + Books (sub002/003) -> Books and Other Publications; non-peer-reviewed sections (sub006/007) -> Presentations when Rio Yokota is SOLE author (invited talks), Misc otherwise. Bulk-import grammar supports insert, `update` (+`doc`), and `delete` by `rm:id` from public read API; this built the 2026-07-06 recategorization migration. Insert/update lines must NOT carry `user_id`: in self-import the logged-in account is implied, and `user_id` (even own permalink) means "another member's list", fails 403, and blocks the ENTIRE file because researchmap validates all lines before applying any. Verified 2026-07-08 exact UPDATE grammar against researchmap V2 API spec: one JSON object per line, `{"update": {"type": "<record-type>", "id": "<rm:id>"}, "doc": {<only the changed fields>}}`; partial update leaves unlisted fields untouched and carries NO `user_id`. `rm:id`s come from public read API, e.g. `https://api.researchmap.jp/rioyokota/published_papers?limit=1000`. Example used 2026-07-08 for ANLP2025 title: `{"update": {"type": "published_papers", "id": "50836989"}, "doc": {"paper_title": {"ja": "..."}}}`. ORCID has no such update path: a no-DOI title change adds a new BibTeX work on re-import, so stale old-title work must be removed manually in ORCID UI. User downloads `http://localhost:8000/tools/out/researchmap-import.jsonl` and uploads at researchmap 設定 > インポート (permalink: rioyokota); university FIS syncs from researchmap automatically. Review printed NEW lines before upload. Do NOT script researchmap website: login blocks non-browser clients (403). Sanctioned automation is WebAPI. Public READ needs no key: `https://api.researchmap.jp/rioyokota/{type}` (JSON). Import error granularity: `user_id` on any insert line 403s and blocks the ENTIRE file; per-entry validation errors (e.g. `published_papers` missing `publication_date`) return 400 for THAT line only while others import. researchmap emails/serves `errors_researchmap-import-N.csv` with failing line number, field, message. When one row fails, do NOT re-upload whole file; extract corrected failing line into a tiny one-line jsonl. Public READ API lags behind imports, so `--check-live` will NOT immediately dedupe just-imported entries. `published_papers` entries REQUIRE `publication_date` (出版年月); trailing-note dates can fail 400 until fixed. Parser hardened 2026-07-07 for author lists separated by either 、 or ASCII commas, "LastAuthor. Title" boundary (period+space after last author, preserving initials like "David E. Keyes"), and trailing parenthetical after date ("Dec. 2022. (Best paper)", "(学生奨励賞)") by extracting date and dropping note from `publication_name`. Still heuristic: review output.
+- **Mirroring to ORCID / ORCID BibTeX export**: `tools/orcid-export.py` mirrors website Achievements publications where Rio Yokota is an author to ORCID https://orcid.org/0000-0001-7573-7873. ORCID has no researchmap-style JSON bulk-import API; sanctioned no-API route is ORCID > Add works > Import BibTeX (BibTeXImportWizard). Exporter parses `en/achievements/index.html`, reuses `researchmap-export.py` hardened citation parser via importlib (hyphenated filename), and writes complete Yokota-authored set to `tools/out/orcid-works.bib`, served at `http://localhost:8000/tools/out/orcid-works.bib`. Usage: `python3 tools/orcid-export.py`; dry run: `tools/orcid-export.py --dry-run` prints counts + risky parses, no file. Section -> BibTeX mapping: sub001 -> `@article`; sub002 -> `@incollection`; sub003 -> `@book`; sub004/sub005 -> `@inproceedings`; sub006/sub007 -> `@misc`. ORCID public API is read-only without OAuth; re-import is non-destructive because ORCID groups/merges by identifier/title. First run 2026-07-07: 284 entries. Optional future refinements are tracked in `tools/todo.md`. Same on-demand pattern as researchmap export and CV build; kept OUT of `publish.sh`. Review risky parses; parser is only as good as source citations. Three malformed achievements entries (colon-separated author, 全角 ．/「」 delimiters) were normalized in achievements pages 2026-07-07; prefer fixing source citation over patching `.bib`. User downloads `tools/out/orcid-works.bib` and imports via ORCID Add works > Import BibTeX.
+- **cv.tex sync**: `cv/cv.tex` must stay in sync with website both directions. Whenever `achievements/index.html` or CV sections of `jp/member/yokota.html` (受賞歴/委員歴/研究課題) change, update matching section of `cv/cv.tex` in same edit; if `cv/cv.tex` is source of a new item, add it to website pages too.
+- **CV PDF build**: `cv/cv.tex` plus custom `cv/cv.cls` in `cv/` compiles to `cv/cv.pdf` via `cv/build-cv.sh`, which runs XeTeX-based `tectonic` installed at `~/.local/bin/tectonic`. `cv/cv.tex` preamble MUST keep `\usepackage{xeCJK}` + `\setCJKmainfont{Noto Sans CJK JP}` because the CV contains Japanese names/titles; Noto CJK font is in `~/.local/share/fonts`; without it XeTeX silently drops kanji. Run `./cv/build-cv.sh` on demand whenever `cv/cv.tex` changes (kept OUT of `publish.sh`); normal `publish.sh` then deploys regenerated `cv/cv.pdf`. Single English+Japanese `cv/cv.pdf` lives in `cv/` and is linked from BOTH `en/member/yokota.html` and `jp/member/yokota.html` as `../../cv/cv.pdf` (`target=_blank`, `rel=noopener`). `cv/cv.tex`, `cv/cv.cls`, `cv/build-cv.sh` are repo-only and excluded from deploy in `deploy.sh`; only `cv/cv.pdf` is served.
+- **CV items on personal page** are mirrored to researchmap. Canonical source: `jp/member/yokota.html` sections 受賞歴 / 委員歴 / 研究課題; `en` page mirrors Awards / Committee Memberships / Research Projects but is NOT parsed. Exporter line formats (em-dash separators, 全角 space after dates): `2009年11月　AWARD_NAME` / `2024–2025　ROLE — ASSOCIATION` / `2025–2028　TITLE（FUNDING SYSTEM、FUNDER）`. Add items to BOTH language pages in that format; run on-demand export. Initial content imported FROM researchmap on 2026-07-06, so page contents as of then are baseline.
 
 ## Content sources and figure tooling
 
-- **Lab Google Drive**: read-only via rclone:
-  `~/.local/bin/rclone lsf --drive-root-folder-id 1MRyEsesRkuZ_eGtUgnPgC9k3rXuo_BLa gdrive:<path>`.
-  Layout: `Thesis/YYYY/{master,bachelor}/` (thesis PDFs for Research entries),
-  `Posters/YYYY/` (研究室紹介 lab-intro poster; `.pages` files are zip archives
-  containing `preview.jpg` and original images under `Data/`),
-  `Slides/YYYY発表.../` (defense slides). OAuth token is Drive-read-only and
-  revocable at myaccount.google.com/permissions.
-- **Swallow material**: https://swallow-llm.github.io/ (`.ja.html` and
-  `.en.html` release pages). Charts are ApexCharts SVGs whose legends are NOT
-  in SVG; series names are in `seriesName` attributes and colors follow palette
-  `#008FFB`, `#00E396`, `#FEB019`, `#FF4560`, `#775DD0` in series order.
-  Rebuild legend with PIL when rasterizing.
-- **Figure production**: thesis-PDF figures via
-  `pdftoppm -jpeg -r 150 -f N -l N` + PIL crop (trim captions; flatten
-  transparency onto white). SVG->PNG needs cairosvg in a venv
-  (`python3 -m venv`; system pip is PEP-668-locked) and Japanese fonts. Noto
-  Sans CJK JP installed in `~/.local/share/fonts` (2026-07-05); patch SVG
-  `font-family` to "Noto Sans CJK JP" before converting because cairo does no
-  font fallback.
+- **Lab Google Drive**: read-only via rclone: `~/.local/bin/rclone lsf --drive-root-folder-id 1MRyEsesRkuZ_eGtUgnPgC9k3rXuo_BLa gdrive:<path>`. Layout: `Thesis/YYYY/{master,bachelor}/` (thesis PDFs for Research entries), `Posters/YYYY/` (研究室紹介 lab-intro poster; `.pages` files are zip archives containing `preview.jpg` and original images under `Data/`), `Slides/YYYY発表.../` (defense slides). OAuth token is Drive-read-only and revocable at myaccount.google.com/permissions.
+- **Swallow material**: https://swallow-llm.github.io/ (`.ja.html` and `.en.html` release pages). Charts are ApexCharts SVGs whose legends are NOT in SVG; series names are in `seriesName` attributes and colors follow palette `#008FFB`, `#00E396`, `#FEB019`, `#FF4560`, `#775DD0` in series order. Rebuild legend with PIL when rasterizing.
+- **Figure production**: thesis-PDF figures via `pdftoppm -jpeg -r 150 -f N -l N` + PIL crop (trim captions; flatten transparency onto white). SVG->PNG needs cairosvg in a venv (`python3 -m venv`; system pip is PEP-668-locked) and Japanese fonts. Noto Sans CJK JP installed in `~/.local/share/fonts` (2026-07-05); patch SVG `font-family` to "Noto Sans CJK JP" before converting because cairo does no font fallback.
 
 ## Deployment details
 
-`publish.sh` calls `./deploy.sh` (preview `./deploy.sh --dry-run`). It mirrors
-this folder to `www/` on server via lftp/SFTP, uploading only new/changed files.
-It uses `mirror -R --delete`, so local removals are removed remotely next deploy;
-server stays exact mirror of deployed set, no more manual `lftp rm`. Excluded
-paths (`-x` list: `.git`, `.claude`, `tools`, scripts, `CLAUDE.md`, source
-files `cv/cv.tex`/`cv/cv.cls`/`cv/build-cv.sh`, etc.) are never uploaded and
-never deleted remotely. Verified 2026-07-08 live mirror had zero remote-only
-orphans. Because `--delete` is destructive, always preview with
-`./deploy.sh --dry-run` when deploy includes deletions.
+`publish.sh` calls `./deploy.sh` (preview `./deploy.sh --dry-run`). It mirrors this folder to `www/` on server via lftp/SFTP, uploading only new/changed files. It uses `mirror -R --delete`, so local removals are removed remotely next deploy; server stays exact mirror of deployed set, no more manual `lftp rm`. Excluded paths (`-x` list: `.git`, `.claude`, `tools`, scripts, `CLAUDE.md`, source files `cv/cv.tex`/`cv/cv.cls`/`cv/build-cv.sh`, etc.) are never uploaded and never deleted remotely. Verified 2026-07-08 live mirror had zero remote-only orphans. Because `--delete` is destructive, always preview with `./deploy.sh --dry-run` when deploy includes deletions.
 
-- Server: `gsic0017@web-o3.noc.titech.ac.jp`, SFTP only (no shell), web root
-  `www/`.
-- Auth: password-only via `web` alias in `~/.ssh/config`, multiplexed over
-  ControlMaster (`ControlPersist yes`, lives until reboot). If master is down,
-  `deploy.sh` re-establishes automatically: password stored in
-  `~/.ssh/web-password` (chmod 600, user-created, NEVER printed or read into
-  conversation) and supplied by `~/.ssh/web-askpass` via
-  `SSH_ASKPASS_REQUIRE=force`.
-- If password file missing, ask user to run `ssh -fN web` in separate terminal;
-  never ask for password in chat. `!` commands in Claude Code have no tty, so
-  interactive password entry does not work there.
-- Key-based auth impossible: chrooted SFTP home is root-owned, so no
-  `~/.ssh/authorized_keys` can be created on server.
-- NEVER upload `.git` to server. Its public copy was removed on 2026-07-04
-  after being found downloadable over HTTPS; `deploy.sh` excludes it.
-- If `git push` fails with "Permission denied (publickey)", ssh-agent lacks
-  passphrase-protected GitHub key `~/.ssh/id_ed25519`. Standard fix: persistent
-  agent at fixed socket `~/.ssh/agent.sock`; user runs
-  `sh ~/scripts/ssh-agent-setup.sh` once per reboot in real tmux pane (e.g.
-  new window via `Ctrl-b c`) to start agent and load key (passphrase once).
-  Shells auto-point via `# yokota-ssh-agent` block in user's rc. From any
-  session, including Claude's non-login Bash which does NOT source rc, push
-  deterministically with `SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git push`; no
-  hunting `/tmp/ssh-*` sockets. Helper `ssh-agent-setup.sh` (repo-external,
-  `~/scripts`) is idempotent and safe to rerun. (Standardized 2026-07-08 after
-  repeated ssh-add failures under tmux/remote-control.)
+- Server: `gsic0017@web-o3.noc.titech.ac.jp`, SFTP only (no shell), web root `www/`.
+- Auth: password-only via `web` alias in `~/.ssh/config`, multiplexed over ControlMaster (`ControlPersist yes`, lives until reboot). If master is down, `deploy.sh` re-establishes automatically: password stored in `~/.ssh/web-password` (chmod 600, user-created, NEVER printed or read into conversation) and supplied by `~/.ssh/web-askpass` via `SSH_ASKPASS_REQUIRE=force`.
+- If password file missing, ask user to run `ssh -fN web` in separate terminal; never ask for password in chat. `!` commands in Claude Code have no tty, so interactive password entry does not work there.
+- Key-based auth impossible: chrooted SFTP home is root-owned, so no `~/.ssh/authorized_keys` can be created on server.
+- NEVER upload `.git` to server. Its public copy was removed on 2026-07-04 after being found downloadable over HTTPS; `deploy.sh` excludes it.
+- If `git push` fails with "Permission denied (publickey)", ssh-agent lacks passphrase-protected GitHub key `~/.ssh/id_ed25519`. Standard fix: persistent agent at fixed socket `~/.ssh/agent.sock`; user runs `sh ~/scripts/ssh-agent-setup.sh` once per reboot in real tmux pane (e.g. new window via `Ctrl-b c`) to start agent and load key (passphrase once). Shells auto-point via `# yokota-ssh-agent` block in user's rc. From any session, including Claude's non-login Bash which does NOT source rc, push deterministically with `SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git push`; no hunting `/tmp/ssh-*` sockets. Helper `ssh-agent-setup.sh` (repo-external, `~/scripts`) is idempotent and safe to rerun.
 
 ## Known issues (as of 2026-07)
 
-- Fixed 2026-07-05: broken http:// jQuery now loads locally from `js/`, dead
-  Google Analytics snippet and IE8 shims removed from every page, and
-  `style.css` modernized with same selectors and refreshed look.
-- Fixed 2026-07-07: two mobile layout bugs found via iPhone screenshots:
-  hamburger menu opened white-on-white because floated 50%-width `li`s
-  collapsed `ul#topnav` to zero height (fix: `overflow: hidden` clearfix on
-  mobile menu rules); top pages' `.slogan` overlay (absolute inline
-  `width:500px`) overflowed shrunken banner and covered header (fix:
-  `position: static; width: auto !important` on mobile). Literal
-  `background: #002855` fallbacks now precede `var(--navy)` in nav rules.
-- External links carry `rel="noopener noreferrer"`; keep that on new
-  `target="_blank"` links.
-- Page HTML remains Dreamweaver-era (floats, table layouts); `style.css` is
-  written against existing selectors, so keep class/id names stable when
-  editing pages.
+- Fixed 2026-07-05: broken http:// jQuery now loads locally from `js/`, dead Google Analytics snippet and IE8 shims removed from every page, and `style.css` modernized with same selectors and refreshed look.
+- Fixed 2026-07-07: two mobile layout bugs found via iPhone screenshots: hamburger menu opened white-on-white because floated 50%-width `li`s collapsed `ul#topnav` to zero height (fix: `overflow: hidden` clearfix on mobile menu rules); top pages' `.slogan` overlay (absolute inline `width:500px`) overflowed shrunken banner and covered header (fix: `position: static; width: auto !important` on mobile). Literal `background: #002855` fallbacks now precede `var(--navy)` in nav rules.
+- External links carry `rel="noopener noreferrer"`; keep that on new `target="_blank"` links.
+- Page HTML remains Dreamweaver-era (floats, table layouts); `style.css` is written against existing selectors, so keep class/id names stable when editing pages.
 
 ## Structured result
 
 - status: success
-- summary: Full CLAUDE.md proposal surgically updates the codex-related sections for SPARK Option-1 while retaining unrelated site history and conventions.
-- changed_files: `tools/out/CLAUDE.md`
+- summary: Condensed the complete CLAUDE.md proposal while preserving operational facts, rules, headings, and the C1-C6 workflow subsection.
+- changed_files: `tools/out/CLAUDE.md`, `tools/out/claude-condense.md`, `tools/codex-log.md`
 - commands: Apply after review with `mv tools/out/CLAUDE.md CLAUDE.md`.
-- verification: Full-copy and size checks are recorded in `tools/out/spark-s10-verify.md`; independent Claude review remains required.
+- verification: LF line endings preserved; size/headings/literal-token audits recorded in `tools/out/claude-condense.md`; this supersedes the earlier size checks at `tools/out/spark-s10-verify.md`. Independent Claude review remains required.
 - evidence:
-  - confirmed: The proposal documents five workers/two pools, verified per-call overrides, class routing, D8 worker-name metrics, failover/circuit-breaker policy, registry generator, and CLI minimum.
+  - confirmed: The proposal retains all worker/model/effort mappings, dispatch/failover/metrics rules, paths, commands, URLs, IDs, versions, thresholds, hooks, content/deployment conventions, and C1-C6 results.
   - hypotheses: None.
-- remaining: Calling Claude agent should review and run the top apply command if approved.
+- remaining: Calling Claude agent should review, then run the exact apply command if approved.

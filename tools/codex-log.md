@@ -211,3 +211,24 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-editor | git-summary metrics+policy refresh | tools/task-metrics.jsonl, tools/task-tier-policy.md, tools/codex-log.md | N/A | success
 2026-07-11 | codex-spark-low | delete legacy SPARK artifacts | n/a | manual | blocked
 2026-07-11 | site-editor | refresh task-tier-policy mechanical-edit row | tools/task-tier-policy.md | N/A | success
+2026-07-11 | site-coordinator | C3 output-file-first config proposals | tools/out/c3-output-file-first.md | N/A | success task_type=config-edit tier=codex-high duration_ms=300000
+2026-07-11 | codex-spark-low | verify output-file-first diffs for site agents | tools/out/apply-c3-output-file-first.sh | unknown | success
+2026-07-11 | site-coordinator | metrics+policy refresh | N/A | N/A | success
+2026-07-11 | codex-spark-low | todo-handoff-update | tools/out/N/A | N/A | success
+2026-07-11 | site-coordinator | metrics-refresh-C3 | tools/out/N/A | N/A | success
+2026-07-11 | site-checker | achievements-parity-sweep | tools/out/achievements-parity.md | 019f4deb-ef4f-7c33-9a40-b0270f22cc91 | success
+2026-07-11 | site-checker | metrics+policy-refresh-verify-parity | tools/task-tier-policy.md | N/A | failed
+2026-07-11 | codex-spark-low | achievements-parity-sweep | /home/rioyokota/website/tools/out/achievements-parity.md | n/a | success
+2026-07-11 | codex | achievements-sub007-audit | /home/rioyokota/website/tools/out/achievements-sub007-audit.md | n/a | success
+2026-07-11 | codex | achievements-sub007-audit | /home/rioyokota/website/tools/out/achievements-sub007-audit.md | n/a | success
+2026-07-11 | codex-spark-low | achievements-parity-sweep | /home/rioyokota/website/tools/out/achievements-parity.md | n/a | success
+2026-07-11 | site-coordinator | verify-parity | metrics-rewrite |  | success
+2026-07-11 | codex | edit tools/todo.md | tools/todo.md | n/a | success
+2026-07-11 | user | C4 codex-by-default config proposals | /home/rioyokota/website/tools/out/c4-summary.md | n/a | success; task_type=config-edit; tier=codex-high; duration_ms=300000; success=true
+2026-07-11 | site-coordinator | update metrics/todo for C4 completion | (no output file) | n/a | success
+2026-07-11 | codex-medium(coordinator C5) | metrics summary (resumption step 1) | tools/out/c5-metrics-summary.md | <this thread> | done
+2026-07-11 | codex-medium(coordinator C5) | refresh tier policy from metrics (resumption step 2, via codex-reply) | tools/task-tier-policy.md | 019f4dfb-076a-7b80-ad8e-702cbb2ed8e1 | done
+2026-07-11 | codex-high(coordinator C6) | AGENTS.md upkeep audit + proposal | tools/out/c6-agents-upkeep.md | <this thread> | done
+2026-07-11 | codex-high(coordinator C7) | CLAUDE.md C1-C6 outcomes + division of labor proposal | tools/out/CLAUDE.md | <this thread> | done
+2026-07-11 | codex-high(coordinator) | condense CLAUDE.md (preserve all facts) | tools/out/CLAUDE.md | <this thread> | done
+2026-07-11 | codex-medium(coordinator) | deploy CLAUDE.md size guard (script + pre-commit hook) | tools/check-claude-size.py | <this thread> | done
