@@ -73,7 +73,8 @@ MONTH_ABBR = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
 
 def raw_items(anchor):
     """Yield (clean_text, doi, url, data_date, data_volume, data_number,
-    data_pages, data_authors) for each <li> in a section,
+    data_pages, data_authors, data_event, data_location, data_publisher)
+    for each <li> in a section,
     keeping DOI/link attributes and the opening <li>'s data-date attribute
     (which overrides the parsed date)."""
     c = open(PAGE, newline='', encoding='utf-8').read()
@@ -104,6 +105,15 @@ def raw_items(anchor):
         authors_m = rm.DATA_AUTHORS.search(tag)
         data_authors = [a.strip() for a in authors_m.group(1).split(';') if a.strip()] if authors_m else None
         data_authors = data_authors or None
+        event_m = rm.DATA_EVENT.search(tag)
+        data_event = event_m.group(1).strip() if event_m else None
+        data_event = data_event or None
+        location_m = rm.DATA_LOCATION.search(tag)
+        data_location = location_m.group(1).strip() if location_m else None
+        data_location = data_location or None
+        publisher_m = rm.DATA_PUBLISHER.search(tag)
+        data_publisher = publisher_m.group(1).strip() if publisher_m else None
+        data_publisher = data_publisher or None
         m = re.search(r'href=["\'](https?://(?:dx\.)?doi\.org/[^"\']+)["\']', p, re.I)
         if not doi and m:
             doi = re.sub(r'^https?://(?:dx\.)?doi\.org/', '', m.group(1)).strip()
@@ -111,7 +121,8 @@ def raw_items(anchor):
         t = (unicodedata.normalize('NFKC', t).replace('&amp;', '&')
              .replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"'))
         yield (re.sub(r'\s+', ' ', t).strip(), doi, url, data_date,
-               data_volume, data_number, data_pages, data_authors)
+               data_volume, data_number, data_pages, data_authors,
+               data_event, data_location, data_publisher)
 
 def extract_volpp(venue):
     """Pull Vol./No./pp. out of a venue string; return (clean_venue, fields)."""
@@ -174,7 +185,8 @@ def fallback_year(text):
     return yrs[-1] if yrs else None
 
 def make_entry(etype, authors, title, venue, date, doi, url, used,
-               data_volume=None, data_number=None, data_pages=None):
+               data_volume=None, data_number=None, data_pages=None,
+               data_event=None, data_location=None, data_publisher=None):
     year = month = None
     if date:
         year = date[:4]
@@ -198,8 +210,15 @@ def make_entry(etype, authors, title, venue, date, doi, url, used,
     if authors:
         fields['author'] = ' and '.join(authors)
     fields['title'] = '{%s}' % bib_escape(title)
+    if etype in ('misc', 'inproceedings') and data_event:
+        venue = data_event
+    if etype in ('incollection', 'book') and data_publisher:
+        fields['publisher'] = bib_escape(data_publisher)
+    if etype in ('misc', 'inproceedings') and data_location:
+        fields['address'] = bib_escape(data_location)
     if venue:
-        fields[venue_field] = bib_escape(venue)
+        if venue_field not in fields:
+            fields[venue_field] = bib_escape(venue)
     if year:
         fields['year'] = year
     if month:
@@ -209,8 +228,10 @@ def make_entry(etype, authors, title, venue, date, doi, url, used,
     elif url:
         fields['url'] = url
     key = citekey(authors, title, year, used)
-    order = ['author', 'title', venue_field, 'volume', 'number',
-             'pages', 'year', 'month', 'doi', 'url']
+    order = ['author', 'title', venue_field]
+    if venue_field != 'publisher':
+        order.append('publisher')
+    order += ['address', 'volume', 'number', 'pages', 'year', 'month', 'doi', 'url']
     lines = ['@%s{%s,' % (etype, key)]
     keys = [k for k in order if k in fields] + \
            [k for k in fields if k not in order]
@@ -231,7 +252,7 @@ def main():
     risky = []
     for anchor, etype in SECTION_TYPE.items():
         cnt = 0
-        for text, doi, url, data_date, data_volume, data_number, data_pages, data_authors in raw_items(anchor):
+        for text, doi, url, data_date, data_volume, data_number, data_pages, data_authors, data_event, data_location, data_publisher in raw_items(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             parsed = rm.parse(text)
@@ -253,7 +274,8 @@ def main():
             elif not venue:
                 risky.append(('NO-VENUE', anchor, text))
             entries.append(make_entry(etype, authors, title, venue, date, doi, url, used,
-                                      data_volume, data_number, data_pages))
+                                      data_volume, data_number, data_pages,
+                                      data_event, data_location, data_publisher))
             cnt += 1
         per_section[anchor] = cnt
 

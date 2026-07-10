@@ -59,6 +59,10 @@ DATA_VOLUME = re.compile(r'\bdata-volume\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_NUMBER = re.compile(r'\bdata-number\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_PAGES = re.compile(r'\bdata-pages\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_AUTHORS = re.compile(r'\bdata-authors\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_EVENT = re.compile(r'\bdata-event\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_LOCATION = re.compile(r'\bdata-location\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_INVITED = re.compile(r'\bdata-invited\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_PUBLISHER = re.compile(r'\bdata-publisher\s*=\s*["\']([^"\']*)["\']', re.I)
 
 def norm_date(s):
     """Normalize a data-date value to YYYY / YYYY-MM / YYYY-MM-DD, else None."""
@@ -76,7 +80,8 @@ def norm_date(s):
 
 def entries(anchor):
     """Yield (clean_text, data_date, data_doi, data_url, data_volume,
-    data_number, data_pages, data_authors) for each <li>;
+    data_number, data_pages, data_authors, data_event, data_location,
+    data_invited, data_publisher) for each <li>;
     data_* is None if the opening <li> tag carries no valid attribute."""
     c = open(PAGE, newline='', encoding='utf-8').read()
     a = c.index('name="%s"' % anchor)
@@ -109,10 +114,22 @@ def entries(anchor):
         authors_m = DATA_AUTHORS.search(tag)
         data_authors = [a.strip() for a in authors_m.group(1).split(';') if a.strip()] if authors_m else None
         data_authors = data_authors or None
+        event_m = DATA_EVENT.search(tag)
+        data_event = event_m.group(1).strip() if event_m else None
+        data_event = data_event or None
+        location_m = DATA_LOCATION.search(tag)
+        data_location = location_m.group(1).strip() if location_m else None
+        data_location = data_location or None
+        inv_m = DATA_INVITED.search(tag)
+        data_invited = (inv_m.group(1).strip().lower() == 'true') if inv_m else None
+        publisher_m = DATA_PUBLISHER.search(tag)
+        data_publisher = publisher_m.group(1).strip() if publisher_m else None
+        data_publisher = data_publisher or None
         t = re.sub(r'</li>', '', re.sub(r'<[^>]+>', '', p), flags=re.I)
         t = unicodedata.normalize('NFKC', t).replace('&amp;', '&').replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"')
         out.append((re.sub(r'\s+', ' ', t).strip(), data_date, data_doi, data_url,
-                    data_volume, data_number, data_pages, data_authors))
+                    data_volume, data_number, data_pages, data_authors,
+                    data_event, data_location, data_invited, data_publisher))
     return out
 
 def key(t, limit=70):
@@ -222,7 +239,9 @@ def resolve_type(rm_type, text):
     return rm_type
 
 def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_url=None,
-              data_volume=None, data_number=None, data_pages=None, data_authors=None):
+              data_volume=None, data_number=None, data_pages=None, data_authors=None,
+              data_event=None, data_location=None, data_invited=None,
+              data_publisher=None):
     rm_type = resolve_type(rm_type, text)
     parsed = parse(text)
     if not parsed:
@@ -253,11 +272,15 @@ def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_url=None
                 doc['starting_page'] = data_pages
     elif rm_type == 'books_etc':
         doc['book_title'] = {lang: title}
-        doc['publisher'] = {lang: venue}
+        doc['publisher'] = {lang: data_publisher or venue}
         doc['authors'] = people
     else:
         doc['presentation_title'] = {lang: title}
-        doc['event'] = {lang: venue}
+        doc['event'] = {lang: data_event or venue}
+        if data_location:
+            doc['event_place'] = {lang: data_location}
+        if data_invited is True:
+            doc['invited'] = True
         doc['presenters'] = people
     if date:
         doc['publication_date'] = date
@@ -372,11 +395,12 @@ def website_records():
     same categories used for live researchmap collections."""
     out = []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text, data_date, data_doi, data_url, data_volume, data_number, data_pages, data_authors in entries(anchor):
+        for text, data_date, data_doi, data_url, data_volume, data_number, data_pages, data_authors, data_event, data_location, data_invited, data_publisher in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             rec = to_record(text, rm_type, extra, data_date, data_doi, data_url,
-                            data_volume, data_number, data_pages, data_authors)
+                            data_volume, data_number, data_pages, data_authors,
+                            data_event, data_location, data_invited, data_publisher)
             if rec is None:
                 print(f'WARNING: could not parse, add manually: {text[:90]}', file=sys.stderr)
                 continue
@@ -515,7 +539,7 @@ def main():
 
     seen, new = [], []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text, data_date, data_doi, data_url, data_volume, data_number, data_pages, data_authors in entries(anchor):
+        for text, data_date, data_doi, data_url, data_volume, data_number, data_pages, data_authors, data_event, data_location, data_invited, data_publisher in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             k = key(text)
@@ -523,7 +547,8 @@ def main():
             if k in state or args.init:
                 continue
             rec = to_record(text, rm_type, extra, data_date, data_doi, data_url,
-                            data_volume, data_number, data_pages, data_authors)
+                            data_volume, data_number, data_pages, data_authors,
+                            data_event, data_location, data_invited, data_publisher)
             if rec:
                 new.append((text, rec))
             else:

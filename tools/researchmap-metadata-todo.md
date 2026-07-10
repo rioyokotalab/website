@@ -6,6 +6,14 @@ lossless context transfer (Claude↔codex and across sessions). Do steps in
 order; tick and commit after each.
 
 ## SESSION HANDOFF (update every time before a restart)
+>>> COLD-RESTART HANDOFF 2026-07-10 (READ FIRST) <<<
+STATE: ResearchMap metadata Fields 1-5 are ALL written to en/ + jp/ achievements pages and verified (localhost parity PASS), but Field-5 is UNCOMMITTED and NOT published. Fields 1-4 are already live/committed.
+UNCOMMITTED FILES on disk (persist across restart): en/achievements/index.html, jp/achievements/index.html, tools/researchmap-export.py, tools/orcid-export.py, tools/researchmap-metadata-todo.md, tools/task-metrics.jsonl, tools/task-tier-policy.md, tools/codex-log.md. Field-5 added: data-publisher x4 (sub002 日本評論社, sub003 Morgan Kaufmann), data-event x108, data-location x2, data-invited x44 (sole-Yokota). Exporters emit event/location/invited/publisher; offline dry-run OK.
+FIRST ACTION AFTER RESTART: publish Field-5 only after the user re-confirms. Sequence (site-editor): (1) rm -f the transient scratch tools/out/field5-sub006.md tools/out/field5-sub007.md tools/out/field5-books.md tools/out/field5-apply.py tools/out/field5-exporter.md tools/out/orcid-works.bib tools/out/researchmap-import.jsonl ; (2) git status --short ; (3) SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git pull --rebase --autostash origin main (resolve non-overlapping conflicts keeping both; abort+report on overlapping/ambiguous) ; (4) echo y | ./publish.sh "achievements Field-5: data-event/location/invited (sub006/007) + data-publisher (sub002/003) en+jp; exporters emit them" ; (5) verify live via site-checker ; (6) log metric to tools/task-metrics.jsonl + refresh tools/task-tier-policy.md.
+REMINDERS: MCP approval dialog will NOT reappear (hasTrustDialogAccepted=true) — that is expected, do not worry. Every write-capable codex call MUST pass sandbox:"workspace-write". codex sandbox has NO network (metadata lookups via Bash only). After EVERY task append a line to tools/task-metrics.jsonl and refresh tools/task-tier-policy.md (PostToolUse Task hook reminds). Pull --rebase before every push (multi-committer repo).
+AFTER FIELD-5 PUBLISHED: the metadata todo (Fields 1-5) is fully DONE; remaining optional work is only future exporter refinements if requested.
+>>> END COLD-RESTART HANDOFF <<<
+
 Status 2026-07-10: sub007 Field-2 fully applied (item 6 IPSJ URL added en+jp, NOT yet published). sub005->sub007 move (深層学習における低精度演算…PRMU 2017) verified live in repo (sub005=31, sub007=63). Exporters emit data-doi/data-url. tools/out scratch cleared.
 Status 2026-07-10b: Field-3 STARTED. sub001 done (35 entries data-volume/number/pages, matched by data-doi via Crossref) + sub005 done (5 entries), both en+jp, verified parity, NOT yet published/committed. Remaining Field-3: sub004 (115), then exporter emits volume/number/starting_page/ending_page. Derivation files: tools/out/field3-sub001.md, tools/out/field3-sub005.md.
 Status 2026-07-09: Field-2 data-doi/data-url LOOKUPS COMPLETE for all sections sub001-sub007. sub006 = 45/45 blank (tools/out/doi-sub006.md). sub007 = 4 doi + 3 url + 55 blank (tools/out/doi-sub007.md). REMAINING Field-2: (a) site-editor writes sub006 (nothing to write) + sub007's 4 data-doi + 3 data-url onto matching <li> in BOTH en+jp achievements pages; (b) update tools/researchmap-export.py + orcid-export.py to emit doi from data-doi / see_also from data-url. Codex config left AS-IS by user decision 2026-07-09 (the ~1h sub007 run was one agent doing 62 serial lookups; no codex effort/trials knob would fix that — future long sections should be fanned out, not a config change).
@@ -13,6 +21,7 @@ Status 2026-07-08 (context-reset handoff): TWO threads in flight. (A) Field 2 da
 Status 2026-07-08 (hard-reset handoff): CONFIG/OFFLOAD WORKFLOW NOW LIVE — the aggressive-codex-offload standing directive + config-hand-edit-only rules were applied. CLAUDE.md now carries the '## Standing directive: codex offload and config edits' block (top, before '## Budget rule:'). The 6 .claude/agents/site-*.md files, .claude/agents/codex-offload-policy.md (shared DRY policy; all agents reference it at /home/rioyokota/website/.claude/agents/codex-offload-policy.md), and repo-root AGENTS.md were replaced via tools/out proposals moved into place by the user with tools/out/apply-agent-proposals.sh. .claude/settings.local.json now has an airtight two-layer lock (permissions.deny + PreToolUse hook) so only the human can run apply-agent-proposals.sh. NEW WORKFLOW: CLAUDE.md/.claude/agents/*.md/.mcp.json/AGENTS.md are hand-edit-only; agents write proposed changes to tools/out/<same-filename> for the user to mv. tools/out/CLAUDE-standing-directive-snippet.md is now redundant (its content is in CLAUDE.md) and may be deleted. FIRST ACTION next session: read this file top-to-bottom, then resume Field 2 data-doi sub004 at entry 9 (see below).
 Status 2026-07-10c: Field-3 COMPLETE (sub001 35, sub004 48, sub005 5 entries; exporters emit vol/num/pages). All uncommitted, pending publish. NOTE: codex sandbox has NO network — Crossref/metadata lookups must run via Bash (site-author/site-checker), not codex.
 Status 2026-07-10d: Field-4 data-authors COMPLETE for all sections sub001-007 (300 entries, en+jp, semicolon-separated, whitespace-normalized; positional-match write with data-doi guard) + exporters emit authors. Verified parity PASS. UNCOMMITTED, pending publish. Extraction scratch tools/out/authors-*.md still present (delete after publish).
+Status 2026-07-10e: Field-5 COMPLETE. data-publisher sub002/003 (4), data-event 108 + data-location 2 + data-invited 44 (sole-Yokota) sub006/007, exporters emit all. Verified parity PASS. UNCOMMITTED, pending publish. ALL FIELDS 1-5 now done. Scratch tools/out/field5-*.md present (delete after publish).
 
 Investigations done 2026-07-08:
 - sub007 count: 62 is CORRECT (counted inside the <ol>); the "79" was a naive-regex boundary artifact spilling into the <aside id="sub"> sidebar nav. No change needed; keep 62 everywhere.
@@ -109,9 +118,9 @@ international entries, so each attribute is written to BOTH language files.
 - [x] exporter emits authors from data-authors (researchmap + orcid, prefer over heuristic, offline dry-run OK, NOT yet published)
 
 ### Field 5 — books/presentations extras
-- [ ] data-isbn / data-publisher for sub002, sub003
-- [ ] data-event / data-location (+ data-invited) for sub006, sub007
-- [ ] exporter emits these
+- [x] data-publisher for sub002 (日本評論社) + sub003 (Morgan Kaufmann); data-isbn skipped (not in citation text, per user 2026-07-10) — NOT yet published
+- [x] data-event (108) + data-location (2: Heidelberg, Kobe) + data-invited (44, marked where Rio Yokota is SOLE author per data-authors) for sub006/sub007 — NOT yet published
+- [x] exporter emits event/location/invited/publisher (researchmap + orcid, offline dry-run OK) — NOT yet published
 
 ## Notes
 - Values that cannot be confirmed follow the no-year-only style rule per field

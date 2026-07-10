@@ -134,3 +134,13 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | coordinator | field4 complete metrics+todo | multiple | none | ok
 2026-07-10 | coordinator | metrics log publish field4 | task-metrics.jsonl+policy | none | ok
 2026-07-10 | coordinator | metrics log field4 live verify | task-metrics.jsonl+policy | none | ok
+2026-07-10 | site-coordinator | field5 sub006 event/location/invited extract | tools/out/field5-sub006.md | unknown | outcome ok; task_type=metadata-lookup tier=codex duration_ms=300000 success=true
+2026-07-10 | site-coordinator | field5 sub007 event/location/invited extract | tools/out/field5-sub007.md | unknown | ok
+2026-07-10 | site-coordinator | field5 books publisher/isbn extract | tools/out/field5-books.md | outcome ok; task_type=metadata-lookup tier=codex-low duration_ms=180000 success=true
+2026-07-10 | coordinator | metrics log field5 extract | task-metrics.jsonl+policy | none | ok
+2026-07-10 | site-editor | field5 sub002/003/006/007 attrs | tools/out/field5-apply.py | n/a | drafted
+2026-07-10 | coordinator | metrics log field5 write | task-metrics.jsonl+policy | none | ok
+2026-07-10 | site-author | field5-exporter | tools/out/field5-exporter.md | <none> | success: updated researchmap/orcid exporters and verified offline
+2026-07-10 | coordinator | metrics log field5 exporter | task-metrics.jsonl+policy | none | ok
+2026-07-10 | coordinator | field5 complete metrics+todo | multiple | none | ok
+2026-07-10 | coordinator | cold-restart handoff written | tools/researchmap-metadata-todo.md | none | ok

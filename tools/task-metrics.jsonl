@@ -48,3 +48,10 @@
 {"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"low","duration_ms":57908,"success":true,"note":"field4 data-authors full parity PASS: 300 total en=jp, per-section correct, domestic spot-check identical"}
 {"date":"2026-07-10","task_type":"deploy-publish","agent":"site-editor","tier":"medium","duration_ms":37923,"success":true,"note":"clean scratch + pull --rebase + publish field4 data-authors -> e915c57"}
 {"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"low","duration_ms":9664,"success":true,"note":"field4 data-authors LIVE verify PASS: 300 en=jp, spot-check identical"}
+{"date": "2026-07-10", "task_type": "metadata-lookup", "agent": "site-coordinator", "tier": "codex-low", "duration_ms": 900000, "success": true, "note": "field5 sub007 event/location/invited extract; rows=63 flagged=0"}
+{"date": "2026-07-10", "task_type": "metadata-lookup", "agent": "site-coordinator", "tier": "codex-low", "duration_ms": 180000, "success": true, "note": "field5 books publisher/isbn extract; rows=4"}
+{"date":"2026-07-10","task_type":"git-summary","agent":"site-editor","tier":"low","duration_ms":48197,"success":true,"note":"commit metrics churn -> de63c58"}
+{"date":"2026-07-10","task_type":"other","agent":"site-coordinator","tier":"high","duration_ms":0,"success":true,"note":"field5 extract sub006 (45,3 flagged)+sub007 (63,0)+books (4) via codex"}
+{"date":"2026-07-10","task_type":"mechanical-edit","agent":"site-editor","tier":"medium","duration_ms":308956,"success":true,"note":"field5 write event 108/location 2/invited 44 (sole-Yokota)/publisher 4 en+jp"}
+{"date":"2026-07-10","task_type":"exporter-logic","agent":"site-author","tier":"high","duration_ms":326339,"success":true,"note":"researchmap+orcid exporters emit event/location/invited/publisher from Field-5 data-* attrs; offline dry-run OK"}
+{"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"low","duration_ms":12901,"success":true,"note":"field5 parity PASS: event 108/location 2/invited 44/publisher 4 en=jp, li 337"}
