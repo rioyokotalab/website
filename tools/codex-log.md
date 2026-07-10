@@ -199,3 +199,8 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-coordinator | append S8-S10 config metrics and refresh task-tier-policy | tools/task-metrics.jsonl,tools/task-tier-policy.md | this-thread | done; task_type=git-summary tier=low duration_ms=120000 success=true config-edit_n_samples=15
 2026-07-11 | site-coordinator | S11 spark model-trace + gen --check drift | tools/out/spark-s11-verify.md | this-thread | done
 2026-07-11 | site-coordinator | S10 strip stray apply-comment from CLAUDE.md/AGENTS.md | CLAUDE.md,AGENTS.md | this-thread | done
+2026-07-11 | site-coordinator | S12 agent-config spark-tools parity | tools/out/spark-s12-agentcheck.md | this-thread | done
+2026-07-11 | site-coordinator | S12 12-case router tabletop trace | tools/out/spark-router-trace.md | this-thread | done
+2026-07-11 | site-coordinator | S12 apply router-policy gap fixes (A prefer determinism, B terminal retry) | tools/task-tier-policy.md,tools/out/codex-offload-policy.md | this-thread | done
+2026-07-11 | site-coordinator | S14 final report | tools/out/spark-final-report.md | this-thread | done
+2026-07-11 | site-coordinator | S14 wrap-up: strip comment, mark todo done, rm scratch | .claude/agents/codex-offload-policy.md,tools/todo.md,tools/out | this-thread | done

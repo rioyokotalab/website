@@ -85,3 +85,10 @@
 {"date":"2026-07-11","task_type":"config-edit","agent":"site-coordinator","tier":"high","duration_ms":180000,"success":true,"note":"S8 offload-policy proposal"}
 {"date":"2026-07-11","task_type":"config-edit","agent":"site-coordinator","tier":"high","duration_ms":240000,"success":true,"note":"S9 five agent-config proposals"}
 {"date":"2026-07-11","task_type":"config-edit","agent":"site-coordinator","tier":"high","duration_ms":300000,"success":true,"note":"S10 AGENTS.md + CLAUDE.md proposals"}
+{"date":"2026-07-11","task_type":"deploy-publish","agent":"site-editor","tier":"sonnet","duration_ms":41868,"success":true,"note":"S10/S11 git commit+push migration c55bd52"}
+{"date":"2026-07-11","task_type":"verify-parity","agent":"site-coordinator","tier":"codex-spark-medium","duration_ms":45000,"success":true,"note":"S12 agent-config spark-tools parity"}
+{"date":"2026-07-11","task_type":"diagnosis","agent":"site-coordinator","tier":"codex-medium","duration_ms":90000,"success":true,"note":"S12 12-case router tabletop trace 9PASS/3GAP"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 120000, "success": true, "note": "S12 apply router-policy gap fixes A+B"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 120000, "success": true, "note": "S12 apply router-policy gap fixes A+B"}
+{"date": "2026-07-11", "task_type": "mechanical-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 40000, "success": true, "note": "S14 wrap-up strip+todo+rm scratch"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 150000, "success": true, "note": "S14 final report 19 items"}

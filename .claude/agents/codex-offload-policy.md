@@ -1,5 +1,3 @@
-To apply, run: `mv tools/out/codex-offload-policy.md .claude/agents/codex-offload-policy.md`
-
 # Codex Offload Policy
 
 Shared standing policy for YOKOTA Lab website agents with codex MCP access. `tools/codex-workers.json` is the worker registry; `tools/task-tier-policy.md` is the task-routing policy.
@@ -75,7 +73,7 @@ spark_status: available      # available | unavailable
 ```
 
 - `auto` means task-shape routing followed by reactive failover only on an **explicit** capacity, rate-limit, or entitlement error.
-- `prefer-spark` or `prefer-standard` biases eligible ROUTINE-MEDIUM substitutions; neither permits a worker below the task's class or overrides the COMPLEX-HIGH rule.
+prefer-spark selects codex-spark-medium for an eligible, spark-suitable ROUTINE-MEDIUM task when the spark pool is available; prefer-standard selects codex-medium for an eligible ROUTINE-MEDIUM task when the standard pool is available. If the preferred pool is unavailable or unsuitable, fall back to the safety/capability and availability rules.
 - There is no reliable numerical quota telemetry, so do not infer exhaustion or proactively reroute from latency or generic failures. If reliable telemetry becomes available, add a 15% reserve before routing against reported capacity.
 
 ## Failover and circuit breaker
@@ -100,6 +98,8 @@ Classify every failure **before** rerouting as `capacity`, `task`, or `environme
 
 - Examples: missing binary, wrong `cwd`, missing `sandbox: "workspace-write"`, bad path, or MCP transport failure.
 - Fix the environmental cause and retry the **same worker once**. Do not treat an environment failure as model weakness or advance the task-failure ladder.
+
+A failed same-worker environment retry is terminal: record the error and report a blocker. After the final available escalation-ladder endpoint fails, report a blocker; do not restart the ladder. These limits are per task for the run and may not be reset by reclassifying or redispatching the same failure.
 
 ## Safe handoff between workers
 

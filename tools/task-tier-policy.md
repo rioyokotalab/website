@@ -17,6 +17,8 @@ spark_status: available      # available | unavailable (set unavailable on an ex
 
 No reliable numerical quota telemetry exists, so `auto` means task-shape routing plus reactive failover on explicit capacity errors only; proactive "pool nearly exhausted" detection is not possible today.
 
+prefer-spark selects codex-spark-medium for an eligible, spark-suitable ROUTINE-MEDIUM task when the spark pool is available; prefer-standard selects codex-medium for an eligible ROUTINE-MEDIUM task when the standard pool is available. If the preferred pool is unavailable or unsuitable, fall back to the safety/capability and availability rules.
+
 ## Task classes -> default worker
 
 - MECHANICAL-LOW -> `codex-spark-low`: `mechanical-edit`, `verify-parity`, `git-summary`, `deploy-publish` pre-checks, and parse/aggregate portions of `metadata-lookup`; network fetches stay in Claude Bash because codex sandbox has no network. Capacity fallback -> `codex-medium`; never escalate to high just for size.
@@ -27,17 +29,19 @@ Note: historical medians predate the worker rename; `tier` in metrics now record
 
 | task_type | default_tier | median_duration_ms | success_rate | n_samples | last_updated |
 | --- | --- | --- | --- | --- | --- |
-| mechanical-edit | codex-spark-low | 357814.5 | 90% | 10 | 2026-07-11 |
-| metadata-lookup | codex-spark-low | 120000 | 60% | 20 | 2026-07-11 |
-| verify-parity | codex-spark-low | 57908 | 100% | 9 | 2026-07-11 |
-| git-summary | codex-spark-low | 41025.5 | 100% | 14 | 2026-07-11 |
-| deploy-publish | codex-spark-low | 29817 | 80% | 5 | 2026-07-11 |
+| mechanical-edit | codex-spark-low | 259318 | 91% | 11 | 2026-07-11 |
+| metadata-lookup | codex-spark-low | 112000 | 60% | 20 | 2026-07-11 |
+| verify-parity | codex-spark-low | 53897 | 100% | 10 | 2026-07-11 |
+| git-summary | codex-spark-low | 41025 | 100% | 14 | 2026-07-11 |
+| deploy-publish | codex-spark-low | 37923 | 83% | 6 | 2026-07-11 |
 | content-draft | codex-high | - | - | 0 | 2026-07-11 |
 | translation | codex-high | - | - | 0 | 2026-07-11 |
 | exporter-logic | codex-high | 224063 | 100% | 9 | 2026-07-11 |
-| diagnosis | codex-high | 0 | 100% | 1 | 2026-07-11 |
+| diagnosis | codex-high | 45000 | 100% | 2 | 2026-07-11 |
 | figure-production | codex-high | - | - | 0 | 2026-07-11 |
-| config-edit | codex-high | 34209 | 100% | 15 | 2026-07-11 |
+| config-edit | codex-high | 75000 | 100% | 18 | 2026-07-11 |
 | other | codex-medium | 0 | 100% | 4 | 2026-07-11 |
 
 Note: orchestrator picks the cheapest worker meeting the success bar; failover ladder is spark -> `codex-medium` -> `codex-high` -> Opus -> Fable, one hop per failure, max one cross-pool failover per task.
+
+A failed same-worker environment retry is terminal: record the error and report a blocker. After the final available escalation-ladder endpoint fails, report a blocker; do not restart the ladder. These limits are per task for the run and may not be reset by reclassifying or redispatching the same failure.
