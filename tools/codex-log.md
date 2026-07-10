@@ -175,3 +175,6 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | codex-low | log metric commit pruned todo | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
 2026-07-10 | codex-low | log metric commit all except SPARK | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
 2026-07-10 | codex-low | update todo handoff for SPARK.md cold restart | (files: tools/todo.md) | <conversationId> | done
+2026-07-10 | codex-low | log metric commit todo handoff | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-low | remove duration outliers from task-metrics + refresh policy | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-low | log metric outlier removal | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
