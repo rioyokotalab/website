@@ -95,3 +95,4 @@
 {"date": "2026-07-11", "task_type": "deploy-publish", "agent": "site-editor", "tier": "sonnet", "duration_ms": 36728, "success": true, "note": "S14 git commit+push wrap-up 43b5c8a"}
 {"date":"2026-07-11","task_type":"other","agent":"site-coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"SPARK.md remaining-work audit vs DoD"}
 {"date":"2026-07-11","task_type":"other","agent":"site-coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"confirm tools/out/CLAUDE.md not pending; final report present"}
+{"date":"2026-07-11","task_type":"git-summary","agent":"site-editor","tier":"codex-spark-low","duration_ms":25575,"success":true,"note":"commit+push SPARK housekeeping (metrics/policy/log)"}
