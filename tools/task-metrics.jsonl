@@ -6,3 +6,16 @@
 {"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"codex-low","duration_ms":-1,"success":true,"note":"field3-sub001-b9"}
 {"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"codex-low","duration_ms":60000,"success":true,"note":"field3-sub001-b10 Crossref volume issue pages"}
 {"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"codex","duration_ms":33063,"success":true,"note":"field3-sub005-b entries 12-22; rows=11; no literal volume/number/pages"}
+{"date":"2026-07-10","task_type":"git-summary","agent":"site-checker","tier":"low","duration_ms":100617,"success":true,"note":"git status + sub007 IPSJ data-url verify"}
+{"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"low","duration_ms":911304,"success":true,"note":"field3 sub001 Crossref volume/number/pages, 42 rows"}
+{"date":"2026-07-10","task_type":"mechanical-edit","agent":"site-editor","tier":"medium","duration_ms":486690,"success":false,"note":"field3 sub001 write attempt1 stopped on title-substring ambiguity"}
+{"date":"2026-07-10","task_type":"mechanical-edit","agent":"site-editor","tier":"medium","duration_ms":992954,"success":true,"note":"field3 sub001 write by data-doi match, 35 entries en+jp"}
+{"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"low","duration_ms":277486,"success":true,"note":"sub001 field3 localhost parity PASS"}
+{"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"low","duration_ms":1724761,"success":true,"note":"field3 sub005 Crossref/J-STAGE, 31 rows, 5 with values"}
+{"date":"2026-07-10","task_type":"mechanical-edit","agent":"site-editor","tier":"medium","duration_ms":1444217,"success":true,"note":"field3 sub005 write 5 entries en+jp"}
+{"date":"2026-07-10","task_type":"diagnosis","agent":"site-coordinator","tier":"low","duration_ms":0,"success":true,"note":"codex sandbox read-only root cause: per-call sandbox arg overrides config default"}
+{"date":"2026-07-10","task_type":"config-edit","agent":"site-coordinator","tier":"low","duration_ms":0,"success":true,"note":"codex-offload-policy.md sandbox-param proposal"}
+{"date":"2026-07-10","task_type":"config-edit","agent":"site-coordinator","tier":"low","duration_ms":0,"success":true,"note":"CLAUDE.md MCP-trust+sandbox note proposal"}
+{"date":"2026-07-10","task_type":"git-summary","agent":"site-editor","tier":"medium","duration_ms":16878,"success":true,"note":"selective commit+push config/docs 2fddeb7"}
+{"date":"2026-07-10","task_type":"deploy-publish","agent":"site-publisher","tier":"low","duration_ms":19050,"success":true,"note":"publish field3 sub001+sub005 -> 8691546"}
+{"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"low","duration_ms":202611,"success":true,"note":"field3 sub001/sub005 live verify PASS"}

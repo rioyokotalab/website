@@ -87,3 +87,8 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | coordinator | update Field-3 todo | researchmap-metadata-todo.md | unknown | ok
 2026-07-10 | coordinator | sandbox-param policy proposal | tools/out/codex-offload-policy.md | outcome ok
 2026-07-10 | coordinator | CLAUDE.md MCP-trust+sandbox note | tools/out/CLAUDE.md | n/a | ok | task_type=config-edit | tier=codex | duration_ms=0 | success=true
+2026-07-10 | site-checker | verify-parity-live-achievements | tools/out/verify-achievements-live.md | conversationId unavailable | completed; counts parity PASS; expected check FAIL: sub005 data-pages en=4 jp=4 expected=3; sandbox curl DNS failed
+2026-07-10 | coordinator | metrics backfill + policy refresh | task-metrics.jsonl+task-tier-policy.md | outcome ok
+2026-07-10 | coordinator | settings hook: Task metrics reminder | tools/out/settings.local.json | outcome ok
+2026-07-10T16:40:04+09:00 | coordinator | task "CLAUDE.md mandatory-metrics rule" | output tools/out/CLAUDE.md | outcome ok
+2026-07-10T16:41:00+09:00 | coordinator | task "CLAUDE.md mandatory-metrics rule" | output tools/out/CLAUDE.md | outcome ok

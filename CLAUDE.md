@@ -81,8 +81,7 @@ exactly as stored, and URL structure mirrors the folder tree one-to-one.
 - Permanent metrics store: `tools/task-metrics.jsonl`, repo-tracked, one JSON
   object per line:
   `{"date":"YYYY-MM-DD","task_type":"<enum>","agent":"<agent>","tier":"low|medium|high","duration_ms":<int>,"success":true|false,"note":"<short>"}`.
-  The orchestrator appends one line after each task; `duration_ms` and token
-  counts come from the subagent task-notification.
+  MANDATORY, EVERY TASK: immediately after ANY task finishes (subagent OR direct codex call), the orchestrator MUST (1) append one line to `tools/task-metrics.jsonl` with duration_ms from the task-notification, and (2) refresh `tools/task-tier-policy.md` medians/success-rates/n_samples from the full metrics file, before ending the turn. This is not optional or periodic; a task is not complete until both files are updated. A PostToolUse `Task` hook prints this reminder after every subagent task.
 - Policy file: `tools/task-tier-policy.md` maps `task_type` to recommended
   default tier, rolling median `duration_ms`, and success rate. The orchestrator
   reads it before choosing a tier, prefers the LOWEST tier meeting the success
