@@ -1,1 +1,3 @@
 {"date":"2026-07-10","task_type":"config-edit","agent":"site-coordinator","tier":"low","duration_ms":900000,"success":true,"note":"compressed CLAUDE.md to tools/out/CLAUDE.md under 40000 bytes"}
+{"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"opus+codex","duration_ms":40919,"success":true,"note":"sub007 item6 IPSJ URL via CiNii"}
+{"date":"2026-07-10","task_type":"mechanical-edit","agent":"site-editor","tier":"medium","duration_ms":23034,"success":true,"note":"apply sub007 item6 data-url en+jp"}

@@ -62,3 +62,8 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | site-coordinator | compress-CLAUDE.md | tools/out/CLAUDE.md | conversationId unavailable | done; task_type=config-edit tier=low duration_ms=900000 success=true
 2026-07-10 | site-coordinator | tools-out-cleanup-rule | tools/out/CLAUDE.md | conversationId unavailable | done; task_type=config-edit tier=low duration_ms=0 success=true
 2026-07-10 | site-coordinator | clear-tools-out-scratch | none | unknown | success: tools/out empty after requested clear
+2026-07-10 | site-coordinator | mcp-approval-policy-never | tools/out/.mcp.json | conversationId unavailable | done; task_type=config-edit tier=low duration_ms=0 success=true
+2026-07-10 | codex-low | resume-state git/count inspection | tools/out/resume-state.md | <thread> | done
+2026-07-10 | codex-low | extract sub007 item6 + verify sub005->sub007 move | tools/out/item6-and-move.md | <thread> | done
+2026-07-10 | site-author | sub007-item6 Field-2 identifier lookup | tools/out/doi-sub007-item6.md | (none, host curls only) | URL resolved (IPSJ, no DOI)
+2026-07-10 | codex-low | tick Field-2 todo + append task metrics | tools/researchmap-metadata-todo.md,tools/task-metrics.jsonl | <thread> | done
