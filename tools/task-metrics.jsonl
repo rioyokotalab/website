@@ -115,3 +115,8 @@
 {"date":"2026-07-11","task_type":"metadata-lookup","agent":"site-author","tier":"n/a","duration_ms":637045,"success":true,"note":"ANLP2025 author order (川畑輝 pos 8, romaji NEEDS-USER) + 2 book ISBN-13 via Crossref; periodicals no ISBN"}
 {"date":"2026-07-11","task_type":"mechanical-edit","agent":"site-editor","tier":"n/a","duration_ms":27048,"success":true,"note":"add data-isbn to 2 sub003 book entries en+jp (invisible), grep count 2/2"}
 {"date":"2026-07-11","task_type":"exporter-logic","agent":"site-coordinator","tier":"codex-high","duration_ms":200000,"success":true,"note":"add data-isbn support to researchmap-export.py (isbn field, confirm V2 name) + orcid-export.py (BibTeX isbn); dry runs pass, non-ISBN output byte-identical (est duration)"}
+
+{"date":"2026-07-11","task_type":"verify-parity","agent":"site-checker","tier":"n/a","duration_ms":10498,"success":true,"note":"data-isbn publish preflight: en/jp 200, 2 isbn matches each, git status 8 files"}
+{"date":"2026-07-11","task_type":"deploy-publish","agent":"site-publisher","tier":"n/a","duration_ms":598973,"success":true,"note":"publish.sh commit 9b3c5e0 pushed: data-isbn pages + exporter support; pull-rebase clean"}
+{"date":"2026-07-11","task_type":"verify-parity","agent":"site-checker","tier":"n/a","duration_ms":6929,"success":true,"note":"live verify data-isbn: en/jp 200, 2 isbn matches each on live site, PASS"}
+{"date":"2026-07-11","task_type":"mechanical-edit","agent":"site-editor","tier":"n/a","duration_ms":52855,"success":true,"note":"ANLP2025 C10-1 add author 川畑輝/Akira Kawabata pos8 across en+jp achievements + cv.tex; rebuilt cv.pdf; regen orcid-works.bib; wrote rmap update jsonl"}
