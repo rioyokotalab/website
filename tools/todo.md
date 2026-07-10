@@ -21,13 +21,16 @@ REMINDERS: MCP approval dialog will NOT reappear (`hasTrustDialogAccepted=true`)
 - [x] Fields 1-5 (`data-date`, `data-doi`/`data-url`, `data-volume`/`data-number`/`data-pages`, `data-authors`, publisher/event/location/invited) are complete, live, and emitted by the ResearchMap/ORCID exporters; Field-5 published at commit c190e48.
 
 ## Active task: ja/en author split
-- [~] APPROVED design: add `data-authors-ja` and `data-authors-en` to every Achievements `<li>`; exporters map them to `authors.ja` / `authors.en` with fallback to legacy `data-authors`.
-- [x] Distinct-name romaji map ready at `tools/out/authors-jaen-romaji-map.md`: 36 CONFIRMED from source papers + 4 BESTGUESS (`Kai Ueki`, `Takuya Asakura`, `Yoshifumi Sugiyama`, `Akira Sato`).
-- [ ] Extend derivation to remaining sections/entries beyond the completed distinct-name map so every entry has a Japanese and English author string.
-- [ ] Write `data-authors-ja` and `data-authors-en` to both language pages (`en/achievements/index.html`, `jp/achievements/index.html`) with a CRLF-safe script.
-- [ ] Update `tools/researchmap-export.py` and `tools/orcid-export.py` to prefer the split attributes and fall back to `data-authors`.
-- [ ] Verify EN/JP parity, counts, exporter output, and live preview.
-- [ ] Publish after user approval and record the commit/live status here.
+- [~] APPROVED design: add `data-authors-ja` and `data-authors-en` where needed; exporters map them to `authors.ja` / `authors.en` with fallback to legacy `data-authors`.
+- [x] Distinct-name romaji map complete at `tools/out/authors-jaen-romaji-map.md`: 36 CONFIRMED from source papers + 4 BESTGUESS (`Kai Ueki`, `Takuya Asakura`, `Yoshifumi Sugiyama`, `Akira Sato`).
+- [x] Derivation for domestic sub005+sub007 complete: zero unresolved.
+- [x] `data-authors-ja` / `data-authors-en` WRITTEN to sub005+sub007 in both EN+JP: 94 each per file, verified parity PASS, UNCOMMITTED/UNPUBLISHED.
+- [x] `tools/researchmap-export.py` and `tools/orcid-export.py` updated to prefer `data-authors-ja` / `data-authors-en` with fallback to `data-authors`; dry-run OK.
+Note: SCOPING DECISION — international sections (sub001-004,006) intentionally NOT given explicit split attributes; exporter fallback to `data-authors` covers them (romaji in both JA+EN).
+- [ ] User preview.
+- [ ] Publish after user approval.
+- [ ] Verify live.
+- [ ] Optional later: extend explicit split attributes to international sections.
 
 ## Future exporter refinements
 - [ ] researchmap update/delete path: `tools/researchmap-export.py` only generates insert lines; update/delete JSONL is hand-built. Future work is adding an automated update path while preserving the stable import grammar in `CLAUDE.md`.

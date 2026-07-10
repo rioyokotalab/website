@@ -73,7 +73,8 @@ MONTH_ABBR = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
 
 def raw_items(anchor):
     """Yield (clean_text, doi, url, data_date, data_volume, data_number,
-    data_pages, data_authors, data_event, data_location, data_publisher)
+    data_pages, data_authors, data_authors_en, data_event, data_location,
+    data_publisher)
     for each <li> in a section,
     keeping DOI/link attributes and the opening <li>'s data-date attribute
     (which overrides the parsed date)."""
@@ -103,8 +104,11 @@ def raw_items(anchor):
         data_pages = pages_m.group(1).strip() if pages_m else None
         data_pages = data_pages or None
         authors_m = rm.DATA_AUTHORS.search(tag)
-        data_authors = [a.strip() for a in authors_m.group(1).split(';') if a.strip()] if authors_m else None
+        data_authors = rm.split_authors(authors_m.group(1)) if authors_m else None
         data_authors = data_authors or None
+        authors_en_m = rm.DATA_AUTHORS_EN.search(tag)
+        data_authors_en = rm.split_authors(authors_en_m.group(1)) if authors_en_m else None
+        data_authors_en = data_authors_en or None
         event_m = rm.DATA_EVENT.search(tag)
         data_event = event_m.group(1).strip() if event_m else None
         data_event = data_event or None
@@ -122,7 +126,7 @@ def raw_items(anchor):
              .replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"'))
         yield (re.sub(r'\s+', ' ', t).strip(), doi, url, data_date,
                data_volume, data_number, data_pages, data_authors,
-               data_event, data_location, data_publisher)
+               data_authors_en, data_event, data_location, data_publisher)
 
 def extract_volpp(venue):
     """Pull Vol./No./pp. out of a venue string; return (clean_venue, fields)."""
@@ -252,7 +256,7 @@ def main():
     risky = []
     for anchor, etype in SECTION_TYPE.items():
         cnt = 0
-        for text, doi, url, data_date, data_volume, data_number, data_pages, data_authors, data_event, data_location, data_publisher in raw_items(anchor):
+        for text, doi, url, data_date, data_volume, data_number, data_pages, data_authors, data_authors_en, data_event, data_location, data_publisher in raw_items(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             parsed = rm.parse(text)
@@ -260,8 +264,8 @@ def main():
                 risky.append(('UNPARSED', anchor, text))
                 continue
             authors, title, venue, date = parsed
-            if data_authors:
-                authors = data_authors
+            if data_authors_en or data_authors:
+                authors = data_authors_en or data_authors
             if data_date:                    # data-date attribute wins
                 date = data_date
             elif not date:

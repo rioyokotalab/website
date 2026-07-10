@@ -66,3 +66,11 @@
 {"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"high","duration_ms":239265,"success":false,"note":"4 remaining romaji not persisted; filled BESTGUESS Hepburn"}
 {"date":"2026-07-10","task_type":"git-summary","agent":"site-editor","tier":"n/a","duration_ms":33705,"success":true,"note":"commit+push todo rename + CLAUDE.md/AGENTS.md cleanup (commit 8fbd012)"}
 {"date":"2026-07-10","task_type":"config-edit","agent":"codex-high","tier":"high","duration_ms":0,"success":true,"note":"restructure tools/todo.md: remove done items, reorder sections"}
+{"date":"2026-07-10","task_type":"git-summary","agent":"site-editor","tier":"n/a","duration_ms":39050,"success":true,"note":"commit+push todo.md restructure (commit dcfb549)"}
+{"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"high","duration_ms":437074,"success":false,"note":"sub007 romaji: 5 of 21 resolved before cutoff (Hirai,Iida,Yui,Kobayashi,Tsubota)"}
+{"date":"2026-07-10","task_type":"metadata-lookup","agent":"site-author","tier":"high","duration_ms":150922,"success":true,"note":"sub007 romaji via DBLP coauthors: 17 resolved (12 confirmed, 5 bestguess); Kohta Ishikawa spelling"}
+{"date":"2026-07-10","task_type":"metadata-lookup","agent":"codex-high","tier":"codex-high","duration_ms":900000,"success":true,"note":"regenerate ja/en authors domestic complete map; sub005=31 sub007=63 unresolved=0 output=tools/out/authors-jaen-domestic.md"}
+{"date":"2026-07-10","task_type":"exporter-logic","agent":"codex-high","tier":"high","duration_ms":0,"success":true,"note":"regenerate ja/en author derivation domestic sub005+sub007, zero unresolved"}
+{"date":"2026-07-10","task_type":"mechanical-edit","agent":"site-editor","tier":"n/a","duration_ms":483007,"success":true,"note":"write data-authors-ja/en to sub005+sub007 en+jp (376 attrs), CRLF preserved, guard passed"}
+{"date":"2026-07-10","task_type":"verify-parity","agent":"site-checker","tier":"n/a","duration_ms":235159,"success":true,"note":"ja/en author attrs sub005+sub007: 94/94 both langs, parity PASS, 0 stray, 0 unresolved"}
+{"date":"2026-07-10","task_type":"deploy-publish","agent":"site-editor","tier":"n/a","duration_ms":6395,"success":false,"note":"site-editor now refuses publish; must route to site-publisher"}

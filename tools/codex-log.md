@@ -155,3 +155,15 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-10 | codex-low | log metric git commit rename | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
 2026-07-10 | codex-high | restructure tools/todo.md (remove done, reorder) | (files: tools/todo.md) | <conversationId> | done
 2026-07-10 | codex-low | log metric todo restructure | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-low | log metric git commit todo restructure | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-high | derive ja/en authors sub005+sub007 | (files: tools/out/authors-jaen-domestic.md) | unknown | done
+2026-07-10 | codex-low | log metric sub007 romaji partial | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | site-author | romaji-lookup-16names | tools/out/authors-jaen-romaji-map.md | unknown | success task_type=metadata-lookup tier=low duration_ms=unknown success=true
+2026-07-10 | codex-low | log metric sub007 romaji DBLP done | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-high | regenerate ja/en authors domestic (complete map) | (files: tools/out/authors-jaen-domestic.md) | unknown | done
+2026-07-10 | codex-low | log metric domestic derivation | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-high | exporters prefer data-authors-ja/en with fallback | (files: tools/researchmap-export.py, tools/orcid-export.py) | unknown | done
+2026-07-10 | site-editor | add data-authors-ja/en to sub005+sub007 | /home/rioyokota/website/tools/out/add-authors-jaen.py | n/a | drafted, not executed
+2026-07-10 | codex-low | log metric write domestic ja/en attrs | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
+2026-07-10 | codex-low | log verify metric + update todo ja/en progress | (files: task-metrics.jsonl, task-tier-policy.md, tools/todo.md) | <conversationId> | done
+2026-07-10 | codex-low | log metric site-editor publish refusal | (files: task-metrics.jsonl, task-tier-policy.md) | <conversationId> | done
