@@ -204,3 +204,10 @@ date | calling agent | task | output file | conversationId | outcome
   - confirmed: The registry defines five logical workers across spark and standard pools; the tier policy defines the three task classes, pool controls, and Option-1 defaults; the live policy supplies the preserved output, sandbox, apply, logging, verification, fan-out, improvement, and labor rules.
   - hypotheses: None.
 - remaining: Calling Claude agent should confirm the file is non-empty, spot-check the mappings and dispatch contract, then run the apply command if approved.
+
+## Codex approval prompts (no per-prompt "don't ask again")
+
+Codex shell-command approval requests ("MCP server codex-<tier> requests your input … Allow Codex to run …") are codex elicitations, NOT Claude Code's allow/deny system, so they offer only Accept/Decline with no persistence. Silence them via codex config, not by clicking:
+
+- Global default: create `~/.codex/config.toml` with `approval_policy = "never"` (or `"on-failure"` to still escalate on failed/out-of-sandbox commands) and `sandbox_mode = "workspace-write"`. Codex then runs commands inside the repo workspace without prompting; out-of-sandbox actions fail instead of asking. codex has no network and is confined to the repo, so scope equals the workspace-write sandbox already passed per call.
+- Per call: dispatchers SHOULD pass `approval-policy: "never"` alongside `sandbox: "workspace-write"` on write-capable codex calls to avoid these prompts. Per-call `sandbox`/`approval-policy` override the config.toml defaults; model/effort still come only from per-call `model`/`config` (config.toml model settings are ignored by the MCP server).

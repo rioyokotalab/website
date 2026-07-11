@@ -260,3 +260,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-coordinator | phase-3 verification | tools/out/phase3-verify.md |  | success
 2026-07-11 | site-editor | task-metrics and policy update | /home/rioyokota/website/tools/task-metrics.jsonl | n/a | success
 2026-07-11 | codex | todo-active-pending-cleanup | /home/rioyokota/website/tools/todo.md | n/a | success
+2026-07-11 | site-editor | task-metrics and policy update | /home/rioyokota/website/tools/task-metrics.jsonl | n/a | success

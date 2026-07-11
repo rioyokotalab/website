@@ -152,3 +152,4 @@
 {"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 480000, "success": true, "note": "CLAUDE.md phase-3 A1-A9 polish + B7/D6 finalize, -3148 bytes"}
 {"date": "2026-07-11", "task_type": "verify-parity", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 30000, "success": true, "note": "phase-3 checker frontmatter + D6 wording verification"}
 {"date": "2026-07-11", "task_type": "git-summary", "agent": "site-editor", "tier": "site-editor", "duration_ms": 105688, "success": true, "note": "cleared tools/out scratch + committed/pushed CLAUDE.md compaction fb6f7d0"}
+{"date": "2026-07-11", "task_type": "git-summary", "agent": "site-editor", "tier": "site-editor", "duration_ms": 304933, "success": true, "note": "committed/pushed todo cleanup 8f727e6"}
