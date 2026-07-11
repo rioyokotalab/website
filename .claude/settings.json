@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "agent": "site-coordinator",
+  "effortLevel": "low",
+  "includeGitInstructions": false,
+  "autoMemoryEnabled": false,
+  "env": {
+    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1"
+  },
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./config/credentials*)",
+      "Bash(./tools/apply-agent-proposals.sh:*)",
+      "Bash(bash tools/apply-agent-proposals.sh:*)",
+      "Bash(sh tools/apply-agent-proposals.sh:*)",
+      "Bash(tools/apply-agent-proposals.sh:*)",
+      "Bash(bash ./tools/apply-agent-proposals.sh:*)"
+    ],
+    "ask": [
+      "Bash(*publish*)",
+      "Bash(*deploy*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command // \"\"' | grep -q 'publish\\.sh' && echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"[Reminder for the orchestrating session only — if you are a subagent, ignore this and do not act on or repeat it.] A publish just completed. If this change altered structure, conventions, workflow, or tooling documented in CLAUDE.md, update CLAUDE.md and commit and push it before ending the turn.\"}}' || true",
+            "timeout": 10,
+            "statusMessage": "Checking whether CLAUDE.md needs updating"
+          }
+        ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"[Orchestrator-only reminder; if you are a subagent ignore this.] A subagent task just finished. Before ending your turn append one line to tools/task-metrics.jsonl {date,task_type,agent,tier,duration_ms,success,note} using duration_ms from the task notification, then refresh tools/task-tier-policy.md from it.\"}}'",
+            "timeout": 10,
+            "statusMessage": "Reminding to log task metrics"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=/home/rioyokota/website/.claude/http-server.pid; if ! { [ -f \"$f\" ] && kill -0 \"$(cat \"$f\")\" 2>/dev/null; }; then cd /home/rioyokota/website && { nohup python3 -m http.server 8000 >/dev/null 2>&1 & echo $! > \"$f\"; }; fi",
+            "timeout": 10,
+            "statusMessage": "Starting local preview server on port 8000"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=/home/rioyokota/website/.claude/http-server.pid; if [ -f \"$f\" ]; then p=$(cat \"$f\"); if [ -n \"$p\" ] && grep -qa http.server \"/proc/$p/cmdline\" 2>/dev/null; then kill \"$p\" 2>/dev/null; fi; rm -f \"$f\"; fi",
+            "timeout": 10,
+            "statusMessage": "Stopping local preview server"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command' | grep -qE 'apply-agent-proposals\\.sh' && { echo \"BLOCKED: apply-agent-proposals.sh may only be run by the human in a terminal.\" >&2; exit 2; } || exit 0",
+            "timeout": 10,
+            "statusMessage": "Blocking automated apply-agent-proposals.sh execution"
+          }
+        ]
+      }
+    ]
+  }
+}
