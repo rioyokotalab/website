@@ -16,12 +16,12 @@ citation parser as tools/researchmap-export.py (loaded dynamically because
 that file's name contains a hyphen) so both exporters split
 author/title/venue/date identically.
 
-ORCID's public API is read-only without an OAuth token, so — matching the
-researchmap exporter's "generate the full set" fallback — this tool does NOT
-diff against a live record.  It always writes the complete Yokota-authored set
-from the website; ORCID de-duplicates on import (it groups works by
-identifier/title and lets the user merge), and an API-diff mode can be added
-later once a 3-legged OAuth token is available.
+ORCID's public API is read-only without an OAuth token, so this tool does NOT
+diff against a live record.  By default it writes the complete Yokota-authored
+set from the website.  Re-importing that complete set is risky: DOI is the
+reliable grouping identifier in ORCID's BibTeX wizard, while identifier-less
+works can be added again.  Use --only-title or --section for incremental
+imports after the initial load.
 
 Section -> BibTeX entry type mapping:
     sub001 journal papers            -> @article
@@ -35,12 +35,18 @@ Section -> BibTeX entry type mapping:
 Usage:
     tools/orcid-export.py            write tools/out/orcid-works.bib
     tools/orcid-export.py --dry-run  print counts + risky parses, no file
+    tools/orcid-export.py --only-title TEXT
+                                     write only title matches to
+                                     tools/out/orcid-works-selection.bib
+    tools/orcid-export.py --section sub005
+                                     write only one section to the selection file
 """
 import argparse, importlib.util, os, re, sys, unicodedata
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = os.path.join(ROOT, 'en', 'achievements', 'index.html')
 OUT = os.path.join(ROOT, 'tools', 'out', 'orcid-works.bib')
+SELECTION_OUT = os.path.join(ROOT, 'tools', 'out', 'orcid-works-selection.bib')
 ORCID = '0000-0001-7573-7873'
 
 # Load the researchmap exporter as a module to reuse its parse()/key()/is_cjk()
@@ -180,6 +186,15 @@ def citekey(authors, title, year, used):
 def bib_escape(s):
     return s.replace('&', r'\&').replace('%', r'\%').replace('#', r'\#').replace('_', r'\_')
 
+def arxiv_id(url):
+    """Return an arXiv identifier from a canonical abs/pdf URL, if present."""
+    if not url:
+        return None
+    m = re.search(r'https?://(?:www\.)?arxiv\.org/(?:abs|pdf)/([^?#]+)', url, re.I)
+    if not m:
+        return None
+    return re.sub(r'\.pdf$', '', m.group(1), flags=re.I).strip('/') or None
+
 def fallback_year(text):
     """When the shared parser finds no date (year buried behind a trailing
     volume/page number, e.g. \"... 043601 (2025).\"), recover a plausible year
@@ -235,12 +250,17 @@ def make_entry(etype, authors, title, venue, date, doi, isbn, url, used,
     if doi:
         fields['doi'] = doi
     elif url:
+        arxiv = arxiv_id(url)
+        if arxiv:
+            fields['archivePrefix'] = 'arXiv'
+            fields['eprint'] = arxiv
         fields['url'] = url
     key = citekey(authors, title, year, used)
     order = ['author', 'title', venue_field]
     if venue_field != 'publisher':
         order.append('publisher')
-    order += ['isbn', 'address', 'volume', 'number', 'pages', 'year', 'month', 'doi', 'url']
+    order += ['isbn', 'address', 'volume', 'number', 'pages', 'year', 'month',
+              'doi', 'archivePrefix', 'eprint', 'url']
     lines = ['@%s{%s,' % (etype, key)]
     keys = [k for k in order if k in fields] + \
            [k for k in fields if k not in order]
@@ -253,14 +273,26 @@ def make_entry(etype, authors, title, venue, date, doi, isbn, url, used,
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--only-title', metavar='SUBSTR',
+                    help='export only works whose parsed title contains SUBSTR (case-insensitive)')
+    ap.add_argument('--section', choices=SECTION_TYPE,
+                    help='export only one achievements section (for example, sub005)')
+    ap.add_argument('--output', metavar='PATH',
+                    help='output path (default: full-export path, or selection path when filtering)')
     args = ap.parse_args()
 
     used = set()
     entries = []
     per_section = {}
     risky = []
+    identifier_counts = {'doi': 0, 'arxiv': 0, 'url-only': 0, 'none': 0}
+    title_match = (unicodedata.normalize('NFKC', args.only_title).casefold()
+                   if args.only_title else None)
     for anchor, etype in SECTION_TYPE.items():
         cnt = 0
+        if args.section and anchor != args.section:
+            per_section[anchor] = 0
+            continue
         for text, doi, isbn, url, data_date, data_volume, data_number, data_pages, data_authors, data_authors_en, data_event, data_location, data_publisher in raw_items(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
@@ -269,6 +301,8 @@ def main():
                 risky.append(('UNPARSED', anchor, text))
                 continue
             authors, title, venue, date = parsed
+            if title_match and title_match not in unicodedata.normalize('NFKC', title).casefold():
+                continue
             if data_authors_en or data_authors:
                 authors = data_authors_en or data_authors
             if data_date:                    # data-date attribute wins
@@ -285,6 +319,14 @@ def main():
             entries.append(make_entry(etype, authors, title, venue, date, doi, isbn, url, used,
                                       data_volume, data_number, data_pages,
                                       data_event, data_location, data_publisher))
+            if doi:
+                identifier_counts['doi'] += 1
+            elif arxiv_id(url):
+                identifier_counts['arxiv'] += 1
+            elif url:
+                identifier_counts['url-only'] += 1
+            else:
+                identifier_counts['none'] += 1
             cnt += 1
         per_section[anchor] = cnt
 
@@ -292,6 +334,9 @@ def main():
     for a in SECTION_TYPE:
         print('  %s (@%-13s): %d' % (a, SECTION_TYPE[a], per_section[a]))
     print('  TOTAL: %d' % len(entries))
+    print('Identifiers: DOI=%d, arXiv=%d, URL-only=%d, none=%d' % (
+        identifier_counts['doi'], identifier_counts['arxiv'],
+        identifier_counts['url-only'], identifier_counts['none']))
     if risky:
         print('\nRisky parses to review (%d):' % len(risky))
         for tag, anchor, text in risky:
@@ -299,14 +344,16 @@ def main():
 
     if args.dry_run:
         return
-    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    filtered = bool(args.only_title or args.section)
+    output = os.path.abspath(args.output) if args.output else (SELECTION_OUT if filtered else OUT)
+    os.makedirs(os.path.dirname(output), exist_ok=True)
     header = ('%% ORCID BibTeX export for https://orcid.org/%s\n'
               '%% Generated from en/achievements/index.html by tools/orcid-export.py\n'
               '%% Import via ORCID > Add works > Import BibTeX.\n\n' % ORCID)
-    with open(OUT, 'w', encoding='utf-8') as f:
+    with open(output, 'w', encoding='utf-8') as f:
         f.write(header)
         f.write('\n\n'.join(entries) + '\n')
-    print('\n%d entries written to %s' % (len(entries), OUT))
+    print('\n%d entries written to %s' % (len(entries), output))
     print('Import via ORCID > Add works > Import BibTeX.')
 
 if __name__ == '__main__':

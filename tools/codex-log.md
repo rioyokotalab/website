@@ -235,3 +235,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | user | remaining exporter todo scoping and ANLP2025 diagnosis | tools/out/remaining-todo-plan.md | not-provided | success; task_type=exporter-logic; tier=codex-high; duration_ms=unknown; success=true
 2026-07-11 | site-author | remaining-lookups (ANLP2025 authors + book ISBNs) | tools/out/remaining-lookups.md | none | success
 2026-07-11 | user | add data-isbn support to ResearchMap and ORCID exporters | tools/out/isbn-exporter.md | not-provided | success; task_type=exporter-logic; tier=codex-high; duration_ms=unknown; success=true
+2026-07-11 | user | diagnose ORCID duplicate works and fix incremental identifier-aware exporter | tools/out/orcid-dedup.md | not-provided | success; task_type=diagnosis+exporter-logic; tier=codex-high; duration_ms=unknown; success=true

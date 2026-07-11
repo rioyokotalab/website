@@ -120,3 +120,6 @@
 {"date":"2026-07-11","task_type":"deploy-publish","agent":"site-publisher","tier":"n/a","duration_ms":598973,"success":true,"note":"publish.sh commit 9b3c5e0 pushed: data-isbn pages + exporter support; pull-rebase clean"}
 {"date":"2026-07-11","task_type":"verify-parity","agent":"site-checker","tier":"n/a","duration_ms":6929,"success":true,"note":"live verify data-isbn: en/jp 200, 2 isbn matches each on live site, PASS"}
 {"date":"2026-07-11","task_type":"mechanical-edit","agent":"site-editor","tier":"n/a","duration_ms":52855,"success":true,"note":"ANLP2025 C10-1 add author 川畑輝/Akira Kawabata pos8 across en+jp achievements + cv.tex; rebuilt cv.pdf; regen orcid-works.bib; wrote rmap update jsonl"}
+
+{"date":"2026-07-11","task_type":"verify-parity","agent":"site-checker","tier":"n/a","duration_ms":15434,"success":true,"note":"Kawabata publish preflight: en/jp 200, author present, cv.pdf fresh, git 7 files"}
+{"date":"2026-07-11","task_type":"deploy-publish","agent":"site-publisher","tier":"n/a","duration_ms":554329,"success":true,"note":"publish.sh commit 986ed09 pushed: ANLP2025 川畑輝/Akira Kawabata author add + cv.pdf; pull-rebase clean"}{"date":"2026-07-11","task_type":"verify-parity","agent":"site-checker","tier":"n/a","duration_ms":8493,"success":true,"note":"live verify Kawabata: en/jp 200, Akira Kawabata on live en, cv.pdf 200 212002B, PASS"}
