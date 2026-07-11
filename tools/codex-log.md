@@ -248,6 +248,7 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-coordinator dispatch | metrics-log | task-metrics.jsonl, task-tier-policy.md, codex-log.md | N/A | success
 2026-07-11 | codex-spark-low | remove researchmap bullet from todo.md | /home/rioyokota/website/tools/todo.md | conversation:TODO-EDIT-2026-07-11 | success
 2026-07-11 | codex-spark-low | remove researchmap bullet from tools/todo.md | /home/rioyokota/website/tools/todo.md | conversation:TODO-EDIT-2026-07-11 | success
+2026-07-11 | site-author | researchmap-category-gaps | tools/out/researchmap-category-gaps.md | not-provided | partial: category-gap audit completed; public API DNS unavailable
 2026-07-11 | user | CLAUDE.md compaction analysis proposal | tools/out/claude-compaction-suggestions.md | not-provided | success; task_type=config-edit; tier=codex-high; duration_ms=unknown; success=true
 2026-07-11 | site-coordinator | task-metrics-and-tier-policy-refresh | tools/task-tier-policy.md | conversation-unknown | success
 2026-07-11 | codex | todo-compaction-update | tools/todo.md | n/a | success
@@ -261,3 +262,27 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-editor | task-metrics and policy update | /home/rioyokota/website/tools/task-metrics.jsonl | n/a | success
 2026-07-11 | codex | todo-active-pending-cleanup | /home/rioyokota/website/tools/todo.md | n/a | success
 2026-07-11 | site-editor | task-metrics and policy update | /home/rioyokota/website/tools/task-metrics.jsonl | n/a | success
+2026-07-11 | site-editor | git-summary metrics refresh | tools/task-metrics.jsonl | N/A | success\n
+2026-07-11 | site-author | researchmap-category-gaps | tools/out/researchmap-category-gaps.md | 019f4f2b-3a2e-7a23-9bfb-424849e944eb | success (log appended by site-author)
+2026-07-11 | site-author | rm-export-step1 education/employment/memberships | tools/out/researchmap-step1-exporter.md | - | success
+2026-07-11 | site-author | rm-cat1-consolidation | tools/out/rm-cat1-consolidation.md | n/a | success
+2026-07-11 | site-author | rm-cat1 edit-script | tools/out/rm-cat1-edits.md | unavailable | success
+2026-07-11 | site-author | rm-cat1-en-parity | tools/out/rm-cat1-en-parity.md | conversationId-not-provided | success
+2026-07-11 | site-author | rm-research-projects-clean | tools/out/rm-research-projects-clean.md | conversationId-not-provided | success
+2026-07-11 | site-author | RM cat2 consolidation (awards/committee/research) | tools/out/rm-cat2-consolidation.md | 019f4f60-3156-7040-960d-85e472c66c82 | done
+2026-07-11 | site-author | rm-cat2-consolidation | tools/out/rm-cat2-page-edits.md | conversationId-not-provided | partial: page draft and exporter completed; live API run blocked by DNS/approval rejection
+2026-07-11 | site-author | cat3-patent-media consolidation | tools/out/rm-cat3-consolidation.md | unavailable | done
+2026-07-11 | site-author | media-coverage-cv | tools/out/media-coverage-edits.md | (n/a) | success
+2026-07-11 | site-author | rm-cat4-reconcile | tools/out/rm-cat4-consolidation.md | unavailable | success
+2026-07-11 | site-author | lora-paper-entry | tools/out/lora-paper-entry.md | unknown | blocked: authorized metadata API lookup unavailable
+2026-07-11 | site-author | rm-cat4-misc-pres-review | tools/out/rm-cat4-misc-pres-review.md | unknown | success
+2026-07-11 | site-author | rm-cat4-conflicts | tools/out/rm-cat4-conflicts.md | unavailable | success
+2026-07-11 | site-author | projects-docx-merge | tools/out/projects-docx-merge.md | <conversationId-unavailable> | success
+2026-07-11 | site-author | rm-cat4-misc-pres-review | tools/out/rm-cat4-misc-pres-review.md | unavailable | success
+2026-07-11 | site-author | lora-paper-entry | tools/out/lora-paper-entry.md | unavailable | success
+2026-07-11 | site-author | rm-cat4-9adds-edits | tools/out/rm-cat4-9adds-edits.md | 019f4fc0-3377-7011-92d2-9557f806c38d | success
+2026-07-11 | site-author | rm-cat4-9adds-final | tools/out/rm-cat4-9adds-edits-final.md | (medium) | success
+2026-07-11 | site-editor | projects-docx-merge-apply-script | tools/out/projects-apply.py | <conversationId-unavailable> | success
+2026-07-11 | site-author | projects-union-fix | tools/out/projects-union-fix.md | <threadId-unavailable> | partial (format corrected; live blocks already 22 rows)
+2026-07-11 | site-checker | agent latency analysis | tools/out/agent-latency-analysis.md | not-provided | success
+2026-07-11 | site-checker | research-projects-verify | /home/rioyokota/website/tools/out/research-projects-verify.md | n/a | success

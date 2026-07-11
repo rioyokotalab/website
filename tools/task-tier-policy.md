@@ -32,7 +32,7 @@ Note: historical medians predate the worker rename; `tier` in metrics now record
 | mechanical-edit | codex-spark-low | 46427.5 | 94.44 | 18 | 2026-07-11 |
 | metadata-lookup | codex-spark-low | 120000 | 63.64 | 22 | 2026-07-11 |
 | verify-parity | default | 42500 | 95.00 | 20 |
-| git-summary | 39050 | 1.000 | 19 |
+| git-summary | low | 37621 | 100.0 | 20 |
 | deploy-publish | codex-spark-low | 39895.5 | 92.86 | 14 | 2026-07-11 |
 | content-draft | codex-high | 300000 | 100.0 | 1 | 2026-07-11 |
 | translation | codex-high | - | - | 0 | 2026-07-11 |
@@ -45,3 +45,12 @@ Note: historical medians predate the worker rename; `tier` in metrics now record
 Note: orchestrator picks the cheapest worker meeting the success bar; failover ladder is spark -> `codex-medium` -> `codex-high` -> Opus -> Fable, one hop per failure, max one cross-pool failover per task.
 
 A failed same-worker environment retry is terminal: record the error and report a blocker. After the final available escalation-ladder endpoint fails, report a blocker; do not restart the ladder. These limits are per task for the run and may not be reset by reclassifying or redispatching the same failure.
+
+## Proposed latency guardrails (review before retaining)
+
+- Cap a Codex call at two lookup items, 2–4 drafting/edit-spec items, or one bounded file transformation. Split larger work into independent output files.
+- At five minutes for a bounded medium/high call, return incremental partial results and re-dispatch the remainder; do not combine lookup, reconciliation, drafting, and edit-script generation in one call.
+- Route mechanical edits, metric/todo maintenance, simple parse/count/aggregate work, and routine parity checks to `codex-spark-low`; use `codex-spark-medium` only for bounded moderate reasoning.
+- Keep network retrieval out of Codex: use Claude Bash in source batches of two; a DNS/approval failure is terminal for that provider in the run.
+- Require DOI/unique-key targeting and EN/JP dry-run counts before multi-page writes. Allow one local and one live verification per committed batch unless new state or a mismatch appears.
+- Record scope_items, network_needed, and retry_reason in each metric note (or future structured fields).

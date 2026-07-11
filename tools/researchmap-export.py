@@ -23,7 +23,7 @@ The output file is uploaded on researchmap:  設定 > インポート
 (or pushed via the WebAPI once an API key is available).
 Format reference: https://researchmap.jp/outline/v2api/v2API.pdf
 """
-import argparse, json, os, re, sys, unicodedata, urllib.request, urllib.error
+import argparse, html, json, os, re, sys, unicodedata, urllib.request, urllib.error
 import urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -329,21 +329,94 @@ def profile_lines(heading):
     m = re.search(r'<h3 class="heading">\s*%s.*?</h3>(.*?)(?=<h3|</article>)' % heading, c, re.S)
     if not m:
         return []
-    text = re.sub(r'<[^>]+>', '\n', m.group(1))
-    lines = [re.sub(r'\s+', ' ', unicodedata.normalize('NFKC', l)).strip()
+    text = html.unescape(re.sub(r'<[^>]+>', '\n', m.group(1)))
+    # Preserve full-width Japanese parentheses while normalizing other width
+    # variants: research-project rows use them to delimit the funding suffix,
+    # while project titles may contain ordinary ASCII parentheses (for LLM,
+    # grant categories, and H-matrices).
+    lines = [re.sub(r'\s+', ' ', unicodedata.normalize(
+                 'NFKC', l.replace('（', '\ue000').replace('）', '\ue001'))
+                 .replace('\ue000', '（').replace('\ue001', '）')).strip()
              for l in text.split('\n')]
     return [l for l in lines if l and not l.startswith('&nbsp;')]
 
 def parse_range(prefix):
-    m = re.match(r'(\d{4})(?:年)?(?:(\d{1,2})月)?(?:[–―-](\d{4})(?:年)?)?$', prefix.strip())
+    m = re.match(r'(\d{4})\s*(?:年)?\s*(?:(\d{1,2})\s*月)?\s*'
+                 r'(?:[–―-]\s*(?:(\d{4})\s*(?:年)?\s*'
+                 r'(?:(\d{1,2})\s*月)?)?)?$', prefix.strip())
     if not m:
         return None, None
     frm = m.group(1) + ('-%02d' % int(m.group(2)) if m.group(2) else '')
-    return frm, m.group(3)
+    to = m.group(3) + ('-%02d' % int(m.group(4)) if m.group(4) else '') if m.group(3) else None
+    return frm, to
+
+def split_school_department(value):
+    """Split a Japanese university name from its following faculty/graduate school."""
+    value = value.strip()
+    m = re.match(r'(.+?大学)(.+)$', value)
+    return (m.group(1).strip(), m.group(2).strip()) if m else (value, '')
+
+def parse_education_line(line):
+    m = re.match(r'(\d{4}\s*年\s*\d{1,2}\s*月)\s+(.+)$', line)
+    if not m:
+        return None
+    date, rest = m.groups()
+    degree = ''
+    for suffix in (r'博士\([^)]*\)\s+取得', r'修士課程\s+修了',
+                   r'博士課程\s+単位取得退学', r'単位取得退学', r'卒業', r'修了'):
+        degree_m = re.search(r'\s+(' + suffix + r')$', rest)
+        if degree_m:
+            degree = degree_m.group(1)
+            rest = rest[:degree_m.start()].strip()
+            break
+    if not rest or not degree:
+        return None
+    school, department = split_school_department(rest)
+    doc = {'school_name': {'ja': school}, 'degree': {'ja': degree}}
+    if department:
+        doc['department'] = {'ja': department}
+    _frm, to = parse_range(date)
+    if to or _frm:
+        doc['to_date'] = to or _frm
+    return doc
+
+def parse_research_experience_line(line):
+    m = re.match(r'((?:\d{4}\s*年\s*\d{1,2}\s*月)'
+                 r'(?:\s*[–―-]\s*(?:\d{4}\s*年\s*\d{1,2}\s*月)?)?)\s+(.+)$', line)
+    if not m:
+        return None
+    prefix, rest = m.groups()
+    parts = rest.strip().rsplit(' ', 1)
+    if len(parts) != 2:
+        return None
+    organization, job_title = parts
+    affiliation, department = split_school_department(organization)
+    if not department and ' ' in organization:
+        affiliation, department = organization.split(' ', 1)
+    doc = {'affiliation': {'ja': affiliation}, 'job_title': {'ja': job_title}}
+    if department:
+        doc['department'] = {'ja': department}
+    frm, to = parse_range(prefix)
+    if frm:
+        doc['from_date'] = frm
+    if to:
+        doc['to_date'] = to
+    return doc
+
+def parse_association_memberships(lines):
+    """One association_memberships document per Japanese-comma-separated society."""
+    docs = []
+    for line in lines:
+        for name in re.split(r'[、,]', line):
+            name = name.strip()
+            if name:
+                docs.append({'association_name': {'ja' if is_cjk(name) else 'en': name}})
+    return docs
 
 
 API_BASE = 'https://api.researchmap.jp/%s/%%s' % PERMALINK
-LIVE_TYPES = ['published_papers', 'books_etc', 'presentations', 'misc']
+LIVE_TYPES = ['published_papers', 'books_etc', 'presentations', 'misc',
+              'awards', 'committee_memberships', 'research_projects']
 SYNC_FIELDS = {
     'published_papers': ('paper_title', 'authors', 'publication_date',
                          'publication_name', 'see_also'),
@@ -353,7 +426,91 @@ SYNC_FIELDS = {
                       'event', 'see_also'),
     'misc': ('paper_title', 'authors', 'publication_date',
              'publication_name', 'see_also'),
+    'awards': ('award_name', 'award_date'),
+    'committee_memberships': ('committee_name', 'association', 'from_date', 'to_date'),
+    'research_projects': ('research_project_title', 'system_name',
+                          'offer_organization', 'from_date', 'to_date'),
 }
+
+# These three profile types do not share a universal ``title`` field.  In
+# particular, ResearchMap committee records have two valid shapes: some split
+# the role and conference over committee_name/association, while others put
+# both into committee_name.  Match their normalized combined text instead of
+# comparing individual fields.
+COMBINED_FIELDS = {
+    'awards': ('title', 'award_name'),
+    'committee_memberships': ('title', 'committee_name', 'association'),
+    'research_projects': ('title', 'research_project_title'),
+}
+
+def text_values(value):
+    """Yield scalar text values from ResearchMap's language dictionaries."""
+    if isinstance(value, str):
+        if value:
+            yield value
+    elif isinstance(value, dict):
+        for item in value.values():
+            yield from text_values(item)
+    elif isinstance(value, (list, tuple)):
+        for item in value:
+            yield from text_values(item)
+
+def normalized_combined(item, rm_type):
+    """Lowercase, de-punctuated combined identity text for profile CV types."""
+    values = []
+    for field in COMBINED_FIELDS[rm_type]:
+        for value in text_values(item.get(field)):
+            if value not in values:
+                values.append(value)
+    text = unicodedata.normalize('NFKC', ' '.join(values)).lower()
+    # Canonicalize the three retained literal mistakes before removing
+    # punctuation, so the corrected website wording still deduplicates the
+    # older public ResearchMap record.
+    text = re.sub(r'\bini\s+asia-pacific\s+region\b',
+                  'in asia-pacific region', text)
+    text = re.sub(r'\bsiam\s+cse\s*19\b', 'siam cse 2019', text)
+    text = text.replace('安全 性', '安全性')
+    text = re.sub(r'[^\w\s]', '', text, flags=re.UNICODE)
+    return re.sub(r'\s+', ' ', text).strip()
+
+def normalized_combined_variants(item, rm_type):
+    """Return combined keys for every available language variant.
+
+    A ResearchMap item can carry both ja and en values for a field.  Those are
+    alternatives, not consecutive identity text, so do not concatenate the
+    two translations into a key that no single-language website row can match.
+    """
+    variants = {normalized_combined(item, rm_type)}
+    languages = set()
+    for field in COMBINED_FIELDS[rm_type]:
+        value = item.get(field)
+        if isinstance(value, dict):
+            languages.update(value)
+    for language in languages:
+        variant = {}
+        for field in COMBINED_FIELDS[rm_type]:
+            value = item.get(field)
+            variant[field] = value.get(language) if isinstance(value, dict) else value
+        variants.add(normalized_combined(variant, rm_type))
+    return {value for value in variants if value}
+
+def combined_match(rm_type, desired, live):
+    """Match a profile record by its normalized combined identity string."""
+    wanted_keys = normalized_combined_variants(desired, rm_type)
+    actual_keys = normalized_combined_variants(live, rm_type)
+    if wanted_keys & actual_keys:
+        return True
+    # The one existing award is Japanese on the canonical website profile but
+    # English in ResearchMap.  Its shared, specific ACM Gordon Bell stem plus
+    # matching calendar year is a safe bilingual identity bridge.
+    if rm_type == 'awards':
+        wanted = normalized_combined(desired, rm_type)
+        actual = normalized_combined(live, rm_type)
+        wanted_year = str(desired.get('award_date', ''))[:4]
+        live_year = str(live.get('award_date', ''))[:4]
+        return (wanted_year and wanted_year == live_year and
+                'acm gordon bell' in wanted and 'acm gordon bell' in actual)
+    return False
 
 def load_state():
     """Load both the legacy baseline array and the managed-registry shape."""
@@ -481,6 +638,14 @@ def desired_title_keys(record):
 def match_live(record, live_items):
     """Return (unique item or None, ambiguity candidates, criterion)."""
     doc = record.get('similar_merge', {})
+    rm_type = record.get('insert', {}).get('type')
+    if rm_type in COMBINED_FIELDS:
+        matches = [item for item in live_items if combined_match(rm_type, doc, item)]
+        if len(matches) == 1:
+            return matches[0], [], 'normalized combined text'
+        if len(matches) > 1:
+            return None, matches, 'normalized combined text'
+        return None, [], None
     desired_dois = item_dois(doc)
     desired_urls = item_urls(doc)
     desired_titles = desired_title_keys(record)
@@ -522,7 +687,7 @@ def build_sync(website, live_by_type, managed_ids):
     for text, _tkey, rm_type, record in website:
         if rm_type not in LIVE_TYPES:
             continue
-        item, candidates, criterion = match_live(record, live_by_type[rm_type])
+        item, candidates, criterion = match_live(record, live_by_type.get(rm_type, []))
         matches.append([text, rm_type, record, item, candidates, criterion])
 
     # Two website entries resolving to one rm:id are also ambiguous.
@@ -562,7 +727,7 @@ def build_sync(website, live_by_type, managed_ids):
     refreshed = {}
     for rm_type in LIVE_TYPES:
         old = {str(x) for x in managed_ids.get(rm_type, [])}
-        live_ids = {live_id(x) for x in live_by_type[rm_type] if live_id(x)}
+        live_ids = {live_id(x) for x in live_by_type.get(rm_type, []) if live_id(x)}
         delete_ids = sorted((old & live_ids) - matched[rm_type] - protected[rm_type])
         deletes.extend({'delete': {'type': rm_type, 'id': rid}}
                        for rid in delete_ids)
@@ -679,9 +844,14 @@ def check_live(dry_run=False):
     """Diff website entries against live researchmap.jp data (instead of the
     local state file) and write tools/out/researchmap-import.jsonl."""
     live_keys = {}
+    live_items = {}
     for rm_type in LIVE_TYPES:
         try:
-            live_keys[rm_type] = live_title_keys(rm_type)
+            live_items[rm_type] = fetch_live(rm_type)
+            live_keys[rm_type] = {
+                key(unicodedata.normalize('NFKC', title))
+                for item in live_items[rm_type] for title in live_titles(item)
+            }
         except Exception as e:
             print(f'ERROR: could not fetch live {rm_type} from researchmap API '
                   f'({e.__class__.__name__}: {e}); aborting without writing {OUT} '
@@ -692,10 +862,23 @@ def check_live(dry_run=False):
     all_live = set().union(*live_keys.values()) if live_keys else set()
 
     new = []
+    profile_counts = {rm_type: {'inserts': 0, 'matches': 0, 'ambiguous': 0}
+                      for rm_type in COMBINED_FIELDS}
     for text, tkey, rm_type, rec in website_records():
-        # awards/committee_memberships/research_projects have no live type to
-        # check against here (not in LIVE_TYPES); skip live-comparison for them.
         if rm_type not in live_keys:
+            continue
+        if rm_type in COMBINED_FIELDS:
+            item, candidates, _criterion = match_live(rec, live_items[rm_type])
+            if item:
+                profile_counts[rm_type]['matches'] += 1
+                continue
+            if candidates:
+                profile_counts[rm_type]['ambiguous'] += 1
+                print(f'AMBIGUOUS ({rm_type}, normalized combined text): {text[:100]}',
+                      file=sys.stderr)
+                continue
+            profile_counts[rm_type]['inserts'] += 1
+            new.append((text, rec))
             continue
         # Match against ALL live types, not just the mapped one: an entry may be
         # stored under a different researchmap category live than the site maps
@@ -721,6 +904,10 @@ def check_live(dry_run=False):
             continue
         new.append((text, rec))
 
+    for rm_type, counts in profile_counts.items():
+        print(f'LIVE {rm_type}: {counts["inserts"]} inserts / '
+              f'{counts["matches"]} matches / {counts["ambiguous"]} ambiguous')
+
     for text, rec in new:
         print('NEW:', text[:100])
 
@@ -739,8 +926,19 @@ def check_live(dry_run=False):
     return 0
 
 def profile_records():
-    """CV items (awards / committee memberships / research projects) -> records."""
+    """CV items (education, careers, societies, awards, committees, projects) -> records."""
     recs = []
+    for line in profile_lines('学歴'):
+        doc = parse_education_line(line)
+        if doc:
+            recs.append((line, 'education', doc))
+    for line in profile_lines('職歴'):
+        doc = parse_research_experience_line(line)
+        if doc:
+            recs.append((line, 'research_experience', doc))
+    for doc in parse_association_memberships(profile_lines('所属学会')):
+        name = next(iter(doc['association_name'].values()))
+        recs.append((name, 'association_memberships', doc))
     for line in profile_lines('受賞歴'):
         m = re.match(r'(\S+)\s+(.+)$', line)
         if not m: continue
@@ -765,7 +963,12 @@ def profile_records():
         if to: doc['to_date'] = to
         recs.append((line, 'committee_memberships', doc))
     for line in profile_lines('研究課題'):
-        m = re.match(r'(\S+)\s+(.+?)[（(](.+)[）)]$', line)
+        # The project title itself may contain parentheses (for example LLM).
+        # Prefer the full-width funding wrapper used by the JP page; an ASCII
+        # fallback preserves support for records without that wrapper.
+        m = re.match(r'(\S+)\s+(.+)（(.+)）$', line)
+        if not m:
+            m = re.match(r'(\S+)\s+(.+)\((.+)\)$', line)
         if not m: continue
         frm, to = parse_range(m.group(1))
         title = m.group(2).strip()
@@ -822,7 +1025,7 @@ def main():
             else:
                 print(f'WARNING: could not parse, add manually: {text[:90]}', file=sys.stderr)
 
-    # CV items on the personal page (awards, committees, research projects)
+    # CV items on the personal page remain local-baseline, insert-only records.
     for text, rm_type, doc in profile_records():
         k = key(text)
         seen.append(k)
