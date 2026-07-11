@@ -21,7 +21,7 @@ prefer-spark selects codex-spark-medium for an eligible, spark-suitable ROUTINE-
 
 ## Task classes -> default worker
 
-- MECHANICAL-LOW -> `codex-spark-low`: `mechanical-edit`, `verify-parity`, `git-summary`, `deploy-publish` pre-checks, and parse/aggregate portions of `metadata-lookup`; network fetches stay in Claude Bash because codex sandbox has no network. Capacity fallback -> `codex-medium`; never escalate to high just for size.
+- MECHANICAL-LOW -> `codex-spark-low`: `mechanical-edit`, `verify-parity`, `git-summary`, `deploy-publish` pre-checks, and parse/aggregate portions of `metadata-lookup`; codex workers now have network via `-c sandbox_workspace_write.network_access=true`, so authorized network fetches may run directly in codex. Capacity fallback -> `codex-medium`; never escalate to high just for size.
 - ROUTINE-MEDIUM -> substitution boundary: tightly-bounded, limited-context, cheap-retry work -> `codex-spark-medium`; broader, context-heavy, ambiguous, long-running work -> `codex-medium`. Covers heavier edit-script drafting, multi-file sweeps, and `other`.
 - COMPLEX-HIGH -> `codex-high`: `content-draft`, `translation`, `exporter-logic`, `diagnosis`, `figure-production`, `config-edit`. Never downgraded to spark even under capacity pressure.
 

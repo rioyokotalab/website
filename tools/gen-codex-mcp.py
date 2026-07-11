@@ -72,6 +72,8 @@ def server_object(worker: dict[str, Any]) -> dict[str, Any]:
             "-c",
             'approval_policy="never"',
             "-c",
+            "sandbox_workspace_write.network_access=true",
+            "-c",
             f'model="{worker["model"]}"',
             "-c",
             f'model_reasoning_effort="{worker["effort"]}"',

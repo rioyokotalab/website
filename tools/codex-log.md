@@ -290,3 +290,10 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-author | fix media_coverage field mapping | tools/out/rm-media-exporter.md | 019f5010-438c-7870-8cad-c7317678b634 | success
 2026-07-11 16:36 | site-author | codex startup model-pin test (0.144.1) | tools/out/codex-model-pin-test.md | (none) | PASS: startup -c model pin WORKS
 2026-07-11 | site-author | mcp-model-pin | tools/out/mcp-model-pin-proposal.md | unavailable | success
+2026-07-11 | site-checker | inventory tools/out json/jsonl files | tools/out/rm-json-inventory.md | <conversationId> | done
+1783757013 | site-author | Cat5 decompose todo.md | tools/out/cat5-decompose.md | <this threadId> | done
+2026-07-11 | site-author | Cat5-5a pdf-index | tools/out/cat5-pdf-index.md | <conversationId> | PASS
+2026-07-11 | site-author | Cat5-5a pdf-index | tools/out/cat5-pdf-index.md | <conversationId> | PASS
+2026-07-11 | site-author | Cat5-5c project-map | tools/out/cat5-project-map.md | cat5-5c | PASS
+2026-07-11 | site-author | cat5-5b-batch01 grant extraction | tools/out/cat5-grants-batch01.md | N/A | PASS
+2026-07-11 | site-author | codex-web-access proposal | tools/out/codex-web-access-proposal.md | 019f5042-454a-7841-8161-547b216f1f0d | PASS

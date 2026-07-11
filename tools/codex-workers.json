@@ -3,6 +3,7 @@
     "note": "single source of truth for codex MCP workers; edit here then run tools/gen-codex-mcp.py",
     "dispatch_contract": "EVERY codex call MUST pass model=<worker.model> and config={\"model_reasoning_effort\":<worker.effort>} from this registry (plus sandbox as needed); per-call selection is mandatory and primary. Generated MCP servers also bake matching startup model/effort pins into .mcp.json as a safety net, verified working on codex-cli 0.144.1 per tools/out/codex-model-pin-test.md. Server names remain routing labels only.",
     "gpt56_migration": "VERIFIED live on codex-cli 0.144.1: per-call gpt-5.6-terra and gpt-5.6-sol both run correctly. Startup -c model/-c model_reasoning_effort pins also work and are baked into generated .mcp.json as a safety net; per-call model/effort remains mandatory and primary.",
+    "network_access": "VERIFIED on codex-cli 0.144.1: generated MCP servers pass -c sandbox_workspace_write.network_access=true, enabling outbound network in the workspace-write sandbox. Default (no flag) is network-blocked (curl 'Could not resolve host'); the flag prints 'network access enabled' and curl returns HTTP 200. This SUPERSEDES the earlier 'codex has no network' assumption: codex workers can now fetch authorized hosts directly.",
     "generated_targets": [
       ".mcp.json (project scope)",
       "user-scope claude mcp add-json commands"
