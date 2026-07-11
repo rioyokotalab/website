@@ -220,7 +220,6 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-checker | metrics+policy-refresh-verify-parity | tools/task-tier-policy.md | N/A | failed
 2026-07-11 | codex-spark-low | achievements-parity-sweep | /home/rioyokota/website/tools/out/achievements-parity.md | n/a | success
 2026-07-11 | codex | achievements-sub007-audit | /home/rioyokota/website/tools/out/achievements-sub007-audit.md | n/a | success
-2026-07-11 | codex | achievements-sub007-audit | /home/rioyokota/website/tools/out/achievements-sub007-audit.md | n/a | success
 2026-07-11 | codex-spark-low | achievements-parity-sweep | /home/rioyokota/website/tools/out/achievements-parity.md | n/a | success
 2026-07-11 | site-coordinator | verify-parity | metrics-rewrite |  | success
 2026-07-11 | codex | edit tools/todo.md | tools/todo.md | n/a | success
@@ -293,7 +292,48 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-checker | inventory tools/out json/jsonl files | tools/out/rm-json-inventory.md | <conversationId> | done
 1783757013 | site-author | Cat5 decompose todo.md | tools/out/cat5-decompose.md | <this threadId> | done
 2026-07-11 | site-author | Cat5-5a pdf-index | tools/out/cat5-pdf-index.md | <conversationId> | PASS
-2026-07-11 | site-author | Cat5-5a pdf-index | tools/out/cat5-pdf-index.md | <conversationId> | PASS
 2026-07-11 | site-author | Cat5-5c project-map | tools/out/cat5-project-map.md | cat5-5c | PASS
 2026-07-11 | site-author | cat5-5b-batch01 grant extraction | tools/out/cat5-grants-batch01.md | N/A | PASS
 2026-07-11 | site-author | codex-web-access proposal | tools/out/codex-web-access-proposal.md | 019f5042-454a-7841-8161-547b216f1f0d | PASS
+2026-07-11 | site-coordinator | global-opt transcription batch-A (skills 1-4) | skills/README.md skills/html-editing.md skills/en-jp-parity.md skills/achievements.md | unknown | outcome
+2026-07-11 | site-coordinator | global-opt transcription batch-B (skills 5-7) | skills/news-and-members.md skills/web-lookup.md skills/codex-dispatch.md | unknown | outcome
+2026-07-11 | site-coordinator | global-opt transcription batch-C (skills 8-11) | skills/publish-and-verify.md skills/config-proposals.md skills/exporters.md skills/figures.md | unknown | outcome
+2026-07-11 | site-coordinator | global-opt transcription batch-D (agent proposals 1-3) | tools/out/global-optimization/{site-coordinator.md,site-checker.md,site-editor.md} | unknown | outcome
+2026-07-11 | site-coordinator | global-opt transcription batch-E (agent proposals 4-6 + apply.sh) | tools/out/global-optimization/{site-author.md,site-publisher.md,site-rescue.md,apply.sh} | unknown | outcome
+2026-07-11 | site-coordinator | global-opt transcription batch-F (CLAUDE.md+AGENTS.md proposals) | tools/out/global-optimization/{CLAUDE.md,AGENTS.md} | unknown | outcome
+2026-07-11 | site-coordinator | global-opt transcription batch-G (offload-policy proposal) | tools/out/global-optimization/codex-offload-policy.md | unknown | outcome
+2026-07-11 | site-coordinator | global-opt batch-H tier-policy + deploy.sh + verification + bookkeeping | tools/out/global-optimization/verify.md | unknown | outcome
+2026-07-11 | coordinator | cat5-grants-batch02..06 (arXiv ack grant extraction, pubs #47,#50,#51,#52,#54,#55,#56,#57,#58) | tools/out/cat5-grants-batch02.md..batch06.md | threads: 019f507a-44f5-7682-a07b-298e87b5f055, 019f507a-caae-7441-a8c0-f6c491889fee, 019f507b-488c-76b1-a6b2-18cd67f6c6c3, 019f507c-1fe5-7a43-8587-2e9472350a09, 019f507d-4c65-77a1-9ae1-ea0ebd5ecd73
+2026-07-11 | codex-spark-low | cat5-grants-batch11 | /home/rioyokota/website/tools/out/cat5-grants-batch11.md | conv-unknown | PASS
+2026-07-11 | coordinator | cat5-grants-batch07..11 (arXiv ack grant extraction, pubs #59,#61,#63,#64,#65,#66,#70,#71,#83,#93) | tools/out/cat5-grants-batch07.md..batch11.md | threads: 019f507f-102d-71a2-832b-8962346c80ae, 019f5083-d075-7320-8d0c-5c97a6d669b8, 019f5084-82af-7053-94ef-014230b1c6ea, 019f5084-fe51-7122-80fb-f55605dd96a4, 019f5085-9e47-7522-bedc-7f738a42d04e
+2026-07-11 | coordinator | cat5-grants-batch12..15 (arXiv+ANLP ack grant extraction, pubs #117,#118,#119,#121,#125,#126,#115,#116) | tools/out/cat5-grants-batch12.md..batch15.md | threads: 019f5088-89bc-7610-9fae-f5d17083fe1c, 019f5089-870b-72a1-a62d-25010dc8a882, 019f508a-393b-75c1-8d11-8739aad7b974, 019f508a-770a-7433-93e0-d9cf99283e94
+2026-07-11 | codex-spark-low | cat5-grants-batch18 | /home/rioyokota/website/tools/out/cat5-grants-batch18.md | n/a | PASS
+2026-07-11 | coordinator | cat5-grants-batch16..19 (ANLP2024/IPSJ/OpenReview-fallback ack extraction, pubs #129,#130,#131,#128,#6,#72,#82) | tools/out/cat5-grants-batch16.md..batch19.md | threads: 019f508d-fdf0-71f2-adef-b7bf4aac1ec4, 019f5094-4c64-7102-bcac-eea23cd6d50d, 019f508f-4695-7dc3-9888-6cdd7adaa0c2, 019f5090-9915-7b41-acbc-7c3372d177a2. LESSON: gpt-5.3-codex-spark errors 400 on image inputs when its web tool renders PDFs; route PDF-behind-DNS-blocked-host fetches to gpt-5.6-terra (codex-medium) with the web tool instead.
+2026-07-11 | codex-spark-low | cat5-grants-batch22 | tools/out/cat5-grants-batch22.md | unknown | PASS
+2026-07-11 | codex-spark-low | cat5-grants-batch23 | tools/out/cat5-grants-batch23.md | conversationId=unknown | completed
+2026-07-11 | codex-spark-low | cat5-grants-batch24 | tools/out/cat5-grants-batch24.md | N/A | completed
+2026-07-11 | codex-spark-low | cat5-grants-batch25 | /home/rioyokota/website/tools/out/cat5-grants-batch25.md | n/a | PASS
+2026-07-11 | coordinator | cat5-grants-batch20..25 (open-access DOI ack extraction: JOSS/IPSJ-JIP/JSFI/CVF/ACL/JSAI) pubs #11,#14,#23,#49,#73,#74,#78,#86,#96,#127. J-STAGE unreachable from codex sandbox (jstage.jst.go.jp DNS-fail; no reliable browser fallback): #31,#33,#38,#120,#132,#133,#134 remain INACCESSIBLE -> need user subscription download. | tools/out/cat5-grants-batch20.md..batch25.md,batch23b.md
+2026-07-11 | codex-spark-low | cat5-arxiv-s2 | /home/rioyokota/website/tools/out/cat5-arxiv-s2.md | unknown | PASS
+2026-07-11 | codex-spark-low | cat5-arxiv-s8 | tools/out/cat5-arxiv-s8.md | N/A | PASS
+2026-07-11 | codex-spark-low | cat5-arxiv-s11 | /home/rioyokota/website/tools/out/cat5-arxiv-s11.md | unknown | PASS
+2026-07-11 | coordinator | cat5-arxiv-s1..s13 + aggregate (search arXiv by title for 75 DOI pubs; 35 found w/ grants extracted, 40 not on arXiv) | tools/out/cat5-arxiv-s1.md..s13.md, tools/out/cat5-arxiv-summary.md, tools/out/cat5-doi-titles.md
+2026-07-11 | cat5-agent | cat5 grant extract b06 | tools/out/cat5-grants-b06.md | <conversationId> | done
+2026-07-11 | cat5-agent | cat5 grant extract b07 | tools/out/cat5-grants-b07.md | <conversationId> | done
+2026-07-11 | cat5-agent | cat5 grant extract b08 | tools/out/cat5-grants-b08.md | <conversationId> | done
+2026-07-11 | cat5-agent | cat5 grant extract b09 | tools/out/cat5-grants-b09.md | <conversationId> | done
+2026-07-11 | cat5-agent | cat5 grant extract b10 | tools/out/cat5-grants-b10.md | <conversationId> | done
+2026-07-11 | cat5-agent | cat5 grant extract b11 | tools/out/cat5-grants-b11.md | <conversationId> | done
+2026-07-11 | cat5-agent | cat5 ccgrid disambig | tools/out/cat5-ccgrid-disambig.md | <conversationId> | done
+2026-07-11 | cat5-agent | cat5 grant extract b01 (read-only, returned in chat) | tools/out/cat5-grants-uploaded.md | 019f512d-fa0b-73a3-b0c5-d88cdb4d599c | done (log added by Claude)
+2026-07-11 | cat5-agent | cat5 grant extract b02 (read-only, returned in chat) | tools/out/cat5-grants-uploaded.md | 019f512f-5340-7f52-b836-3abb935df304 | done (log added by Claude)
+2026-07-11 | cat5-agent | cat5 grant extract b03 (read-only, returned in chat) | tools/out/cat5-grants-uploaded.md | 019f5130-0de4-7042-a1d7-20258b488433 | done (log added by Claude)
+2026-07-11 | cat5-agent | cat5 grant extract b04 (read-only, returned in chat) | tools/out/cat5-grants-uploaded.md | 019f5130-8944-7c03-a057-eafbad284979 | done (log added by Claude)
+2026-07-11 | cat5-agent | cat5 grant extract b05 (read-only, returned in chat) | tools/out/cat5-grants-uploaded.md | 019f5131-13e4-7242-be63-24c80d6c5083 | done (log added by Claude)
+2026-07-11 | codex-high | cat5 publication PDF rename and archive | tools/out/cat5-papers-rename-map.md | conversationId=unknown | completed (41 copied, 41 verified)
+2026-07-11 | Claude | re-audit and correct cat5 PDF rename map | tools/out/cat5-papers-rename-map.md | unavailable | completed_with_source_discrepancy
+2026-07-11 | site-agent | cat5 grants recheck A | tools/out/cat5-grants-recheck-A.md | conversation-unknown | completed
+2026-07-11 | site-agent | cat5 grants recheck B | tools/out/cat5-grants-recheck-B.md | <conversationId> | completed
+2026-07-11 | user | cat5 ICPADS DOI check | tools/out/cat5-icpads-doi-check.md | n/a | partial: canonical DOI recommended from PDF metadata; live resolver checks blocked
+2026-07-11 | user | cat5 step 5d grant-to-project aggregation | tools/out/cat5-linked-papers.md | n/a | completed_with_flags: 79/79 records covered, 20 publications linked across 9 projects
+2026-07-11 | site-content-editor | cat5 researchmap project grants | tools/out/cat5-project-grants-raw.md | n/a | completed_with_qualification: researchmap payload unavailable in-session, placeholders recorded

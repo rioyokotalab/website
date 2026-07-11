@@ -545,11 +545,13 @@ def save_state(state):
 def fetch_live(rm_type):
     """Fetch all pages of a live researchmap collection, return list of item dicts."""
     items = []
+    saw_valid = False
     url = API_BASE % rm_type
     while url:
         req = urllib.request.Request(url, headers={'Accept': 'application/json'})
         with urllib.request.urlopen(req, timeout=30) as resp:
             data = json.loads(resp.read().decode('utf-8'))
+        saw_valid = saw_valid or (isinstance(data, dict) and ('items' in data or 'total_items' in data))
         if isinstance(data, list):
             items.extend(data)
             url = None
@@ -573,7 +575,7 @@ def fetch_live(rm_type):
             if nxt is None:
                 nxt = data.get('next') or (data.get('pagination') or {}).get('next')
             url = nxt if isinstance(nxt, str) else None
-    if not items:
+    if not items and not saw_valid:
         raise RuntimeError('fetch_live: got zero items back (empty or malformed response)')
     return items
 

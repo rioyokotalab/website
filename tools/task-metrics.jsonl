@@ -89,7 +89,6 @@
 {"date": "2026-07-11", "task_type": "verify-parity", "agent": "site-coordinator", "tier": "codex-spark-medium", "duration_ms": 45000, "success": true, "note": "S12 agent-config spark-tools parity"}
 {"date": "2026-07-11", "task_type": "diagnosis", "agent": "site-coordinator", "tier": "codex-medium", "duration_ms": 90000, "success": true, "note": "S12 12-case router tabletop trace 9PASS/3GAP"}
 {"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 120000, "success": true, "note": "S12 apply router-policy gap fixes A+B"}
-{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 120000, "success": true, "note": "S12 apply router-policy gap fixes A+B"}
 {"date": "2026-07-11", "task_type": "mechanical-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 40000, "success": true, "note": "S14 wrap-up strip+todo+rm scratch"}
 {"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 150000, "success": true, "note": "S14 final report 19 items"}
 {"date": "2026-07-11", "task_type": "deploy-publish", "agent": "site-editor", "tier": "sonnet", "duration_ms": 36728, "success": true, "note": "S14 git commit+push wrap-up 43b5c8a"}
@@ -203,3 +202,58 @@
 {"date":"2026-07-11","task_type":"config-edit","agent":"site-editor","tier":"codex-spark-low","duration_ms":21884,"success":true,"note":"stashed Cat5 progress + added web-access task to todo.md"}
 {"date":"2026-07-11","task_type":"diagnosis","agent":"site-author","tier":"codex-high","duration_ms":528451,"success":true,"note":"verified codex network flag sandbox_workspace_write.network_access=true; built web-access .mcp.json proposal; exceeded 5min ceiling"}
 {"date":"2026-07-11","task_type":"config-edit","agent":"site-checker","tier":"codex-spark-low","duration_ms":18067,"success":true,"note":"verified codex web access live: network_access=true x5 both scopes, servers connected, pins intact"}
+{"date":"2026-07-11","task_type":"config-edit","agent":"site-editor","tier":"codex-spark-low","duration_ms":34775,"success":true,"note":"committed+pushed codex web-access config b990f99"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 60000, "success": true, "note": "global-opt batch-A skills 1-4 transcription (est)"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 60000, "success": true, "note": "global-opt batch-B skills 5-7 transcription (est)"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 60000, "success": true, "note": "global-opt batch-C skills 8-11 transcription (est)"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 60000, "success": true, "note": "global-opt batch-D agent proposals coordinator/checker/editor (est)"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 60000, "success": true, "note": "global-opt batch-E agent proposals author/publisher/rescue + apply.sh (est)"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 90000, "success": true, "note": "global-opt batch-F CLAUDE.md+AGENTS.md proposals, size guard 8452B OK (est)"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 90000, "success": true, "note": "global-opt batch-G codex-offload-policy proposal 15739B (est)"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 120000, "success": true, "note": "global-opt batch-H tier-policy refresh + deploy.sh skills exclusion + verification (est)"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "fable-direct", "duration_ms": 0, "success": true, "note": "global optimization design: skills/ architecture, web-access policy unification, dedup, editor/publisher role fix; all content authored in main session per user directive"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch02 arXiv ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch03 arXiv ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch04 arXiv ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch05 arXiv ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch06 arXiv ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch07 arXiv ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch08 arXiv ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch09 arXiv ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch10 arXiv ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch11 arXiv ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch12 ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch13 ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch14 ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch15 ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch16 ack extraction"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":false,"note":"batch17 spark 400 image-input on PDF web render x2"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-medium","duration_ms":0,"success":true,"note":"batch17 fallback via web tool (shell DNS blocked for anlp/ipsj)"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch18 openreview fallback (#6 INACCESSIBLE, #72 NONE)"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch19 #82 same paper as arXiv:2211.08583"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch20 JOSS/IPSJ/JSFI"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":false,"note":"batch21 J-STAGE unreachable"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":false,"note":"batch22 J-STAGE unreachable"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch23 ACL#49 JSAI#127; #132 inaccessible"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch24 CVF x3"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"batch25 CVF x2"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-medium","duration_ms":0,"success":false,"note":"batch21/22 J-STAGE retry still unreachable"}
+{"date":"2026-07-11","task_type":"cat5-grant-extract","agent":"coordinator","tier":"codex-medium","duration_ms":0,"success":false,"note":"batch23b #132 J-STAGE unreachable"}
+{"date":"2026-07-11","task_type":"cat5-arxiv-search","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"13 title-search sessions #1-#114"}
+{"date":"2026-07-11","task_type":"cat5-arxiv-aggregate","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"summary 35 found / 40 notfound"}
+{"date":"2026-07-11","task_type":"cat5-arxiv-search","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"13 title-search sessions #1-#114"}
+{"date":"2026-07-11","task_type":"cat5-arxiv-aggregate","agent":"coordinator","tier":"codex-spark-low","duration_ms":0,"success":true,"note":"summary 35 found / 40 notfound"}
+{"date": "2026-07-11", "task_type": "context-check", "agent": "site-checker", "tier": "spark-low", "duration_ms": 12953, "success": true, "note": "found cat5 task goal/progress for uploaded PDFs"}
+{"date": "2026-07-11", "task_type": "grant-extraction", "agent": "site-author", "tier": "spark-low", "duration_ms": 2173702, "success": true, "note": "cat5 5b: 42 uploaded PDFs/screenshot parsed, 24 grants found -> cat5-grants-uploaded.md"}
+{"date": "2026-07-11", "task_type": "file-archive", "agent": "site-author", "tier": "spark-low", "duration_ms": 314702, "success": true, "note": "cat5: 41 PDFs renamed FirstAuthorYear -> tools/papers/, map in cat5-papers-rename-map.md"}
+{"date": "2026-07-11", "task_type": "file-archive-audit", "agent": "site-author", "tier": "spark-low", "duration_ms": 2197996, "success": true, "note": "cat5: re-audited PDFs by embedded DOI, fixed 8 mislabels; grants file lines 22/25/29/33/34/36/37 need re-derivation"}
+{"date": "2026-07-11", "task_type": "doi-verify", "agent": "site-checker", "tier": "spark-low", "duration_ms": 10375, "success": true, "note": "cat5 ICPADS: site uses .0145, PDF prints .143; discrepancy confirmed EN/JP synced"}
+{"date": "2026-07-11", "task_type": "doi-verify", "agent": "site-checker", "tier": "spark-low", "duration_ms": 10375, "success": true, "note": "cat5 ICPADS: site uses .0145, PDF prints .143; discrepancy confirmed EN/JP synced"}
+{"date": "2026-07-11", "task_type": "grant-extraction", "agent": "site-author", "tier": "spark-low", "duration_ms": 239662, "success": true, "note": "cat5: re-derived grants for corrected lines 22/25/29/33/34/36/37 in cat5-grants-uploaded.md"}
+{"date": "2026-07-11", "task_type": "grant-project-match", "agent": "site-author", "tier": "spark-low", "duration_ms": 795150, "success": true, "note": "cat5 5d: matched grants to projects -> cat5-linked-papers.md; 9/22 projects populated, 20 papers linked, 3 inferred mappings flagged"}
+{"date": "2026-07-11", "task_type": "metadata-lookup", "agent": "site-author", "tier": "spark-low", "duration_ms": 550307, "success": true, "note": "cat5: pulled researchmap project grant numbers -> cat5-project-grants.md; 15/22 filled; 25K00141->P4 contradicted (real 25H01109), 16H05859=P21 16H02827=P20"}
+{"date": "2026-07-11", "task_type": "grant-project-match", "agent": "site-author", "tier": "spark-low", "duration_ms": 353790, "success": true, "note": "cat5 5d final: reconciled cat5-linked-papers.md vs verified grant key; 10/22 projects, 21 papers, 34 links (31 confirmed/3 inferred)"}
+{"date": "2026-07-12", "task_type": "tooling-fix", "agent": "site-editor", "tier": "spark-low", "duration_ms": 22236, "success": true, "note": "researchmap-export.py fetch_live empty-but-valid guard fix; --check-live wrote researchmap-import.jsonl 29 lines"}
+{"date": "2026-07-12", "task_type": "cleanup-commit", "agent": "site-editor", "tier": "spark-low", "duration_ms": 362765, "success": false, "note": "cat5 clean+commit+push: staged via git add -A but never committed and cleanup not done; truncated report"}
+{"date": "2026-07-12", "task_type": "git-verify", "agent": "site-checker", "tier": "spark-low", "duration_ms": 12495, "success": true, "note": "confirmed no cat5 commit exists; changes staged uncommitted"}
+{"date": "2026-07-12", "task_type": "git-inspect", "agent": "site-checker", "tier": "spark-low", "duration_ms": 36327, "success": true, "note": "67 files staged incl unrelated skills/config/deploy refactor; no cat5 deletions staged"}
