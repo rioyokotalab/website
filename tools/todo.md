@@ -3,7 +3,10 @@
 Cross-session source of truth. Keep minimal; completed-task history lives in git.
 
 ## Active / pending
-- researchmap sync (#2, design b) IMPLEMENTED in tools/researchmap-export.py (`--sync` = inserts + field-diff updates + registry-bounded deletes; `managed_ids` registry added to tools/researchmap-state.json; offline fixture tests pass). PENDING: (1) Claude-side live `python3 tools/researchmap-export.py --sync --dry-run` + human review of the N inserts / M updates / K deletes summary before any upload; (2) a CLAUDE.md researchmap-section doc-update proposal describing the new `--sync`/update/delete grammar + `managed_ids` registry.
+- CLAUDE.md compaction phase 1 (SAFE PASS, in progress): DELETE stale/historical C1-C6 + pure-deletion MOVEs B1-B4 -> tools/out/CLAUDE.md proposal with apply command.
+- CLAUDE.md compaction phase 2 (agent-boundary): first ADD domain knowledge to .claude/agents/*.md (ResearchMap/ORCID/CV/figures/Drive/SSH-deploy/Hinadori), then delete from CLAUDE.md (B6-B12).
+- CLAUDE.md compaction phase 3 (in-place polish A1-A9), then resolve D-list decisions.
+- Resolve CV-sync contradiction (D6): CLAUDE.md says both "only when explicitly asked" and "update cv/cv.tex in the same edit"; pick one. Full detail in tools/out/claude-compaction-suggestions.md.
 
 ## Operational reminders
 - Every codex call passes `model=<worker.model>` + `config={"model_reasoning_effort":...}`; write-capable calls pass `sandbox:"workspace-write"`. codex has no network and cannot `rm`.

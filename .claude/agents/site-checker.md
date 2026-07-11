@@ -83,3 +83,9 @@ Return format:
 
 Final response cap:
 - Keep the final message about 15 lines or less.
+
+## Hinadori discovery and short probes
+
+This machine is the Hinadori login node. Refresh Computers-page facts from live cluster data rather than guessing. Use `sinfo` and read `slurm.conf` for node layout; run `yrun` with no arguments to list resources and GPU models.
+
+As the sole exception to the general read-only/no-state-change boundary above, the user authorizes site-checker to submit short cluster-probing jobs with `ybatch` and `#YBATCH -r <resource>`. Write probe output to `$HOME`, never node-local `/tmp`. Direct `srun` is blocked. Do not use this exception for builds, publishing, file edits, or non-probing jobs.

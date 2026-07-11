@@ -138,3 +138,16 @@
 
 {"date": "2026-07-11", "task_type": "metadata-lookup", "agent": "site-author", "tier": "n/a", "duration_ms": 502752, "success": true, "note": "web-verify Claude Code/codex install+login cmds (confirmed) + make preview hook macOS/Linux portable (ps -p vs /proc) in tools/out/README.md"}
 {"date":"2026-07-11","task_type":"deploy-publish","agent":"site-editor","tier":"n/a","duration_ms":62985,"success":true,"note":"apply README rewrite + commit 0b60471 push; cleanup consumed tools/out scratch; kept 4 pending deliverables"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-editor", "tier": "n/a", "duration_ms": 62666, "success": true, "note": "commit 215da0f: apply R1/R2 verification policy to CLAUDE.md+codex-offload-policy.md, move researchmap-sync.md to tools/, clear tools/out; size guard passed 34872B"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-editor", "tier": "site-editor", "duration_ms": 126741, "success": true, "note": "consolidated SSH_AUTH_SOCK git allow entries in settings.local.json"}
+{"date": "2026-07-11", "task_type": "git-summary", "agent": "site-checker", "tier": "site-checker", "duration_ms": 6184, "success": true, "note": "confirmed .claude/settings.local.json is git-ignored, not trackable"}
+{"date": "2026-07-11", "task_type": "other", "agent": "site-checker", "tier": "site-checker", "duration_ms": 9177, "success": true, "note": "located researchmap line in tools/todo.md"}
+{"date": "2026-07-11", "task_type": "mechanical-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 20000, "success": true, "note": "removed researchmap bullet from tools/todo.md"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 300000, "success": true, "note": "CLAUDE.md compaction audit proposal"}
+{"date": "2026-07-11", "task_type": "mechanical-edit", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 25000, "success": true, "note": "added 3 compaction-phase tasks + CV-sync item to tools/todo.md"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 420000, "success": true, "note": "CLAUDE.md phase-1 safe-pass proposal, -11860 bytes"}
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 600000, "success": true, "note": "CLAUDE.md phase-2 agent-boundary moves B6-B12, -10714 bytes"}
+{"date": "2026-07-11", "task_type": "verify-parity", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 40000, "success": true, "note": "phase-2 frontmatter-identical + append-only verification"}
+
+{"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 480000, "success": true, "note": "CLAUDE.md phase-3 A1-A9 polish + B7/D6 finalize, -3148 bytes"}
+{"date": "2026-07-11", "task_type": "verify-parity", "agent": "site-coordinator", "tier": "codex-spark-low", "duration_ms": 30000, "success": true, "note": "phase-3 checker frontmatter + D6 wording verification"}

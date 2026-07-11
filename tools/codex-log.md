@@ -242,3 +242,19 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | user | README onboarding quickstart proposal | tools/out/README.md + tools/out/readme-notes.md | not-provided | success; task_type=content-draft; secondary=config-edit; tier=codex-high; duration_ms=unknown; success=true
 2026-07-11 | user | verification workflow policy proposals | tools/out/CLAUDE.md + tools/out/codex-offload-policy.md + tools/out/apply-verification-workflow.sh + tools/out/verification-policy-notes.md | not-provided | success; task_type=config-edit; tier=codex-high; duration_ms=unknown; success=true
 2026-07-11 | site-author | readme-verify-fix | tools/out/readme-edit-apply.md | (none) | outcome
+2026-07-11 | site-coordinator dispatch | metrics-log | tools/task-metrics.jsonl + tools/task-tier-policy.md + tools/codex-log.md | not-provided | success
+2026-07-11 | site-coordinator dispatch | metrics-log | tools/task-metrics.jsonl, tools/task-tier-policy.md, tools/codex-log.md | n/a | success
+2026-07-11 | codex | metrics-commit-rule | /home/rioyokota/website/tools/out/apply-metrics-commit-rule.sh | n/a | success
+2026-07-11 | site-coordinator dispatch | metrics-log | task-metrics.jsonl, task-tier-policy.md, codex-log.md | N/A | success
+2026-07-11 | codex-spark-low | remove researchmap bullet from todo.md | /home/rioyokota/website/tools/todo.md | conversation:TODO-EDIT-2026-07-11 | success
+2026-07-11 | codex-spark-low | remove researchmap bullet from tools/todo.md | /home/rioyokota/website/tools/todo.md | conversation:TODO-EDIT-2026-07-11 | success
+2026-07-11 | user | CLAUDE.md compaction analysis proposal | tools/out/claude-compaction-suggestions.md | not-provided | success; task_type=config-edit; tier=codex-high; duration_ms=unknown; success=true
+2026-07-11 | site-coordinator | task-metrics-and-tier-policy-refresh | tools/task-tier-policy.md | conversation-unknown | success
+2026-07-11 | codex | todo-compaction-update | tools/todo.md | n/a | success
+2026-07-11 | user | CLAUDE.md phase 1 safe-pass compaction proposal | tools/out/claude-phase1-notes.md | not-provided | success; task_type=config-edit; tier=codex-high; duration_ms=unknown; success=true
+2026-07-11 | site-coordinator | task-tier-policy-refresh | /home/rioyokota/website/tools/task-tier-policy.md | n/a | success
+2026-07-11 | user | CLAUDE.md phase 2 agent-boundary compaction proposal | tools/out/claude-phase2-notes.md | not-provided | partial; task_type=config-edit; tier=codex-high; duration_ms=unknown; success=false
+2026-07-11 11:36:28 | codex-spark-low | phase2-verify | tools/out/phase2-verify.md | n/a | PASS
+2026-07-11 | site-coordinator | metrics-policy-update | tools/task-tier-policy.md | - | success
+2026-07-11 | user | CLAUDE.md phase 3 compaction proposals (A1-A9, B7, D6) | tools/out/claude-phase3-notes.md | not-provided | success; task_type=config-edit; tier=codex-high; duration_ms=unknown; success=true
+2026-07-11 | site-coordinator | phase-3 verification | tools/out/phase3-verify.md |  | success

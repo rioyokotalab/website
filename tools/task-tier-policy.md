@@ -29,18 +29,18 @@ Note: historical medians predate the worker rename; `tier` in metrics now record
 
 | task_type | default_tier | median_duration_ms | success_rate | n_samples | last_updated |
 | --- | --- | --- | --- | --- | --- |
-| mechanical-edit | codex-spark-low | 116427.5 | 93.75 | 16 | 2026-07-11 |
+| mechanical-edit | codex-spark-low | 46427.5 | 94.44 | 18 | 2026-07-11 |
 | metadata-lookup | codex-spark-low | 120000 | 63.64 | 22 | 2026-07-11 |
-| verify-parity | codex-medium | 46874.5 | 94.44 | 18 | 2026-07-11 |
-| git-summary | codex-spark-low | 37621.5 | 100.0 | 16 | 2026-07-11 |
+| verify-parity | default | 42500 | 95.00 | 20 |
+| git-summary | codex-spark-low | 36193 | 100.0 | 17 | 2026-07-11 |
 | deploy-publish | codex-spark-low | 39895.5 | 92.86 | 14 | 2026-07-11 |
 | content-draft | codex-high | 300000 | 100.0 | 1 | 2026-07-11 |
 | translation | codex-high | - | - | 0 | 2026-07-11 |
 | exporter-logic | codex-high | 224063 | 100.0 | 11 | 2026-07-11 |
 | diagnosis | codex-high | 165000 | 100.0 | 4 | 2026-07-11 |
 | figure-production | codex-high | - | - | 0 | 2026-07-11 |
-| config-edit | codex-high | 120000 | 100.0 | 27 | 2026-07-11 |
-| other | codex-medium | 0 | 100.0 | 10 | 2026-07-11 |
+| config-edit | default  | 126741 | 100.00 | 33 |
+| other | 0 | 100.00 | 11 |
 
 Note: orchestrator picks the cheapest worker meeting the success bar; failover ladder is spark -> `codex-medium` -> `codex-high` -> Opus -> Fable, one hop per failure, max one cross-pool failover per task.
 
