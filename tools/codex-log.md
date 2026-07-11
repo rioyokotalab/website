@@ -236,3 +236,6 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-author | remaining-lookups (ANLP2025 authors + book ISBNs) | tools/out/remaining-lookups.md | none | success
 2026-07-11 | user | add data-isbn support to ResearchMap and ORCID exporters | tools/out/isbn-exporter.md | not-provided | success; task_type=exporter-logic; tier=codex-high; duration_ms=unknown; success=true
 2026-07-11 | user | diagnose ORCID duplicate works and fix incremental identifier-aware exporter | tools/out/orcid-dedup.md | not-provided | success; task_type=diagnosis+exporter-logic; tier=codex-high; duration_ms=unknown; success=true
+2026-07-11 | user | immediate transient-scratch cleanup policy proposals | tools/out/immediate-cleanup-proposal.md | not-provided | success; task_type=config-edit; tier=codex-high; duration_ms=120000; success=true
+2026-07-11 | user | implement researchmap managed UPDATE + DELETE sync | tools/out/researchmap-sync.md | not-provided | success; task_type=exporter-logic; tier=codex-high; duration_ms=unknown; success=true
+2026-07-11 | codex-high | diagnosis read-only repo-support deletion scan; task_type=diagnosis; tier=codex-high; duration_ms=300000; success=true | tools/out/deletion-candidates.md | not-provided | success

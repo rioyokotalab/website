@@ -1,4 +1,5 @@
-[
+{
+"baseline": [
 "2009年11月acmgordonbell賞価格性能部門",
 "2012the12thinternationalsymposiumonparallelanddistributedcomputingispd",
 "2012thethirdinternationalworkshoponfrontierofgpucomputingprogramcommit",
@@ -394,4 +395,11 @@
 "高橋秀弥井上中順横田理央片岡裕雄前田英作画像識別における形状・テクスチャ偏重度と二重降下現象の関係についてパターン認識・メディア理解研究会p",
 "高橋那弥八嶋晋吾石川康太佐藤育郎横田理央走行動画の大規模自己教師あり学習の検討と計画第25回画像の認識・理解シンポジウムjul2022",
 "齋藤智和横田理央量子渦計算の高速多重極展開法を用いた高速化情報処理学会全国大会mar2023"
-]
+],
+"managed_ids": {
+"published_papers": [],
+"books_etc": [],
+"presentations": [],
+"misc": []
+}
+}

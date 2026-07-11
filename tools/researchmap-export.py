@@ -16,12 +16,15 @@ Usage:
   tools/researchmap-export.py --check-live  diff against live researchmap.jp data
                                           instead of the local state file, and
                                           write tools/out/researchmap-import.jsonl
+  tools/researchmap-export.py --sync      write inserts + partial updates +
+                                          registry-bounded deletes after a live diff
 
 The output file is uploaded on researchmap:  設定 > インポート
 (or pushed via the WebAPI once an API key is available).
 Format reference: https://researchmap.jp/outline/v2api/v2API.pdf
 """
 import argparse, json, os, re, sys, unicodedata, urllib.request, urllib.error
+import urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = os.path.join(ROOT, 'en', 'achievements', 'index.html')
@@ -341,6 +344,42 @@ def parse_range(prefix):
 
 API_BASE = 'https://api.researchmap.jp/%s/%%s' % PERMALINK
 LIVE_TYPES = ['published_papers', 'books_etc', 'presentations', 'misc']
+SYNC_FIELDS = {
+    'published_papers': ('paper_title', 'authors', 'publication_date',
+                         'publication_name', 'see_also'),
+    'books_etc': ('book_title', 'authors', 'publication_date',
+                  'publisher', 'see_also'),
+    'presentations': ('presentation_title', 'presenters', 'publication_date',
+                      'event', 'see_also'),
+    'misc': ('paper_title', 'authors', 'publication_date',
+             'publication_name', 'see_also'),
+}
+
+def load_state():
+    """Load both the legacy baseline array and the managed-registry shape."""
+    if not os.path.exists(STATE):
+        return {'baseline': [], 'managed_ids': {t: [] for t in LIVE_TYPES}}
+    raw = json.load(open(STATE, encoding='utf-8'))
+    if isinstance(raw, list):
+        raw = {'baseline': raw, 'managed_ids': {}}
+    if not isinstance(raw, dict):
+        raise ValueError('researchmap state must be a list or object')
+    baseline = raw.get('baseline', [])
+    managed = raw.get('managed_ids', {})
+    if not isinstance(baseline, list) or not isinstance(managed, dict):
+        raise ValueError('invalid researchmap state fields')
+    return {
+        'baseline': baseline,
+        'managed_ids': {
+            t: sorted({str(x) for x in managed.get(t, []) if str(x)})
+            for t in LIVE_TYPES
+        },
+    }
+
+def save_state(state):
+    with open(STATE, 'w', encoding='utf-8') as f:
+        json.dump(state, f, indent=2, ensure_ascii=False)
+        f.write('\n')
 
 def fetch_live(rm_type):
     """Fetch all pages of a live researchmap collection, return list of item dicts."""
@@ -376,6 +415,198 @@ def fetch_live(rm_type):
     if not items:
         raise RuntimeError('fetch_live: got zero items back (empty or malformed response)')
     return items
+
+def live_id(item):
+    """Return the public API rm:id used by update/delete import grammar."""
+    for field in ('rm:id', 'id', '@id'):
+        value = item.get(field)
+        if value is None:
+            continue
+        value = str(value).strip()
+        if value:
+            return value.rstrip('/').rsplit('/', 1)[-1]
+    return None
+
+def canonical_doi(value):
+    if isinstance(value, dict):
+        value = value.get('@id') or value.get('value')
+    if not isinstance(value, str):
+        return ''
+    return re.sub(r'^https?://(?:dx\.)?doi\.org/', '', value.strip(), flags=re.I).lower()
+
+def item_dois(item):
+    identifiers = item.get('identifiers') or {}
+    values = identifiers.get('doi', []) if isinstance(identifiers, dict) else []
+    if isinstance(values, str):
+        values = [values]
+    return {canonical_doi(v) for v in values if canonical_doi(v)}
+
+def canonical_url(value):
+    if not isinstance(value, str) or not value.strip():
+        return ''
+    try:
+        p = urllib.parse.urlsplit(value.strip())
+        if not p.scheme or not p.netloc:
+            return value.strip().rstrip('/')
+        path = re.sub(r'/+', '/', p.path).rstrip('/')
+        scheme = 'https' if p.scheme.lower() in ('http', 'https') else p.scheme.lower()
+        return urllib.parse.urlunsplit((scheme, p.netloc.lower(), path,
+                                       p.query, ''))
+    except ValueError:
+        return value.strip().rstrip('/')
+
+def item_urls(item):
+    values = item.get('see_also') or []
+    if isinstance(values, dict):
+        values = [values]
+    out = set()
+    for value in values:
+        url = value.get('@id') if isinstance(value, dict) else value
+        url = canonical_url(url)
+        if url:
+            out.add(url)
+    return out
+
+def desired_title_keys(record):
+    doc = record.get('similar_merge', {})
+    keys = set()
+    for field in ('paper_title', 'book_title', 'presentation_title'):
+        value = doc.get(field)
+        values = value.values() if isinstance(value, dict) else [value]
+        for title in values:
+            if isinstance(title, str) and title:
+                keys.add(key(unicodedata.normalize('NFKC', title), limit=10**9))
+    return keys
+
+def match_live(record, live_items):
+    """Return (unique item or None, ambiguity candidates, criterion)."""
+    doc = record.get('similar_merge', {})
+    desired_dois = item_dois(doc)
+    desired_urls = item_urls(doc)
+    desired_titles = desired_title_keys(record)
+    criteria = []
+    if desired_dois:
+        criteria.append(('DOI', lambda item: bool(desired_dois & item_dois(item))))
+    if desired_urls:
+        criteria.append(('URL', lambda item: bool(desired_urls & item_urls(item))))
+    if desired_titles:
+        criteria.append(('title', lambda item: bool(
+            desired_titles & {key(unicodedata.normalize('NFKC', t), limit=10**9)
+                              for t in live_titles(item)})))
+    for label, predicate in criteria:
+        matches = [item for item in live_items if predicate(item)]
+        if len(matches) == 1:
+            return matches[0], [], label
+        if len(matches) > 1:
+            return None, matches, label
+    return None, [], None
+
+def changed_doc(rm_type, desired, live):
+    """Return only exporter-owned fields whose complete values differ."""
+    changed = {}
+    for field in SYNC_FIELDS[rm_type]:
+        if field in desired:
+            wanted = desired[field]
+        elif field == 'see_also' and field in live:
+            wanted = []
+        else:
+            continue
+        if live.get(field) != wanted:
+            changed[field] = wanted
+    return changed
+
+def build_sync(website, live_by_type, managed_ids):
+    """Pure sync planner used by --sync and offline fixture tests."""
+    matches = []
+    ambiguous = []
+    for text, _tkey, rm_type, record in website:
+        if rm_type not in LIVE_TYPES:
+            continue
+        item, candidates, criterion = match_live(record, live_by_type[rm_type])
+        matches.append([text, rm_type, record, item, candidates, criterion])
+
+    # Two website entries resolving to one rm:id are also ambiguous.
+    id_counts = {}
+    for _text, rm_type, _record, item, _candidates, _criterion in matches:
+        rid = live_id(item) if item else None
+        if rid:
+            id_counts[(rm_type, rid)] = id_counts.get((rm_type, rid), 0) + 1
+
+    inserts, updates = [], []
+    matched = {t: set() for t in LIVE_TYPES}
+    protected = {t: set() for t in LIVE_TYPES}
+    for text, rm_type, record, item, candidates, criterion in matches:
+        candidate_ids = {live_id(x) for x in candidates if live_id(x)}
+        if candidate_ids:
+            protected[rm_type].update(candidate_ids)
+            ambiguous.append((text, rm_type, criterion, sorted(candidate_ids)))
+            continue
+        if item is None:
+            inserts.append((text, record))
+            continue
+        rid = live_id(item)
+        if not rid:
+            ambiguous.append((text, rm_type, 'missing rm:id', []))
+            continue
+        if id_counts[(rm_type, rid)] > 1:
+            protected[rm_type].add(rid)
+            ambiguous.append((text, rm_type, 'duplicate website match', [rid]))
+            continue
+        matched[rm_type].add(rid)
+        diff = changed_doc(rm_type, record['similar_merge'], item)
+        if diff:
+            updates.append((text, {'update': {'type': rm_type, 'id': rid},
+                                   'doc': diff}))
+
+    deletes = []
+    refreshed = {}
+    for rm_type in LIVE_TYPES:
+        old = {str(x) for x in managed_ids.get(rm_type, [])}
+        live_ids = {live_id(x) for x in live_by_type[rm_type] if live_id(x)}
+        delete_ids = sorted((old & live_ids) - matched[rm_type] - protected[rm_type])
+        deletes.extend({'delete': {'type': rm_type, 'id': rid}}
+                       for rid in delete_ids)
+        # Retain IDs until the public read API confirms deletion; otherwise a
+        # failed/manual-skipped upload would make a pending delete unrecoverable.
+        refreshed[rm_type] = sorted(matched[rm_type] | (old & live_ids))
+    return inserts, updates, deletes, refreshed, ambiguous
+
+def sync_live(dry_run=False):
+    live_by_type = {}
+    for rm_type in LIVE_TYPES:
+        try:
+            live_by_type[rm_type] = fetch_live(rm_type)
+        except Exception as e:
+            print(f'ERROR: could not fetch live {rm_type} from researchmap API '
+                  f'({e.__class__.__name__}: {e}); aborting without writes',
+                  file=sys.stderr)
+            return 1
+    state = load_state()
+    inserts, updates, deletes, refreshed, ambiguous = build_sync(
+        website_records(), live_by_type, state['managed_ids'])
+    for text, rm_type, criterion, ids in ambiguous:
+        print(f'AMBIGUOUS ({rm_type}, {criterion}, ids={ids}): {text[:100]}',
+              file=sys.stderr)
+    operations = ([record for _text, record in inserts] +
+                  [record for _text, record in updates] + deletes)
+    for record in operations:
+        print(json.dumps(record, ensure_ascii=False))
+    print(f'\n{len(inserts)} inserts / {len(updates)} updates / '
+          f'{len(deletes)} deletes; {len(ambiguous)} ambiguous skipped')
+    if dry_run:
+        print('dry run: no import or state file written')
+        return 0
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    if operations:
+        with open(OUT, 'w', encoding='utf-8') as f:
+            for record in operations:
+                f.write(json.dumps(record, ensure_ascii=False) + '\n')
+        print(f'written to {OUT}; review every line before upload')
+    elif os.path.exists(OUT):
+        os.remove(OUT)
+    state['managed_ids'] = refreshed
+    save_state(state)
+    return 0
 
 def live_title(item):
     """Extract a title string from a live researchmap item dict, any language."""
@@ -444,7 +675,7 @@ def website_records():
         out.append((text, key(title), rm_type, rec))
     return out
 
-def check_live():
+def check_live(dry_run=False):
     """Diff website entries against live researchmap.jp data (instead of the
     local state file) and write tools/out/researchmap-import.jsonl."""
     live_keys = {}
@@ -493,14 +724,16 @@ def check_live():
     for text, rec in new:
         print('NEW:', text[:100])
 
-    if new:
+    if new and dry_run:
+        print(f'\n{len(new)} NEW entries not found live (dry run: no files written)')
+    elif new:
         os.makedirs(os.path.dirname(OUT), exist_ok=True)
         with open(OUT, 'w', encoding='utf-8') as f:
             for _, rec in new:
                 f.write(json.dumps(rec, ensure_ascii=False) + '\n')
         print(f'\n{len(new)} NEW entries not found live, written to {OUT}')
     else:
-        if os.path.exists(OUT):
+        if not dry_run and os.path.exists(OUT):
             os.remove(OUT)
         print('\n0 NEW entries found (website matches live researchmap)')
     return 0
@@ -555,14 +788,21 @@ def main():
     ap.add_argument('--dry-run', action='store_true')
     ap.add_argument('--check-live', action='store_true',
                      help='diff against live researchmap.jp data instead of the state file')
+    ap.add_argument('--sync', action='store_true',
+                    help='live diff with inserts, partial updates, and managed deletes')
     args = ap.parse_args()
 
-    if args.check_live:
-        sys.exit(check_live())
+    if args.sync and (args.check_live or args.init):
+        ap.error('--sync cannot be combined with --check-live or --init')
 
-    state = set()
-    if os.path.exists(STATE):
-        state = set(json.load(open(STATE, encoding='utf-8')))
+    if args.sync:
+        sys.exit(sync_live(dry_run=args.dry_run))
+
+    if args.check_live:
+        sys.exit(check_live(dry_run=args.dry_run))
+
+    state_data = load_state()
+    state = set(state_data['baseline'])
 
     seen, new = [], []
     for anchor, (rm_type, extra) in SECTIONS.items():
@@ -592,7 +832,8 @@ def main():
                            'similar_merge': doc, 'priority': 'similar_data'}))
 
     if args.init:
-        json.dump(sorted(seen), open(STATE, 'w', encoding='utf-8'), indent=0, ensure_ascii=False)
+        state_data['baseline'] = sorted(seen)
+        save_state(state_data)
         print(f'baseline saved: {len(seen)} Yokota entries recorded, nothing exported')
         return
 
@@ -609,7 +850,8 @@ def main():
     with open(OUT, 'w', encoding='utf-8') as f:
         for _, rec in new:
             f.write(json.dumps(rec, ensure_ascii=False) + '\n')
-    json.dump(sorted(set(state) | set(seen)), open(STATE, 'w', encoding='utf-8'), indent=0, ensure_ascii=False)
+    state_data['baseline'] = sorted(set(state) | set(seen))
+    save_state(state_data)
     print(f'\n{len(new)} entries written to {OUT}')
     print('Upload on researchmap: 設定 > インポート (or push via WebAPI).')
 
