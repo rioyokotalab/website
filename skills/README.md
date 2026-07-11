@@ -19,6 +19,7 @@ changes, update the matching skill in the same change set.
 | codex-dispatch.md | every codex delegation (contract, output, logging) |
 publish-and-verify.md | preview, publish approval, live verify, deploy auth |
 | config-proposals.md | hand-edit-only config changes, tools/out lifecycle |
+| settings-scope.md | placing Claude Code settings across user/project/local scopes |
 | exporters.md | researchmap / ORCID / cv.tex sync and exports |
 | figures.md | figure production for research pages |
 

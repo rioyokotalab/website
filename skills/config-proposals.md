@@ -28,3 +28,6 @@ prompt the user to commit it separately.
 Skills upkeep: when a convention changes, update the matching skills/*.md in
 the same change set; skills are git-tracked, deploy-excluded, and NOT
 hand-edit-only.
+
+Settings placement (user/project/local scopes, tracking caveat): see
+`skills/settings-scope.md`.
