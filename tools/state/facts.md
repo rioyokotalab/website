@@ -25,6 +25,7 @@ Update in place when reality changes; date entries. No procedures here
 ## Tooling / environment
 - codex-cli 0.144.1: outbound network in workspace-write sandbox via
   -c sandbox_workspace_write.network_access=true (verified).
+- codex sandbox: workspace-write keeps .git/ read-only by design (commits fail with index.lock "Read-only file system"); a FRESH session with sandbox danger-full-access CAN write .git. Sandbox mode is fixed at session start — per-call overrides on codex-reply are silently ignored.
 - Git pre-commit hook (.git/hooks/pre-commit) is UNTRACKED: after a fresh
   clone, reinstall it (tools/out proposal apply.sh did this once; content
   calls check-claude-size.py + check-md-size.py).

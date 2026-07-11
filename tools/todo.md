@@ -1,10 +1,45 @@
 # Lab website — task board (ledger)
 
 Protocol + schemas: skills/context-ledger.md. In-flight detail:
-tools/state/session.md. Next free id: T-2.
+tools/state/session.md. Next free id: T-6.
 
 ## Active
-(none)
+### T-2 — Fix malformed table row in skills/README.md
+Outcome: the row starting `publish-and-verify.md |` gets its missing
+leading pipe so it reads `| publish-and-verify.md | ... |`. Confirm no
+other row lacks a leading pipe.
+Verify: grep -n '^| publish-and-verify' skills/README.md. Size S. Leave
+the commit to Claude/user.
+
+### T-3 — Deploy-exclude .agents/ and .codex/
+Outcome: deploy.sh exclusion list also excludes repo-root .agents/ and
+.codex/ (repo-internal agent config; currently they would mirror
+publicly). Do NOT touch .dont-remove-me handling (intentionally
+preserved). NEVER run deploy.sh/publish.sh (AGENTS.md hard rule) —
+static verification only.
+Verify: grep the new exclusion patterns in deploy.sh; then ask the user
+to run ./deploy.sh --dry-run and confirm no .agents/.codex lines. Size S.
+
+### T-4 — Document EN/JP parity scope (pages vs assets)
+Outcome: skills/en-jp-parity.md states that parity applies to HTML
+pages/paths while image assets live only under jp/ (e.g.
+jp/research/images20XX/, jp/picture/images/) and are referenced
+cross-language; include a repeatable audit command (compare sorted
+`find en -type f` vs `find jp -type f`; expected EN-only: none, JP-only:
+assets). Add one dated bullet to tools/state/facts.md Site section:
+2026-07-12 audit found en=19 vs jp=114 files, 0 broken links across 16
+index pages.
+Verify: python3 tools/check-md-size.py passes; grep the new wording.
+Size M.
+
+### T-5 — DOI spot-check (network) for 2 newest achievements
+Outcome: take the 2 newest data-doi values in jp/achievements/index.html;
+per skills/web-lookup.md verify each resolves via https://doi.org (HTTP
+200/30x); record verdicts + source URLs in tools/out/doi-spotcheck.md
+ending with the structured result block (skills/codex-dispatch.md). No
+page edits: if one fails, record it under Awaiting user in
+tools/state/session.md.
+Verify: tools/out/doi-spotcheck.md exists with 2 verdicts. Size M.
 
 ## Blocked / awaiting user
 (none)

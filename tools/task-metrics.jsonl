@@ -267,3 +267,8 @@
 {"date":"2026-07-12","task_type":"config-edit","agent":"site-coordinator","tier":"codex-high","duration_ms":150000,"success":true,"note":"context-ledger call B: CLAUDE/AGENTS proposals+apply.sh (duration estimated)"}
 {"date":"2026-07-12","task_type":"config-edit","agent":"site-coordinator","tier":"codex-spark-medium","duration_ms":120000,"success":true,"note":"context-ledger call A: state files+skill+checker+index edits (duration estimated)"}
 {"date":"2026-07-12","task_type":"config-edit","agent":"site-coordinator","tier":"codex-high","duration_ms":150000,"success":true,"note":"context-ledger call B: CLAUDE/AGENTS proposals+apply.sh (duration estimated)"}
+{"date":"2026-07-12","task_type":"git-summary","agent":"site-editor","tier":"none","duration_ms":7694,"success":true,"note":"context-ledger commit 59b351d (workspace-write sandbox protects .git; fresh danger-full-access session can commit)"}
+{"date":"2026-07-12","task_type":"other","agent":"site-coordinator","tier":"codex-medium","duration_ms":240000,"success":true,"note":"audit-site: parity/cachebust/noopener/links (est duration)"}
+{"date":"2026-07-12","task_type":"other","agent":"site-coordinator","tier":"codex-medium","duration_ms":240000,"success":true,"note":"audit-tooling: mcp/pycompile/deploy-exclusions/policy (est duration)"}
+{"date":"2026-07-12","task_type":"other","agent":"site-coordinator","tier":"codex-spark-medium","duration_ms":180000,"success":true,"note":"audit-docs: refs/stale/index/ledger; checks 3-4 partly false-positive (est duration)"}
+{"date":"2026-07-12","task_type":"mechanical-edit","agent":"site-coordinator","tier":"codex-spark-low","duration_ms":60000,"success":true,"note":"seed todo T-2..T-5 codex-driver test tasks (est duration)"}

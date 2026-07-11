@@ -341,3 +341,7 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | site-coordinator | context-ledger hand-edit proposals (call B) | tools/out/context-ledger/build-B.md | -> | completed
 2026-07-12 | site-coordinator | context-ledger repo files (call A) | tools/out/context-ledger/build-A.md | -> | completed
 2026-07-12 | site-coordinator | context-ledger commit close-out | (no output file) | - | success
+2026-07-12 | site-coordinator | audit-site | tools/out/audit-site.md | - | complete: four requested hygiene checks recorded; JP-only tree assets are the sole candidate area
+2026-07-12 | site-coordinator | audit-tooling | tools/out/audit-tooling.md | - | completed: MCP clean, Python compile clean, required exclusions confirmed; three root metadata paths flagged
+2026-07-12 | site-coordinator | audit-docs | tools/out/audit-docs.md | - | completed
+2026-07-12 | site-coordinator | seed driver-test tasks T-2..T-5 | tools/todo.md | - | success
