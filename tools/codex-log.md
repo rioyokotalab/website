@@ -258,3 +258,5 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-coordinator | metrics-policy-update | tools/task-tier-policy.md | - | success
 2026-07-11 | user | CLAUDE.md phase 3 compaction proposals (A1-A9, B7, D6) | tools/out/claude-phase3-notes.md | not-provided | success; task_type=config-edit; tier=codex-high; duration_ms=unknown; success=true
 2026-07-11 | site-coordinator | phase-3 verification | tools/out/phase3-verify.md |  | success
+2026-07-11 | site-editor | task-metrics and policy update | /home/rioyokota/website/tools/task-metrics.jsonl | n/a | success
+2026-07-11 | codex | todo-active-pending-cleanup | /home/rioyokota/website/tools/todo.md | n/a | success
