@@ -272,3 +272,4 @@
 {"date":"2026-07-12","task_type":"other","agent":"site-coordinator","tier":"codex-medium","duration_ms":240000,"success":true,"note":"audit-tooling: mcp/pycompile/deploy-exclusions/policy (est duration)"}
 {"date":"2026-07-12","task_type":"other","agent":"site-coordinator","tier":"codex-spark-medium","duration_ms":180000,"success":true,"note":"audit-docs: refs/stale/index/ledger; checks 3-4 partly false-positive (est duration)"}
 {"date":"2026-07-12","task_type":"mechanical-edit","agent":"site-coordinator","tier":"codex-spark-low","duration_ms":60000,"success":true,"note":"seed todo T-2..T-5 codex-driver test tasks (est duration)"}
+{"date":"2026-07-12","task_type":"other","agent":"codex","tier":"driver-codex","duration_ms":180000,"success":true,"note":"driver test round1 (gpt-5.5): 4/4 tasks T-2..T-5 pass, gates respected; edits reset for round2 baseline comparison"}
