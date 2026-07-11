@@ -286,3 +286,5 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-author | projects-union-fix | tools/out/projects-union-fix.md | <threadId-unavailable> | partial (format corrected; live blocks already 22 rows)
 2026-07-11 | site-checker | agent latency analysis | tools/out/agent-latency-analysis.md | not-provided | success
 2026-07-11 | site-checker | research-projects-verify | /home/rioyokota/website/tools/out/research-projects-verify.md | n/a | success
+2026-07-11 | site-author | rm-media-exporter | tools/out/rm-media-exporter.md | 019f5005-f6df-73f3-b017-0af517209b3b | success
+2026-07-11 | site-author | fix media_coverage field mapping | tools/out/rm-media-exporter.md | 019f5010-438c-7870-8cad-c7317678b634 | success

@@ -187,3 +187,6 @@
 {"date":"2026-07-11","task_type":"git-summary","agent":"site-checker","tier":"codex-spark-low","duration_ms":22069,"success":true,"note":"working-tree status recap for todo resume"}
 {"date":"2026-07-11","task_type":"config-edit","agent":"site-editor","tier":"codex-spark-low","duration_ms":24863,"success":true,"note":"applied latency guardrails section to task-tier-policy.md"}
 {"date":"2026-07-11","task_type":"git-summary","agent":"site-editor","tier":"codex-spark-low","duration_ms":12852,"success":true,"note":"committed Cat1-4 consolidation + latency guardrails f9abde7"}
+{"date":"2026-07-11","task_type":"deploy-publish","agent":"site-publisher","tier":"n/a","duration_ms":126673,"success":true,"note":"published Cat1-4 consolidation, commit 80a0de8, pushed"}
+{"date":"2026-07-11","task_type":"verify-parity","agent":"site-checker","tier":"codex-spark-low","duration_ms":13787,"success":true,"note":"live verify 4 pages 200 + media coverage present EN/JP"}
+{"date":"2026-07-11","task_type":"exporter-logic","agent":"site-author","tier":"codex-high","duration_ms":593423,"success":true,"note":"added media_coverage exporter path; 13 records emitted; exceeded 5min soft ceiling (single complex task w/ web checks)"}

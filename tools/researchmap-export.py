@@ -416,7 +416,8 @@ def parse_association_memberships(lines):
 
 API_BASE = 'https://api.researchmap.jp/%s/%%s' % PERMALINK
 LIVE_TYPES = ['published_papers', 'books_etc', 'presentations', 'misc',
-              'awards', 'committee_memberships', 'research_projects']
+              'awards', 'media_coverage', 'committee_memberships',
+              'research_projects']
 SYNC_FIELDS = {
     'published_papers': ('paper_title', 'authors', 'publication_date',
                          'publication_name', 'see_also'),
@@ -427,6 +428,9 @@ SYNC_FIELDS = {
     'misc': ('paper_title', 'authors', 'publication_date',
              'publication_name', 'see_also'),
     'awards': ('award_name', 'award_date'),
+    'media_coverage': ('media_coverage_title', 'publisher', 'event',
+                       'publication_date', 'location',
+                       'media_coverage_type', 'see_also'),
     'committee_memberships': ('committee_name', 'association', 'from_date', 'to_date'),
     'research_projects': ('research_project_title', 'system_name',
                           'offer_organization', 'from_date', 'to_date'),
@@ -627,7 +631,8 @@ def item_urls(item):
 def desired_title_keys(record):
     doc = record.get('similar_merge', {})
     keys = set()
-    for field in ('paper_title', 'book_title', 'presentation_title'):
+    for field in ('paper_title', 'book_title', 'presentation_title',
+                  'media_coverage_title'):
         value = doc.get(field)
         values = value.values() if isinstance(value, dict) else [value]
         for title in values:
@@ -776,7 +781,7 @@ def sync_live(dry_run=False):
 def live_title(item):
     """Extract a title string from a live researchmap item dict, any language."""
     for field in ('paper_title', 'book_title', 'presentation_title',
-                  'title', 'misc_title'):
+                  'media_coverage_title', 'title', 'misc_title'):
         v = item.get(field)
         if isinstance(v, dict):
             for lang in ('ja', 'en'):
@@ -792,7 +797,7 @@ def live_title(item):
 def live_titles(item):
     """Yield ALL title strings (every language variant) from a live item."""
     for field in ('paper_title', 'book_title', 'presentation_title',
-                  'title', 'misc_title'):
+                  'media_coverage_title', 'title', 'misc_title'):
         v = item.get(field)
         if isinstance(v, dict):
             for vv in v.values():
@@ -925,6 +930,71 @@ def check_live(dry_run=False):
         print('\n0 NEW entries found (website matches live researchmap)')
     return 0
 
+def media_coverage_records():
+    """Bilingual media-coverage rows, paired by position from JP and EN pages."""
+    en_profile = os.path.join(ROOT, 'en', 'member', 'yokota.html')
+
+    def page_rows(path, heading, japanese):
+        c = open(path, newline='', encoding='utf-8').read()
+        m = re.search(r'<h3 class="heading">\s*%s\s*</h3>(.*?)(?=<h3|</article>)'
+                      % re.escape(heading), c, re.S | re.I)
+        if not m:
+            return []
+        rows = []
+        for fragment in re.split(r'<br\s*/?>|</p>', m.group(1), flags=re.I):
+            url_m = re.search(r'<a\b[^>]*\bhref=["\']([^"\']+)', fragment,
+                              flags=re.I)
+            text = html.unescape(re.sub(r'<[^>]+>', '', fragment)).strip()
+            if japanese:
+                match = re.match(r'^(\d{4})年(\d{1,2})月(\d{1,2})日\u3000+'
+                                 r'(.+?)\u3000+(.+)$', text)
+            else:
+                match = re.match(r'^([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})\u3000+'
+                                 r'(.+?)\u3000+(.+)$', text)
+            if not match:
+                continue
+            if japanese:
+                year, month, day, outlet, title = match.groups()
+                outlet_m = re.match(r'^(.*?)(?:（([^）]+)）)?$', outlet.strip())
+                date = '%s-%02d-%02d' % (year, int(month), int(day))
+            else:
+                month_name, day, year, outlet, title = match.groups()
+                month = MONTHS.get(month_name[:3].lower())
+                if not month:
+                    continue
+                # The final parenthetical is the medium; earlier parentheses
+                # remain part of the English outlet name (e.g. The Nikkei).
+                outlet_m = re.match(r'^(.*?)(?:\s+\(([^()]*)\))?$', outlet.strip())
+                date = '%s-%02d-%02d' % (year, month, int(day))
+            publisher = outlet_m.group(1).strip()
+            location = (outlet_m.group(2) or '').strip()
+            rows.append((text, date, publisher, location, title.strip(),
+                         html.unescape(url_m.group(1)) if url_m else None))
+        return rows
+
+    jp_rows = page_rows(PROFILE, 'メディア報道', True)
+    en_rows = page_rows(en_profile, 'Media Coverage', False)
+    if len(jp_rows) != len(en_rows):
+        raise ValueError('JP/EN media coverage row count differs: %d != %d' %
+                         (len(jp_rows), len(en_rows)))
+    recs = []
+    for jp, en in zip(jp_rows, en_rows):
+        jp_text, date, jp_publisher, jp_location, jp_title, jp_url = jp
+        _en_text, en_date, en_publisher, en_location, en_title, en_url = en
+        if date != en_date or jp_url != en_url:
+            raise ValueError('JP/EN media coverage row mismatch: %s' % jp_text)
+        doc = {
+            'media_coverage_title': {'ja': jp_title, 'en': en_title},
+            'event': {'ja': jp_publisher, 'en': en_publisher},
+            'publication_date': date,
+            'location': {'ja': jp_location, 'en': en_location},
+            'media_coverage_type': 'internet' if jp_url else 'paper',
+        }
+        if jp_url:
+            doc['see_also'] = [{'label': 'url', '@id': jp_url}]
+        recs.append((jp_text, 'media_coverage', doc))
+    return recs
+
 def profile_records():
     """CV items (education, careers, societies, awards, committees, projects) -> records."""
     recs = []
@@ -948,6 +1018,7 @@ def profile_records():
         doc = {'award_name': {lang: name}}
         if date: doc['award_date'] = date
         recs.append((line, 'awards', doc))
+    recs.extend(media_coverage_records())
     for line in profile_lines('委員歴'):
         m = re.match(r'(\S+)\s+(.+)$', line)
         if not m: continue

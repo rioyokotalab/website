@@ -5,7 +5,7 @@ Cross-session source of truth. Keep minimal; completed-task history lives in git
 ## Active / pending
 
 ### SESSION STATE — cold-restart handoff (2026-07-11)
-Task: ResearchMap ↔ website consolidation (RM treated as a data source, not website-as-truth). NOTHING PUBLISHED and NOTHING COMMITTED — all changes are in the working tree only.
+Task: ResearchMap ↔ website consolidation (RM treated as a data source, not website-as-truth). PUBLISHED & COMMITTED 2026-07-11: Cat 1-4 consolidation + latency guardrails live (commit 80a0de8). Remaining: Cat 5, RM export (needs media_coverage exporter path).
 
 DONE in working tree (verify with git status/diff before trusting):
 - Cat 1: education/research_experience/association_memberships consolidated on jp+en/member/yokota.html + cv.tex; Bristol 2009-02; RIKEN+NII roles; JSAI+IEEE; single JSME.
