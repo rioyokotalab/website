@@ -337,3 +337,7 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | user | cat5 ICPADS DOI check | tools/out/cat5-icpads-doi-check.md | n/a | partial: canonical DOI recommended from PDF metadata; live resolver checks blocked
 2026-07-11 | user | cat5 step 5d grant-to-project aggregation | tools/out/cat5-linked-papers.md | n/a | completed_with_flags: 79/79 records covered, 20 publications linked across 9 projects
 2026-07-11 | site-content-editor | cat5 researchmap project grants | tools/out/cat5-project-grants-raw.md | n/a | completed_with_qualification: researchmap payload unavailable in-session, placeholders recorded
+2026-07-12 | site-coordinator | context-ledger repo files (call A) | tools/out/context-ledger/build-A.md | -> | completed
+2026-07-12 | site-coordinator | context-ledger hand-edit proposals (call B) | tools/out/context-ledger/build-B.md | -> | completed
+2026-07-12 | site-coordinator | context-ledger repo files (call A) | tools/out/context-ledger/build-A.md | -> | completed
+2026-07-12 | site-coordinator | context-ledger commit close-out | (no output file) | - | success

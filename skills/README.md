@@ -17,6 +17,7 @@ changes, update the matching skill in the same change set.
 | news-and-members.md | news items, member add/remove, alumni |
 | web-lookup.md | any network lookup (Crossref, DBLP, arXiv, J-STAGE, ...) |
 | codex-dispatch.md | every codex delegation (contract, output, logging) |
+| context-ledger.md | session start/end checkpoints, cross-session state, claude<->codex handoff |
 publish-and-verify.md | preview, publish approval, live verify, deploy auth |
 | config-proposals.md | hand-edit-only config changes, tools/out lifecycle |
 | settings-scope.md | placing Claude Code settings across user/project/local scopes |
@@ -28,4 +29,4 @@ Default skills per agent (read the ones the task touches):
 - site-checker: en-jp-parity, web-lookup, publish-and-verify, codex-dispatch
 - site-author: achievements, news-and-members, en-jp-parity, web-lookup, exporters, figures, codex-dispatch
 - site-publisher: publish-and-verify
-- site-coordinator / site-rescue: codex-dispatch, config-proposals, plus whatever the task touches
+- site-coordinator / site-rescue: codex-dispatch, config-proposals, context-ledger, plus whatever the task touches

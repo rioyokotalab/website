@@ -34,9 +34,17 @@ Logging (last actions of every delegated task):
   `date | calling agent | task | output file | conversationId | outcome`.
 - The orchestrator appends one line to `tools/task-metrics.jsonl`:
   `{"date","task_type","agent","tier","duration_ms","success","note"}` with
-  `tier` = worker name. Fixed task_type enum: mechanical-edit, content-draft,
+  `tier` = worker name (drivers: driver-claude|driver-codex). Fixed task_type enum: mechanical-edit, content-draft,
   translation, metadata-lookup, verify-parity, git-summary, deploy-publish,
   exporter-logic, diagnosis, figure-production, config-edit, other.
 
 Prompts pass pointers (paths/URLs/skill names), never payloads; codex reads
 AGENTS.md, the named skills/*.md, and referenced repository files itself.
+
+Context ledger (canonical: skills/context-ledger.md):
+- Point dispatches at on-disk state — skill paths, tools/state/*, the
+tools/todo.md task id, the task's prior tools/out/ file — plus the exact
+delta; never restate file contents.
+- Workers read the cited ledger paths first and NEVER edit
+tools/state/session.md; the driver checkpoints it. A user-started codex
+DRIVER session (AGENTS.md "Driving this repo") owns session.md instead.

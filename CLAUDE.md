@@ -6,6 +6,10 @@ Source for https://www.rio.scrc.iir.isct.ac.jp: hand-built static HTML (original
 
 Repo-root `skills/` holds the single canonical copy of every recurring procedure, shared by Claude agents and codex workers: html-editing, en-jp-parity, achievements, news-and-members, web-lookup, codex-dispatch, publish-and-verify, config-proposals, exporters, figures (index: `skills/README.md`). Agents read the skills a task touches before acting; dispatches cite skill paths instead of restating rules; when a convention changes, update the matching skill in the same change set. `skills/` is git-tracked, deploy-excluded, and NOT hand-edit-only.
 
+## Context ledger (cross-session memory)
+
+All cross-session context lives on disk, never only in chat: `tools/todo.md` (task board), `tools/state/session.md` (in-flight handoff state), `tools/state/facts.md` (current site/cluster/tooling facts), `tools/state/decisions.md` (durable decisions). Protocol, routing, budgets, checkpoint triggers: `skills/context-ledger.md`. Session start: read todo.md + session.md before acting; checkpoint session.md at task start, after each completed step, and at turn end; record pending asks — approvals are conversation-scoped, never carried. codex can DRIVE this repo directly (charter: `AGENTS.md` "Driving this repo", same ledger and skills); Claude↔codex handoff in either direction happens only through these files. Ledger files commit silently like the bookkeeping trio; budgets enforced by `tools/check-md-size.py` (pre-commit).
+
 ## Standing directive: codex offload and config edits
 
 Codex-enabled agents follow `.claude/agents/codex-offload-policy.md` (mechanics condensed in `skills/codex-dispatch.md`), resolving workers from `tools/codex-workers.json` and routing from `tools/task-tier-policy.md`. Codex workers have outbound network access (verified codex-cli 0.144.1): web/metadata lookups run inside codex per `skills/web-lookup.md`, with Claude Bash curl as fallback and independent verification. Hand-edit-only config changes are proposals under `tools/out/` and require an exact user apply command (`skills/config-proposals.md`).
@@ -16,7 +20,7 @@ After results are verified and committed or regenerable, delete only that task's
 
 Worker definitions, task routing/pool state, and dispatch/failover rules live in `tools/codex-workers.json`, `tools/task-tier-policy.md`, and `.claude/agents/codex-offload-policy.md`; read them at dispatch time. Regenerate/check MCP proposals with `tools/gen-codex-mcp.py`; use `--check` for drift.
 
-The three bookkeeping files tools/task-metrics.jsonl, tools/task-tier-policy.md, and tools/codex-log.md are committed silently alongside whatever other changes are being committed; NEVER prompt the user to commit them separately (a dedicated commit would loop forever).
+The bookkeeping files tools/task-metrics.jsonl, tools/task-tier-policy.md, tools/codex-log.md and the context-ledger files tools/todo.md, tools/state/** are committed silently alongside whatever other changes are being committed; NEVER prompt the user to commit them separately (a dedicated commit would loop forever).
 
 ## Budget rule
 
@@ -28,7 +32,7 @@ The three bookkeeping files tools/task-metrics.jsonl, tools/task-tier-policy.md,
 
 ## Delegation to subagents (save rate limit)
 
-Use `site-coordinator` routing; agent capabilities and boundaries live in `.claude/agents/site-*.md`. Dispatches are self-contained (subagents share no conversation state; follow-up `Agent` calls start fresh — resupply ALL context) and cite skill paths.
+Use `site-coordinator` routing; agent capabilities and boundaries live in `.claude/agents/site-*.md`. Dispatches are self-contained via pointers (subagents share no conversation state; follow-up `Agent` calls start fresh): cite skill paths and ledger paths (`tools/state/`, `tools/todo.md` task ids) plus the task delta — shared memory lives on disk (`skills/context-ledger.md`), not in prompts.
 
 **Failure-driven workflow updates (standing rule):** record a workflow prevention after every failed, incomplete, or mistaken result.
 
@@ -55,7 +59,7 @@ Publish only after explicit user approval. Full pipeline, pre-publish checks, an
 
 Canonical copies live in `skills/`: html-editing (CRLF, case-insensitive tags, templates, css bump, noopener), en-jp-parity (translation, institution naming), achievements (sections sub001–sub007, newest-first, citation language, data-date/data-doi/data-url and other data-* attributes), news-and-members. Lookup/attribute progress: `tools/todo.md`.
 
-- **Computers page:** refresh Hinadori/Computers-page facts via `site-checker` (which may run short `ybatch` probes); never guess. Last refreshed 2026-07-05: 81 GPUs. 2-GPU RTX 6000 Ada CPU (AMD EPYC 9654) was supplied by user; 8-GPU RTX 6000 Ada CPU is unknown ("-" in table, node down).
+- **Computers page:** refresh Hinadori/Computers-page facts via `site-checker` (which may run short `ybatch` probes); never guess. Current numbers: `tools/state/facts.md`.
 - **Research pages:** current topics precede newest-first yearly thesis sections and matching sidebar anchors; entries use `<h4>Title（Name）</h4>`, abstract, and lightbox figure from `jp/research/images20XX/`; `en/` is English and `jp/` Japanese. Figure recipes: `skills/figures.md`.
 - **Mirroring to researchmap/FIS:** explicit-only. Run `python3 tools/researchmap-export.py --check-live`, review `tools/out/researchmap-import.jsonl`, and never automate the researchmap login UI (403). Details: `skills/exporters.md`.
 - **Mirroring to ORCID:** explicit-only. Run `python3 tools/orcid-export.py` (or `--dry-run`); output `tools/out/orcid-works.bib`; import manually via ORCID Add works > Import BibTeX.
@@ -67,7 +71,6 @@ Canonical copies live in `skills/`: html-editing (CRLF, case-insensitive tags, t
 
 - Deployment is SFTP-only to web root `www/`; never expose credentials and never upload/deploy `.git`.
 
-## Known issues (as of 2026-07)
+## Known issues
 
-- External links carry `rel="noopener noreferrer"`; keep that on new `target="_blank"` links.
-- Page HTML remains Dreamweaver-era (floats, table layouts); `style.css` is written against existing selectors, so keep class/id names stable when editing pages.
+Live in `tools/state/facts.md` (noopener on `target="_blank"` links; Dreamweaver-era layouts — keep class/id names stable).

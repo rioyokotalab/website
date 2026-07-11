@@ -1,20 +1,56 @@
 # Instructions for codex agents (YOKOTA Lab website)
 
-You assist Claude agents maintaining a hand-built static HTML site in this
-folder (no build step; served as-is). Claude delegates bounded tasks to you;
-Claude retains final review, verification, and publishing.
+Codex runs here in one of two roles. WORKER: a Claude agent dispatched you
+a bounded task prompt (it names a tools/out/ output file and cites skills)
+— Claude retains final review, verification, and publishing. DRIVER: the
+user started codex directly with no dispatch prompt — you orchestrate, per
+"Driving this repo" below. The site is hand-built static HTML (no build
+step; served as-is).
 
 ## Hard rules
-- NEVER run publish.sh, deploy.sh, lftp, ssh, or git push. Never touch
-  credentials, ~/.ssh, .claude/, .mcp.json, .git/, or .dont-remove-me.
-- Do not edit website files unless the task explicitly says so. Default mode:
-  read, analyze, and produce output files/scripts under tools/out/ for Claude
-  to review.
+- NEVER run publish.sh, deploy.sh, lftp, or ssh (either role): publishing
+  is executed only by the user or Claude's site-publisher. git push:
+  workers never; a driver only with explicit user approval in the current
+  conversation. Never touch credentials, ~/.ssh, .claude/, .mcp.json, or
+  .dont-remove-me; never edit .git internals. Drivers may run normal git
+  commands; workers only when the task says so.
+- Workers: do not edit website files unless the task explicitly says so —
+  default mode is read, analyze, and produce output under tools/out/ for
+  Claude to review. Drivers: edit per skills/ conventions (EN/JP parity,
+  html-editing) and checkpoint the ledger.
 - Hand-edit-only config (.claude/agents/*.md, .mcp.json, AGENTS.md,
   CLAUDE.md): write full proposed copies under tools/out/ and provide an
   EXACT copy-paste apply command; never edit these in place.
 - Never enter credentials anywhere; never automate login UIs (researchmap and
   OpenReview block non-browser clients).
+
+## Context ledger (both roles — read first)
+Cross-session memory lives on disk; protocol: skills/context-ledger.md.
+tools/todo.md = task board; tools/state/session.md = in-flight handoff;
+tools/state/facts.md = current facts; tools/state/decisions.md = durable
+decisions. Workers: read todo.md, the task's prior tools/out/ file, and
+any ledger paths the dispatch cites; NEVER edit session.md (the driver
+checkpoints it). Drivers: own session.md.
+
+## Driving this repo (codex as driver)
+1. Read tools/todo.md + tools/state/session.md. If session.md holds an
+   in-flight task from either driver, continue from its `Next:`; if the
+   other driver updated it within ~1 hour, ask the user before taking
+   over.
+2. Checkpoint session.md per skills/context-ledger.md (task start, each
+   completed step, before risky/long ops, session end); set driver: codex.
+3. Work solo — no subagents, no fan-out: small steps, frequent
+   checkpoints; assume the session can die at any step. Durable state =
+   ledger + tools/out/ + commits, never chat.
+4. Same gates as Claude: publish only on explicit user approval in the
+   CURRENT conversation (skills/publish-and-verify.md), executed by the
+   user or Claude's site-publisher — never by codex. Hand-edit-only files
+   stay proposal-only (skills/config-proposals.md); Claude-side hooks do
+   not bind you, so self-enforce. `git pull --rebase` before any push.
+5. Session-end bookkeeping (commits silently with other work): update
+   session.md + todo.md; append tools/task-metrics.jsonl
+   {"agent":"codex","tier":"driver-codex",...} and a codex-driver line to
+   tools/codex-log.md.
 
 ## Skills (canonical playbooks — read before the matching work)
 The repo-root `skills/` folder is the single source for recurring
@@ -27,6 +63,8 @@ touches its domain, READ IT FIRST:
 - skills/news-and-members.md — news criteria, member/alumni rules
 - skills/web-lookup.md — network lookups, sources, verification gate
 - skills/codex-dispatch.md — dispatch contract, output, logging (canonical)
+- skills/context-ledger.md — session/facts/decisions ledger, checkpoints,
+  claude<->codex handoff (BOTH roles read this)
 - skills/publish-and-verify.md — publish pipeline and deploy facts (context
   only: codex never publishes)
 - skills/config-proposals.md — hand-edit-only proposals, tools/out lifecycle
@@ -87,8 +125,9 @@ hard failures with evidence instead of changing model or effort yourself.
   for independent subtasks with separate output files and non-overlapping
   write scopes. Never auto-revert, overwrite, or discard partial work —
   Claude decides how to reconcile it.
-- Self-load `tools/todo.md` and the task's prior tools/out/ file before
-  continuing related work; do not rely on chat memory.
+- Self-load `tools/todo.md`, the task's prior tools/out/ file, and any
+  cited tools/state/ paths before continuing related work; NEVER rely on
+  chat memory (skills/context-ledger.md).
 
 ## Division of labor
 - codex generates, analyzes, parses, looks up, drafts
