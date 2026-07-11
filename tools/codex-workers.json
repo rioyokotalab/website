@@ -1,8 +1,8 @@
 {
   "_meta": {
     "note": "single source of truth for codex MCP workers; edit here then run tools/gen-codex-mcp.py",
-    "dispatch_contract": "codex mcp-server ignores startup model/effort config; EVERY codex call MUST pass model=<worker.model> and config={\"model_reasoning_effort\":<worker.effort>} from this registry (plus sandbox as needed). Server names are routing labels only; they do NOT set the model.",
-    "gpt56_migration": "VERIFIED live on codex-cli 0.144.1: per-call gpt-5.6-terra and gpt-5.6-sol both run correctly; startup model pin does not work, so model is passed per-call.",
+    "dispatch_contract": "EVERY codex call MUST pass model=<worker.model> and config={\"model_reasoning_effort\":<worker.effort>} from this registry (plus sandbox as needed); per-call selection is mandatory and primary. Generated MCP servers also bake matching startup model/effort pins into .mcp.json as a safety net, verified working on codex-cli 0.144.1 per tools/out/codex-model-pin-test.md. Server names remain routing labels only.",
+    "gpt56_migration": "VERIFIED live on codex-cli 0.144.1: per-call gpt-5.6-terra and gpt-5.6-sol both run correctly. Startup -c model/-c model_reasoning_effort pins also work and are baked into generated .mcp.json as a safety net; per-call model/effort remains mandatory and primary.",
     "generated_targets": [
       ".mcp.json (project scope)",
       "user-scope claude mcp add-json commands"

@@ -288,3 +288,5 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | site-checker | research-projects-verify | /home/rioyokota/website/tools/out/research-projects-verify.md | n/a | success
 2026-07-11 | site-author | rm-media-exporter | tools/out/rm-media-exporter.md | 019f5005-f6df-73f3-b017-0af517209b3b | success
 2026-07-11 | site-author | fix media_coverage field mapping | tools/out/rm-media-exporter.md | 019f5010-438c-7870-8cad-c7317678b634 | success
+2026-07-11 16:36 | site-author | codex startup model-pin test (0.144.1) | tools/out/codex-model-pin-test.md | (none) | PASS: startup -c model pin WORKS
+2026-07-11 | site-author | mcp-model-pin | tools/out/mcp-model-pin-proposal.md | unavailable | success

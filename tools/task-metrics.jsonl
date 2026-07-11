@@ -190,3 +190,7 @@
 {"date":"2026-07-11","task_type":"deploy-publish","agent":"site-publisher","tier":"n/a","duration_ms":126673,"success":true,"note":"published Cat1-4 consolidation, commit 80a0de8, pushed"}
 {"date":"2026-07-11","task_type":"verify-parity","agent":"site-checker","tier":"codex-spark-low","duration_ms":13787,"success":true,"note":"live verify 4 pages 200 + media coverage present EN/JP"}
 {"date":"2026-07-11","task_type":"exporter-logic","agent":"site-author","tier":"codex-high","duration_ms":593423,"success":true,"note":"added media_coverage exporter path; 13 records emitted; exceeded 5min soft ceiling (single complex task w/ web checks)"}
+{"date":"2026-07-11","task_type":"exporter-logic","agent":"site-author","tier":"codex-high","duration_ms":197737,"success":true,"note":"cleaned media_coverage field mapping: event=outlet, no redundant publisher; still 13 records"}
+{"date":"2026-07-11","task_type":"git-summary","agent":"site-editor","tier":"codex-spark-low","duration_ms":18838,"success":true,"note":"committed media_coverage exporter path d543652"}
+{"date":"2026-07-11","task_type":"diagnosis","agent":"site-author","tier":"codex-high","duration_ms":125545,"success":true,"note":"verified codex-cli 0.144.1 startup model pin WORKS; unpinned default=gpt-5.5; self-report unreliable"}
+{"date":"2026-07-11","task_type":"config-edit","agent":"site-author","tier":"codex-medium","duration_ms":252668,"success":true,"note":"baked model+effort startup pin into gen-codex-mcp.py + registry meta; .mcp.json proposal in tools/out"}

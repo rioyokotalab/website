@@ -8,14 +8,12 @@ derives two proposal artifacts from it:
 * tools/out/spark-apply-commands.sh, exact user-scope add/remove commands.
 
 Option 1 dispatch is per call: each Codex call must pass model=<worker.model>
-and config={"model_reasoning_effort": <worker.effort>} from the registry. MCP
-server names are routing labels only; startup model/effort args are ignored by
-codex mcp-server and are intentionally absent from generated .mcp.json.
+and config={"model_reasoning_effort": <worker.effort>} from the registry.
+Each generated server also receives matching startup pins as a safety net.
 
 The live .mcp.json is never modified. Use --check to compare the registry-derived
-label-only server definitions with the live project .mcp.json and report drift
-without writing. --check validates server names plus sandbox/approval/mcp-server
-args only, not model selection.
+server definitions with the live project .mcp.json and report drift without
+writing. --check validates server names and all generated arguments.
 """
 
 from __future__ import annotations
@@ -64,7 +62,7 @@ def worker_items(registry: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     return items
 
 
-def server_object() -> dict[str, Any]:
+def server_object(worker: dict[str, Any]) -> dict[str, Any]:
     return {
         "type": "stdio",
         "command": "codex",
@@ -73,6 +71,10 @@ def server_object() -> dict[str, Any]:
             'sandbox_mode="workspace-write"',
             "-c",
             'approval_policy="never"',
+            "-c",
+            f'model="{worker["model"]}"',
+            "-c",
+            f'model_reasoning_effort="{worker["effort"]}"',
             "mcp-server",
         ],
     }
@@ -81,7 +83,7 @@ def server_object() -> dict[str, Any]:
 def build_mcp(registry: dict[str, Any]) -> dict[str, Any]:
     servers: dict[str, Any] = {}
     for name, worker in worker_items(registry):
-        servers[name] = server_object()
+        servers[name] = server_object(worker)
     return {"mcpServers": servers}
 
 

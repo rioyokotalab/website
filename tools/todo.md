@@ -4,6 +4,15 @@ Cross-session source of truth. Keep minimal; completed-task history lives in git
 
 ## Active / pending
 
+### SESSION STATE — cold-restart handoff (2026-07-11b): MCP model-pin fix
+Root cause of slow agents found: MCP server names are only routing labels; codex model/effort comes ONLY from per-call params, and any codex call omitting model=/config={model_reasoning_effort} falls back to codex default (unpinned default = gpt-5.5; verified). Durable fix = bake startup model+effort pin into each .mcp.json server (verified working on codex-cli 0.144.1, see tools/out/codex-model-pin-test.md).
+STATUS:
+- DONE: tools/gen-codex-mcp.py now injects `-c model=... -c model_reasoning_effort=...` per server from tools/codex-workers.json; codex-workers.json _meta corrected (startup pin WORKS on 0.144.1). Proposal tools/out/.mcp.json + tools/out/mcp-model-pin-proposal.md generated.
+- DONE (user): applied project scope via `cp tools/out/.mcp.json .mcp.json`.
+- PENDING (user): run the 5 user-scope `claude mcp add-json --scope user ...` commands from tools/out/mcp-model-pin-proposal.md (lines 104-108), then RESTART Claude so MCP reloads; verify with `claude mcp list` / `/mcp`.
+- NOT COMMITTED: gen-codex-mcp.py, codex-workers.json, .mcp.json, and tools/out proposals are uncommitted. Commit after user confirms user-scope re-registration works. (.mcp.json is deploy-excluded, repo-only.)
+- Also NOT pushed: local commits 80a0de8 (published Cat1-4 consolidation), d543652 (media_coverage exporter). d543652 not yet pushed.
+
 ### SESSION STATE — cold-restart handoff (2026-07-11)
 Task: ResearchMap ↔ website consolidation (RM treated as a data source, not website-as-truth). PUBLISHED & COMMITTED 2026-07-11: Cat 1-4 consolidation + latency guardrails live (commit 80a0de8). Remaining: Cat 5, RM export (needs media_coverage exporter path).
 
