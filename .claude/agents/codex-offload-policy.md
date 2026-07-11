@@ -179,6 +179,12 @@ date | calling agent | task | output file | conversationId | outcome
 - Codex does not independently certify its own work. Claude reviews, decides, executes proposed scripts, verifies, and reports.
 - The calling agent's final message stays near 15 lines and gives the outcome, changed/inspected paths, verification, and output pointers without pasting payloads.
 
+## Facts, preferences, and verification gate
+
+- **Facts vs preferences:** Never ask the user to confirm publicly-verifiable facts, including tool install/login commands, CLI/flag syntax, public API behavior, and library/version information. Verify them from authoritative sources instead. Because codex sessions have no network, a network-capable Bash subagent (`site-checker` or `site-author`) may curl official documentation on authorized hosts. Escalate to the user only for personal preferences, private or credentialed values, or judgment decisions.
+- **Independent verification gate:** Any worker output that will be committed, published, or presented to the user as fact must be independently verified before it is applied or reported. User-facing, committed, or factual results from `codex-spark-low` must be cross-checked by `codex-medium`. Factual external claims must also be verified against their authoritative source by a network-capable checker (`site-checker` or `site-author` curling the source), because codex has no network. Routine internal bookkeeping, including metrics, todo, and log appends, is exempt to avoid waste.
+- Never surface an unverified external claim: verify it or omit it. When a codex worker emits content it could not verify, it must identify that content clearly under the structured result block's `evidence.hypotheses`; the orchestrator must verify it before use rather than asking the user.
+
 ## Division of labor and hard boundaries
 
 - Codex generates, analyzes, parses, drafts content/translations/citations, reasons about exporter logic, produces figures or proposed scripts, and records evidence.

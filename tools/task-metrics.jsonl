@@ -137,3 +137,4 @@
 {"date": "2026-07-11", "task_type": "config-edit", "agent": "site-coordinator", "tier": "codex-high", "duration_ms": 210000, "success": true, "note": "draft verification-workflow policy (R1 no-ask-public-facts, R2 verification gate: codex-medium/network checker verifies codex-spark-low committed/factual output) -> tools/out/{CLAUDE.md 34872B,codex-offload-policy.md,apply-verification-workflow.sh}; est"}
 
 {"date": "2026-07-11", "task_type": "metadata-lookup", "agent": "site-author", "tier": "n/a", "duration_ms": 502752, "success": true, "note": "web-verify Claude Code/codex install+login cmds (confirmed) + make preview hook macOS/Linux portable (ps -p vs /proc) in tools/out/README.md"}
+{"date":"2026-07-11","task_type":"deploy-publish","agent":"site-editor","tier":"n/a","duration_ms":62985,"success":true,"note":"apply README rewrite + commit 0b60471 push; cleanup consumed tools/out scratch; kept 4 pending deliverables"}
