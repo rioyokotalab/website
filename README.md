@@ -1,123 +1,171 @@
 # YOKOTA Laboratory website
 
-Source for https://www.rio.scrc.iir.isct.ac.jp — a hand-built static HTML site
-with no build step. The `jp/` and `en/` trees are mirrors of each other, and
-the URL structure matches the folder structure one-to-one. See `CLAUDE.md` for
-the full structure and content conventions.
+Source for <https://www.rio.scrc.iir.isct.ac.jp>. This is a hand-built static
+HTML site with no build step. The `jp/` and `en/` trees mirror one another, and
+the folder structure is the live URL structure.
 
-The intended workflow is: **ask Claude Code to make the change, check the
-result locally, say "OK" — and the live site and the GitHub repo are updated
-automatically.**
+## Quick start
 
-## One-time setup
+Do this once. Afterward, start Claude Code in the repository and describe what
+you want in plain language.
 
-### 1. Clone and install tools
+1. Ask the lab administrator for the SFTP server password.
 
-```
-git clone https://github.com/rioyokotalab/website
-```
+2. Install the prerequisites for your computer.
 
-Publishing pushes to this repository, so you need write access and git
-credentials for GitHub: either run `gh auth login` once, or use a personal
-access token, or clone with SSH instead if you have an SSH key on GitHub.
+   **A. Personal macOS MacBook**
 
-You need `python3` (local preview), `lftp` (deploy), and
-[Claude Code](https://claude.com/claude-code).
+   Install Homebrew, load it into this shell, and install Git, lftp, GitHub CLI,
+   and Node.js:
 
-### 2. SSH config for the SFTP connection
+   ```sh
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   if [ -x /opt/homebrew/bin/brew ]; then eval "$(/opt/homebrew/bin/brew shellenv)"; else eval "$(/usr/local/bin/brew shellenv)"; fi
+   brew install git lftp gh node python
+   ```
 
-The site is hosted at `gsic0017@web-o3.noc.titech.ac.jp` (web root `www/`).
-The server is **SFTP-only** (no shell) and **password-only** — key-based auth
-is impossible because the chrooted SFTP home is root-owned, so no
-`authorized_keys` can be installed. Instead, deploys ride on a multiplexed SSH
-connection that is authenticated once and reused.
+   **B. Hinadori login node (Linux)**
 
-Add this to `~/.ssh/config`:
+   Git, Python 3, and lftp are generally already installed. The following
+   installs GitHub CLI and Node.js only if they are missing, entirely under
+   your home directory and without `sudo`:
 
-```
-Host web
-	HostName web-o3.noc.titech.ac.jp
-	User gsic0017
-	ControlMaster auto
-	ControlPath ~/.ssh/cm-%r@%h-%p
-	ControlPersist yes
-```
+   ```sh
+   mkdir -p "$HOME/.local/bin"
+   case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) printf '\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "$HOME/.profile"; export PATH="$HOME/.local/bin:$PATH" ;; esac
+   if ! command -v gh >/dev/null 2>&1; then
+     GH_VERSION=$(curl -fsSL https://api.github.com/repos/cli/cli/releases/latest | python3 -c 'import json,sys; print(json.load(sys.stdin)["tag_name"].removeprefix("v"))')
+     case "$(uname -m)" in x86_64) GH_ARCH=amd64 ;; aarch64|arm64) GH_ARCH=arm64 ;; *) echo "Unsupported architecture: $(uname -m)"; exit 1 ;; esac
+     curl -fsSL "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_${GH_ARCH}.tar.gz" -o "/tmp/gh_${GH_VERSION}.tar.gz"
+     tar -xzf "/tmp/gh_${GH_VERSION}.tar.gz" -C /tmp
+     install -m 755 "/tmp/gh_${GH_VERSION}_linux_${GH_ARCH}/bin/gh" "$HOME/.local/bin/gh"
+   fi
+   if ! command -v node >/dev/null 2>&1; then
+     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+     export NVM_DIR="$HOME/.nvm"
+     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+     nvm install --lts
+   fi
+   ```
 
-Then store the account password (get it from the lab admin) so the connection
-can re-establish itself unattended. Run this in a normal terminal — it prompts
-without echoing and writes `~/.ssh/web-password` readable only by you:
+3. Install Claude Code and Codex CLI. Codex CLI 0.144.0 or newer is required
+   for the MCP workers.
 
-```
-bash -c 'umask 077; read -rsp "web server password: " p; printf "%s\n" "$p" > ~/.ssh/web-password; echo'
-```
+   ```sh
+   curl -fsSL https://claude.ai/install.sh | bash
+   npm install -g @openai/codex
+   claude --version
+   codex --version
+   ```
 
-Create the askpass helper `~/.ssh/web-askpass` (this is how ssh reads the
-password file):
+   Confirm that the last command reports version 0.144.0 or newer.
 
-```
-#!/bin/sh
-cat "$HOME/.ssh/web-password"
-```
+4. Authenticate GitHub, Claude Code, and Codex. Complete the browser or terminal
+   prompts opened by each command.
 
-and make it executable: `chmod 700 ~/.ssh/web-askpass`.
+   ```sh
+   gh auth login --git-protocol https --web
+   gh auth setup-git
+   claude auth login
+   codex login
+   ```
 
-That's it — `deploy.sh` checks the connection before every deploy and silently
-re-authenticates from the password file when needed. If you skip the password
-file, you must run `ssh -fN web` (and type the password) whenever the
-connection has expired.
+5. Clone the repository over HTTPS and enter it.
 
-### 3. Optional: auto-start the preview server
+   ```sh
+   git clone https://github.com/rioyokotalab/website.git
+   cd website
+   ```
 
-To have Claude Code start `python3 -m http.server 8000` when a session opens
-and stop it when the session ends, create `.claude/settings.local.json` in
-this folder (it is gitignored) with:
+6. Configure the password-only SFTP connection. This adds the `web` host only
+   when it is absent, prompts without echoing the password, and keeps all
+   credential files readable only by you.
 
-```json
-{
-  "hooks": {
-    "SessionStart": [{ "hooks": [{ "type": "command", "timeout": 10,
-      "command": "f=$PWD/.claude/http-server.pid; if ! { [ -f \"$f\" ] && kill -0 \"$(cat \"$f\")\" 2>/dev/null; }; then { nohup python3 -m http.server 8000 >/dev/null 2>&1 & echo $! > \"$f\"; }; fi" }] }],
-    "SessionEnd": [{ "hooks": [{ "type": "command", "timeout": 10,
-      "command": "f=$PWD/.claude/http-server.pid; if [ -f \"$f\" ]; then p=$(cat \"$f\"); if [ -n \"$p\" ] && grep -qa http.server \"/proc/$p/cmdline\" 2>/dev/null; then kill \"$p\" 2>/dev/null; fi; rm -f \"$f\"; fi" }] }]
-  }
-}
-```
+   ```sh
+   mkdir -p "$HOME/.ssh"
+   chmod 700 "$HOME/.ssh"
+   touch "$HOME/.ssh/config"
+   chmod 600 "$HOME/.ssh/config"
+   if ! grep -Eq '^[[:space:]]*Host[[:space:]]+web([[:space:]]|$)' "$HOME/.ssh/config"; then
+     cat >> "$HOME/.ssh/config" <<'EOF'
+   Host web
+   	HostName web-o3.noc.titech.ac.jp
+   	User gsic0017
+   	ControlMaster auto
+   	ControlPath ~/.ssh/cm-%r@%h-%p
+   	ControlPersist yes
+   EOF
+   fi
+   bash -c 'umask 077; read -rsp "web server password: " p; printf "%s\n" "$p" > "$HOME/.ssh/web-password"; echo'
+   cat > "$HOME/.ssh/web-askpass" <<'EOF'
+   #!/bin/sh
+   cat "$HOME/.ssh/web-password"
+   EOF
+   chmod 700 "$HOME/.ssh/web-askpass"
+   ```
 
-Otherwise just run `python3 -m http.server 8000` in this folder yourself.
+7. Register the five Codex MCP worker labels at Claude Code user scope. These
+   commands are generated from `tools/codex-workers.json` by
+   `tools/gen-codex-mcp.py`:
 
-## Updating the website
+   ```sh
+   claude mcp add-json --scope user codex-spark-low '{"type":"stdio","command":"codex","args":["-c","sandbox_mode=\"workspace-write\"","-c","approval_policy=\"never\"","mcp-server"]}'
+   claude mcp add-json --scope user codex-spark-medium '{"type":"stdio","command":"codex","args":["-c","sandbox_mode=\"workspace-write\"","-c","approval_policy=\"never\"","mcp-server"]}'
+   claude mcp add-json --scope user codex-medium '{"type":"stdio","command":"codex","args":["-c","sandbox_mode=\"workspace-write\"","-c","approval_policy=\"never\"","mcp-server"]}'
+   claude mcp add-json --scope user codex-high '{"type":"stdio","command":"codex","args":["-c","sandbox_mode=\"workspace-write\"","-c","approval_policy=\"never\"","mcp-server"]}'
+   claude mcp add-json --scope user codex-low '{"type":"stdio","command":"codex","args":["-c","sandbox_mode=\"workspace-write\"","-c","approval_policy=\"never\"","mcp-server"]}'
+   ```
 
-1. Start Claude Code in this folder: `claude` (or `claude --continue`).
-2. Describe the change in plain language, e.g. *"Remove Taro Yamada from the
-   member page"* or *"Add this paper to the Achievements page: …"*.
-   `CLAUDE.md` teaches Claude the house rules automatically: edit both the
-   Japanese and English pages, move removed members to the top of Alumni,
-   never rewrite historical news or publication entries, etc.
-3. Check the result in your browser at
-   [http://localhost:8000/jp/index.html](http://localhost:8000/jp/index.html)
-   (and the `/en/` counterpart).
-4. If it looks right, reply **"OK"**. Claude then runs `./publish.sh`, which
-   uploads the changed files to the web server **and commits and pushes to
-   GitHub in one step**, and finally verifies the change on the live site.
+   The repository’s committed `.mcp.json` supplies the required project-scope
+   definitions automatically. Accept Claude Code’s one-time project trust
+   prompt when it appears; both scopes are required for the project agents.
 
-Nothing goes live before your "OK", and every published change lands in the
-GitHub history automatically.
+8. Create the local Claude Code hooks that start the preview server when a
+   session opens and stop it when the session ends. This file is gitignored.
 
-## Publishing manually (without Claude)
+   ```sh
+   mkdir -p .claude
+   cat > .claude/settings.local.json <<'EOF'
+   {
+     "hooks": {
+       "SessionStart": [{ "hooks": [{ "type": "command", "timeout": 10,
+         "command": "f=$PWD/.claude/http-server.pid; if ! { [ -f \"$f\" ] && kill -0 \"$(cat \"$f\")\" 2>/dev/null; }; then { nohup python3 -m http.server 8000 >/dev/null 2>&1 & echo $! > \"$f\"; }; fi" }] }],
+       "SessionEnd": [{ "hooks": [{ "type": "command", "timeout": 10,
+         "command": "f=$PWD/.claude/http-server.pid; if [ -f \"$f\" ]; then p=$(cat \"$f\"); if [ -n \"$p\" ] && ps -p \"$p\" -o command= 2>/dev/null | grep -q http.server; then kill \"$p\" 2>/dev/null; fi; rm -f \"$f\"; fi" }] }]
+     }
+   }
+   EOF
+   ```
 
-```
-./deploy.sh --dry-run     # preview what would be uploaded
-./publish.sh "message"    # deploy + git commit + git push, with confirmation
-```
+9. Start Claude Code from the repository folder. Everything after this is
+   conversational.
 
-`deploy.sh` mirrors this folder to `www/` on the server, uploading only
-new/changed files. It excludes repo-only files (`.git`, `.claude/`,
-`deploy.sh`, `publish.sh`, `CLAUDE.md`, `README.md`, `.gitignore`) so they
-never reach the public site. It does not delete remote files removed locally.
+   ```sh
+   claude
+   ```
+
+## How it works: updating the website
+
+Tell Claude Code what to change in plain language. Claude follows the site’s
+rules, updates the matching Japanese and English pages, and lets you inspect
+the result at <http://localhost:8000/jp/index.html> and the `/en/` counterpart.
+Nothing goes live until you say **OK**. Claude then publishes the approved
+change, commits and pushes it to GitHub, and verifies the live site.
+
+Deployment mirrors the repository’s deployed set to `www/` over SFTP with
+`mirror -R --delete`: new and changed files are uploaded, and files removed
+locally are removed remotely. Excluded repo-only paths are neither uploaded nor
+deleted remotely. The exclusions include `.git`, `.claude`, `tools`, deployment
+scripts, `CLAUDE.md`, `README.md`, `AGENTS.md`, `.mcp.json`, `.gitignore`, and
+the CV sources (`cv/cv.tex`, `cv/cv.cls`, and `cv/build-cv.sh`); the built
+`cv/cv.pdf` is deployed.
 
 ## Rules that keep the site healthy
 
-- Every page must exist in **both** `jp/` and `en/` at the same path — the
-  language toggle just swaps `/jp/` ↔ `/en/` in the URL.
-- Never upload `.git` to the server (it was once publicly downloadable).
-- Keep `.dont-remove-me` — it is a hosting marker file.
+- Every page must exist at the same path in both `jp/` and `en/`; the language
+  toggle swaps `/jp/` and `/en/` in the URL.
+- Preview both languages and give explicit approval before publishing.
+- Never upload `.git` or repository-only tooling to the public server.
+- Keep `.dont-remove-me`; it is a hosting marker file.
+- Let Claude Code handle editing, preview startup, publishing, pushing, and live
+  verification so the repository and server stay synchronized.

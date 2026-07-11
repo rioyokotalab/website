@@ -239,3 +239,6 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-11 | user | immediate transient-scratch cleanup policy proposals | tools/out/immediate-cleanup-proposal.md | not-provided | success; task_type=config-edit; tier=codex-high; duration_ms=120000; success=true
 2026-07-11 | user | implement researchmap managed UPDATE + DELETE sync | tools/out/researchmap-sync.md | not-provided | success; task_type=exporter-logic; tier=codex-high; duration_ms=unknown; success=true
 2026-07-11 | codex-high | diagnosis read-only repo-support deletion scan; task_type=diagnosis; tier=codex-high; duration_ms=300000; success=true | tools/out/deletion-candidates.md | not-provided | success
+2026-07-11 | user | README onboarding quickstart proposal | tools/out/README.md + tools/out/readme-notes.md | not-provided | success; task_type=content-draft; secondary=config-edit; tier=codex-high; duration_ms=unknown; success=true
+2026-07-11 | user | verification workflow policy proposals | tools/out/CLAUDE.md + tools/out/codex-offload-policy.md + tools/out/apply-verification-workflow.sh + tools/out/verification-policy-notes.md | not-provided | success; task_type=config-edit; tier=codex-high; duration_ms=unknown; success=true
+2026-07-11 | site-author | readme-verify-fix | tools/out/readme-edit-apply.md | (none) | outcome

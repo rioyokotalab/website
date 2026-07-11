@@ -4,7 +4,7 @@ This table maps `task_type` to the default codex tier the orchestrator should ch
 
 ## Architecture (2026-07-11)
 
-Five logical codex workers are defined in `tools/codex-workers.json`, the single source of truth: `codex-spark-low` and `codex-spark-medium` use pool `spark`, model `gpt-5.3-codex-spark`, effort `low`/`medium`; `codex-medium` uses pool `standard`, model `gpt-5.6-terra`, effort `medium`; `codex-high` uses pool `standard`, model `gpt-5.6-sol`, effort `high`; `codex-low` is legacy, model `gpt-5.6-terra`, effort `low`, retiring at S13`.
+Five logical codex workers are defined in `tools/codex-workers.json`, the single source of truth: `codex-spark-low` and `codex-spark-medium` use pool `spark`, model `gpt-5.3-codex-spark`, effort `low`/`medium`; `codex-medium` uses pool `standard`, model `gpt-5.6-terra`, effort `medium`; `codex-high` uses pool `standard`, model `gpt-5.6-sol`, effort `high`; `codex-low` is legacy, model `gpt-5.6-terra`, effort `low`, legacy, retained post-S14`.
 
 Mandatory dispatch contract: codex mcp-server ignores startup model/effort; every codex call must pass per-call `model=<worker.model>` and `config={"model_reasoning_effort":<worker.effort>}` from the registry, plus `sandbox:"workspace-write"` for writes. Server names are routing labels only.
 
@@ -29,18 +29,18 @@ Note: historical medians predate the worker rename; `tier` in metrics now record
 
 | task_type | default_tier | median_duration_ms | success_rate | n_samples | last_updated |
 | --- | --- | --- | --- | --- | --- |
-| mechanical-edit | codex-spark-low | 180000 | 93.33 | 15 | 2026-07-11 |
-| metadata-lookup | codex-spark-low | 120000 | 61.9 | 21 | 2026-07-11 |
+| mechanical-edit | codex-spark-low | 116427.5 | 93.75 | 16 | 2026-07-11 |
+| metadata-lookup | codex-spark-low | 120000 | 63.64 | 22 | 2026-07-11 |
 | verify-parity | codex-medium | 46874.5 | 94.44 | 18 | 2026-07-11 |
-| git-summary | codex-spark-low | 37621.5 | 100 | 16 | 2026-07-11 |
-| deploy-publish | codex-spark-low | 37325.5 | 91.67 | 12 | 2026-07-11 |
-| content-draft | codex-high | - | - | 0 | 2026-07-11 |
+| git-summary | codex-spark-low | 37621.5 | 100.0 | 16 | 2026-07-11 |
+| deploy-publish | codex-spark-low | 37923 | 92.31 | 13 | 2026-07-11 |
+| content-draft | codex-high | 300000 | 100.0 | 1 | 2026-07-11 |
 | translation | codex-high | - | - | 0 | 2026-07-11 |
-| exporter-logic | codex-high | 224063 | 100 | 11 | 2026-07-11 |
-| diagnosis | codex-high | 165000 | 100 | 4 | 2026-07-11 |
+| exporter-logic | codex-high | 224063 | 100.0 | 11 | 2026-07-11 |
+| diagnosis | codex-high | 165000 | 100.0 | 4 | 2026-07-11 |
 | figure-production | codex-high | - | - | 0 | 2026-07-11 |
-| config-edit | codex-high | 120000 | 100 | 26 | 2026-07-11 |
-| other | codex-medium | 0 | 100 | 10 | 2026-07-11 |
+| config-edit | codex-high | 120000 | 100.0 | 27 | 2026-07-11 |
+| other | codex-medium | 0 | 100.0 | 10 | 2026-07-11 |
 
 Note: orchestrator picks the cheapest worker meeting the success bar; failover ladder is spark -> `codex-medium` -> `codex-high` -> Opus -> Fable, one hop per failure, max one cross-pool failover per task.
 
