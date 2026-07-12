@@ -5,12 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-34 — add unobtrusive accessibility landmarks and skip navigation
-Add consistent `header`, `nav`, `main`, and `footer` semantics plus a
-keyboard-visible skip link across mirrored pages using existing containers and
-minimal CSS. Preserve layout, navigation text, and visual identity; test EN/JP
-desktop/mobile focus order.
-
 ### T-35 — complete image accessibility and loading hints
 Resolve the four images without `alt`, classify decorative versus informative
 text accurately, and add lazy loading only to below-the-fold images where it is
@@ -52,6 +46,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-34 added semantic header/main/footer landmarks, distinct navigation labels, and localized keyboard-visible skip links to all 26 pages; desktop/mobile geometry stayed within 1px of baseline and live returning-visitor focus reaches main without altering privacy-banner focus (`d94effd`).
 - 2026-07-13 T-33 externalized all 26 repeated responsive-menu bootstraps and the root language redirect, verified EN/JP redirect/mobile/consent behavior 7/7, passed a live report-only gate, then enforced `script-src` without `'unsafe-inline'`; only inert JSON-LD remains inline (`557d795`, `f682185`).
 - 2026-07-13 T-32 found zero consumers of the packed dropdown code, removed all 26 dead loaders and `ddmenu_min.js`, validated a simultaneous report-only policy, then enforced CSP without `'unsafe-eval'`; representative live gallery/navigation/map/consent behavior remained clean (`d305d03`, `a24645c`).
 - 2026-07-13 T-31 replaced all 26 JavaScript-only language controls with direct mirrored links, removed the unused loader/asset, made secret scanning deletion-safe, and verified keyboard/no-JavaScript navigation locally and live without visual or wording changes (`ac6c09b`).
