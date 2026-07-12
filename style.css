@@ -213,6 +213,15 @@ h1 {
 	background: transparent;
 	padding: 2px 0 6px 12px;
 }
+.heading-separator {
+	margin-top: 2.2em;
+	margin-bottom: 0.8em;
+	font-size: 18px;
+	line-height: 1.5;
+	border-left: 4px solid var(--accent);
+	border-bottom: 1px solid var(--border);
+	padding: 2px 0 6px 12px;
+}
 #main h5 {
 	margin-top: 1.5em;
 	margin-bottom: 0.5em;
@@ -361,6 +370,13 @@ ul.topnav li.active a, ul.topnav a:hover {
 }
 .slogan h3 {
 	font-size: 13px;
+	color: #d5deea;
+}
+.slogan h2.slogan-description {
+	padding-bottom: 0;
+	font-size: 13px;
+	font-weight: normal;
+	letter-spacing: normal;
 	color: #d5deea;
 }
 /**************************

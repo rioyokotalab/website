@@ -45,6 +45,11 @@ class Document(HTMLParser):
         self.vertical_top_classes = 0
         self.legacy_base_presentation = 0
         self.table_heading_classes = 0
+        self.headings: list[dict[str, object]] = []
+        self._heading: dict[str, object] | None = None
+        self._interactives: list[dict[str, object]] = []
+        self.unnamed_interactives = 0
+        self.lightbox_labels: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -65,6 +70,13 @@ class Document(HTMLParser):
             self.table_heading_classes += 1
         if tag == "html":
             self.html_lang = values.get("lang", "")
+        if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
+            self._heading = {"level": int(tag[1]), "text": ""}
+            self.headings.append(self._heading)
+        if tag in ("a", "button"):
+            self._interactives.append({"tag": tag, "attrs": values, "text": ""})
+            if tag == "a" and values.get("data-lightbox"):
+                self.lightbox_labels.append(values.get("aria-label", ""))
         if tag == "body":
             self.body_id = values.get("id", "")
         if values.get("id"):
@@ -97,6 +109,8 @@ class Document(HTMLParser):
         if any(key.startswith("on") for key in values):
             self.unsafe_semantics.append(line)
         if tag == "img":
+            if self._interactives:
+                self._interactives[-1]["text"] = str(self._interactives[-1]["text"]) + values.get("alt", "")
             self.image_attrs.append(values)
             self.images += 1
             if "alt" not in values:
@@ -111,6 +125,22 @@ class Document(HTMLParser):
             self.inline_executable_scripts += 1
         if values.get("id") == "menubar_hdr":
             self.menu_button = {"tag": tag, **values}
+
+    def handle_data(self, data: str) -> None:
+        if self._heading is not None:
+            self._heading["text"] = str(self._heading["text"]) + data
+        if self._interactives:
+            self._interactives[-1]["text"] = str(self._interactives[-1]["text"]) + data
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
+            self._heading = None
+        if tag in ("a", "button") and self._interactives and self._interactives[-1]["tag"] == tag:
+            item = self._interactives.pop()
+            attrs = item["attrs"]
+            assert isinstance(attrs, dict)
+            if not str(item["text"]).strip() and not attrs.get("aria-label", "").strip() and not attrs.get("title", "").strip():
+                self.unnamed_interactives += 1
 
 
 def fail(findings: list[str], path: Path, message: str) -> None:
@@ -146,6 +176,7 @@ def main() -> int:
     style_versions: set[str] = set()
     remaining_named_anchors = 0
     table_width_classes = 0
+    lightbox_counts = {"en": 0, "ja": 0}
     for path in pages:
         text = path.read_text(encoding="utf-8")
         table_width_classes += len(re.findall(r'\bwidth-\d+pct\b', text))
@@ -162,6 +193,18 @@ def main() -> int:
         document = Document()
         document.feed(text)
         expected_lang = "en" if path.relative_to(ROOT).parts[0] == "en" else "ja"
+        lightbox_counts[expected_lang] += len(document.lightbox_labels)
+        expected_lightbox_label = "View larger image" if expected_lang == "en" else "拡大画像を表示"
+        if any(label != expected_lightbox_label for label in document.lightbox_labels):
+            fail(findings, path, "localized Lightbox accessible name mismatch")
+        if document.unnamed_interactives:
+            fail(findings, path, "unnamed link or button")
+        if any(not str(heading["text"]).strip() for heading in document.headings):
+            fail(findings, path, "empty heading")
+        for previous, current in zip(document.headings, document.headings[1:]):
+            if int(current["level"]) > int(previous["level"]) + 1:
+                fail(findings, path, "skipped heading level")
+                break
         relative = path.relative_to(ROOT / ("en" if expected_lang == "en" else "jp")).as_posix()
         suffix = relative[:-10] if relative.endswith("index.html") else relative
         base_url = "https://www.rio.scrc.iir.isct.ac.jp"
@@ -271,6 +314,8 @@ def main() -> int:
         findings.append(f"legacy named anchors remain: {remaining_named_anchors}")
     if table_width_classes != 91:
         findings.append(f"table width class count mismatch: {table_width_classes}")
+    if lightbox_counts != {"en": 63, "ja": 80}:
+        findings.append(f"Lightbox link counts mismatch: {lightbox_counts}")
     for script in sorted((ROOT / "js").glob("*.js")):
         source = script.read_text(encoding="utf-8")
         if re.search(r"\.style\b|setAttribute\s*\(\s*['\"]style['\"]", source):

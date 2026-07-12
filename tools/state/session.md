@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-57 modernize remaining table presentation attributes
+task: T-58 audit heading hierarchy and accessible names
 status: in-progress
 
 ## Now
-- Goal: remove remaining table presentation attributes only in homogeneous, computed-style-verified groups while retaining heterogeneous widths and alignment until explicitly mapped.
-- Last done: T-57 second batch maps all 91 table/cell widths to explicit percentage classes and removes 26 inert align=center attributes (an attempted centering class was rejected by geometry tests before publish). Zero legacy table presentation attributes remain. Full suite passes; representative EN/JP table/cell width, margin, x-position, and height are exact across home/News/member/computers at desktop/mobile.
-- Next: rebase, inspect and publish the CSS/cache second T-57 checkpoint, verify representative live table layout, then close T-57 and start T-58 structural accessibility audit.
+- Goal: eliminate empty/skipped headings and unnamed interactive elements without changing visible wording or layout.
+- Last done: T-58 fixes the EN home heading sequence with a visually identical h2, replaces one empty JP h4 with an aria-hidden separator of exact geometry, labels all 143 Lightbox links locally, and removes/unwraps three empty links. Permanent checks reject empty/skipped headings and unnamed static links/buttons. Full suite, desktop/mobile geometry parity, keyboard focus, and Lightbox behavior pass.
+- Next: rebase, inspect the HTML/CSS/cache deployment preview, publish T-58, verify live accessible names/headings, then close T-58 and seed the next modernization queue.
 
 ## Working set
-- First batch: table border/cellpadding/cellspacing/bgcolor across home/News/member/computers plus shared CSS/cache. Second batch: exact width/center mappings. Regression checks and family/viewport geometry throughout.
+- EN home, JP research, EN/JP computers/picture/research Lightbox links, three empty links, shared CSS/cache, heading/name standards enforcement, representative geometry and keyboard/Lightbox checks.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
