@@ -5,8 +5,8 @@ status: in-progress
 
 ## Now
 - Goal: migrate the remaining five inline style blocks and eleven style attributes to scoped shared classes with computed-style parity, then safely remove style `'unsafe-inline'` through a report-only gate.
-- Last done: T-48 migration removes all five style blocks and eleven style attributes, replaces every live rule with scoped shared CSS/classes, drops zero-consumer research-card/topgrid overrides, and permanently rejects inline presentation. Full suite passes; computed parity is exact for EN/JP home news tables, EN slogan, oral callouts, speaker images, and EN news superscript.
-- Next: rebase, inspect and publish the markup/CSS/cache migration checkpoint under the existing CSP; verify live parity, then add the strict style policy as a simultaneous report-only header for browser validation before enforcement.
+- Last done: T-48 markup/CSS migration was published as `4fa5652` and live pages have no inline presentation. Runtime menu/pagetop inline mutations are now class-driven with cache-busted JS and permanent enforcement; normal/reduced-motion behavior passes. A strict no-unsafe-inline style policy is prepared as report-only alongside the existing enforced policy.
+- Next: rebase, dry-run, publish the runtime-class/report-only checkpoint; verify both headers and collect browser `securitypolicyviolation` events across representative EN/JP, consent, gallery, map, menu, and scroll interactions before enforcing.
 
 ## Working set
 - EN/JP home/research/news markup, shared CSS/cache bump, inline-style standards enforcement, computed-style/geometry browser comparisons, then `.htaccess` report-only/enforcement gates.

@@ -9,7 +9,7 @@
 	}
 
 	function setExpanded(expanded) {
-		menu.style.display = expanded ? "" : "none";
+		menu.classList.toggle("is-collapsed", !expanded);
 		control.classList.toggle("open", expanded);
 		control.classList.toggle("close", !expanded);
 		control.setAttribute("aria-expanded", String(expanded));

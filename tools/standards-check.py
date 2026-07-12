@@ -199,8 +199,15 @@ def main() -> int:
             fail(findings, path, "requires one versioned stylesheet")
         else:
             style_versions.add(matches[0])
+        for asset in ("pagetop.js?v=20260713", "responsive-menu.js?v=20260713"):
+            if text.count(asset) != 1:
+                fail(findings, path, f"versioned {asset.split('?')[0]} mismatch")
     if len(style_versions) != 1:
         findings.append("stylesheet cache versions differ across pages")
+    for script in sorted((ROOT / "js").glob("*.js")):
+        source = script.read_text(encoding="utf-8")
+        if re.search(r"\.style\b|setAttribute\s*\(\s*['\"]style['\"]", source):
+            fail(findings, script, "runtime inline style mutation")
     if findings:
         for finding in findings:
             print(f"standards: {finding}", file=sys.stderr)

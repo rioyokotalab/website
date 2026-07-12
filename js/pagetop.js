@@ -4,11 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	var el = document.getElementById('pagetop');
 	if (!el) return;
 	var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-	el.style.transition = reducedMotion ? 'none' : 'opacity 0.3s';
+	el.classList.toggle('reduce-motion', reducedMotion);
 	var toggle = function () {
 		var shown = (window.scrollY || document.documentElement.scrollTop) > 100;
-		el.style.opacity = shown ? '1' : '0';
-		el.style.pointerEvents = shown ? 'auto' : 'none';
+		el.classList.toggle('is-visible', shown);
 	};
 	toggle();
 	window.addEventListener('scroll', toggle, { passive: true });
