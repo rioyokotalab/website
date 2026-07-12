@@ -100,6 +100,28 @@ body {
 	-webkit-text-size-adjust: 100%;
 	-webkit-font-smoothing: antialiased;
 }
+
+.skip-link {
+	position: fixed;
+	top: 0;
+	left: 1rem;
+	z-index: 10000;
+	padding: 0.75rem 1rem;
+	background: #002855;
+	color: #fff;
+	font-weight: bold;
+	transform: translateY(-120%);
+	transition: transform 0.15s ease-in-out;
+}
+
+.skip-link:focus {
+	color: #fff;
+	transform: translateY(0);
+}
+
+#wrapper:focus {
+	outline: none;
+}
 html {
 	background: #002855;
 	scroll-behavior: smooth;
