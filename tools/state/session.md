@@ -1,11 +1,11 @@
 driver: codex
-updated: 2026-07-13T05:03+0900
+updated: 2026-07-13T05:09+0900
 task: idle
 status: idle
 
 ## Now
 - Goal: idle; the continuous modernization window is release-ready.
-- Last done: T-107 corrected cross-origin iframe-internal Tab modeling in the exhaustive keyboard contract; all 26 routes at 390/1200px pass in 51.3 seconds. T-106 semantic containment and T-105 release sweep pass.
+- Last done: exact pushed tip `1bf8551` passes all fast checks and 37/37 browser contracts in 3.7 minutes; T-107 keyboard reliability, T-106 semantic containment, and T-105 release sweep are complete.
 - Next: user or Claude site-publisher may live-publish and verify the pushed post–T-60 commits; Codex must not run the live publication.
 
 ## Working set

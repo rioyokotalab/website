@@ -31,9 +31,9 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-107 made the exhaustive keyboard-order contract deterministic for cross-origin map internals by collapsing consecutive parent-iframe focus states while still requiring the complete top-level order; isolated 26-route × 2-width traversal passes in 51.3 seconds (pending final full suite/commit).
-- 2026-07-13 T-106 audited the browser-repaired DOM on all 26 routes and permanently enforces that every native date, data table, contact address, and embedded map remains inside the main landmark (pending final commit).
-- 2026-07-13 T-105 passed all fast checks, 36/36 browser tests in 4.7 minutes, allowlisted staging dry-run, Git object verification, zero-vulnerability offline audit, public permissions/symlink review, and generated-artifact cleanup (pending final commit).
+- 2026-07-13 T-107 made the exhaustive keyboard-order contract deterministic for cross-origin map internals while still requiring complete top-level order; isolated traversal and the exact-tip 37/37 full suite pass (`1bf8551`).
+- 2026-07-13 T-106 audited the browser-repaired DOM on all 26 routes and permanently enforces that every native date, data table, contact address, and embedded map remains inside the main landmark (`08982bf`).
+- 2026-07-13 T-105 passed all fast checks, browser suites, allowlisted staging dry-run, Git object verification, zero-vulnerability offline audit, public permissions/symlink review, and generated-artifact cleanup (`08982bf`).
 - 2026-07-13 T-104 audited every rendered link/button and embedded frame across all 26 routes after dynamic privacy controls initialize, and permanently rejects empty accessible names/titles (pending commit).
 - 2026-07-13 T-103 audited all routes at 390/1200px and permanently enforces one banner/main/contentinfo, exactly one localized desktop navigation, hidden collapsed mobile navigation, and exactly one localized mobile landmark after opening (pending commit).
 - 2026-07-13 T-102 audited all 26 browser accessibility trees and permanently enforces the exact route inventory, nonempty route-unique names for all 30 rendered data tables, and exclusion of presentational tables (pending commit).
