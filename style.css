@@ -20,10 +20,6 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 :focus:not(:focus-visible) {
 	outline: 0;
 }
-a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
-	outline: 2px solid var(--accent-hover);
-	outline-offset: 2px;
-}
 ol, ul {
 	list-style: none;
 }
@@ -159,11 +155,6 @@ a:hover {
 a:active, a:focus:not(:focus-visible) {
 	outline: 0;
 }
-a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
-	outline: 2px solid var(--accent-hover);
-	outline-offset: 2px;
-}
-
 /* Superscript / subscript
 ------------------------------------------------------------*/
 sup {
@@ -958,4 +949,11 @@ h3.heading, #sub .grid h3 {
 	.analytics-consent button {
 		width: 100%;
 	}
+}
+
+/* Keep the keyboard focus ring above component-specific shadows. */
+a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+	box-shadow: 0 0 0 4px var(--accent-hover) !important;
 }

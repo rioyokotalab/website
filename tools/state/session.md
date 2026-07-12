@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T02:28+0900
-task: T-64 audit keyboard focus visibility
+updated: 2026-07-13T02:46+0900
+task: T-65 audit text and control color contrast
 status: in-progress
 
 ## Now
-- Goal: ensure every keyboard-reachable control has a visible, unobscured focus indicator using the existing palette and no geometry-changing restyle.
-- Last done: T-63 sampled production delivery with compressed GET and HEAD requests, confirmed validators but no explicit caching/compression, added a repeatable read-only audit tool, and declined risky unverified Apache changes.
-- Next: render representative EN/JP pages at desktop/mobile, tab through all reachable controls and measure focus outline/box-shadow plus viewport occlusion; inventory confirmed failures before editing CSS.
+- Goal: identify and correct only confirmed persistent text/control contrast failures while retaining the current palette, typography, geometry, and content.
+- Last done: T-64 traversed 2,131 keyboard stops across all pages at 390/1200px, confirmed every stop had an indicator, replaced the single blue ring with a white-plus-existing-blue two-tone ring, and passed representative light/dark/control checks.
+- Next: inventory computed visible text foreground/background pairs in light and dark modes, calculate WCAG ratios by font size/weight and control-boundary requirements, then isolate confirmed failures before editing.
 
 ## Working set
-- Representative EN/JP home/news/research/contact/picture/profile pages; computed focus styles and viewport geometry; any shared focus-visible CSS/cache bump/checker; ledger/bookkeeping.
+- All page families plus generated analytics controls in light/dark modes; computed color/background/font metrics; any palette-only CSS/cache bump/checker; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

@@ -5,12 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-64 — audit keyboard focus visibility
-Render and traverse every interactive control in representative EN/JP page
-families at desktop and mobile widths, identify controls whose focus indicator
-is absent or obscured, and add the smallest shared `:focus-visible` treatment
-that preserves the current color palette and geometry.
-
 ### T-65 — audit text and control color contrast
 Measure computed foreground/background contrast for persistent text, links,
 buttons, navigation, and the analytics consent UI; correct only confirmed WCAG
@@ -50,7 +44,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-63 verified production HTML/CSS/JS/image responses have validators but no explicit caching or compression, added a repeatable read-only header audit, and avoided unverified Apache directives after the known 500 incident (pending commit).
+- 2026-07-13 T-64 traversed 2,131 keyboard stops across all 26 pages at mobile/desktop, consolidated duplicate focus CSS into a palette-matched two-tone ring, and verified representative light/dark/component focus states (pending commit).
+- 2026-07-13 T-63 verified production HTML/CSS/JS/image responses have validators but no explicit caching or compression, added a repeatable read-only header audit, and avoided unverified Apache directives after the known 500 incident (`9eab2a1`).
 - 2026-07-13 T-62 contained only the five narrow-screen page families with clipped legacy tables, made only live overflow regions keyboard-scrollable, preserved exact desktop table geometry, and passed 320/390px containment checks (`9771abb`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-61 gave all 143 Lightbox links unique localized page-local ordinal names, enforced exact order/count, and passed keyboard/pointer gallery checks (`803b27c`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-60 removed 26 empty keywords elements and 53 redundant HTML5 MIME type attributes, retained/parsed JSON-LD, enforced clean heads, and verified resources/scripts/layout (`f57c653`).
