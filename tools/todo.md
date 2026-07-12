@@ -1,14 +1,30 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-68.
+`tools/state/session.md`. Next free id: T-72.
 
 ## Active
 
-### T-67 — normalize page titles and descriptions
-Inventory bilingual title and description metadata for missing, duplicated, or
-overlong values; make restrained page-local corrections only where search and
-sharing context is ambiguous while preserving current wording wherever sound.
+### T-68 — improve data-table header semantics
+Classify each public table as data or layout, add `th` and `scope` only where
+cell relationships are genuinely tabular, and preserve every table's computed
+geometry and visual styling at desktop and mobile widths.
+
+### T-69 — audit non-color link identification
+Measure whether inline content links are distinguishable from surrounding text
+without hover or color perception, then add the narrowest content-only underline
+treatment needed while leaving navigation, cards, logos, and galleries intact.
+
+### T-70 — strengthen forced-colors compatibility
+Exercise Windows-style forced-colors rendering for navigation, menus, consent,
+focus rings, current-page state, and image links; add system-color overrides
+only where controls or states disappear, without altering normal presentation.
+
+### T-71 — audit oversized image delivery
+Inventory intrinsic versus rendered image dimensions and encoded sizes across
+representative desktop/mobile pages, identify only material transfer waste, and
+propose or generate visually lossless variants without replacing originals
+until rendered parity and deployment impact are verified.
 
 ## Blocked / awaiting user
 
@@ -34,7 +50,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-66 added a deploy-manifest-aware gate for 1,676 local public URLs/fragments including directory indexes, same-origin absolutes, extended media attributes, and CSS assets, with positive/negative fixture tests (pending commit).
+- 2026-07-13 T-67 corrected four route-mismatched titles, made all 26 bilingual titles/descriptions unique and page-local, mirrored them into Open Graph metadata, enforced structure/length/uniqueness, and preserved exact mobile/desktop geometry (pending commit).
+- 2026-07-13 T-66 added a deploy-manifest-aware gate for 1,676 local public URLs/fragments including directory indexes, same-origin absolutes, extended media attributes, and CSS assets, with positive/negative fixture tests (`e0b6c66`).
 - 2026-07-13 T-65 scanned computed persistent text contrast on all 26 pages in light/dark modes, raised only the dark oral-highlight red from 3.12:1 to 6.61:1, removed one near-invisible stray EN hero character, and ended with zero scan failures (`b22cf0b`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-64 traversed 2,131 keyboard stops across all 26 pages at mobile/desktop, consolidated duplicate focus CSS into a palette-matched two-tone ring, and verified representative light/dark/component focus states (`3b01c7b`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-63 verified production HTML/CSS/JS/image responses have validators but no explicit caching or compression, added a repeatable read-only header audit, and avoided unverified Apache directives after the known 500 incident (`9eab2a1`).
@@ -51,7 +68,3 @@ recloned or carefully reset to rewritten main.
 - 2026-07-13 T-52 added minimal robots and a generated 27-URL bilingual sitemap with three alternates per URL, integrated both into positive deployment/security checks, excluded repo-only paths, and verified every live destination (`d3ad764`).
 - 2026-07-13 T-51 replaced 100 heading anchors and 200 News event anchors with semantic/same-position IDs, collision-safely preserved all historical aliases, eliminated legacy `name` markup, and matched representative fragment positions exactly at desktop/mobile (`8aa8582`, `02d5a3f`, `91a70fc`).
 - 2026-07-13 T-50 added exactly one high fetch priority to each page's hero banner, enforced the classification, and preserved EN/JP home/subpage geometry within 1px at desktop/mobile (`c413ba6`).
-- 2026-07-13 T-49 resolved 104 incomplete image-dimension occurrences from 60 verified local assets, preserved percentage/fixed presentation via shared classes, enforced valid dimensions, matched loaded geometry within 1px, and proved pre-load space reservation (`7850281`).
-- 2026-07-13 T-48 migrated five style blocks, eleven style attributes, and runtime style mutations into shared classes; exact computed parity passed, a strict policy produced zero report-only violations across consent/menu/scroll/gallery/map tests, and CSP now enforces without style `unsafe-inline` (`4fa5652`, `c8bccd3`, `4650272`).
-- 2026-07-13 T-47 paired all 155 lazy content images with asynchronous decoding, permanently enforced the relationship, and passed browser decode/load checks across news, portraits, research, galleries, and computer imagery (`579a41d`).
-- 2026-07-13 T-46 added verified intrinsic 450x65 EN and 436x65 JP dimensions to all 26 header logos, enforced them, and preserved desktop/mobile geometry within 0.0625px (`d0a7d99`).

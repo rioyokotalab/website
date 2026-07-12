@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T03:14+0900
-task: T-67 normalize page titles and descriptions
+updated: 2026-07-13T03:31+0900
+task: T-68 improve data-table header semantics
 status: in-progress
 
 ## Now
-- Goal: make page titles and descriptions clear, unique, and restrained across mirrored EN/JP routes without rewriting sound content or changing visible pages.
-- Last done: T-66 added a deploy-manifest-aware gate for 1,676 local public URLs/fragments and CSS assets, integrated it into the full suite, and proved directory/same-origin/fragment success plus missing file/fragment/CSS failures with fixtures.
-- Next: parse all titles and description metadata, report missing/duplicate/overlong/route-mismatched pairs and EN/JP asymmetries, then change only confirmed ambiguous metadata and add structural enforcement.
+- Goal: give genuine data tables explicit header relationships while leaving layout tables and all rendered geometry untouched.
+- Last done: T-67 corrected four mismatched titles, made all 26 bilingual title/description pairs unique and page-local, mirrored descriptions into Open Graph, enforced exact route titles plus description length/uniqueness, and preserved all landmark geometry at 390/1200px.
+- Next: inventory all 38 tables by page, dimensions, cell tags/content and nesting; classify data versus layout; render candidate `td` to `th scope` changes against the current commit before accepting any edit.
 
 ## Working set
-- All 26 bilingual heads plus root redirect metadata; title/description lengths and uniqueness; any CRLF-safe page-local corrections and standards enforcement; ledger/bookkeeping.
+- All 38 public tables, nested-table structure, current computed cell geometry/styles, any scoped semantic markup/CSS and standards enforcement; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

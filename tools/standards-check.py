@@ -189,6 +189,8 @@ def main() -> int:
     if len(pages) != 26:
         findings.append(f"expected 26 bilingual pages, found {len(pages)}")
     style_versions: set[str] = set()
+    metadata_titles = {"en": set(), "ja": set()}
+    metadata_descriptions = {"en": set(), "ja": set()}
     remaining_named_anchors = 0
     table_width_classes = 0
     lightbox_counts = {"en": 0, "ja": 0}
@@ -210,6 +212,12 @@ def main() -> int:
         document = Document()
         document.feed(text)
         expected_lang = "en" if path.relative_to(ROOT).parts[0] == "en" else "ja"
+        title_matches = re.findall(r"<title>(.*?)</title>", text, flags=re.I | re.S)
+        description_matches = re.findall(r'<meta\s+name="description"\s+content="([^"]*)">', text, flags=re.I)
+        title = title_matches[0].strip() if len(title_matches) == 1 else ""
+        description = description_matches[0].strip() if len(description_matches) == 1 else ""
+        metadata_titles[expected_lang].add(title)
+        metadata_descriptions[expected_lang].add(description)
         lightbox_counts[expected_lang] += len(document.lightbox_labels)
         lightbox_total = len(document.lightbox_labels)
         expected_lightbox_labels = [
@@ -227,6 +235,17 @@ def main() -> int:
                 fail(findings, path, "skipped heading level")
                 break
         relative = path.relative_to(ROOT / ("en" if expected_lang == "en" else "jp")).as_posix()
+        title_prefixes = {
+            "en": {"index.html": "", "about/index.html": "About Lab.", "achievements/index.html": "Achievements", "computers/index.html": "Computing Environment", "contact/index.html": "Access and Contact", "links/index.html": "Links", "member/index.html": "Members", "member/yokota.html": "Rio Yokota", "news/index.html": "News", "picture/index.html": "Picture", "research/index.html": "Research", "software/index.html": "Software", "teaching/index.html": "Teaching"},
+            "ja": {"index.html": "", "about/index.html": "研究室紹介", "achievements/index.html": "研究成果", "computers/index.html": "計算環境", "contact/index.html": "連絡先・アクセス", "links/index.html": "リンク", "member/index.html": "メンバー", "member/yokota.html": "横田理央", "news/index.html": "ニュース", "picture/index.html": "写真", "research/index.html": "研究内容", "software/index.html": "ソフトウェア", "teaching/index.html": "担当講義"},
+        }
+        prefix = title_prefixes[expected_lang][relative]
+        expected_title = (f"{prefix} : " if prefix else "") + "YOKOTA Laboratory : Science Tokyo, IIR" if expected_lang == "en" else (f"{prefix}：" if prefix else "") + "横田研究室：東京科学大学 総合研究院"
+        minimum_description = 50 if expected_lang == "en" else 20
+        if title != expected_title or not (minimum_description <= len(description) <= 160):
+            fail(findings, path, "page-local title or description mismatch")
+        if document.og_properties.get("og:title") != [title] or document.og_properties.get("og:description") != [description]:
+            fail(findings, path, "Open Graph title or description mismatch")
         suffix = relative[:-10] if relative.endswith("index.html") else relative
         base_url = "https://www.rio.scrc.iir.isct.ac.jp"
         expected_alternates = {
@@ -343,6 +362,8 @@ def main() -> int:
                 fail(findings, path, f"versioned {asset.split('?')[0]} mismatch")
     if len(style_versions) != 1:
         findings.append("stylesheet cache versions differ across pages")
+    if any(len(metadata_titles[language]) != 13 or len(metadata_descriptions[language]) != 13 for language in ("en", "ja")):
+        findings.append("bilingual page titles and descriptions must be unique")
     if remaining_named_anchors:
         findings.append(f"legacy named anchors remain: {remaining_named_anchors}")
     if table_width_classes != 91:
