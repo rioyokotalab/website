@@ -5,10 +5,10 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-103 — enforce rendered landmark structure
-Audit every route through the browser accessibility tree for one banner, main,
-and content-information landmark plus two distinctly named navigation regions;
-ensure semantic wrappers survive browser parsing and remain localized.
+### T-104 — enforce rendered interactive names
+Audit every rendered link, button, and embedded interactive across all routes in
+both languages after dynamic controls initialize; reject empty or whitespace
+accessible names and retain the invariant as browser coverage.
 
 ## Blocked / awaiting user
 
@@ -34,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-103 audited all routes at 390/1200px and permanently enforces one banner/main/contentinfo, exactly one localized desktop navigation, hidden collapsed mobile navigation, and exactly one localized mobile landmark after opening (pending commit).
 - 2026-07-13 T-102 audited all 26 browser accessibility trees and permanently enforces the exact route inventory, nonempty route-unique names for all 30 rendered data tables, and exclusion of presentational tables (pending commit).
 - 2026-07-13 T-101 associated both active-student data tables with their existing localized `sub002` headings, retained six rendered faculty/secretary/alumni tables as presentational, and passed exact static, five layout/name browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-100 added localized native visually-hidden captions to both Hinadori hardware tables, preserved their four column headers/specifications and 1×1 clipped caption geometry, and passed exact static, five layout/name browser, fast, and staging checks (pending commit).
