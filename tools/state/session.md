@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-58 audit heading hierarchy and accessible names
+task: T-59 defer remaining external scripts
 status: in-progress
 
 ## Now
-- Goal: eliminate empty/skipped headings and unnamed interactive elements without changing visible wording or layout.
-- Last done: T-58 fixes the EN home heading sequence with a visually identical h2, replaces one empty JP h4 with an aria-hidden separator of exact geometry, labels all 143 Lightbox links locally, and removes/unwraps three empty links. Permanent checks reject empty/skipped headings and unnamed static links/buttons. Full suite, desktop/mobile geometry parity, keyboard focus, and Lightbox behavior pass.
-- Next: rebase, inspect the HTML/CSS/cache deployment preview, publish T-58, verify live accessible names/headings, then close T-58 and seed the next modernization queue.
+- Goal: prevent external scripts from blocking HTML parsing while preserving dependency order and runtime behavior.
+- Last done: T-59 defers all 64 remaining external script references and permanently rejects non-deferred external scripts. Full suite and all four privacy-first consent tests pass; EN/JP menu/pagetop, jQuery-before-Lightbox behavior on Picture/Research, CSP, and page-error checks pass.
+- Next: rebase, inspect the changed-HTML-only deployment preview, publish T-59, verify representative live defer attributes/runtime, then close T-59 and start T-60.
 
 ## Working set
-- EN home, JP research, EN/JP computers/picture/research Lightbox links, three empty links, shared CSS/cache, heading/name standards enforcement, representative geometry and keyboard/Lightbox checks.
+- All 27 HTML documents' external scripts, exact defer standards enforcement, consent/menu/pagetop/Lightbox/CSP browser tests, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

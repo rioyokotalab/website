@@ -50,6 +50,7 @@ class Document(HTMLParser):
         self._interactives: list[dict[str, object]] = []
         self.unnamed_interactives = 0
         self.lightbox_labels: list[str] = []
+        self.external_scripts_without_defer = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -123,6 +124,8 @@ class Document(HTMLParser):
             self.iframes.append(values)
         if tag == "script" and not values.get("src") and values.get("type", "text/javascript").lower() not in ("application/ld+json",):
             self.inline_executable_scripts += 1
+        if tag == "script" and values.get("src") and "defer" not in values:
+            self.external_scripts_without_defer += 1
         if values.get("id") == "menubar_hdr":
             self.menu_button = {"tag": tag, **values}
 
@@ -276,6 +279,8 @@ def main() -> int:
             fail(findings, path, "hero image fetch priority mismatch")
         if document.inline_executable_scripts:
             fail(findings, path, "executable inline script")
+        if document.external_scripts_without_defer:
+            fail(findings, path, "external script missing defer")
         if document.inline_styles:
             fail(findings, path, "inline presentation style")
         expected_no_wrap = 98 if path.relative_to(ROOT).as_posix() == "en/news/index.html" else 54 if path.relative_to(ROOT).as_posix() == "jp/news/index.html" else 0

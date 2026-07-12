@@ -1,14 +1,34 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-59.
+`tools/state/session.md`. Next free id: T-64.
 
 ## Active
 
-### T-58 — audit heading hierarchy and accessible names
-Check all 26 pages for skipped/empty headings and unlabeled interactive
-controls after the semantic migrations, fix only unambiguous structural issues,
-and add page-level regression coverage without changing visible wording.
+### T-59 — defer remaining external scripts
+Mark the 64 remaining parser-blocking external script references as deferred,
+preserving dependency order and verifying consent, menu, back-to-top, and
+Lightbox behavior across EN/JP.
+
+### T-60 — remove obsolete and empty head metadata
+Remove empty keywords metadata and redundant HTML5 `type` attributes from
+stylesheets/scripts, while retaining executable-vs-JSON-LD semantics and exact
+resource loading.
+
+### T-61 — make repeated gallery link names distinguishable
+Derive localized, stable accessible names for repeated Lightbox links from
+their nearby visible captions or image context so keyboard/screen-reader users
+can distinguish destinations without changing captions or image alternatives.
+
+### T-62 — improve narrow-screen data-table containment
+Identify tables that overflow their content column on mobile and add scoped
+horizontal containment only where needed, retaining desktop geometry and all
+cell content without reflowing the site's general layout.
+
+### T-63 — audit document and asset compression hints
+Verify server compression/cache headers for HTML/CSS/JS/images, add only
+server-compatible safe directives or filename cache policies, and preserve the
+short-update behavior of HTML while avoiding another production 500 risk.
 
 ## Blocked / awaiting user
 
@@ -34,6 +54,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-58 fixed the EN home heading sequence, replaced one empty heading with a geometry-identical separator, localized all 143 Lightbox link names, removed three empty links, and added permanent heading/interactive-name checks (`282ba34`).
 - 2026-07-13 T-57 eliminated all remaining legacy table presentation attributes in two computed-style-gated batches, mapped 91 widths and 8 header cells to classes, rejected an incorrect centering rule before publish, and preserved representative EN/JP layout exactly (`b5db8bb`, `c73d6b1`).
 - 2026-07-13 T-56 migrated all 588 raw valign=top attributes across home/profile/News, enforced zero legacy and rendered counts, and preserved representative alignment/cell/row geometry within 1px across families/viewports (`ad217cb`).
 - 2026-07-13 T-55 migrated all 152 News nowrap attributes to a shared class, enforced zero legacy usage/exact EN/JP counts, and preserved representative cell/row geometry within 1px at desktop/mobile (`b59384a`).
