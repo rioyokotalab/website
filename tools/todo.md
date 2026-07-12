@@ -5,10 +5,11 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-88 — audit meaningful image alternatives
-Inventory rendered images by purpose across every EN/JP route; distinguish
-decorative, linked, informational, and gallery images, then correct only missing,
-redundant, or misleading alternatives while preserving all pixels and wording.
+### T-89 — audit keyboard focus order and reachability
+Traverse every route at desktop and mobile widths using only Tab/Shift+Tab;
+confirm all visible links and controls are reachable once, hidden navigation is
+excluded, focus never becomes trapped, and localized accessible names remain
+useful without changing visual structure.
 
 ## Blocked / awaiting user
 
@@ -34,6 +35,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-88 inventoried all 207 image elements and their link/caption context, removed one Japanese machine-generated placeholder from an English decorative event image, and now enforces the exact localized image-role set across all 26 routes; fast checks and two route-wide browser contracts pass (pending commit).
 - 2026-07-13 T-87 replaced 26 CSS-hidden institutional headings with metadata, added one localized native off-screen `h1` per page without changing the visible H2→H3 structure, and passed exact static gates plus seven route/layout/no-JS browser contracts (pending commit).
 - 2026-07-13 T-86 confirmed all 26 header logo/home links were unnamed in the accessibility tree, added concise localized logo alternatives without visual changes, enforced parity, and passed route-wide name/runtime plus fast checks (pending commit).
 - 2026-07-13 T-85 made long content links and home-news cells safely wrappable, restored missing JP Computers table containment/helper parity, and passed all 52 pages plus EN/JP consent under WCAG text-spacing overrides; fast checks and six affected browser contracts pass (`278b2a8`; live publish reserved for user/Claude site-publisher).

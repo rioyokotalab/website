@@ -371,6 +371,8 @@ def main() -> int:
             fail(findings, path, "accessible back-to-top link mismatch")
         if document.images_without_alt:
             fail(findings, path, "image without alt")
+        if "自動的に生成された説明" in text:
+            fail(findings, path, "machine-generated image placeholder text")
         if any(not image.get("width", "").isdigit() or not image.get("height", "").isdigit() or int(image["width"]) < 1 or int(image["height"]) < 1 for image in document.image_attrs):
             fail(findings, path, "image missing valid intrinsic dimensions")
         responsive_images = [image for image in document.image_attrs if image.get("srcset")]
