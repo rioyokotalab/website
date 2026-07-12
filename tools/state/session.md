@@ -1,12 +1,12 @@
 driver: codex
-updated: 2026-07-13T00:18+0900
+updated: 2026-07-13T00:22+0900
 task: T-32 remove unused eval-based menu script
 status: in-progress
 
 ## Now
 - Goal: eliminate obsolete packed/eval JavaScript and tighten CSP without changing current navigation behavior.
-- Last done: removed 26 dead loaders and `js/ddmenu_min.js`; zero eval/new-Function/ddmenu references remain. Added a simultaneous no-unsafe-eval report-only policy while keeping current enforcement. Security/publish suites and consent browser tests pass 4/4.
-- Next: preview and publish the report-only phase; inspect live CSP console/navigation/gallery/map/consent behavior, then remove `'unsafe-eval'` from enforcement and the temporary report-only header.
+- Last done: report-only phase published as `d305d03`; dead script is live 404 and representative home/gallery/research/map/consent paths produced no CSP reports or page errors. Enforcement is now prepared without `'unsafe-eval'` and the temporary report-only header is removed.
+- Next: verify and publish the `.htaccess`-only enforcement change, repeat live browser/header checks, then close T-32 and advance to T-33.
 
 ## Working set
 - All 26 EN/JP HTML pages, `js/ddmenu_min.js`, `.htaccess`, browser/security tests, ledger/bookkeeping.
