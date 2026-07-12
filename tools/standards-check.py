@@ -162,6 +162,8 @@ def main() -> int:
     focus_selector = "a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible"
     if style_text.count(focus_selector) != 1 or "outline: 2px solid #fff;" not in style_text or "box-shadow: 0 0 0 4px var(--accent-hover) !important;" not in style_text:
         findings.append("two-tone keyboard focus indicator mismatch")
+    if style_text.count("--oral-highlight: #cc0000;") != 1 or style_text.count("--oral-highlight: #ff6b6b;") != 1 or "color: var(--oral-highlight);" not in style_text:
+        findings.append("light/dark oral-highlight palette mismatch")
     root_text = (ROOT / "index.html").read_text(encoding="utf-8")
     root_requirements = (
         '<meta charset="UTF-8">',

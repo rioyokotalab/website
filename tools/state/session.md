@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T02:46+0900
-task: T-65 audit text and control color contrast
+updated: 2026-07-13T03:00+0900
+task: T-66 make local-link integrity a permanent gate
 status: in-progress
 
 ## Now
-- Goal: identify and correct only confirmed persistent text/control contrast failures while retaining the current palette, typography, geometry, and content.
-- Last done: T-64 traversed 2,131 keyboard stops across all pages at 390/1200px, confirmed every stop had an indicator, replaced the single blue ring with a white-plus-existing-blue two-tone ring, and passed representative light/dark/control checks.
-- Next: inventory computed visible text foreground/background pairs in light and dark modes, calculate WCAG ratios by font size/weight and control-boundary requirements, then isolate confirmed failures before editing.
+- Goal: make resolution of every public local URL and same-page/cross-page fragment a deterministic commit gate without network dependence.
+- Last done: T-65 scanned all 52 page/mode combinations, changed only the dark-mode oral-highlight red (3.12:1 to 6.61:1), removed one stray near-invisible EN hero character, and ended with zero computed text-contrast failures.
+- Next: inventory all public href/src/srcset/action/poster/data URLs, normalize directory-index and query/fragment resolution, classify intentional nonpublic/external schemes, and compare the result with the staged public manifest before writing the gate.
 
 ## Working set
-- All page families plus generated analytics controls in light/dark modes; computed color/background/font metrics; any palette-only CSS/cache bump/checker; ledger/bookkeeping.
+- All public HTML and staged public files; deterministic URL/fragment parser; integration into tools/test-security.sh and supply-chain/deploy exclusions; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

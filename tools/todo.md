@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-65 — audit text and control color contrast
-Measure computed foreground/background contrast for persistent text, links,
-buttons, navigation, and the analytics consent UI; correct only confirmed WCAG
-failures with nearby palette colors and no layout or content changes.
-
 ### T-66 — make local-link integrity a permanent gate
 Audit every public relative URL and fragment across the mirrored tree, account
 for directory-index resolution and shared JP assets, and add a deterministic
@@ -44,7 +39,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-64 traversed 2,131 keyboard stops across all 26 pages at mobile/desktop, consolidated duplicate focus CSS into a palette-matched two-tone ring, and verified representative light/dark/component focus states (pending commit).
+- 2026-07-13 T-65 scanned computed persistent text contrast on all 26 pages in light/dark modes, raised only the dark oral-highlight red from 3.12:1 to 6.61:1, removed one near-invisible stray EN hero character, and ended with zero scan failures (pending commit).
+- 2026-07-13 T-64 traversed 2,131 keyboard stops across all 26 pages at mobile/desktop, consolidated duplicate focus CSS into a palette-matched two-tone ring, and verified representative light/dark/component focus states (`3b01c7b`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-63 verified production HTML/CSS/JS/image responses have validators but no explicit caching or compression, added a repeatable read-only header audit, and avoided unverified Apache directives after the known 500 incident (`9eab2a1`).
 - 2026-07-13 T-62 contained only the five narrow-screen page families with clipped legacy tables, made only live overflow regions keyboard-scrollable, preserved exact desktop table geometry, and passed 320/390px containment checks (`9771abb`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-61 gave all 143 Lightbox links unique localized page-local ordinal names, enforced exact order/count, and passed keyboard/pointer gallery checks (`803b27c`; live publish reserved for user/Claude site-publisher).

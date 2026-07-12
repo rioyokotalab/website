@@ -76,6 +76,7 @@ img {
 	--thead-text: #24292f;
 	--navy: #002855;
 	--navy-mid: #164272;
+	--oral-highlight: #cc0000;
 }
 @media (prefers-color-scheme: dark) {
 	:root {
@@ -89,6 +90,7 @@ img {
 		--stripe: #121d2a;
 		--thead-bg: #1c2a3a;
 		--thead-text: #c9d4df;
+		--oral-highlight: #ff6b6b;
 	}
 }
 
@@ -548,7 +550,7 @@ section#gallery {
 	margin: 0 1em 1em 0;
 }
 .oral-highlight {
-	color: #cc0000;
+	color: var(--oral-highlight);
 	font-weight: bold;
 }
 /* Figures inside content */
