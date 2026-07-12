@@ -7,9 +7,11 @@ Update in place when reality changes; date entries. No procedures here
 - 2026-07-12 parity audit found en=19 vs jp=114 files and 0 broken local
   links across 16 core index pages; HTML page paths mirror, while JP-only
   files are shared image assets.
-- 2026-07-05 Computers page: 81 GPUs. 2-GPU RTX 6000 Ada node CPU = AMD
-  EPYC 9654 (user-supplied); 8-GPU RTX 6000 Ada node CPU unknown ("-" in
-  table; node down). Refresh only via site-checker probes; never guess.
+- 2026-07-12 Computers page: 81 GPUs. 2-GPU RTX 6000 Ada node CPU = AMD
+  EPYC 9654 (user-supplied); 8-GPU RTX 6000 Ada node CPU remains unknown
+  ("-" in table) and Slurm node rtx6000-ada remains DOWN+NOT_RESPONDING
+  with 8 configured GPUs/500000 MB (read-only sinfo+scontrol query).
+  Refresh CPU facts only via site-checker probes; never guess.
 - Every external target="_blank" link carries rel="noopener noreferrer".
 - Page HTML is Dreamweaver-era (floats, table layouts, CRLF, legacy
   uppercase unclosed <LI>); style.css targets existing selectors — keep

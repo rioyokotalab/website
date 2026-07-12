@@ -4,58 +4,21 @@ Protocol + schemas: skills/context-ledger.md. In-flight detail:
 tools/state/session.md. Next free id: T-10.
 
 ## Active
-### T-6 — Add missing data-doi attributes to recent achievements
-Outcome: in jp/achievements/index.html, find <li> entries with
-data-date >= 2024-01 that lack data-doi (skills/achievements.md for
-section semantics). Resolve up to 4 DOIs via Crossref/DBLP per
-skills/web-lookup.md (record source URLs; independently confirm metadata
-matches the citation text). Add data-doi to the SAME entries in BOTH
-en/ and jp/ pages — attribute-only, no visible text changes. Page HTML
-is CRLF with legacy uppercase tags: edit via python per
-skills/html-editing.md, never sed/Edit on raw lines.
-Verify: en/jp grep counts for the touched entries identical; curl -s -o
-/dev/null -w '%{http_code}' localhost:8000/jp/achievements/index.html
-returns 200; each added DOI resolves 30x at doi.org. If NO qualifying
-entries exist, record a clean verdict and close. Size M-L. Leave commits
-to Claude/user.
-
-### T-7 — Reconcile cv.tex with recent achievements
-Outcome: compare achievements entries dated 2025-01 or newer against
-cv/cv.tex (sync is bidirectional with achievements/index.html and the CV
-sections of jp/member/yokota.html — see CLAUDE.md content conventions +
-skills/exporters.md). Add any missing entries to cv.tex following its
-existing entry format exactly, and mirror the same additions to the
-jp/member/yokota.html CV section if it lists them. Do NOT run
-./cv/build-cv.sh (explicit-only).
-Verify: list each added entry with its source achievements line; grep
-counts before/after; no build attempted. If already in sync, record the
-clean verdict with evidence. Size M-L.
-
-### T-8 — Computers-page status of the 8-GPU RTX 6000 Ada node
-Outcome: using READ-ONLY cluster queries only (sinfo, scontrol show
-node) — NEVER submit jobs (no yrun/ybatch/srun) — determine whether the
-8-GPU RTX 6000 Ada node (CPU shown as "-" in the computers pages) is
-back up. If still down: update the dated note in tools/state/facts.md
-and close. If up: scontrol does not reveal the CPU model — do NOT guess
-and do NOT edit the pages; park this task as Blocked / awaiting user
-with the exact probe request for site-checker/user. Never guess
-hardware facts (CLAUDE.md).
-Verify: raw sinfo/scontrol output quoted in the driver report. Size M.
-
-### T-9 — researchmap drift check (report only, NO import)
-Outcome: run python3 tools/researchmap-export.py --check-live
-(skills/exporters.md). Mirroring is EXPLICIT-ONLY: never import, never
-touch the researchmap login UI. Summarize the drift (counts of
-adds/updates by category, notable examples) in the driver report and
-park the decision as Blocked / awaiting user if any drift exists;
-otherwise record clean and close.
-Verify: tools/out/researchmap-import.jsonl regenerated; drift counts
-quoted. Size M.
-
-## Blocked / awaiting user
 (none)
 
+## Blocked / awaiting user
+### T-9 — researchmap drift check (report only, NO import)
+Drift found: `tools/out/researchmap-import.jsonl` has 29 proposed inserts
+(2 published papers, 13 media items, 7 committee memberships, 7 research
+projects), with 0 updates/deletes and 2 ambiguous existing projects. No
+import or login UI action occurred. Awaiting the user's explicit decision
+whether to manually upload the reviewed JSONL through researchmap Settings
+> Import. Evidence: tools/out/t9-researchmap-drift.md.
+
 ## Recently completed (history lives in git)
+- 2026-07-12 T-8 confirmed rtx6000-ada is still DOWN+NOT_RESPONDING with 8 configured GPUs; facts.md refreshed, no page edit or job submission; raw Slurm evidence: tools/out/t8-cluster-status.md.
+- 2026-07-12 T-7 added the missing 2025-06 CoRR presentation to cv/cv.tex (45 -> 46 presentation items); personal page has no publication section to mirror; no build run; evidence: tools/out/t7-cv-reconciliation.md.
+- 2026-07-12 T-6 added `10.1145/3721145.3730422` to the paired ICS 2025 entry after Crossref+DBLP confirmation; scoped EN/JP, local HTTP, and resolver checks pass. ISC candidate left unedited for material title mismatch; evidence: tools/out/t6-doi-attributes.md.
 - 2026-07-12 T-3 deploy.sh excludes .agents/ and .codex/; user-side dry-run confirmed 0 matching paths.
 - 2026-07-12 T-5 verified the two newest DOI-bearing achievements; both PASS with resolver and Crossref evidence in tools/out/doi-spotcheck.md; no page edits (uncommitted).
 - 2026-07-12 T-4 documented HTML-path vs shared-asset EN/JP parity and recorded the 19/114-file, 0-broken-link audit; markdown size check passes (uncommitted).
