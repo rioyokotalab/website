@@ -1,12 +1,12 @@
 driver: codex
-updated: 2026-07-13T08:40+0900
+updated: 2026-07-13T08:42+0900
 task: T-117
 status: in_progress
 
 ## Now
 - Goal: spend the three-hour window ending about 2026-07-13T09:44+0900 establishing a defensible web-development regression suite, then iteratively reduce Codex token use without degrading capability and improve logging so future routing decisions are evidence-based.
-- Last done: completed T-120. Strict comparison now checks task identity/count/version, reports route/mode/gate/cost/failure evidence, and refuses older rows whose append-only telemetry cannot prove equivalence.
-- Next: freeze runner-lite + focused local inspection + selected low-cost routes; run WBD-001–004 once with full P2P, then evaluate held-out WBD-005 exactly once and complete repository/session verification.
+- Last done: frozen visible run v1 passed WBD-001/002/003 at 100 but failed WBD-004 at 86 because focused inspection on reference-driven CSS guessed 24px instead of the pristine 16px. The run is retained in metrics; focused inspection is now explicitly limited to textual edits with exact acceptance.
+- Next: checkpoint the corrected process rule, rerun the entire visible suite as v2 using default inspection for WBD-003/004 and focused only for WBD-001/002, then proceed to held-out only if all four pass.
 
 ## Working set
 - `tools/todo.md`

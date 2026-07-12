@@ -109,9 +109,10 @@ than silently changing model/effort.
 
 ## Worker output and handoff
 
-- For a local edit in a large file, locate the most task-specific literal with
+- For a local text edit with explicit acceptance in a large file, locate the most task-specific literal with
   `rg` and inspect no more than 40 surrounding lines. Do not print whole files
   or search generic syntax tokens; obey the named playbook's edit method.
+  Reference-driven visual work and diagnosis require broader inspection.
 - Work only in authorized scope. Write the named `tools/out/` deliverable
   incrementally when required; it ends with the `## Structured result` fields
   defined in `skills/codex-dispatch.md`.
