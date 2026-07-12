@@ -5,14 +5,17 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-25 — purge archived PDF blobs from Git history
-Rewrite all branches and eight preserved evaluation tags to remove every
-historical `tools/papers/` path, then force-update GitHub with explicit leases,
-expire rewritten refs, garbage-collect locally, and verify no reachable PDF
-archive object remains. Owner explicitly authorized the destructive rewrite;
-existing clones must rebase/reset only with care or preferably reclone.
-
 ## Blocked / awaiting user
+
+### T-25 — purge archived PDF blobs from Git history
+Rewritten main and all eight local evaluation tags contain zero `tools/papers/`
+objects; GitHub main was lease-force-updated and fresh clones contain zero paper
+paths. Local backup refs, reflogs, objects, and rollback bundle were removed.
+GitHub still accepts a direct fetch of obsolete tip `78fe51a`, meaning its
+unreferenced server cache has not yet garbage-collected the non-sensitive blobs.
+GitHub documents that Support will not manually purge non-sensitive data; no
+further repository action can force server-side GC. Existing clones should be
+recloned or carefully reset to rewritten main.
 
 ## Recently completed
 

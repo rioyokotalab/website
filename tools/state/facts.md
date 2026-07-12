@@ -33,6 +33,11 @@ Update in place when reality changes; date entries. No procedures here
   blocks non-browser clients.
 
 ## Tooling / environment
+- 2026-07-13 Git history was rewritten to remove all `tools/papers/` paths;
+  GitHub main and eight local evaluation tags have new commit IDs. Fresh clones
+  contain zero paper paths. Existing clones should be recloned or carefully
+  reset; obsolete SHA objects may remain directly fetchable until GitHub's
+  automatic server garbage collection.
 - 2026-07-12 T-11 applied and verified: project Claude uses
   `bypassPermissions`, all six site agents use bypass mode, and all five Codex
   MCP servers use `approval_policy="never"` plus
