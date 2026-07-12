@@ -2,8 +2,11 @@
   "name": "yokota-lab-website-tests",
   "private": true,
   "scripts": {
-    "test:consent:install": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright install --only-shell chromium",
-    "test:consent": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright test",
+    "test": "npm run test:browser",
+    "test:browser:install": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright install --only-shell chromium",
+    "test:browser": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright test",
+    "test:consent:install": "npm run test:browser:install",
+    "test:consent": "npm run test:browser",
     "test:supply-chain": "python3 tools/supply-chain-check.py",
     "test:supply-chain:online": "python3 tools/supply-chain-check.py --online"
   },

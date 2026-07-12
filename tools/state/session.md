@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T05:37+0900
-task: T-76 standardize browser regression entry points
+updated: 2026-07-13T05:51+0900
+task: T-77 add automated rendered-layout smoke coverage
 status: in-progress
 
 ## Now
-- Goal: make browser validation discoverable through conventional commands and permanently cover responsive-menu and print contracts without bloating the fast structural suite.
-- Last done: T-75 added a localized accessibility wrapper to pinned Lightbox with dialog/modal/name, named controls and changing image alternatives, inert background, focus entry/trap/return, and validated first/next/last behavior across all six galleries; four consent plus two new Lightbox Playwright tests pass.
-- Next: inspect package scripts and test organization, add npm test/test:browser plus compatibility aliases, write compact EN/JP responsive boundary and print visibility/overflow tests, then run the full browser and fast security suites.
+- Goal: permanently catch page-level overflow, missing major regions, or gross responsive geometry regressions across representative EN/JP page families without brittle screenshot baselines.
+- Last done: T-76 added conventional npm test and test:browser/install commands, retained consent aliases, enforced the exact reviewed script surface, added 900/901px EN/JP menu and six-family print contracts, and passed all 8 browser plus fast security tests.
+- Next: select representative home/news/research/computers/contact/picture/profile paths, measure invariant region presence/order/viewport containment at 320/390/900/901/1200px, encode tolerant semantic geometry assertions, and rerun the full suite.
 
 ## Working set
-- package.json/lock consistency, Playwright config/tests, responsive-menu EN/JP 900/901 and print media contracts, full browser/security verification; ledger/bookkeeping.
+- tests/layout-contracts.spec.js, representative EN/JP region/document geometry across five boundaries, tolerant invariants only, full browser/security verification; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

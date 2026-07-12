@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-76 — standardize browser regression entry points
-Provide conventional `npm test` and focused browser-test commands, retain a
-compatibility alias for existing workflows, and add durable responsive-menu and
-print-contract coverage without duplicating structural Python checks.
-
 ### T-77 — add automated rendered-layout smoke coverage
 Capture deterministic geometry invariants for representative EN/JP page
 families at mobile/desktop boundaries so future CSS edits detect page overflow,
@@ -49,7 +44,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-75 wrapped pinned Lightbox with localized modal semantics, named controls/images, inert background, focus entry/trap/return, kept arrow/Escape/close behavior, passed first/next/last tests across six galleries, and added permanent Playwright coverage (pending commit).
+- 2026-07-13 T-76 added conventional npm test/test:browser/install commands with reviewed compatibility aliases, enforced the script surface, added EN/JP 900/901px menu and six-family print contracts, and passed all 8 browser plus fast security tests (pending commit).
+- 2026-07-13 T-75 wrapped pinned Lightbox with localized modal semantics, named controls/images, inert background, focus entry/trap/return, kept arrow/Escape/close behavior, passed first/next/last tests across six galleries, and added permanent Playwright coverage (`adac83b`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-74 enabled shared CSS for print, added a content-first A4 layer with plain page titles and constrained images/tables, hid navigation/sidebar/footer/fixed/consent/map/gallery chrome, eliminated all 1,920–3,276px overflow across 26 pages, and preserved exact screen geometry (`59586d6`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-73 verified all 26 pages reflow without page-level horizontal overflow at 640/320px effective widths and confirmed EN/JP consent/menu plus map, keyboard-scrolling tables, and fully measurable gallery close controls fit at 200%/400% equivalents (`cca4535`, audit-only).
 - 2026-07-13 T-72 measured all 1,920 visible mobile targets at 320/390px; 946 small text links all passed the 24px center-spacing exception, while consent/menu/settings controls measured 48/55.5/35px and the hamburger 42px, so no layout-expanding CSS was warranted (`e76fee4`, audit-only).

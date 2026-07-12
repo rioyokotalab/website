@@ -23,6 +23,15 @@ CDN = {
 }
 EXPECTED_CDN_PAGES = 6
 EXPECTED_PLAYWRIGHT = "1.61.1"
+EXPECTED_SCRIPTS = {
+    "test": "npm run test:browser",
+    "test:browser:install": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright install --only-shell chromium",
+    "test:browser": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright test",
+    "test:consent:install": "npm run test:browser:install",
+    "test:consent": "npm run test:browser",
+    "test:supply-chain": "python3 tools/supply-chain-check.py",
+    "test:supply-chain:online": "python3 tools/supply-chain-check.py --online",
+}
 TAG = re.compile(r"<(script|link)\b[^>]*>", re.I)
 ATTRIBUTE = re.compile(r"([\w-]+)\s*=\s*([\"'])(.*?)\2", re.I | re.S)
 
@@ -60,6 +69,8 @@ def audit_lockfile() -> None:
     lock = json.loads((ROOT / "package-lock.json").read_text(encoding="utf-8"))
     if package.get("private") is not True:
         fail("package.json must remain private")
+    if package.get("scripts") != EXPECTED_SCRIPTS:
+        fail("package scripts differ from the reviewed browser/supply-chain entry points")
     if package.get("devDependencies") != {"@playwright/test": EXPECTED_PLAYWRIGHT}:
         fail("Playwright must be the only direct dependency and exactly pinned")
     packages = lock.get("packages", {})
