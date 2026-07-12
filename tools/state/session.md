@@ -1,12 +1,12 @@
 driver: codex
-updated: 2026-07-13T00:59+0900
+updated: 2026-07-13T01:04+0900
 task: T-26 harden HTTP response headers and CSP
 status: in-progress
 
 ## Now
 - Goal: deploy a compatible CSP, Permissions Policy, and cautious HSTS policy without breaking the static site or consent flow.
-- Last done: inventoried 27 documents: no forms/network APIs; two Google Maps frames; six cdnjs gallery pages; consent-gated GTM; 26 inline handlers, five style blocks, 13 style attributes, and one legacy menu `eval`. Drafted report-only origin restrictions plus Permissions Policy and one-day HSTS without subdomains/preload.
-- Next: extend deterministic header checks, validate offline, deploy report-only cautiously, and inspect live headers/browser violations before enforcement.
+- Last done: report-only policy deployed in `a23a08e`; six representative live pages/PDF return 200 with exact headers, representative EN/JP home/gallery/research/map/consent-accept browser paths produced no actionable policy errors, and consent tests passed 4/4.
+- Next: enforce the unchanged CSP, verify all headers/browser paths live, document the durable policy, then close T-26.
 
 ## Working set
 - `.htaccess`, public HTML/JS/CSS inventory, security test harness, README/playbook, ledger/bookkeeping.
