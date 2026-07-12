@@ -1,15 +1,15 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-87.
+`tools/state/session.md`. Next free id: T-88.
 
 ## Active
 
-### T-86 — give the header home link an accessible name
-Inspect the rendered accessibility tree for the logo/home link on every EN/JP
-route; replace decorative empty logo alternatives with concise localized lab
-names if the link is unnamed, while keeping its pixels and destination intact,
-and add a permanent accessible-name contract.
+### T-87 — expose one meaningful page-level heading
+Audit the rendered heading tree on every route; replace CSS-hidden institutional
+`h1` elements with non-heading metadata and promote each visible page banner (or
+add a visually hidden home-page lab title) so every EN/JP document exposes
+exactly one useful `h1` without changing pixels or wording.
 
 ## Blocked / awaiting user
 
@@ -35,7 +35,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-85 made long content links and home-news cells safely wrappable, restored missing JP Computers table containment/helper parity, and passed all 52 pages plus EN/JP consent under WCAG text-spacing overrides; fast checks and six affected browser contracts pass (pending commit).
+- 2026-07-13 T-86 confirmed all 26 header logo/home links were unnamed in the accessibility tree, added concise localized logo alternatives without visual changes, enforced parity, and passed route-wide name/runtime plus fast checks (pending commit).
+- 2026-07-13 T-85 made long content links and home-news cells safely wrappable, restored missing JP Computers table containment/helper parity, and passed all 52 pages plus EN/JP consent under WCAG text-spacing overrides; fast checks and six affected browser contracts pass (`278b2a8`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-84 replaced the legacy -10px heading scroll margin with 24px after reproducing 27px of Japanese-heading clipping beneath the 81px sticky bar; every heading-target link passes at 320/900/901/1200px and all 18 browser tests pass (`919593a`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-83 added a permanent runtime-health contract over all 52 route/viewport loads, all mobile menus, and all gallery families, with zero uncaught exceptions, error-console messages, same-origin request failures, or local HTTP errors (`4efd88d`).
 - 2026-07-13 T-82 found current-page specificity masking the forced-color keyboard ring and programmatic Lightbox close focus lacking `:focus-visible`, added two scoped system-highlight overrides, and permanently covers EN/JP nav/link/consent/menu/table/gallery paths; all 16 browser tests pass (`6e5fd56`; live publish reserved for user/Claude site-publisher).

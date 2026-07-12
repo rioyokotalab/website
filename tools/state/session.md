@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T03:59+0900
-task: T-86 give the header home link an accessible name
+updated: 2026-07-13T04:02+0900
+task: T-87 expose one meaningful page-level heading
 status: in-progress
 
 ## Now
-- Goal: ensure the prominent header logo/home link has a concise localized accessible name on every route without visual changes.
-- Last done: T-85 found expanded long URLs clipped by content clear-fixes, added wrapping to main links/home-news cells, and uncovered missing JP Computers containment/helper parity; all 52 spaced route states and EN/JP consent pass, as do fast and six affected browser contracts.
-- Next: query accessible names for `.htitle > a` across all routes, confirm the empty logo alt plus CSS-hidden descendants leave it unnamed, add localized EN/JP alternatives only where required, enforce exact parity, and retain a browser test.
+- Goal: ensure every page exposes exactly one useful top-level heading in the accessibility tree while leaving its rendered design unchanged.
+- Last done: T-86 confirmed `.htitle > a` was unnamed because its image alt was empty and all textual children were display-none; localized logo alternatives now name all 26 links, with exact standards and route-wide accessibility/runtime tests passing.
+- Next: inventory accessible headings; change the hidden institutional `h1` to non-heading metadata, promote each subpage's visually identical banner heading, give EN/JP home pages a visually hidden lab-name `h1`, update selectors, and compare exact screen/print geometry plus heading trees.
 
 ## Working set
-- the 26 `.htitle > a` logo links and their EN/JP logo images; accessibility tree/name computation; mirrored HTML, standards and Playwright bookkeeping.
+- 26 header institutional labels and banner headings; EN/JP home main headings; heading accessibility trees; CSS selectors/visual equivalence, standards/tests/cache/ledger bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

@@ -330,6 +330,9 @@ def main() -> int:
             fail(findings, path, "unexpected iframe")
         if document.html_lang.lower() != expected_lang:
             fail(findings, path, f"lang must be {expected_lang}")
+        logo_name = "YOKOTA Laboratory" if expected_lang == "en" else "横田研究室"
+        if len(re.findall(rf'<div class="logomark"><img\b[^>]*\balt="{re.escape(logo_name)}"', text)) != 1:
+            fail(findings, path, "localized header-logo alternative mismatch")
         duplicates = sorted(key for key, count in Counter(document.ids).items() if count > 1)
         if duplicates:
             fail(findings, path, "duplicate IDs")
