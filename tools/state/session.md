@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T03:31+0900
-task: T-68 improve data-table header semantics
+updated: 2026-07-13T03:47+0900
+task: T-69 audit non-color link identification
 status: in-progress
 
 ## Now
-- Goal: give genuine data tables explicit header relationships while leaving layout tables and all rendered geometry untouched.
-- Last done: T-67 corrected four mismatched titles, made all 26 bilingual title/description pairs unique and page-local, mirrored descriptions into Open Graph, enforced exact route titles plus description length/uniqueness, and preserved all landmark geometry at 390/1200px.
-- Next: inventory all 38 tables by page, dimensions, cell tags/content and nesting; classify data versus layout; render candidate `td` to `th scope` changes against the current commit before accepting any edit.
+- Goal: ensure inline content links are identifiable without relying only on color while preserving navigation, cards, logos, galleries, and the site's restrained visual style.
+- Last done: T-68 classified all 38 tables, added 312 native row headers and 8 column headers, marked 8 layout tables presentational, enforced exact per-page semantics, matched accessibility-tree roles, and preserved exact cell/table geometry and computed styling at 390/1200px.
+- Next: compute adjacent inline link/text color ratios and current text-decoration across all pages, group failures by structural context, then design the narrowest selector that underlines prose links without affecting navigation or image-only links.
 
 ## Working set
-- All 38 public tables, nested-table structure, current computed cell geometry/styles, any scoped semantic markup/CSS and standards enforcement; ledger/bookkeeping.
+- All visible anchors and adjacent text contexts in light/dark modes; computed colors/decorations and structural selectors; any scoped CSS/cache bump/checker; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

@@ -437,7 +437,7 @@ ul.topnav li.active a, ul.topnav a:hover {
 	display: inline-block;
 	border-right: 1px solid rgba(255,255,255,0.35);
 }
-table td.line {
+table :is(td, th).line {
 	border-bottom: 1px solid var(--border);
 	padding: 6px 4px;
 }
@@ -463,7 +463,7 @@ table td.line {
 .width-92pct { width: 92%; }
 .width-98pct { width: 98%; }
 .width-100pct { width: 100%; }
-table td.uline {
+table :is(td, th).uline {
 	border-top: 1px solid var(--border);
 	border-bottom: 1px solid var(--border);
 	padding: 6px 4px;
@@ -530,13 +530,13 @@ section#gallery {
 	height: 500px;
 	border: 1px solid #999;
 }
-.wn td {
+.wn :is(td, th) {
 	padding: 4px 0;
 }
-.home-en .wn td:first-child {
+.home-en .wn :is(td, th):first-child {
 	padding-right: 1.5em;
 }
-.home-ja .wn td:first-child {
+.home-ja .wn :is(td, th):first-child {
 	margin-right: 1.5em;
 }
 .slogan-wide {

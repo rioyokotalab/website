@@ -46,6 +46,10 @@ class Document(HTMLParser):
         self.vertical_top_classes = 0
         self.legacy_base_presentation = 0
         self.table_heading_classes = 0
+        self.tables = 0
+        self.presentation_tables = 0
+        self.row_headers = 0
+        self.column_headers = 0
         self.headings: list[dict[str, object]] = []
         self._heading: dict[str, object] | None = None
         self._interactives: list[dict[str, object]] = []
@@ -71,6 +75,15 @@ class Document(HTMLParser):
             self.legacy_base_presentation += 1
         if "table-heading-cell" in values.get("class", "").split():
             self.table_heading_classes += 1
+        if tag == "table":
+            self.tables += 1
+            if values.get("role") == "presentation":
+                self.presentation_tables += 1
+        if tag == "th":
+            if values.get("scope") == "row":
+                self.row_headers += 1
+            elif values.get("scope") == "col":
+                self.column_headers += 1
         if tag == "html":
             self.html_lang = values.get("lang", "")
         if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
@@ -344,6 +357,16 @@ def main() -> int:
         expected_heading_cells = 4 if path.relative_to(ROOT).as_posix() in ("en/computers/index.html", "jp/computers/index.html") else 0
         if document.legacy_base_presentation or document.table_heading_classes != expected_heading_cells:
             fail(findings, path, "legacy base presentation or table heading class mismatch")
+        table_semantics = {
+            "en/index.html": (1, 33, 0, 0), "jp/index.html": (1, 15, 0, 0),
+            "en/news/index.html": (12, 105, 0, 0), "jp/news/index.html": (12, 109, 0, 0),
+            "en/member/index.html": (4, 25, 0, 3), "jp/member/index.html": (4, 25, 0, 3),
+            "en/member/yokota.html": (1, 0, 0, 1), "jp/member/yokota.html": (1, 0, 0, 1),
+            "en/computers/index.html": (1, 0, 4, 0), "jp/computers/index.html": (1, 0, 4, 0),
+        }
+        expected_tables, expected_rows, expected_columns, expected_presentation = table_semantics.get(path.relative_to(ROOT).as_posix(), (0, 0, 0, 0))
+        if (document.tables, document.row_headers, document.column_headers, document.presentation_tables) != (expected_tables, expected_rows, expected_columns, expected_presentation):
+            fail(findings, path, "data/layout table semantics mismatch")
         if document.unsafe_semantics:
             fail(findings, path, "JavaScript URL or inline event handler")
         missing_fragments = sorted(set(document.fragments) - document.targets)
