@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-46 reserve intrinsic logo width
+task: T-47 add asynchronous decoding to noncritical images
 status: in-progress
 
 ## Now
-- Goal: reserve each header logo's verified intrinsic aspect ratio before decode without changing its rendered size.
-- Last done: T-46 added verified 450x65 EN and 436x65 JP intrinsic logo dimensions to all 26 pages and permanently enforces them. Full suite passes, natural images load correctly, desktop geometry is exact, and mobile EN/JP geometry differs from live by at most 0.0625px (within the established 1px tolerance).
-- Next: rebase, inspect the logo-markup-only deployment preview, publish T-46, verify live dimensions, then close T-46 and start T-47.
+- Goal: let 155 already-lazy content images decode asynchronously without changing loading priority, dimensions, order, or presentation.
+- Last done: T-47 paired all 155 lazy images (69 EN, 86 JP) with `decoding="async"` and permanently enforces the pairing. Full suite passes; browser decode/load checks pass for EN/JP news, profile portraits, research, gallery, and computer imagery with natural dimensions intact.
+- Next: rebase, inspect the content-page-only deployment preview, publish T-47, verify representative live hints/images, then close T-47 and begin the more carefully staged T-48 inline-style/CSP migration.
 
 ## Working set
-- All 26 header-logo elements, exact intrinsic-dimension standards checks, desktop/mobile geometry and load verification, ledger/bookkeeping.
+- 155 lazy images across mirrored pages, loading/decoding standards checks, representative load/geometry browser verification, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

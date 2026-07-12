@@ -22,6 +22,7 @@ class Document(HTMLParser):
         self.fragments: list[str] = []
         self.images = 0
         self.images_without_alt = 0
+        self.lazy_images_without_async = 0
         self.eager_images: list[str] = []
         self.image_attrs: list[dict[str, str]] = []
         self.landmarks = Counter()
@@ -76,6 +77,8 @@ class Document(HTMLParser):
             self.images += 1
             if "alt" not in values:
                 self.images_without_alt += 1
+            if values.get("loading", "").lower() == "lazy" and values.get("decoding", "").lower() != "async":
+                self.lazy_images_without_async += 1
             if values.get("loading", "").lower() != "lazy":
                 self.eager_images.append(values.get("src", ""))
         if tag == "iframe":
@@ -169,6 +172,8 @@ def main() -> int:
             fail(findings, path, "accessible back-to-top link mismatch")
         if document.images_without_alt:
             fail(findings, path, "image without alt")
+        if document.lazy_images_without_async:
+            fail(findings, path, "lazy image missing asynchronous decode hint")
         expected_logo = "logoE.png" if expected_lang == "en" else "logo.png"
         expected_logo_width = "450" if expected_lang == "en" else "436"
         logos = [image for image in document.image_attrs if urlsplit(image.get("src", "")).path.endswith("/" + expected_logo)]

@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-46 — reserve intrinsic logo width
-Add verified intrinsic width alongside the existing logo height on every page
-to reduce layout shift before image decode. Confirm desktop/mobile geometry and
-do not change rendered dimensions.
-
 ### T-47 — add asynchronous decoding to noncritical images
 Apply `decoding="async"` to lazy content imagery while retaining the existing
 loading classification and dimensions. Verify galleries, portraits, and news
@@ -44,6 +39,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-46 added verified intrinsic 450x65 EN and 436x65 JP dimensions to all 26 header logos, enforced them, and preserved desktop/mobile geometry within 0.0625px (`d0a7d99`).
 - 2026-07-13 T-45 added localized accessible map titles, moved embed presentation into shared CSS, permanently enforced the contract, and preserved exact desktop/mobile dimensions (`d8c111a`).
 - 2026-07-13 T-44 marked exact current destinations for assistive technology in desktop/mobile navigation, permanently enforced linked/mobile-only/unlinked states, and preserved header geometry (`227fef0`).
 - 2026-07-13 T-43 added exact self-canonical and reciprocal EN/JA/x-default metadata to all 26 pages, permanently enforced mirrored mappings, and passed representative no-layout-change browser checks (`966b87b`).
