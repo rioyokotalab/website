@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T00:12+0900
-task: T-31 make language switching resilient without JavaScript
+updated: 2026-07-13T00:18+0900
+task: T-32 remove unused eval-based menu script
 status: in-progress
 
 ## Now
-- Goal: modernize the language switcher without altering labels, placement, style, or bilingual paths.
-- Last done: all 26 language controls now use direct mirrored links and work with JavaScript blocked; 26 loaders and unused `js/chglang.js` are removed. Path/parity/security/publish suites pass and browser tests pass 6/6. Secret scanning was made deletion-safe after this batch exposed the edge case.
-- Next: inspect the deletion-bearing deploy preview, publish T-31, verify representative live EN/JP navigation and removed asset 404, then advance to T-32.
+- Goal: eliminate obsolete packed/eval JavaScript and tighten CSP without changing current navigation behavior.
+- Last done: removed 26 dead loaders and `js/ddmenu_min.js`; zero eval/new-Function/ddmenu references remain. Added a simultaneous no-unsafe-eval report-only policy while keeping current enforcement. Security/publish suites and consent browser tests pass 4/4.
+- Next: preview and publish the report-only phase; inspect live CSP console/navigation/gallery/map/consent behavior, then remove `'unsafe-eval'` from enforcement and the temporary report-only header.
 
 ## Working set
-- All 26 EN/JP HTML pages, `js/chglang.js`, ledger/bookkeeping; use a temporary CRLF-safe edit script under `tools/out/`.
+- All 26 EN/JP HTML pages, `js/ddmenu_min.js`, `.htaccess`, browser/security tests, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

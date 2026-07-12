@@ -5,16 +5,11 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-31 — make language switching resilient without JavaScript
-Replace all 26 `javascript:void(0)`/inline `onclick` language controls with
-ordinary mirrored EN/JP links, remove the now-unused `chglang.js` loader and
-asset, and verify every counterpart path plus keyboard behavior. Preserve the
-exact labels, placement, and visual styling.
-
 ### T-32 — replace the legacy eval-based menu script
-Rewrite the tiny packed `ddmenu_min.js` as readable event-listener code without
-`eval`, preserve desktop dropdown and mobile behavior, run browser regression
-checks, then remove `'unsafe-eval'` from CSP after a report-only/live gate.
+The inventory found zero `.ddmenu` consumers, so remove all 26 loaders and the
+unused packed `ddmenu_min.js` rather than rewriting dead code. Run browser
+regression checks, then remove `'unsafe-eval'` from CSP after a simultaneous
+report-only/live gate.
 
 ### T-33 — externalize repeated executable inline scripts
 Move the repeated responsive-menu bootstrap from all 26 pages into a shared
@@ -68,6 +63,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-31 replaced all 26 JavaScript-only language controls with direct mirrored links, removed the unused loader/asset, made secret scanning deletion-safe, and verified keyboard/no-JavaScript navigation locally and live without visual or wording changes (`ac6c09b`).
 - 2026-07-13 T-30 independently verified all three pinned CDN assets and their SHA-384/crossorigin tags on six gallery pages, confirmed the exact Playwright 1.61.1 lock has zero known vulnerabilities, added pre-publish offline and disposable online audit commands, documented trusted sources/quarterly cadence, and proved packages/tests/caches cannot enter deploy staging.
 - 2026-07-13 T-26 inventoried all 27 public documents, deployed and browser-tested a narrow report-only CSP, then enforced it with `frame-ancestors 'none'`, restrictive Permissions Policy, and one-day HSTS without subdomains/preload; representative EN/JP home, gallery, research, map, and consent paths remain error-free (`a23a08e`, `3c9ef09`).
 - 2026-07-13 T-29 added and published deterministic credential-free security checks for public references, mixed/sensitive URLs, external-link isolation, consent-loader/static pre-consent requests, secret/placeholder patterns, exact deploy staging, HTTPS redirects, headers, and excluded live paths; `publish.sh` now enforces the offline suite, and live mode correctly preserves visibility of T-28's sentinel blocker (`270d494`).
