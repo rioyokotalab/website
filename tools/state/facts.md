@@ -4,6 +4,10 @@ Update in place when reality changes; date entries. No procedures here
 (-> skills/), no tasks (-> tools/todo.md).
 
 ## Site / pages
+- 2026-07-12 GA4 `G-DVRGG7FDLX` is live via privacy-first basic consent:
+  `js/analytics-consent.js` blocks all Google tag requests until acceptance,
+  persists/reopens bilingual choices locally, and keeps advertising consent
+  denied; commit `5199bbd`.
 - 2026-07-12 parity audit found en=19 vs jp=114 files and 0 broken local
   links across 16 core index pages; HTML page paths mirror, while JP-only
   files are shared image assets.
@@ -41,9 +45,4 @@ Update in place when reality changes; date entries. No procedures here
   deploy.sh (deletion-bearing; --dry-run first).
 - tools/ and skills/ are deploy-excluded; tools/out/ is gitignored
   scratch; tools/state/ is git-tracked.
-- 2026-07-12 pm: codex worker-sandbox outbound DNS/network went DOWN across
-  spark and standard pools (doi.org 000, empty bodies); Claude Bash
-  (site-checker) fallback worked; interactive driver sessions recover via
-  user-approved escalations. Separately: http:// arXiv API URLs 301 with an
-  empty body — always use https. Recheck network before relying on codex
-  lookups.
+- Use HTTPS for the arXiv API; HTTP redirects may yield an empty body.

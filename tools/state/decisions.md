@@ -10,11 +10,8 @@
   WORKER sessions remain prohibited and ambiguity defaults to WORKER.
 - 2026-07-12 T-11 zero-interaction configuration applied owner-side: routine
   in-scope work uses Claude bypass and Codex never/full-access after a cold
-  restart; explicit publish, push, credential, destructive, and scope-expansion
-  authorization remains a workflow requirement.
-- 2026-07-12 Round-2 redesign proposals declined: keep the current public
-  design and apply only Sol's non-design work; no T-13 prototype or redesign
-  plan is an active implementation target.
+  restart; credentials, destructive/force operations, and material
+  scope-expansion remain prohibited or owner-gated.
 - 2026-07-12 Context ledger adopted: all cross-session context lives in
   tools/todo.md + tools/state/{session,facts,decisions}.md with size
   budgets (tools/check-md-size.py, pre-commit), because session restarts

@@ -1,21 +1,21 @@
 driver: codex
-updated: 2026-07-12T21:06+0900
-task: T-12 add Google Analytics (GA4) to the website
-status: in-progress
+updated: 2026-07-12T21:12+0900
+task: idle
+status: idle
 
 ## Now
-- Goal: complete T-12 with GA4 `G-DVRGG7FDLX` and privacy-first basic consent, then verify/push/publish.
-- Last done: implementation verification passed, pull/rebase was current, and exact T-12 scope was committed as `4c8a20a`.
-- Next: run and inspect deletion-bearing `./deploy.sh --dry-run`; if uploads/deletions are expected, run the interactive publish pipeline, push, and verify live pages/assets and consent behavior.
+- Goal: clean handoff with a current, forward-looking task board.
+- Last done: T-12 is live/pushed at `5199bbd`; stale Round-2/T-9/completion notes were removed, T-15 through T-18 were seeded, and all finished `tools/out/` scratch was audited and deleted.
+- Next: start T-15 unless the owner chooses another active task.
 
 ## Working set
-- Site: `index.html`, 26 `en/**/*.html` + `jp/**/*.html`, 26 `Templates/*.dwt`, `js/analytics-consent.js`, `style.css`.
-- Ledger/evidence: `tools/todo.md`, `tools/state/session.md`, `tools/state/decisions.md`, `tools/out/t12-ga.md`, `tools/out/t12-consent.py`.
-- Sources: https://developers.google.com/tag-platform/security/concepts/consent-mode and https://developers.google.com/tag-platform/security/guides/consent.
-- Verify: exact target/count/parity checks, JS syntax, browser/network consent behavior, local HTTP, scoped whitespace, dry-run deletion review, live check.
+- Task board: `tools/todo.md` (T-15 through T-18).
+- Current facts/choices: `tools/state/facts.md`, `tools/state/decisions.md`.
+- Scratch policy: `tools/out/` is empty; new task outputs are created only while needed and deleted after verification/application.
+- Verify this cleanup with `python3 tools/check-md-size.py`, `git diff --check`, empty-directory check, and full staged diff review.
 
 ## Open questions
-- None; consent text will disclose GA purpose, local choice storage, and a persistent change-settings control.
+- Priority among T-15, T-16, and T-17; default is board order.
 
 ## Awaiting user
-- None.
+- T-18 requires owner access to GA Admin; no credentials should be shared.
