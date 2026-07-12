@@ -1,12 +1,12 @@
 driver: codex
-updated: 2026-07-13T00:29+0900
+updated: 2026-07-13T00:34+0900
 task: T-33 externalize repeated executable inline scripts
 status: in-progress
 
 ## Now
 - Goal: eliminate executable inline JavaScript and test removal of CSP `'unsafe-inline'` without changing page behavior.
-- Last done: externalized all 26 responsive bootstraps and the root language redirect; only two JSON-LD blocks remain inline. Security suite passes and browser tests pass 7/7 for consent, EN/JP redirects, and mobile menu behavior. Added a simultaneous report-only `script-src` without unsafe-inline while current enforcement remains.
-- Next: preview/publish the externalization/report-only phase, inspect live CSP reports (especially JSON-LD), then either hash JSON-LD or enforce no-unsafe-inline if clean.
+- Last done: externalization/report-only phase published as `557d795`; root redirect, EN/JP home JSON-LD, analytics acceptance, gallery, and map paths produced zero report-only violations or page errors. Enforcement is prepared without script `'unsafe-inline'`; style unsafe-inline remains for later markup/CSS work.
+- Next: publish the `.htaccess`-only enforcement change, repeat live browser/header checks, then close T-33 and advance to T-34.
 
 ## Working set
 - All 26 EN/JP HTML pages, root `index.html`, new shared JS, `.htaccess`, browser/security tests, ledger/bookkeeping.
