@@ -11,6 +11,12 @@ and grades only the resulting candidate diff. Raw Codex JSONL, stderr, prompt,
 patch, and result live under ignored `tools/out/agent-benchmark/`; compact
 per-run rows are appended to `results.jsonl`.
 
+Use `--handoff-mode runner-lite` for short instrumented trials: the runner
+captures the trajectory, patch, grade, metrics, and final message while the
+worker skips its durable report and log append. `runner-structured` additionally
+enforces `final.schema.json`; it is retained for measuring structured-output
+overhead rather than used by default. `runner` is its legacy alias.
+
 ```bash
 python3 tools/agent-benchmark/benchmark.py list
 python3 tools/agent-benchmark/benchmark.py selftest

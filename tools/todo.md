@@ -1,13 +1,21 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-109.
+`tools/state/session.md`. `T-109` through `T-117` form the original three-hour
+experiment; later iterations are inserted before final T-117 closure. Next free
+id: T-121.
 
 ## Active
 
-- **T-116 — Iteration 3: optimize handoff, review, and logging overhead**
-  - Reduce duplicated narrative in worker outputs while preserving commands, evidence, failures, and machine-readable results.
-  - Test whether compact handoffs lower total tokens without shifting hidden work to the driver.
+- **T-118 — Quantify repeatability and promotion confidence**
+  - Repeat representative low-cost routes, report median/range rather than trusting one run, and define a minimum evidence rule for retaining optimizations.
+  - Separate cache variance from changes in commands, output, capability, and total duration.
+- **T-119 — Optimize source inspection and command output**
+  - Test locate-first, bounded-range inspection on a large bilingual HTML task.
+  - Retain it only if hidden capability gates pass and measured context/tool-output cost falls.
+- **T-120 — Add decision-grade comparison logging**
+  - Add a reproducible baseline/candidate comparison that reports matched tasks, capability gates, token categories, command failures, tool output, timing, route, and missing evidence.
+  - Make unsafe comparisons fail loudly instead of relying on manual arithmetic.
 - **T-117 — Final regression and recommendations**
   - Run the final suite, summarize retained/rejected experiments, document remaining uncertainty, and update the canonical process files.
   - Produce a driver report with reproducible evidence and recommendations for the next benchmark expansion.
@@ -18,6 +26,7 @@ None.
 
 ## Recently completed
 
+- **T-116 — Runner-lite handoff retained:** matched WBD-001/003 stayed 100/100 while effective tokens fell 15.2%, tool output 12.6%, and worker duration 56.7%; redundant schema enforcement increased tokens 47.8% and was rejected (`tools/out/t116-handoff-iteration.md`).
 - **T-115 — Routing/escalation optimized:** selected portfolio is 4/4 at
   115,236 effective tokens (-12.7% vs baseline); bounded JS/visual work passes
   Terra/low, and identical two-route failures now trigger contract/grader audit

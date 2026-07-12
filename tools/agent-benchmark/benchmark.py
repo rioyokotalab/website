@@ -139,7 +139,7 @@ def prompt_for(task: dict[str, Any], task_id: str, prompt_mode: str, handoff_mod
     paths = ", ".join(task["authorized_paths"])
     context = ", ".join(task.get("context", []))
     deliverable = f"tools/out/benchmark-{task_id.lower()}.md"
-    if handoff_mode == "runner":
+    if handoff_mode.startswith("runner"):
         handoff = (
             "The instrumented runner captures your validated final JSON, raw trajectory, patch, and metrics. "
             "Do not edit tools/out or tools/codex-log. Run at most one focused static/syntax check; the independent "
@@ -247,7 +247,7 @@ def run_codex(task: dict[str, Any], task_id: str, workspace: Path, artifact: Pat
     ]
     if reference:
         command.extend(["--image", str(reference)])
-    if handoff_mode == "runner":
+    if handoff_mode in {"runner", "runner-structured"}:
         command.extend(["--output-schema", str(BENCHMARK_DIR / "final.schema.json")])
     env = os.environ.copy()
     env["PLAYWRIGHT_BROWSERS_PATH"] = str(ROOT / ".playwright" / "browsers")
@@ -482,7 +482,13 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--worker")
     run.add_argument("--effort", choices=("low", "medium", "high"))
     run.add_argument("--prompt-mode", choices=("full", "compact"), default="full")
-    run.add_argument("--handoff-mode", choices=("durable", "runner"), default="durable")
+    run.add_argument(
+        "--handoff-mode",
+        choices=("durable", "runner-lite", "runner-structured", "runner"),
+        default="durable",
+        help=("durable worker-owned report; runner-lite runner-owned artifacts; "
+              "runner-structured schema-enforced final (runner is its legacy alias)"),
+    )
     run.add_argument("--timeout", type=int)
     run.add_argument("--workspace-root")
     run.add_argument("--run-p2p", action="store_true")

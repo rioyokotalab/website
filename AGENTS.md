@@ -112,9 +112,10 @@ than silently changing model/effort.
 - Work only in authorized scope. Write the named `tools/out/` deliverable
   incrementally when required; it ends with the `## Structured result` fields
   defined in `skills/codex-dispatch.md`.
-- A short instrumented run may explicitly use runner-captured handoff. The
-  runner retains raw JSONL, stderr, patch, grade, metrics, and a schema-validated
-  final response and owns the log append; the worker does not load the dispatch
+- A short instrumented run may explicitly use runner-captured handoff. Prefer
+  schema-free `runner-lite`; the independent grader and runner artifacts are
+  the structured authority. The runner retains raw JSONL, stderr, patch, grade,
+  metrics, and the final response and owns the log append; the worker does not load the dispatch
   playbook or edit `tools/out/`/`tools/codex-log.md`. Keep output-file-first for
   lookup, long, incremental, or interruption-prone work.
 - Otherwise, the last delegated action appends exactly one newline-safe `tools/codex-log.md`
