@@ -39,8 +39,11 @@ untracked — reinstall after a fresh clone).
 - At every turn end where state changed; at session end. Task finished ->
   set `task: idle`, move one completion line to todo.md.
 - On user decisions: durable choice -> decisions.md; pending request ->
-  session.md "Awaiting user". Approvals (publish, git push, config apply)
-  are conversation-scoped: record the ASK, never a carried approval.
+  session.md "Awaiting user". Standing direct-DRIVER publish/push authority is
+  durable in decisions.md and the role playbook. Exceptional task-specific
+  permission outside standing scope (config apply, credentials, destructive or
+  material scope expansion) is conversation-scoped: record the ASK, never a
+  carried approval.
 
 ## session.md schema (keep these headings exactly)
     driver: claude | codex

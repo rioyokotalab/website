@@ -1,18 +1,20 @@
 # Skill: Publish and verify
 
-## Codex role boundary
+## Role boundary
 
 - A Claude-dispatched/MCP Codex WORKER never runs `publish.sh`, `deploy.sh`,
   `lftp`, `ssh`, or `git push`, even if a dispatch prompt requests it. It
   returns evidence to Claude. If the role is ambiguous, treat it as WORKER.
-- A directly user-started Codex DRIVER may prepare and execute a publish or
-  push under this skill. Transport/process heuristics are not authoritative:
-  DRIVER means the user started Codex directly with no bounded dispatch prompt.
-- The owner's 2026-07-12 standing authorization lets a direct Codex DRIVER
-  publish and push as the normal completion of owner-requested repository
-  changes without a separate permission prompt. It does not broaden the task:
-  read-only analysis, proposals, unfinished/blocked work, or unrelated changes
-  are not publication authorization.
+- A directly user-started Claude or Codex DRIVER may prepare and execute a
+  publish/push under this skill. Claude may route execution through its
+  `site-publisher`. Transport/process heuristics are not authoritative: DRIVER
+  means the user started the orchestrating agent directly with no bounded
+  dispatch prompt.
+- The owner's 2026-07-12 standing authorization lets a direct DRIVER publish
+  and push as the normal completion of owner-requested repository changes
+  without a separate permission prompt. It does not broaden the task: read-only
+  analysis, proposals, unfinished/blocked work, or unrelated changes are not
+  publication authorization.
 
 ## Direct DRIVER gates
 
@@ -45,8 +47,9 @@ and verify the remote branch after push.
 
 Pipeline (publish ONLY after the role and preflight gates above):
 1. Edit mirrored EN/JP pages; grep changed names/links site-wide.
-2. Preview: user checks http://localhost:8000/jp/index.html; wait for OK.
-3. Publish: Claude's site-publisher or an eligible direct Codex DRIVER runs
+2. Preview: the DRIVER checks http://localhost:8000/jp/index.html and the
+   relevant EN/JP pages in proportion to the change.
+3. Publish: Claude's site-publisher or an eligible direct DRIVER runs
    `./publish.sh "message"` and confirms interactively.
 4. Verify: curl the changed LIVE pages (https://www.rio.scrc.iir.isct.ac.jp).
 5. Document: update project instructions/skills for durable changes; ensure

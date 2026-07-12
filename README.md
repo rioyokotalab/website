@@ -128,7 +128,7 @@ python3 -m http.server 8000
 | `skills/` | Canonical playbooks for editing, parity, content, lookup, exporting, and publishing. |
 | `tools/` | Cross-session ledger, exporters, checks, worker registry, metrics, and transient `out/` deliverables. |
 | `CLAUDE.md`, `AGENTS.md` | Role-specific operating rules for Claude and Codex. |
-| `publish.sh`, `deploy.sh` | Approval-gated publish pipeline and SFTP mirror implementation. |
+| `publish.sh`, `deploy.sh` | Role-gated publish pipeline and SFTP mirror implementation. |
 
 The authoritative playbook index is [`skills/README.md`](skills/README.md).
 Read the skill for the area being changed before editing; the root README is
@@ -155,8 +155,9 @@ For a normal page change:
    conventions, and update the matching templates for site-wide markup.
 3. Run the scoped parity and link checks described by the playbooks.
 4. Preview locally and inspect both languages.
-5. Publish only after the user explicitly approves the reviewed change in the
-   current conversation.
+5. A directly user-started DRIVER publishes and pushes the completed change
+   after every preflight gate passes; dispatched/MCP workers return evidence to
+   their orchestrator and never publish or push.
 
 There is no build step. A simple local preview from the repository root is:
 
@@ -197,11 +198,14 @@ The context ledger separates current work by purpose:
 
 ## Publishing and deployment boundary
 
-Publishing is approval-gated. The complete edit, preview, approval, publish,
-live-verification, and Git synchronization procedure is
-`skills/publish-and-verify.md`. Codex does not run the publishing commands;
-publishing is performed by the user or Claude's site-publisher after explicit
-approval.
+Publishing is role- and preflight-gated. A directly user-started Claude or
+Codex DRIVER has standing authority to publish and push completed
+owner-requested repository changes without a separate permission prompt.
+Dispatched/MCP Codex workers never publish or push; Claude may route an eligible
+publish through its `site-publisher`. Blocked work, unrelated dirty files,
+credentials, force operations, unexpected deploy changes, and material scope
+expansion remain fail-closed. The complete procedure is
+`skills/publish-and-verify.md`.
 
 `deploy.sh` mirrors the deploy-included repository tree to the SFTP web root
 with deletion. Its exclusions protect repository-only material from both
@@ -216,5 +220,5 @@ and the CV sources. `README.md` is explicitly excluded by
 - Keep shared markup in `Templates/*.dwt` synchronized with pages.
 - Preserve `.dont-remove-me` and never expose credentials or `.git`.
 - Add `rel="noopener noreferrer"` to new `target="_blank"` links.
-- Do not publish or push merely because an edit is complete; follow the
-  approval and ownership rules in the role instructions and publish playbook.
+- Publish/push only from an eligible direct DRIVER after the role, scope,
+  verification, rebase, and deploy-dry-run gates in the publish playbook pass.

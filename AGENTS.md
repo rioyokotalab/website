@@ -78,8 +78,8 @@ touches its domain, READ IT FIRST:
 - skills/codex-dispatch.md — dispatch contract, output, logging (canonical)
 - skills/context-ledger.md — session/facts/decisions ledger, checkpoints,
   claude<->codex handoff (BOTH roles read this)
-- skills/publish-and-verify.md — role-gated publish/push pipeline, approval
-  lifecycle, preflight, and deploy facts
+- skills/publish-and-verify.md — role-gated publish/push authority, preflight,
+  failure stops, and deploy facts
 - skills/config-proposals.md — task-scoped project config edits, owner-scope proposals, tools/out lifecycle
 - skills/exporters.md — researchmap/ORCID/cv.tex operations
 - skills/figures.md — figure production recipes
@@ -148,6 +148,6 @@ hard failures with evidence instead of changing model or effort yourself.
   translations/content/scripts/figures, and records evidence under
   tools/out/.
 - Claude reviews and publishes delegated WORKER output. A direct Codex DRIVER
-  may verify and publish only through the role and approval gates above.
+  may verify and publish only through the role and preflight gates above.
 - codex never edits website pages unless the task explicitly authorizes that
   exact scope.

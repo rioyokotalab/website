@@ -8,7 +8,7 @@ Repo-root `skills/` holds the single canonical copy of every recurring procedure
 
 ## Context ledger (cross-session memory)
 
-All cross-session context lives on disk, never only in chat: `tools/todo.md` (task board), `tools/state/session.md` (in-flight handoff state), `tools/state/facts.md` (current site/cluster/tooling facts), `tools/state/decisions.md` (durable decisions). Protocol, routing, budgets, checkpoint triggers: `skills/context-ledger.md`. Session start: read todo.md + session.md before acting; checkpoint session.md at task start, after each completed step, and at turn end; record pending asks — approvals are conversation-scoped, never carried. codex can DRIVE this repo directly (charter: `AGENTS.md` "Driving this repo", same ledger and skills); Claude↔codex handoff in either direction happens only through these files. Ledger files commit silently like the bookkeeping trio; budgets enforced by `tools/check-md-size.py` (pre-commit).
+All cross-session context lives on disk, never only in chat: `tools/todo.md` (task board), `tools/state/session.md` (in-flight handoff state), `tools/state/facts.md` (current site/cluster/tooling facts), `tools/state/decisions.md` (durable decisions). Protocol, routing, budgets, checkpoint triggers: `skills/context-ledger.md`. Session start: read todo.md + session.md before acting; checkpoint session.md at task start, after each completed step, and at turn end. Standing direct-DRIVER publish/push authority is durable; exceptional task-specific asks are conversation-scoped and never carried. codex can DRIVE this repo directly (charter: `AGENTS.md` "Driving this repo", same ledger and skills); Claude↔codex handoff in either direction happens only through these files. Ledger files commit silently like the bookkeeping trio; budgets enforced by `tools/check-md-size.py` (pre-commit).
 
 ## Standing directive: codex offload and config edits
 
@@ -47,11 +47,11 @@ Project MCP trust prompts once: `~/.claude.json` records `"hasTrustDialogAccepte
 
 ## Publishing workflow
 
-Publish only after explicit user approval. Full pipeline, pre-publish checks, and deploy/auth facts: `skills/publish-and-verify.md`.
+A directly user-started Claude DRIVER normally publishes and pushes completed owner-requested repository changes without a separate permission prompt, after every gate in `skills/publish-and-verify.md` passes. Dispatched workers never broaden their role; eligible Claude publishes route through `site-publisher`.
 
 1. **Edit:** mirrored EN/JP pages (skills/html-editing.md, skills/en-jp-parity.md); member/news rules incl. the Alumni prepend: skills/news-and-members.md; grep changed names/links site-wide.
-2. **Preview:** user checks `http://localhost:8000/jp/index.html`; wait for explicit approval.
-3. **Publish:** route the approved publish to `site-publisher` for its documented preflight and command.
+2. **Preview:** inspect `http://localhost:8000/jp/index.html` and relevant EN/JP pages in proportion to the change.
+3. **Publish:** after the role/scope/rebase/dry-run gates pass, route the unchanged prepared publish to `site-publisher`; stop for direction only on a documented failed gate or material scope expansion.
 4. **Verify:** curl changed live pages.
 5. **Document:** update project instructions/skills for durable structure/convention/workflow/tooling changes and ensure GitHub reflects both the site and any required instruction update.
 

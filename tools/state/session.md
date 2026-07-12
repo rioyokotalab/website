@@ -1,20 +1,19 @@
 driver: codex
-updated: 2026-07-12T21:32+0900
+updated: 2026-07-12T21:50+0900
 task: idle
 status: idle
 
 ## Now
-- Goal: idle after restoring the README cluster quickstart.
-- Last done: T-19 added and validated exact commands for pinned Claude/Codex setup, authentication, clone, direct Codex config/trust, generated Claude MCP registration, pre-commit checks, health checks, and driver/preview launch.
-- Next: start T-15 unless the owner chooses another active task; T-20 tracks the discovered account-specific Claude preview hook.
+- Goal: idle after T-15 policy alignment.
+- Last done: README, CLAUDE.md, AGENTS.md, context-ledger.md, publish-and-verify.md, and the durable decision now agree on standing direct Claude/Codex DRIVER authority and dispatched/MCP worker prohibition.
+- Next: start T-16 unless the owner chooses T-17 or explicitly authorizes T-20 project-config work.
 
 ## Working set
-- T-19 files: `README.md`, `tools/todo.md`, `tools/state/session.md`.
-- Sources: official Codex CLI/config docs, official Claude Code setup/auth/settings docs, NVM v0.40.4 docs, and current local CLI help/settings.
-- Verification passed: 12 shell blocks parse with `bash -n`; Codex TOML command parses and writes mode 600; MCP generator drift, markdown budgets, diff check, unique task IDs, secret-pattern diff scan, and empty `tools/out/` pass.
+- T-15 files: `README.md`, `CLAUDE.md`, `AGENTS.md`, `skills/context-ledger.md`, `skills/publish-and-verify.md`, `tools/state/decisions.md`.
+- Verification passed: targeted stale-language scan, both markdown size guards, MCP drift check, `git diff --check`, full diff review, empty `tools/out/`.
 
 ## Open questions
-- The committed Claude preview hook is account-specific; tracked as T-20 because changing `.claude/settings.json` needs explicit project-config scope.
+- T-20 still requires explicit `.claude/settings.json` project-config scope.
 
 ## Awaiting user
 - T-18 requires owner access to GA Admin; no credentials should be shared.
