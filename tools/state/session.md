@@ -1,20 +1,20 @@
-driver: codex
-updated: 2026-07-12T11:11+0900
-task: T-9 researchmap drift check (report only, NO import)
-status: awaiting-user
+driver: fable (coordinator)
+updated: 2026-07-12T15:17+0900
+task: Round 2 4-way eval setup
+status: in-progress
 
 ## Now
-- Goal: report the explicit public researchmap drift check without importing or interacting with the login UI.
-- Last done: public API check regenerated a 29-record proposed-insert JSONL (2 papers, 13 media, 7 committees, 7 projects), with 0 updates/deletes and 2 ambiguous projects; driver report, metrics, and codex log are written.
-- Next: wait for the user's explicit decision whether to manually upload the reviewed JSONL; do not import it automatically.
+- Goal: establish the judge-only ledger, reseed the shared Round 2 board, and prepare all contestant branches from one judge-free scaffold.
+- Last done: Round 1 verdict captured; judge log/checklist, Round 2 tasks, and canonical model-evaluation protocol drafted.
+- Next: git surgery worker commits `main`, creates the judge-free scaffold, records its SHA, and resets all four contestant branches.
 
 ## Working set
-- Files: tools/out/researchmap-import.jsonl; tools/out/t9-researchmap-drift.md; tools/todo.md; tools/state/session.md
-- Scratch: tools/out/t9-researchmap-drift.md; tools/out/driver-report-20260712-1109.md
-- Verify: 29 JSONL inserts, no updates/deletes; no import or login UI action.
+- Files: `tools/judge/{log,todo}.md`; `tools/todo.md`; `skills/{model-eval,README}.md`; `tools/state/session.md`.
+- Scratch: `tools/out/r2-drafts.md`.
+- Verify: requested line limits, task IDs/rules, judge-only protection lifecycle, and one shared scaffold SHA for all branches.
 
 ## Open questions
-- Whether to manually upload the reviewed 29-record JSONL through researchmap Settings > Import.
+- None for file drafting; follow-up worker must record the scaffold SHA in `tools/judge/todo.md`.
 
 ## Awaiting user
-- Review `tools/out/researchmap-import.jsonl` and decide whether to manually upload it. This is explicit-only; no approval is carried forward.
+- Run the four contestants after setup and branch reset complete.

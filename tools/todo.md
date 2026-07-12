@@ -1,25 +1,60 @@
 # Lab website — task board (ledger)
 
 Protocol + schemas: skills/context-ledger.md. In-flight detail:
-tools/state/session.md. Next free id: T-10.
+tools/state/session.md. Next free id: T-14.
+
+## Round 2 rules (drivers read first)
+
+- Work ONLY tasks T-10 through T-13 plus optional proposals. NO publish/deploy this round. Explicit approvals (publish, researchmap/ORCID) are NEVER assumed.
+- Drivers MAY append proposals under `## Proposed (round 2)`: id `P-<short-slug>`, 2–4 lines each covering goal, scope, first step, and why valuable. The judge triages winners' proposals into real T-ids. Proposal quality is scored.
+- Put evidence and deliverables under `tools/out/t1X-*`; follow `skills/context-ledger.md` ledger discipline. Commit bookkeeping files silently with other work.
 
 ## Active
-(none)
+
+### T-10 — update the repo README
+Update (or create if missing) root `README.md` to reflect current reality: a
+hand-built static EN/JP site with frozen public tree, `skills/` playbooks,
+`tools/` ledger+exporters+metrics, agent/codex delegation, and publish workflow.
+MUST verify `deploy.sh` exclusion status so README is NOT deployed publicly and
+record evidence. Keep it accurate against `CLAUDE.md`/`AGENTS.md` without
+duplicating them wholesale. Evidence: `tools/out/t10-readme.md`.
+
+### T-11 — relax permissions to minimize approvals
+Audit current approval friction (PreToolUse hooks, `.claude` settings, codex
+sandbox/approval-policy, `.claude/config-edit-approved` flow) and deliver
+`tools/out/t11-permissions.md` proposing the minimum-approval configuration,
+with EXACT apply commands per `skills/config-proposals.md`. HARD LIMITS: publish
+stays explicit-approval; hand-edit-only files (`.claude/agents/*.md`, `.mcp.json`,
+`AGENTS.md`, `CLAUDE.md`) stay proposal-only with accidental-edit blocks;
+researchmap/ORCID mirroring stays explicit-only. Direct edits are allowed only
+to files outside that list, and each must be justified.
+
+### T-12 — add Google Analytics (GA4) to the website
+Add `gtag.js` to EVERY public HTML page (`en/` AND `jp/`) and keep
+`Templates/*.dwt` in sync per `skills/html-editing.md`. Use placeholder ID
+`G-XXXXXXXXXX`; record blocked-on-user for the real ID; do NOT publish. Verify
+EN/JP insertion-count parity per `skills/en-jp-parity.md` and localhost
+rendering. Briefly note privacy/consent considerations in `tools/out/t12-ga.md`.
+
+### T-13 — propose a completely new web design
+Proposal ONLY: no `en/` or `jp/` page edits. Deliver
+`tools/out/t13-redesign/proposal.md` plus an optional self-contained prototype
+under `tools/out/t13-redesign/` only (deploy-excluded). Respect the frozen URL
+tree: restyle in place, move no pages. Cover `style.css` strategy,
+mobile/accessibility, migration plan, and effort estimate.
+
+## Proposed (round 2)
+
+(empty — drivers append here)
 
 ## Blocked / awaiting user
-### T-9 — researchmap drift check (report only, NO import)
-Drift found: `tools/out/researchmap-import.jsonl` has 29 proposed inserts
-(2 published papers, 13 media items, 7 committee memberships, 7 research
-projects), with 0 updates/deletes and 2 ambiguous existing projects. No
-import or login UI action occurred. Awaiting the user's explicit decision
-whether to manually upload the reviewed JSONL through researchmap Settings
-> Import. Evidence: tools/out/t9-researchmap-drift.md.
-Reviewer note: the 29 inserts are composition-identical to the Cat-5 batch
-already uploaded by the user — likely pending confirmation/processing on
-researchmap's side. Check researchmap's import status BEFORE re-uploading
-(blind re-import would create duplicates).
+
+(none — T-9 cleared per user instruction 2026-07-12 without an upload decision;
+reviewed JSONL retained at `tools/out/researchmap-import.jsonl`)
 
 ## Recently completed (history lives in git)
+
+- 2026-07-12 Round-1 4-way eval judged: terra > sol > fable > opus; terra merged (4a15349); tips tagged eval/r1-*; board cleared for round 2.
 - 2026-07-12 T-8 confirmed rtx6000-ada is still DOWN+NOT_RESPONDING with 8 configured GPUs; facts.md refreshed, no page edit or job submission; raw Slurm evidence: tools/out/t8-cluster-status.md.
 - 2026-07-12 T-7 added the missing 2025-06 CoRR presentation to cv/cv.tex (45 -> 46 presentation items); personal page has no publication section to mirror; no build run; evidence: tools/out/t7-cv-reconciliation.md.
 - 2026-07-12 T-6 added `10.1145/3721145.3730422` to the paired ICS 2025 entry after Crossref+DBLP confirmation; scoped EN/JP, local HTTP, and resolver checks pass. ISC candidate left unedited for material title mismatch; evidence: tools/out/t6-doi-attributes.md.
@@ -28,16 +63,7 @@ researchmap's side. Check researchmap's import status BEFORE re-uploading
 - 2026-07-12 T-4 documented HTML-path vs shared-asset EN/JP parity and recorded the 19/114-file, 0-broken-link audit; markdown size check passes (uncommitted).
 - 2026-07-12 T-2 fixed the malformed publish-and-verify.md table row in skills/README.md; confirmed no other row lacks a leading pipe (uncommitted).
 - 2026-07-12 T-1 applied: CLAUDE.md/AGENTS.md context-ledger versions + pre-commit hook installed by user.
-- 2026-07-12 Context-ledger scheme built: skills/context-ledger.md,
-tools/state/{session,facts,decisions}.md, tools/check-md-size.py,
-dispatch-contract ledger pointers, README index; CLAUDE.md/AGENTS.md
-proposals pending (T-1).
-- 2026-07-12 Codex network access enabled
-  (sandbox_workspace_write.network_access=true, codex-cli 0.144.1);
-  CLAUDE.md + skills/web-lookup.md updated.
-- 2026-07-12 Cat 5 grant-ID extraction -> researchmap research_projects:
-  10/22 projects populated, 21 papers; fetch_live guard bug fixed; 41
-  PDFs archived in tools/papers/. Leftover fact (7 unfilled rows) ->
-  tools/state/facts.md.
-- RM<->website consolidation Cat 1-4 published (80a0de8); media_coverage
-  exporter (d543652); latency pins (56669c5).
+- 2026-07-12 Context-ledger scheme built: skills/context-ledger.md, tools/state/{session,facts,decisions}.md, tools/check-md-size.py, dispatch-contract ledger pointers, README index; CLAUDE.md/AGENTS.md proposals pending (T-1).
+- 2026-07-12 Codex network access enabled (sandbox_workspace_write.network_access=true, codex-cli 0.144.1); CLAUDE.md + skills/web-lookup.md updated.
+- 2026-07-12 Cat 5 grant-ID extraction -> researchmap research_projects: 10/22 projects populated, 21 papers; fetch_live guard bug fixed; 41 PDFs archived in tools/papers/. Leftover fact (7 unfilled rows) -> tools/state/facts.md.
+- RM<->website consolidation Cat 1-4 published (80a0de8); media_coverage exporter (d543652); latency pins (56669c5).

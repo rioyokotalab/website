@@ -297,3 +297,11 @@
 {"date":"2026-07-12","task_type":"other","agent":"site-coordinator","tier":"none","duration_ms":0,"success":true,"note":"T-9 researchmap-import.jsonl lives in terra branch commit; tools/out cleared for cold starts"}
 {"date":"2026-07-12","task_type":"config-edit","agent":"site-editor","tier":"none","duration_ms":129851,"success":false,"note":"round-4 prep follow-up also cut off at final commit step; committed by codex full-access call; lesson: cap site-editor calls at ~8 steps"}
 {"date":"2026-07-12","task_type":"config-edit","agent":"site-coordinator","tier":"codex-spark-low","duration_ms":60000,"success":true,"note":"persisted round-4 A/B rubric+protocol to tools/state/ab-round4.md for cold-session grading (est duration)"}
+{"date":"2026-07-12","task_type":"git-summary","agent":"coordinator","tier":"codex-spark-low","duration_ms":null,"success":true,"note":"eval-compare branch sol extraction"}
+{"date":"2026-07-12","task_type":"git-summary","agent":"coordinator","tier":"codex-spark-low","duration_ms":null,"success":true,"note":"eval-compare branch terra extraction"}
+{"date":"2026-07-12","task_type":"git-summary","agent":"coordinator","tier":"codex-spark-low","duration_ms":null,"success":true,"note":"eval-compare branch fable extraction"}
+{"date":"2026-07-12","task_type":"git-summary","agent":"coordinator","tier":"codex-spark-low","duration_ms":null,"success":true,"note":"eval-compare branch opus extraction"}
+{"date":"2026-07-12","task_type":"other","agent":"coordinator","tier":"codex-high","duration_ms":null,"success":true,"note":"eval-compare 4-branch verdict"}
+{"date":"2026-07-12","task_type":"content-draft","agent":"coordinator","tier":"codex-high","duration_ms":null,"success":true,"note":"round-2 setup drafting: judge ledger split, board reseed T-10..T-13, skills/model-eval.md"}
+{"date":"2026-07-12","task_type":"other","agent":"coordinator","tier":"codex-spark-medium","duration_ms":null,"success":false,"note":"round-2 git surgery attempt 1: .git read-only under workspace-write sandbox; env failure, redispatched full-access"}
+{"date":"2026-07-12","task_type":"other","agent":"coordinator","tier":"codex-spark-medium","duration_ms":null,"success":true,"note":"round-2 git surgery attempt 2 full-access: r1 tags, main commit, shared scaffold, 4 branch resets"}
