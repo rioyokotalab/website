@@ -5,9 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-- **T-114 — Iteration 1: optimize context loading and prompt structure**
-  - Introduce task-scoped context manifests and progressive disclosure; remove duplicated or non-predictive prompt material.
-  - Re-run the fixed suite and retain the change only if capability stays above the gate.
 - **T-115 — Iteration 2: optimize model/effort routing and escalation**
   - Calibrate the cheapest passing route by task class, with explicit automatic escalation on deterministic failure signals.
   - Re-run the fixed suite and compare cost, capability, latency, and review burden with baseline.
@@ -24,6 +21,9 @@ None.
 
 ## Recently completed
 
+- **T-114 — Progressive disclosure retained:** capability 2/4→3/4, mean
+  90.25→92.5, effective tokens -8.2%, input -25.5%, worker time -21.8%, tool
+  output -36.7%; matched passing tasks remain 100 (`tools/out/t114-context-iteration.md`).
 - **T-113 — Diagnostic logging upgraded:** backward-compatible schema v2,
   append-only validation/import/summaries, completed-event command counts,
   token/context/tool/duration/gate/failure fields, and raw artifact pointers are
