@@ -5,10 +5,10 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-94 — add machine-readable archive dates
-Wrap every single-day date in both full news archives with native time semantics
-and a valid ISO value while preserving the displayed punctuation and zero
-padding; leave multi-day ranges and seminar field labels unchanged.
+### T-95 — remove empty table-section artifacts
+Audit explicit table-section elements in both news archives; remove only empty
+legacy `tbody` pairs that follow rows, preserve all nonempty sections and row
+order, and verify browser table geometry and accessibility semantics.
 
 ## Blocked / awaiting user
 
@@ -34,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-94 added valid ISO/native time semantics to 96 English and 100 Japanese single-day archive dates, preserved four legacy styled separators and all four visible multi-day ranges, and passed exact static, five layout/browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-93 added valid ISO/native time semantics to all 32 rendered English and 14 rendered Japanese home-news dates, deliberately excluded 18 commented Japanese historical rows, and passed exact static, five browser/layout, fast, and staging checks (pending commit).
 - 2026-07-13 T-92 identified the two mirrored CV downloads as `application/pdf`, retained their explicit labels/new-tab behavior, and passed exact static, two route-wide browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-91 wrapped the unchanged EN/JP postal, telephone, and email text in native address semantics, kept maps outside, neutralized default italics, and passed exact static, five browser/layout, fast, and staging checks (pending commit).

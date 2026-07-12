@@ -358,6 +358,25 @@ def main() -> int:
                 parsed_dates = []
             if parsed_dates and parsed_dates != sorted(parsed_dates, reverse=True):
                 fail(findings, path, "home-news dates must be newest first")
+        elif relative == "news/index.html":
+            archive_times = re.findall(r'<time datetime="(\d{4}-\d{2}-\d{2})">(.*?)</time>', visible_text, flags=re.S | re.I)
+            expected_archive_dates = 96 if expected_lang == "en" else 100
+            if len(archive_times) != expected_archive_dates:
+                fail(findings, path, "news-archive time count mismatch")
+            for iso, marked_up_visible in archive_times:
+                visible = re.sub(r'<[^>]+>', '', marked_up_visible)
+                components = visible.split(".")
+                try:
+                    parsed = date.fromisoformat(iso)
+                    visible_date = date(*(int(component) for component in components))
+                except (TypeError, ValueError):
+                    fail(findings, path, "invalid news-archive calendar date")
+                    continue
+                if parsed != visible_date:
+                    fail(findings, path, "news-archive visible/ISO date mismatch")
+            ranges = re.findall(r'>\s*(\d{4}\.\d{1,2}\.\d{1,2}-\d{1,2})\s*</th>', visible_text, flags=re.I)
+            if len(ranges) != 2:
+                fail(findings, path, "news-archive date ranges must remain unwrapped")
         elif date_pairs or re.search(r'</?time\b', text, flags=re.I):
             fail(findings, path, "unexpected time element")
         heading_name = "YOKOTA Laboratory" if expected_lang == "en" else "横田研究室"
