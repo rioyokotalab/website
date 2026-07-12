@@ -9,7 +9,7 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Recently completed
 
-- 2026-07-12 T-23 removed 26 unused Dreamweaver `.dwt` templates and all 264 `Instance*` control comments; byte-level checks confirm HTML changed only by marker removal, with zero broken local references and passing browser/publish regressions.
+- 2026-07-12 T-23 removed and deployed deletion of 26 unused Dreamweaver `.dwt` templates and all 264 `Instance*` control comments; all 26 live pages and the CV are byte-identical to commit `9636ff7`, with the template URL returning 404.
 - 2026-07-12 T-18 owner confirmed GA4 event-data retention is 2 months and Google Signals/advertising features remain disabled; no credentials or account details were stored.
 - 2026-07-12 T-21 enabled bounded native Codex delegation with minimal context forks, strict authority boundaries, output-first handoff, root review, and proportional verification; a zero-fork benchmark matched the root baseline and exposed one documentation omission that was fixed.
 - 2026-07-12 T-20 replaced account-specific Claude preview hooks with a project-root-aware helper and verified simultaneous clone isolation, stale-PID ownership protection, and default port compatibility.

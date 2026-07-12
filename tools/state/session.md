@@ -1,19 +1,19 @@
 driver: codex
-updated: 2026-07-12T23:52+0900
-task: T-23 remove legacy Dreamweaver templates
-status: in-progress
+updated: 2026-07-12T23:56+0900
+task: idle
+status: idle
 
 ## Now
-- Goal: publish the verified removal of unused Dreamweaver templates and control comments.
-- Last done: deletion-bearing live dry-run passed: 26 expected HTML uploads, the pending rebuilt CV PDF from T-22, and removal of the obsolete remote `Templates/` directory; no unrelated upload/deletion.
-- Next: run `publish.sh`, confirm its repeated dry-run, then verify 26 live pages contain zero Dreamweaver markers, the live CV matches locally, the remote template path is absent, and GitHub main matches.
+- Goal: idle after T-23 Dreamweaver template removal.
+- Last done: published commit `9636ff7`; all 26 live HTML pages and the rebuilt CV are byte-identical locally, no live marker remains, the former template URL returns 404, and `origin/main` matches.
+- Next: await a new owner task.
 
 ## Working set
-- Scope: all 26 EN/JP HTML pages (comment-only edits), remove `Templates/`, update `README.md`, `AGENTS.md`, `CLAUDE.md`, `skills/html-editing.md`, ledger/bookkeeping.
-- Publish gate: remote dry-run must show only 26 HTML uploads plus deletion of obsolete `Templates/`; stop on any other deletion or unexpected upload.
+- T-23 commit: `9636ff7`; live verification: 26/26 HTML byte matches, zero markers, CV byte match, template URL 404.
+- `tools/out/` is empty; worktree and remote main were clean after deployment.
 
 ## Open questions
-- No content-level HTML differences. `git diff --check` reports CRLF as trailing whitespace on changed legacy lines; byte comparison verifies exact marker-only transformation.
+- None.
 
 ## Awaiting user
 - None.

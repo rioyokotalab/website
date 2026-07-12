@@ -21,7 +21,8 @@ Update in place when reality changes; date entries. No procedures here
 - Every external target="_blank" link carries rel="noopener noreferrer".
 - Page HTML retains legacy floats, table layouts, CRLF, and uppercase unclosed
   `<LI>`, but the unused Dreamweaver templates/control comments were removed
-  in T-23; style.css targets existing selectors — keep class/id names stable.
+  and deployed in T-23 (`9636ff7`); style.css targets existing selectors — keep
+  class/id names stable.
 - Frozen public tree: en/ and jp/ mirror every path 1:1; js/chglang.js
   swaps the prefix, so missing counterparts 404.
 

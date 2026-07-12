@@ -388,4 +388,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | codex-driver (gpt-5) | T-22 field reconciliation | tools/out/driver-report-20260712-2241.md | n/a | awaiting owner review; safe local fixes ready to push
 2026-07-12 | codex-driver (gpt-5) | T-20 preview portability; T-21 native delegation policy and benchmark | tools/out/driver-report-20260712-2324.md | n/a | done; repository-only push pending
 2026-07-12 | codex-driver (gpt-5) | T-18 record owner-confirmed GA4 privacy settings | tools/out/driver-report-20260712-2331.md | n/a | done; ledger clear
-2026-07-12 | codex-driver (gpt-5) | T-23 remove legacy Dreamweaver templates and markers | tools/out/driver-report-20260712-2348.md | n/a | verified; publish pending
+2026-07-12 | codex-driver (gpt-5) | T-23 remove legacy Dreamweaver templates and markers | tools/out/driver-report-20260712-2348.md | n/a | done; published and live-verified 9636ff7
