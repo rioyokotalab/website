@@ -5,10 +5,10 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-96 — remove empty semantic article artifacts
-Audit empty semantic containers across the mirrored trees; remove only elements
-that contribute neither content nor layout, retain deliberate spacing and
-gallery hooks, and enforce the resulting minimal inventory.
+### T-97 — retire empty gallery hooks and dead CSS
+Confirm the mirrored empty `#gallery` sections have no runtime, navigation, or
+layout consumers; remove the hooks and their exclusive selectors together,
+preserve live image-frame styling, and compare screen/print geometry.
 
 ## Blocked / awaiting user
 
@@ -34,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-96 classified seven empty semantic containers, retained three spacing paragraphs and two CSS-referenced gallery hooks, removed only two zero-purpose Japanese profile articles, and passed exact static, five layout/runtime, fast, and staging checks (pending commit).
 - 2026-07-13 T-95 removed 20 empty legacy `tbody` artifacts from the EN/JP news archives while retaining all three nonempty explicit sections and every row, and passed source/rendered-DOM, five layout/browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-94 added valid ISO/native time semantics to 96 English and 100 Japanese single-day archive dates, preserved four legacy styled separators and all four visible multi-day ranges, and passed exact static, five layout/browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-93 added valid ISO/native time semantics to all 32 rendered English and 14 rendered Japanese home-news dates, deliberately excluded 18 commented Japanese historical rows, and passed exact static, five browser/layout, fast, and staging checks (pending commit).
