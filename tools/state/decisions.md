@@ -1,5 +1,9 @@
 # Durable decisions (newest first; one-line rationale each)
 
+- 2026-07-12 Direct Codex publish exception: a user-started DRIVER has standing
+  authority to publish/push completed owner-requested repository changes after
+  mandatory preflight, without a separate permission prompt; dispatched/MCP
+  WORKER sessions remain prohibited and ambiguity defaults to WORKER.
 - 2026-07-12 T-11 zero-interaction configuration applied owner-side: routine
   in-scope work uses Claude bypass and Codex never/full-access after a cold
   restart; explicit publish, push, credential, destructive, and scope-expansion
@@ -14,8 +18,8 @@
   skills/context-ledger.md.
 - 2026-07-12 Driver symmetry: codex can drive the repo (AGENTS.md
   "Driving this repo"); handoff in either direction happens only through
-  the ledger. Publish stays user/Claude-executed; codex-driver git push
-  needs explicit in-conversation user approval.
+  the ledger. Publish/push authority follows the current role gates in
+  AGENTS.md and skills/publish-and-verify.md.
 - 2026-07-12 Ledger lives under tools/state/ to inherit the tools/ deploy
   exclusion (no deploy.sh change needed).
 - 2026-07-12 Dispatch prompts point at on-disk state instead of restating

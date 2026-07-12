@@ -1,9 +1,53 @@
 # Skill: Publish and verify
 
-Pipeline (publish ONLY after explicit user approval in the conversation):
+## Codex role boundary
+
+- A Claude-dispatched/MCP Codex WORKER never runs `publish.sh`, `deploy.sh`,
+  `lftp`, `ssh`, or `git push`, even if a dispatch prompt requests it. It
+  returns evidence to Claude. If the role is ambiguous, treat it as WORKER.
+- A directly user-started Codex DRIVER may prepare and execute a publish or
+  push under this skill. Transport/process heuristics are not authoritative:
+  DRIVER means the user started Codex directly with no bounded dispatch prompt.
+- The owner's 2026-07-12 standing authorization lets a direct Codex DRIVER
+  publish and push as the normal completion of owner-requested repository
+  changes without a separate permission prompt. It does not broaden the task:
+  read-only analysis, proposals, unfinished/blocked work, or unrelated changes
+  are not publication authorization.
+
+## Direct DRIVER gates
+
+Before publishing or pushing, the DRIVER must:
+
+1. Checkpoint `tools/state/session.md`; inspect the complete status, untracked
+   files, branch, remote, and commits ahead/behind. Never use force-push.
+2. Run `SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git pull --rebase --autostash
+   origin main` before any push. Keep both sides of non-overlapping conflicts;
+   abort and ask the user about overlapping or ambiguous conflicts.
+3. Run task-relevant verification and confirm the task is complete, the ledger
+   has no publish blocker, the worktree contains no unrelated changes that the
+   pipeline would sweep, and deploy-included content has no known placeholder.
+   Do not publish `G-XXXXXXXXXX`. Preview locally in proportion to the change.
+4. For a live publish, run `./deploy.sh --dry-run` and inspect every deletion
+   and unexpected upload. The script may use configured authentication; never
+   inspect or expose credential files and never invoke raw `ssh` or `lftp`.
+5. Report the exact commit/worktree scope, checks, dry-run uploads/deletions,
+   live URLs to verify, and warnings while proceeding. Stop and ask for owner
+   direction only for an actual failed gate: ambiguous rebase/conflict, unrelated
+   dirty scope, unfinished or blocked work, unexpected deletion/upload, auth or
+   credential issue, destructive/force operation, or material scope expansion.
+
+After all gates pass, checkpoint the prepared scope and run `./publish.sh
+"message"` in a PTY, answering its confirmation without a separate owner prompt.
+For push-only, push without running deploy. On any auth, rebase, deploy, commit,
+or push failure, stop and report the partial state; do not force, improvise with
+credentials, or claim completion. Verify the changed live pages after deploy
+and verify the remote branch after push.
+
+Pipeline (publish ONLY after the role and preflight gates above):
 1. Edit mirrored EN/JP pages; grep changed names/links site-wide.
 2. Preview: user checks http://localhost:8000/jp/index.html; wait for OK.
-3. Publish: site-publisher runs `echo y | ./publish.sh "message"`.
+3. Publish: Claude's site-publisher or an eligible direct Codex DRIVER runs
+   `./publish.sh "message"` and confirms interactively.
 4. Verify: curl the changed LIVE pages (https://www.rio.scrc.iir.isct.ac.jp).
 5. Document: update project instructions/skills for durable changes; ensure
    GitHub reflects both the site and instruction updates. A publish is not
@@ -30,5 +74,5 @@ Deploy facts:
 - Excluded from deploy (never uploaded AND never deleted remotely): .git,
   .claude, tools, skills, deploy.sh, publish.sh, CLAUDE.md, README.md,
   .gitignore, .mcp.json, AGENTS.md, cv/cv.tex, cv/cv.cls, cv/build-cv.sh.
-- NEVER upload .git or credentials. codex never runs publish.sh, deploy.sh,
-  lftp, ssh, or git push — not even dry-runs.
+- NEVER upload `.git` or credentials. The Codex WORKER prohibition and direct
+  DRIVER exception are defined above.

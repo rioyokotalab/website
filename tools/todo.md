@@ -1,7 +1,7 @@
 # Lab website — task board (ledger)
 
 Protocol + schemas: skills/context-ledger.md. In-flight detail:
-tools/state/session.md. Next free id: T-14.
+tools/state/session.md. Next free id: T-15.
 
 ## Round 2 rules (drivers read first)
 
@@ -34,6 +34,7 @@ reviewed JSONL retained at `tools/out/researchmap-import.jsonl`.)
 
 ## Recently completed (history lives in git)
 
+- 2026-07-12 T-14 gave directly user-started Codex DRIVER sessions standing authority to publish/push completed owner-requested changes after fail-closed preflight; dispatched/MCP workers remain prohibited; evidence: tools/out/t14-direct-publish-policy.md.
 - 2026-07-12 T-13 closed without adoption: owner reviewed and declined all Round-2 redesign proposals; no public design/style/template change was applied and temporary review links were removed.
 - 2026-07-12 T-11 zero-interaction configuration applied owner-side and verified: project Claude + six agents use bypass; five Codex MCP servers and owner Codex defaults use never/full-access; 11 nonblocking owner hooks retained; cold restart required. Archived evidence: tools/out/r2-deliverables/sol/t11-permissions.md.
 - 2026-07-12 T-10 rewrote root README for the current static EN/JP structure, ledger/playbooks/exporters/metrics, agent delegation, and approval-gated publish workflow; deploy.sh exact exclusion and parity verified; evidence: tools/out/t10-readme.md.

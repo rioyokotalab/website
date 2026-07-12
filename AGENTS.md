@@ -8,13 +8,17 @@ user started codex directly with no dispatch prompt — you orchestrate, per
 step; served as-is).
 
 ## Hard rules
-- NEVER run publish.sh, deploy.sh, lftp, or ssh (either role): publishing
-  is executed only by the user or Claude's site-publisher. git push:
-  workers never; a driver only with explicit user approval in the current
-  conversation. Never touch credentials, ~/.ssh, or .dont-remove-me; never
-  edit .git internals. Project .claude/ and .mcp.json changes require explicit
-  task scope. Drivers may run normal git commands; workers only when the task
-  says so.
+- Role is the security boundary. A WORKER never runs publish.sh, deploy.sh,
+  lftp, ssh, or git push, regardless of its dispatch prompt. A directly
+  user-started DRIVER has standing authority to run the repository publish
+  pipeline and git push as the normal completion of owner-requested repository
+  changes, without asking for separate permission, subject to every preflight
+  and stop gate in skills/publish-and-verify.md. If role is ambiguous, act as
+  WORKER. Never force-push; never read, print, copy, or modify credentials,
+  ~/.ssh, or .dont-remove-me; never edit .git internals. The approved repository
+  scripts may use configured authentication without Codex inspecting it. Project
+  .claude/ and .mcp.json changes require explicit task scope. Drivers may run
+  normal git commands; workers only when the task says so.
 - Workers: do not edit website files unless the task explicitly says so —
   default mode is read, analyze, and produce output under tools/out/ for
   Claude to review. Drivers: edit per skills/ conventions (EN/JP parity,
@@ -44,11 +48,13 @@ checkpoints it). Drivers: own session.md.
 3. Work solo — no subagents, no fan-out: small steps, frequent
    checkpoints; assume the session can die at any step. Durable state =
    ledger + tools/out/ + commits, never chat.
-4. Same gates as Claude: publish only on explicit user approval in the
-   CURRENT conversation (skills/publish-and-verify.md), executed by the
-   user or Claude's site-publisher — never by codex. Project config follows
-   the task-scoped direct-edit rule in skills/config-proposals.md; Claude-side
-   hooks do not bind you, so self-enforce. `git pull --rebase` before any push.
+4. Follow skills/publish-and-verify.md. A DRIVER normally publishes and pushes
+   completed owner-requested repository changes without a separate permission
+   prompt. Report the preflight scope while proceeding; stop instead of asking
+   for routine approval only when a documented gate fails or the required
+   action would expand the user's task scope. Project config follows the
+   task-scoped direct-edit rule in skills/config-proposals.md; Claude-side hooks
+   do not bind you, so self-enforce.
 5. Session-end bookkeeping (commits silently with other work): update
    session.md + todo.md; write the driver session report to
    tools/out/driver-report-<YYYYMMDD-HHMM>.md per skills/context-ledger.md
@@ -72,8 +78,8 @@ touches its domain, READ IT FIRST:
 - skills/codex-dispatch.md — dispatch contract, output, logging (canonical)
 - skills/context-ledger.md — session/facts/decisions ledger, checkpoints,
   claude<->codex handoff (BOTH roles read this)
-- skills/publish-and-verify.md — publish pipeline and deploy facts (context
-  only: codex never publishes)
+- skills/publish-and-verify.md — role-gated publish/push pipeline, approval
+  lifecycle, preflight, and deploy facts
 - skills/config-proposals.md — task-scoped project config edits, owner-scope proposals, tools/out lifecycle
 - skills/exporters.md — researchmap/ORCID/cv.tex operations
 - skills/figures.md — figure production recipes
@@ -141,6 +147,7 @@ hard failures with evidence instead of changing model or effort yourself.
 - codex generates, analyzes, parses, looks up, drafts
   translations/content/scripts/figures, and records evidence under
   tools/out/.
-- Claude reviews, decides, executes scripts, verifies, publishes, reports.
-- codex never publishes, never verifies its own work, and never edits
-  website pages unless the task explicitly authorizes that exact scope.
+- Claude reviews and publishes delegated WORKER output. A direct Codex DRIVER
+  may verify and publish only through the role and approval gates above.
+- codex never edits website pages unless the task explicitly authorizes that
+  exact scope.
