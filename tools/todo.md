@@ -5,16 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-61 — make repeated gallery link names distinguishable
-Derive localized, stable accessible names for repeated Lightbox links from
-their nearby visible captions or image context so keyboard/screen-reader users
-can distinguish destinations without changing captions or image alternatives.
-
-### T-62 — improve narrow-screen data-table containment
-Identify tables that overflow their content column on mobile and add scoped
-horizontal containment only where needed, retaining desktop geometry and all
-cell content without reflowing the site's general layout.
-
 ### T-63 — audit document and asset compression hints
 Verify server compression/cache headers for HTML/CSS/JS/images, add only
 server-compatible safe directives or filename cache policies, and preserve the
@@ -44,6 +34,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-62 contained only the five narrow-screen page families with clipped legacy tables, made only live overflow regions keyboard-scrollable, preserved exact desktop table geometry, and passed 320/390px containment checks (pending commit).
+- 2026-07-13 T-61 gave all 143 Lightbox links unique localized page-local ordinal names, enforced exact order/count, and passed keyboard/pointer gallery checks (`803b27c`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-60 removed 26 empty keywords elements and 53 redundant HTML5 MIME type attributes, retained/parsed JSON-LD, enforced clean heads, and verified resources/scripts/layout (`f57c653`).
 - 2026-07-13 T-59 deferred all 64 remaining external script references, permanently enforced defer, and passed consent/menu/pagetop/jQuery-Lightbox/CSP tests with no page errors (`c9b1e03`).
 - 2026-07-13 T-58 fixed the EN home heading sequence, replaced one empty heading with a geometry-identical separator, localized all 143 Lightbox link names, removed three empty links, and added permanent heading/interactive-name checks (`282ba34`).

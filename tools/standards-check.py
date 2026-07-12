@@ -26,6 +26,7 @@ class Document(HTMLParser):
         self.eager_images: list[str] = []
         self.image_attrs: list[dict[str, str]] = []
         self.landmarks = Counter()
+        self.main_classes: list[str] = []
         self.nav_labels: list[str] = []
         self.skip: str | None = None
         self.unsafe_semantics: list[int] = []
@@ -51,6 +52,7 @@ class Document(HTMLParser):
         self.unnamed_interactives = 0
         self.lightbox_labels: list[str] = []
         self.external_scripts_without_defer = 0
+        self.external_script_sources: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -87,6 +89,8 @@ class Document(HTMLParser):
             self.targets.add(values["name"])
         if tag in ("header", "main", "footer"):
             self.landmarks[tag] += 1
+            if tag == "main":
+                self.main_classes = values.get("class", "").split()
         if tag == "nav":
             self.nav_labels.append(values.get("aria-label", ""))
         if tag == "meta" and values.get("property", "").lower().startswith("og:"):
@@ -126,6 +130,8 @@ class Document(HTMLParser):
             self.inline_executable_scripts += 1
         if tag == "script" and values.get("src") and "defer" not in values:
             self.external_scripts_without_defer += 1
+        if tag == "script" and values.get("src"):
+            self.external_script_sources.append(values["src"])
         if values.get("id") == "menubar_hdr":
             self.menu_button = {"tag": tag, **values}
 
@@ -256,6 +262,16 @@ def main() -> int:
             fail(findings, path, "duplicate IDs")
         if document.landmarks != Counter({"header": 1, "main": 1, "footer": 1}):
             fail(findings, path, "requires one header, main, and footer")
+        containment_pages = {
+            "en/computers/index.html", "en/member/yokota.html", "jp/member/yokota.html",
+            "en/news/index.html", "jp/news/index.html",
+        }
+        expected_containment = path.relative_to(ROOT).as_posix() in containment_pages
+        if ("mobile-table-containment" in document.main_classes) != expected_containment:
+            fail(findings, path, "narrow-screen table containment scope mismatch")
+        table_helpers = [src for src in document.external_script_sources if "table-scroll.js" in src]
+        if table_helpers != (["../../js/table-scroll.js?v=20260713"] if expected_containment else []):
+            fail(findings, path, "narrow-screen table helper scope mismatch")
         if len(document.nav_labels) != 2 or any(not label for label in document.nav_labels) or len(set(document.nav_labels)) != 2:
             fail(findings, path, "requires two distinctly labeled navigation landmarks")
         expected_skip = "Skip to main content" if expected_lang == "en" else "本文へ移動"
