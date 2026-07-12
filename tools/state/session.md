@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-60 remove obsolete and empty head metadata
+task: T-61 make repeated gallery link names distinguishable
 status: in-progress
 
 ## Now
-- Goal: remove empty/obsolete head markup while retaining all meaningful resource and structured-data semantics.
-- Last done: T-60 removes exactly 26 empty keywords elements, 26 text/javascript attributes, and 27 text/css attributes while retaining JSON-LD types. Permanent checks reject regressions. Full suite passes; styles/scripts load without request failures, structured data parses, representative layout is intact, and pagetop behavior passes deterministically in reduced-motion mode (the initial smooth-scroll assertion sampled mid-animation).
-- Next: rebase, inspect the 27-HTML head-only deployment preview, publish T-60, verify representative live heads/resources, then close T-60 and start T-61.
+- Goal: make every repeated Lightbox link distinguishable to assistive technology without changing visible captions or image alternatives.
+- Last done: T-61 gives all 143 Lightbox links page-local localized ordinal names and permanently enforces their exact order/count. Full suite passes; all six galleries have unique role names, first/middle/last links focus correctly, and uniquely named keyboard/pointer activation opens Lightbox without geometry changes.
+- Next: rebase, inspect the six-page markup-only deployment preview, publish T-61, verify representative live unique names, then close T-61 and start T-62 mobile table containment audit.
 
 ## Working set
-- All 27 HTML heads, empty-keywords and redundant MIME-type standards checks, resource/JSON-LD/browser geometry verification, ledger/bookkeeping.
+- Six EN/JP computers/picture/research pages, exact localized ordinal accessible names, keyboard/Lightbox/geometry verification, standards enforcement, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

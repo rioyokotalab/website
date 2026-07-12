@@ -199,9 +199,13 @@ def main() -> int:
         document.feed(text)
         expected_lang = "en" if path.relative_to(ROOT).parts[0] == "en" else "ja"
         lightbox_counts[expected_lang] += len(document.lightbox_labels)
-        expected_lightbox_label = "View larger image" if expected_lang == "en" else "拡大画像を表示"
-        if any(label != expected_lightbox_label for label in document.lightbox_labels):
-            fail(findings, path, "localized Lightbox accessible name mismatch")
+        lightbox_total = len(document.lightbox_labels)
+        expected_lightbox_labels = [
+            f"View larger image {index} of {lightbox_total}" if expected_lang == "en" else f"拡大画像を表示（{lightbox_total}枚中{index}枚）"
+            for index in range(1, lightbox_total + 1)
+        ]
+        if document.lightbox_labels != expected_lightbox_labels:
+            fail(findings, path, "localized ordered Lightbox accessible names mismatch")
         if document.unnamed_interactives:
             fail(findings, path, "unnamed link or button")
         if any(not str(heading["text"]).strip() for heading in document.headings):

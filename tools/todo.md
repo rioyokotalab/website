@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-60 — remove obsolete and empty head metadata
-Remove empty keywords metadata and redundant HTML5 `type` attributes from
-stylesheets/scripts, while retaining executable-vs-JSON-LD semantics and exact
-resource loading.
-
 ### T-61 — make repeated gallery link names distinguishable
 Derive localized, stable accessible names for repeated Lightbox links from
 their nearby visible captions or image context so keyboard/screen-reader users
@@ -49,6 +44,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-60 removed 26 empty keywords elements and 53 redundant HTML5 MIME type attributes, retained/parsed JSON-LD, enforced clean heads, and verified resources/scripts/layout (`f57c653`).
 - 2026-07-13 T-59 deferred all 64 remaining external script references, permanently enforced defer, and passed consent/menu/pagetop/jQuery-Lightbox/CSP tests with no page errors (`c9b1e03`).
 - 2026-07-13 T-58 fixed the EN home heading sequence, replaced one empty heading with a geometry-identical separator, localized all 143 Lightbox link names, removed three empty links, and added permanent heading/interactive-name checks (`282ba34`).
 - 2026-07-13 T-57 eliminated all remaining legacy table presentation attributes in two computed-style-gated batches, mapped 91 widths and 8 header cells to classes, rejected an incorrect centering rule before publish, and preserved representative EN/JP layout exactly (`b5db8bb`, `c73d6b1`).
