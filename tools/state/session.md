@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T03:00+0900
-task: T-66 make local-link integrity a permanent gate
+updated: 2026-07-13T03:14+0900
+task: T-67 normalize page titles and descriptions
 status: in-progress
 
 ## Now
-- Goal: make resolution of every public local URL and same-page/cross-page fragment a deterministic commit gate without network dependence.
-- Last done: T-65 scanned all 52 page/mode combinations, changed only the dark-mode oral-highlight red (3.12:1 to 6.61:1), removed one stray near-invisible EN hero character, and ended with zero computed text-contrast failures.
-- Next: inventory all public href/src/srcset/action/poster/data URLs, normalize directory-index and query/fragment resolution, classify intentional nonpublic/external schemes, and compare the result with the staged public manifest before writing the gate.
+- Goal: make page titles and descriptions clear, unique, and restrained across mirrored EN/JP routes without rewriting sound content or changing visible pages.
+- Last done: T-66 added a deploy-manifest-aware gate for 1,676 local public URLs/fragments and CSS assets, integrated it into the full suite, and proved directory/same-origin/fragment success plus missing file/fragment/CSS failures with fixtures.
+- Next: parse all titles and description metadata, report missing/duplicate/overlong/route-mismatched pairs and EN/JP asymmetries, then change only confirmed ambiguous metadata and add structural enforcement.
 
 ## Working set
-- All public HTML and staged public files; deterministic URL/fragment parser; integration into tools/test-security.sh and supply-chain/deploy exclusions; ledger/bookkeeping.
+- All 26 bilingual heads plus root redirect metadata; title/description lengths and uniqueness; any CRLF-safe page-local corrections and standards enforcement; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
