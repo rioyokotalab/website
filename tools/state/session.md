@@ -1,19 +1,19 @@
 driver: codex
-updated: 2026-07-12T21:50+0900
+updated: 2026-07-12T22:02+0900
 task: idle
 status: idle
 
 ## Now
-- Goal: idle after T-15 policy alignment.
-- Last done: README, CLAUDE.md, AGENTS.md, context-ledger.md, publish-and-verify.md, and the durable decision now agree on standing direct Claude/Codex DRIVER authority and dispatched/MCP worker prohibition.
-- Next: start T-16 unless the owner chooses T-17 or explicitly authorizes T-20 project-config work.
+- Goal: idle after T-16 publish-pipeline hardening.
+- Last done: `publish.sh` now enforces main/rebase/placeholder/dry-run gates, commits and pushes before deploy, pushes clean ahead commits, and reports safe partial states; seven isolated tests pass.
+- Next: start T-17 unless the owner explicitly authorizes T-20 project-config work.
 
 ## Working set
-- T-15 files: `README.md`, `CLAUDE.md`, `AGENTS.md`, `skills/context-ledger.md`, `skills/publish-and-verify.md`, `tools/state/decisions.md`.
-- Verification passed: targeted stale-language scan, both markdown size guards, MCP drift check, `git diff --check`, full diff review, empty `tools/out/`.
+- T-16 files: `publish.sh`, `tools/test-publish.sh`, `skills/publish-and-verify.md`.
+- Verification passed: Bash syntax; executable modes; clean-ahead push; nonconflicting rebase; conflicting rebase abort; included/excluded placeholder behavior; push failure prevents deploy; deploy failure reports pushed/possibly-partial state; markdown/diff/empty-output checks.
 
 ## Open questions
-- T-20 still requires explicit `.claude/settings.json` project-config scope.
+- None for T-16; T-20 remains separately scoped.
 
 ## Awaiting user
 - T-18 requires owner access to GA Admin; no credentials should be shared.

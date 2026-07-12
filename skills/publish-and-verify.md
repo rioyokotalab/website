@@ -40,10 +40,13 @@ Before publishing or pushing, the DRIVER must:
 
 After all gates pass, checkpoint the prepared scope and run `./publish.sh
 "message"` in a PTY, answering its confirmation without a separate owner prompt.
-For push-only, push without running deploy. On any auth, rebase, deploy, commit,
-or push failure, stop and report the partial state; do not force, improvise with
-credentials, or claim completion. Verify the changed live pages after deploy
-and verify the remote branch after push.
+The script rebases, rejects known deploy-included placeholders, previews the
+mirror, commits, pushes, and only then deploys. Thus a push failure cannot alter
+the live site; a deploy failure may leave the live mirror partial but the exact
+source commit is already on GitHub. For push-only, push without running deploy.
+On any auth, rebase, deploy, commit, or push failure, stop and report the partial
+state; do not force, improvise with credentials, or claim completion. Verify the
+changed live pages after deploy and the remote branch after push.
 
 Pipeline (publish ONLY after the role and preflight gates above):
 1. Edit mirrored EN/JP pages; grep changed names/links site-wide.

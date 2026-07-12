@@ -1,5 +1,8 @@
 # Durable decisions (newest first; one-line rationale each)
 
+- 2026-07-12 T-16 publish transaction order: rebase and dry-run first, then
+  commit+push before live deployment, so push failure cannot change production
+  and any partial deploy is traceable to an existing GitHub commit.
 - 2026-07-12 T-12 GA4 policy: use measurement ID `G-DVRGG7FDLX` with
   privacy-first basic consent—no Google tag/request before explicit acceptance;
   persist accept/reject locally and keep settings reversible—because the owner
