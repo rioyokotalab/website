@@ -258,6 +258,9 @@ h1 {
 	display: none;
 }
 
+.htitle > a {
+	display: inline-block;
+}
 .htitle a:hover {
 	opacity: 0.75;
 	text-decoration: none;

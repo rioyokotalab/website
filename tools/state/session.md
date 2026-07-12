@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:11+0900
-task: T-89 audit keyboard focus order and reachability
+updated: 2026-07-13T04:16+0900
+task: T-90 identify alternate-language navigation links
 status: in-progress
 
 ## Now
-- Goal: ensure the rendered keyboard sequence contains every visible interactive once, excludes hidden controls, and cannot strand keyboard users.
-- Last done: T-88 classified all 207 image elements, confirmed purposeful localized exposure for both logos and portraits plus localized names for linked galleries, removed one Japanese machine-generated placeholder from an English decorative event image, and passed fast plus route-wide browser checks.
-- Next: measure focusable DOM elements against actual Tab traversal on representative desktop/mobile routes, then expand to all routes and fix only reproduced omissions, duplicates, or traps.
+- Goal: expose destination language on every visible EN↔JP route switch while keeping link text and layout untouched.
+- Last done: T-89 traversed all focusable elements on every route at 390/1200px, reproduced the header logo link's 0×0 focus box, added a containing inline-block anchor, and passed exhaustive forward/reverse keyboard, layout, forced-color, fast, and staging checks.
+- Next: inventory language-switch href/text/hreflang across all mirrored pages, then add and enforce exact localized destination hints if absent.
 
 ## Working set
-- Public links/buttons/iframes, responsive hidden states, Tab and reverse-Tab sequences, accessible names, standards/browser tests.
+- EN/JP header language-switch links, mirrored routes, `hreflang`, standards/browser tests.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
