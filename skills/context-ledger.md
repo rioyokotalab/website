@@ -85,7 +85,7 @@ persistence.
   and tier driver-claude|driver-codex; workers keep tier = worker name.
 
 ## Driver session report (reviewer telemetry)
-Every codex driver session ends by writing
+Every driver session (claude or codex) ends by writing
 tools/out/driver-report-<YYYYMMDD-HHMM>.md (transient; the reviewer
 deletes it after grading) containing:
 - model + reasoning effort actually used; session start/end times.
@@ -97,8 +97,9 @@ deletes it after grading) containing:
 - Self-noted gaps: anything a reviewer should double-check.
 Metrics: one line PER task attempted, tier driver-codex, plus an optional
 "model" key (allowed only on driver-* lines). codex-log line format for
-drivers: `date | codex-driver (<model>) | tasks | report path | n/a |
-outcome`. The Claude review pass grades the report against git diff (not
+drivers: `date | <brand>-driver (<model>) | tasks | report path | n/a |
+outcome` (brand = claude or codex; claude drivers use agent "claude",
+tier "driver-claude"). The Claude review pass grades the report against git diff (not
 against session.md claims), records the verdict as a metrics line
 (task_type "other", note "driver-review: ..."), then deletes the report
 scratch.

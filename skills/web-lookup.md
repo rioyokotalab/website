@@ -26,3 +26,10 @@ Claude Bash curl is the fallback and one independent-verification route.
 - Never ask the user to confirm publicly-verifiable facts (CLI syntax, API
   behavior, versions); verify from authoritative sources. Escalate only for
   preferences, private values, or judgment decisions.
+
+Cap scope: the <=2-item session cap counts EXTERNAL LOOKUP ITEMS (papers,
+DOIs, facts resolved via ad-hoc web queries). Running a repository
+exporter/tool that internally calls authorized APIs (e.g.
+researchmap-export.py --check-live) is NOT a lookup item; it is governed
+by its own task's instructions. (Codified 2026-07-12 after the Sol/Terra
+T-9 interpretation split.)
