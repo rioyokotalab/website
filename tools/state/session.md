@@ -5,8 +5,8 @@ status: in-progress
 
 ## Now
 - Goal: replace obsolete empty named anchors with IDs on semantic target elements while preserving every fragment and scroll destination in reviewable batches.
-- Last done: T-51 second batch converts all 152 equal News name/id anchors (81 EN, 71 JP) to same-position span IDs; 48 mismatches remain and exact-equality anchors are permanently rejected. Full suite passes, and representative EN/JP recent/old event fragments preserve scrollY, target, and date-cell positions exactly at desktop/mobile.
-- Next: rebase, inspect and publish the two-News-page checkpoint, verify live event fragments, then audit the 48 mismatched aliases for collision-safe resolution before the final T-51 batch.
+- Last done: T-51 final batch preserves 33 unique mismatched names as adjacent ID aliases, retains the 48 current IDs, and removes 15 colliding names whose fragments already resolve to existing IDs. Zero named anchors remain and the full suite passes. Ten representative alias/current/collision fragments preserve exact URL scroll and date-cell positions at both desktop and mobile.
+- Next: rebase, inspect and publish the two-News-page final T-51 checkpoint, verify live aliases, then close T-51 and start T-52 crawler discovery files.
 
 ## Working set
 - EN/JP News exact event anchors and 48 ambiguous aliases, fragment-target/unique-ID standards checks, representative live/local scroll-position comparisons, ledger/bookkeeping.

@@ -218,12 +218,8 @@ def main() -> int:
                 fail(findings, path, f"versioned {asset.split('?')[0]} mismatch")
     if len(style_versions) != 1:
         findings.append("stylesheet cache versions differ across pages")
-    if remaining_named_anchors != 48:
-        findings.append(f"expected 48 ambiguous News event aliases, found {remaining_named_anchors}")
-    for news_path in (ROOT / "en" / "news" / "index.html", ROOT / "jp" / "news" / "index.html"):
-        news_text = news_path.read_text(encoding="utf-8")
-        if re.search(r'<a\s+name="([^"]+)"\s+id="\1"', news_text, flags=re.I):
-            fail(findings, news_path, "equal name/id event anchor not modernized")
+    if remaining_named_anchors:
+        findings.append(f"legacy named anchors remain: {remaining_named_anchors}")
     for script in sorted((ROOT / "js").glob("*.js")):
         source = script.read_text(encoding="utf-8")
         if re.search(r"\.style\b|setAttribute\s*\(\s*['\"]style['\"]", source):
