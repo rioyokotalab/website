@@ -5,12 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-40 — simplify the legacy menu JavaScript
-Replace the 2015 classList compatibility implementation and global helper
-surface with small modern DOM code scoped to the responsive menu. Preserve the
-current 800px behavior and remove dead smartphone/screen helpers after browser
-coverage proves equivalence.
-
 ### T-41 — improve back-to-top semantics and reduced-motion behavior
 Give the arrow-only back-to-top link localized accessible text, use a stable
 top target instead of an empty fragment, and respect `prefers-reduced-motion`
@@ -50,6 +44,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-40 folded responsive navigation into one scoped modern script, removed 26 obsolete loaders and the 2015 global/polyfill asset, and corrected desktop button visibility caught by regression; EN/JP keyboard/pointer and desktop/mobile behavior passed (`7e7e940`).
 - 2026-07-13 T-39 replaced all 26 decorative hamburger divs with localized real buttons, synchronized `aria-expanded`, preserved geometry within 1px, and permanently enforced the accessible control contract (`4c6748f`).
 - 2026-07-13 T-36 migrated all 145 uniform `<p align="center">` instances to a shared semantic class; computed centering and representative wrapper geometry remained identical, while heterogeneous table layout attributes were intentionally retained (`75a215c`).
 - 2026-07-13 T-37 added zero-dependency standards/accessibility enforcement for mirrored paths, languages, unique IDs, landmarks/navigation/skip links, image semantics/loading, fragments, stylesheet versions, and safe script/link semantics; it now runs automatically before every publish.

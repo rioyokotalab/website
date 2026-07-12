@@ -29,12 +29,16 @@ class Document(HTMLParser):
         self.unsafe_semantics: list[int] = []
         self.inline_executable_scripts = 0
         self.menu_button: dict[str, str] | None = None
+        self.body_id = ""
+        self.pagetop: dict[str, str] | None = None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
         line = self.getpos()[0]
         if tag == "html":
             self.html_lang = values.get("lang", "")
+        if tag == "body":
+            self.body_id = values.get("id", "")
         if values.get("id"):
             self.ids.append(values["id"])
             self.targets.add(values["id"])
@@ -52,6 +56,8 @@ class Document(HTMLParser):
                 self.fragments.append(href[1:])
             if href.lower().startswith("javascript:"):
                 self.unsafe_semantics.append(line)
+            if values.get("aria-label") in ("Back to top", "ページ上部へ戻る"):
+                self.pagetop = values
         if any(key.startswith("on") for key in values):
             self.unsafe_semantics.append(line)
         if tag == "img":
@@ -101,6 +107,10 @@ def main() -> int:
         button = document.menu_button or {}
         if button.get("tag") != "button" or button.get("type") != "button" or button.get("aria-controls") != "menubar-s" or button.get("aria-expanded") != "false" or button.get("aria-label") != expected_menu_label:
             fail(findings, path, "accessible mobile menu button mismatch")
+        expected_pagetop_label = "Back to top" if expected_lang == "en" else "ページ上部へ戻る"
+        pagetop = document.pagetop or {}
+        if document.body_id != "top" or pagetop.get("href") != "#top" or pagetop.get("aria-label") != expected_pagetop_label:
+            fail(findings, path, "accessible back-to-top link mismatch")
         if document.images_without_alt:
             fail(findings, path, "image without alt")
         if document.inline_executable_scripts:

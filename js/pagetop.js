@@ -3,7 +3,8 @@
 document.addEventListener('DOMContentLoaded', function () {
 	var el = document.getElementById('pagetop');
 	if (!el) return;
-	el.style.transition = 'opacity 0.3s';
+	var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	el.style.transition = reducedMotion ? 'none' : 'opacity 0.3s';
 	var toggle = function () {
 		var shown = (window.scrollY || document.documentElement.scrollTop) > 100;
 		el.style.opacity = shown ? '1' : '0';
@@ -13,6 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	window.addEventListener('scroll', toggle, { passive: true });
 	el.addEventListener('click', function (e) {
 		e.preventDefault();
-		window.scrollTo({ top: 0, behavior: 'smooth' });
+		window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
 	});
 });
