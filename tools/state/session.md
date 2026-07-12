@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:37+0900
-task: T-99 name full news-archive tables
+updated: 2026-07-13T04:39+0900
+task: T-100 name cluster hardware tables
 status: in-progress
 
 ## Now
-- Goal: expose useful names for every EN/JP full news-archive table without adding visible content or changing dimensions.
-- Last done: T-98 added native localized visually-hidden captions to both home-news tables, preserved clipped 1×1 caption geometry and 48 total row headers, and passed exact static, five layout/name browser, fast, and staging checks.
-- Next: map 11 yearly tables per language to existing `Y20xx` headings, name the one nested seminar-details table per language, enforce all 24 names, and compare accessibility/layout trees.
+- Goal: expose a concise localized name for each mirrored Hinadori hardware table without changing specifications or pixels.
+- Last done: T-99 associated 22 yearly tables with their existing `Y20xx` headings, named two nested seminar-details tables, and passed exact static, five layout/name browser, fast, and staging checks.
+- Next: confirm the two Computers tables have identical purpose/headers, add native visually-hidden localized captions, enforce exact placement, and compare names/geometry.
 
 ## Working set
-- EN/JP news archive tables, year headings/IDs, nested seminar table, accessible names, layout/browser tests.
+- EN/JP Computers hardware tables, native captions, column headers/specifications, accessible names and geometry.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

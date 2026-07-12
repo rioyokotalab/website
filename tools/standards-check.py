@@ -369,6 +369,13 @@ def main() -> int:
             if parsed_dates and parsed_dates != sorted(parsed_dates, reverse=True):
                 fail(findings, path, "home-news dates must be newest first")
         elif relative == "news/index.html":
+            archive_table_labels = re.findall(r'<table class="width-98pct" aria-labelledby="(Y\d{4})">', visible_text)
+            expected_year_labels = [f"Y{year}" for year in range(2026, 2015, -1)]
+            if archive_table_labels != expected_year_labels:
+                fail(findings, path, "news-archive yearly table names mismatch")
+            seminar_label = "Seminar details" if expected_lang == "en" else "セミナー詳細"
+            if len(re.findall(rf'<table class="width-100pct" aria-label="{seminar_label}">', visible_text)) != 1:
+                fail(findings, path, "news seminar table name mismatch")
             archive_times = re.findall(r'<time datetime="(\d{4}-\d{2}-\d{2})">(.*?)</time>', visible_text, flags=re.S | re.I)
             expected_archive_dates = 96 if expected_lang == "en" else 100
             if len(archive_times) != expected_archive_dates:
