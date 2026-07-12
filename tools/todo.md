@@ -1,14 +1,29 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-76.
+`tools/state/session.md`. Next free id: T-80.
 
 ## Active
 
-### T-75 — audit gallery dialog accessibility
-Verify Lightbox focus entry, labeling, next/previous/close controls, keyboard
-operation, focus containment, escape behavior, and focus return in EN/JP; add
-local compatibility fixes only where the pinned library leaves a real gap.
+### T-76 — standardize browser regression entry points
+Provide conventional `npm test` and focused browser-test commands, retain a
+compatibility alias for existing workflows, and add durable responsive-menu and
+print-contract coverage without duplicating structural Python checks.
+
+### T-77 — add automated rendered-layout smoke coverage
+Capture deterministic geometry invariants for representative EN/JP page
+families at mobile/desktop boundaries so future CSS edits detect page overflow,
+missing landmarks, or unexpected major-region shifts before deployment.
+
+### T-78 — audit no-JavaScript resilience
+Disable scripting on every public route and verify language entry, navigation,
+content, images, gallery-original links, contact details, and crawler metadata
+remain usable; add only semantic fallbacks for confirmed losses.
+
+### T-79 — audit CSS redundancy after modernization
+Inventory duplicate declarations, unreachable legacy selectors, and overridden
+rules using coverage from all page families/states; remove only byte-identical
+or demonstrably unused CSS with full screen/print/forced-color parity checks.
 
 ## Blocked / awaiting user
 
@@ -34,7 +49,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-74 enabled shared CSS for print, added a content-first A4 layer with plain page titles and constrained images/tables, hid navigation/sidebar/footer/fixed/consent/map/gallery chrome, eliminated all 1,920–3,276px overflow across 26 pages, and preserved exact screen geometry (pending commit).
+- 2026-07-13 T-75 wrapped pinned Lightbox with localized modal semantics, named controls/images, inert background, focus entry/trap/return, kept arrow/Escape/close behavior, passed first/next/last tests across six galleries, and added permanent Playwright coverage (pending commit).
+- 2026-07-13 T-74 enabled shared CSS for print, added a content-first A4 layer with plain page titles and constrained images/tables, hid navigation/sidebar/footer/fixed/consent/map/gallery chrome, eliminated all 1,920–3,276px overflow across 26 pages, and preserved exact screen geometry (`59586d6`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-73 verified all 26 pages reflow without page-level horizontal overflow at 640/320px effective widths and confirmed EN/JP consent/menu plus map, keyboard-scrolling tables, and fully measurable gallery close controls fit at 200%/400% equivalents (`cca4535`, audit-only).
 - 2026-07-13 T-72 measured all 1,920 visible mobile targets at 320/390px; 946 small text links all passed the 24px center-spacing exception, while consent/menu/settings controls measured 48/55.5/35px and the hamburger 42px, so no layout-expanding CSS was warranted (`e76fee4`, audit-only).
 - 2026-07-13 T-71 kept seven 39.66MiB gallery originals as zoom targets, added visually inspected 720/1200px display variants (0.92/2.21MiB; 97.7%/94.4% reductions), enforced dimensions/byte budgets/source selection, and verified 1x/2x/3x EN/JP Lightbox behavior (`8189edf`; live publish reserved for user/Claude site-publisher).
@@ -49,9 +65,3 @@ recloned or carefully reset to rewritten main.
 - 2026-07-13 T-62 contained only the five narrow-screen page families with clipped legacy tables, made only live overflow regions keyboard-scrollable, preserved exact desktop table geometry, and passed 320/390px containment checks (`9771abb`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-61 gave all 143 Lightbox links unique localized page-local ordinal names, enforced exact order/count, and passed keyboard/pointer gallery checks (`803b27c`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-60 removed 26 empty keywords elements and 53 redundant HTML5 MIME type attributes, retained/parsed JSON-LD, enforced clean heads, and verified resources/scripts/layout (`f57c653`).
-- 2026-07-13 T-59 deferred all 64 remaining external script references, permanently enforced defer, and passed consent/menu/pagetop/jQuery-Lightbox/CSP tests with no page errors (`c9b1e03`).
-- 2026-07-13 T-58 fixed the EN home heading sequence, replaced one empty heading with a geometry-identical separator, localized all 143 Lightbox link names, removed three empty links, and added permanent heading/interactive-name checks (`282ba34`).
-- 2026-07-13 T-57 eliminated all remaining legacy table presentation attributes in two computed-style-gated batches, mapped 91 widths and 8 header cells to classes, rejected an incorrect centering rule before publish, and preserved representative EN/JP layout exactly (`b5db8bb`, `c73d6b1`).
-- 2026-07-13 T-56 migrated all 588 raw valign=top attributes across home/profile/News, enforced zero legacy and rendered counts, and preserved representative alignment/cell/row geometry within 1px across families/viewports (`ad217cb`).
-- 2026-07-13 T-55 migrated all 152 News nowrap attributes to a shared class, enforced zero legacy usage/exact EN/JP counts, and preserved representative cell/row geometry within 1px at desktop/mobile (`b59384a`).
-- 2026-07-13 T-54 unified responsive JS/CSS at a non-overlapping mobile ≤900px/desktop ≥901px boundary, fixed the inert 801–900px hamburger, cache-busted assets, and passed EN/JP boundary/live checks (`4676d13`).

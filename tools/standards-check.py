@@ -341,6 +341,9 @@ def main() -> int:
         table_helpers = [src for src in document.external_script_sources if "table-scroll.js" in src]
         if table_helpers != (["../../js/table-scroll.js?v=20260713"] if expected_containment else []):
             fail(findings, path, "narrow-screen table helper scope mismatch")
+        lightbox_helpers = [src for src in document.external_script_sources if "lightbox-accessibility.js" in src]
+        if lightbox_helpers != (["../../js/lightbox-accessibility.js?v=20260713"] if lightbox_total else []):
+            fail(findings, path, "Lightbox accessibility helper scope mismatch")
         if len(document.nav_labels) != 2 or any(not label for label in document.nav_labels) or len(set(document.nav_labels)) != 2:
             fail(findings, path, "requires two distinctly labeled navigation landmarks")
         expected_skip = "Skip to main content" if expected_lang == "en" else "本文へ移動"
