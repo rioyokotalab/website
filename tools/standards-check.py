@@ -250,6 +250,7 @@ def main() -> int:
     if len(pages) != 26:
         findings.append(f"expected 26 bilingual pages, found {len(pages)}")
     style_versions: set[str] = set()
+    lightbox_helper_versions: set[str] = set()
     metadata_titles = {"en": set(), "ja": set()}
     metadata_descriptions = {"en": set(), "ja": set()}
     remaining_named_anchors = 0
@@ -439,7 +440,11 @@ def main() -> int:
         if table_helpers != (["../../js/table-scroll.js?v=20260713"] if expected_containment else []):
             fail(findings, path, "narrow-screen table helper scope mismatch")
         lightbox_helpers = [src for src in document.external_script_sources if "lightbox-accessibility.js" in src]
-        if lightbox_helpers != (["../../js/lightbox-accessibility.js?v=20260713b"] if lightbox_total else []):
+        if lightbox_total and len(lightbox_helpers) == 1 and re.fullmatch(
+            r"\.\./\.\./js/lightbox-accessibility\.js\?v=[A-Za-z0-9._-]+", lightbox_helpers[0]
+        ):
+            lightbox_helper_versions.add(lightbox_helpers[0].split("?v=", 1)[1])
+        elif lightbox_helpers or lightbox_total:
             fail(findings, path, "Lightbox accessibility helper scope mismatch")
         if len(document.nav_labels) != 2 or any(not label for label in document.nav_labels) or len(set(document.nav_labels)) != 2:
             fail(findings, path, "requires two distinctly labeled navigation landmarks")
@@ -530,6 +535,8 @@ def main() -> int:
                 fail(findings, path, f"versioned {asset.split('?')[0]} mismatch")
     if len(style_versions) != 1 or root_style_versions != style_versions:
         findings.append("stylesheet cache versions differ across pages")
+    if len(lightbox_helper_versions) != 1:
+        findings.append("Lightbox accessibility helper cache versions differ across pages")
     if any(len(metadata_titles[language]) != 13 or len(metadata_descriptions[language]) != 13 for language in ("en", "ja")):
         findings.append("bilingual page titles and descriptions must be unique")
     if sum(path.read_text(encoding="utf-8").count('class="member-table-column"') for path in pages) != 2 or style_text.count(".member-table-column { width: 72px; }") != 1:

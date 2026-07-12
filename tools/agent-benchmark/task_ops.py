@@ -127,6 +127,16 @@ def _allowed(rel: str, patterns: list[str]) -> bool:
     return any(fnmatch.fnmatchcase(rel, pattern) for pattern in patterns)
 
 
+def reduced_motion_zero(js: str) -> bool:
+    zero_object = r"\{\s*fadeDuration:\s*0,\s*imageFadeDuration:\s*0,\s*resizeDuration:\s*0\s*\}"
+    if re.search(rf"motionPreference\.matches\s*\?\s*{zero_object}\s*:\s*motionOptions", js, re.S):
+        return True
+    named = re.search(rf"const\s+([A-Za-z_$][\w$]*)\s*=\s*{zero_object}\s*;", js, re.S)
+    return bool(named and re.search(
+        rf"motionPreference\.matches\s*\?\s*{re.escape(named.group(1))}\s*:\s*motionOptions", js, re.S
+    ))
+
+
 def _scope(task: dict, workspace: Path, baseline: Path | str) -> tuple[int, list[str]]:
     current = _all_files(workspace)
     if baseline == "HEAD":
@@ -214,7 +224,7 @@ def _checks(task_id: str, root: Path) -> list[tuple[str, bool]]:
             if match: versions.append((path.relative_to(root).as_posix(), match.group(1)))
         checks = [
             ("css-zero-motion", "transition-duration: 0.01ms !important;" in css),
-            ("js-reduced-zero", "motionPreference.matches ? {" in js and "} : motionOptions" in js),
+            ("js-reduced-zero", reduced_motion_zero(js)),
             ("ordinary-timings", "fadeDuration: 600, imageFadeDuration: 600, resizeDuration: 700" in js),
             ("live-change", 'motionPreference.addEventListener("change", applyMotionPreference)' in js),
             ("one-query-version", bool(versions) and len({value for _, value in versions}) == 1 and all(value != "stale-benchmark" for _, value in versions)),

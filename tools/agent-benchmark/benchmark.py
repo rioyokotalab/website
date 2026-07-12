@@ -474,6 +474,15 @@ def selftest() -> dict[str, Any]:
     tasks = load_tasks()
     assert set(tasks) == {f"WBD-{number:03d}" for number in range(1, 6)}
     assert tasks["WBD-005"].get("held_out") is True
+    operations = load_task_ops()
+    inline_zero = "motionPreference.matches ? { fadeDuration: 0, imageFadeDuration: 0, resizeDuration: 0 } : motionOptions"
+    named_zero = "const reduced = { fadeDuration: 0, imageFadeDuration: 0, resizeDuration: 0 }; motionPreference.matches ? reduced : motionOptions"
+    inverted = "motionPreference.matches ? motionOptions : { fadeDuration: 0, imageFadeDuration: 0, resizeDuration: 0 }"
+    assert operations.reduced_motion_zero(inline_zero)
+    assert operations.reduced_motion_zero(named_zero)
+    assert not operations.reduced_motion_zero(inverted)
+    assert operations._allowed("en/index.html", tasks["WBD-005"]["authorized_paths"])
+    assert operations._allowed("index.html", tasks["WBD-005"]["authorized_paths"])
     with tempfile.TemporaryDirectory() as temporary:
         path = Path(temporary) / "events.jsonl"
         path.write_text(
