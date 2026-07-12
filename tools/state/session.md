@@ -1,12 +1,12 @@
 driver: codex
-updated: 2026-07-13T08:30+0900
-task: T-120
+updated: 2026-07-13T08:40+0900
+task: T-117
 status: in_progress
 
 ## Now
 - Goal: spend the three-hour window ending about 2026-07-13T09:44+0900 establishing a defensible web-development regression suite, then iteratively reduce Codex token use without degrading capability and improve logging so future routing decisions are evidence-based.
-- Last done: completed T-119. Refined focused inspection passed 6/6 tasks at 100 and cut portfolio median effective tokens 21.7% and output 59.2%; a naive bounded variant failed CRLF scope and remains negative evidence.
-- Next: add a safe baseline/candidate comparison command that exposes matched-task coverage, routes/modes, capability failures, token distributions, tool output, durations, and missing evidence without manual arithmetic.
+- Last done: completed T-120. Strict comparison now checks task identity/count/version, reports route/mode/gate/cost/failure evidence, and refuses older rows whose append-only telemetry cannot prove equivalence.
+- Next: freeze runner-lite + focused local inspection + selected low-cost routes; run WBD-001–004 once with full P2P, then evaluate held-out WBD-005 exactly once and complete repository/session verification.
 
 ## Working set
 - `tools/todo.md`
@@ -22,7 +22,7 @@ status: in_progress
 - `tools/task-metrics.schema.json`
 
 ## Open questions
-- How strict the comparison command should be when labels contain unequal task counts, task versions, routes, or missing token telemetry.
+- Whether the frozen candidate passes the untouched multi-file reduced-motion held-out task without route escalation or prompt/grader changes.
 
 ## Awaiting user
 - None.

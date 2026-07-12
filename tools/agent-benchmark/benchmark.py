@@ -340,12 +340,17 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
         "task_version": task["version"],
         "date": datetime.now().astimezone().isoformat(timespec="seconds"),
         "repo_ref": args.ref,
+        "repo_commit": subprocess.run(
+            ["git", "rev-parse", args.ref], cwd=ROOT, text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True,
+        ).stdout.strip(),
         "model": model,
         "effort": effort,
         "worker": worker_name,
         "prompt_mode": args.prompt_mode,
         "handoff_mode": args.handoff_mode,
         "inspection_mode": args.inspection_mode,
+        "run_p2p": bool(args.run_p2p),
         "codex_cli": subprocess.run(["codex", "--version"], text=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.DEVNULL).stdout.strip(),
     }

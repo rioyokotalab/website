@@ -248,7 +248,11 @@ Recurring worker routing and task metrics live in
 `tools/task-tier-policy.md`, `tools/task-metrics.jsonl`, and
 `tools/codex-log.md`. Validate and summarize the backward-compatible structured
 metrics with `python3 tools/task-metrics.py validate` and `python3
-tools/task-metrics.py summarize`. Raw benchmark trajectories remain ignored
+tools/task-metrics.py summarize`. Compare matched labels with `python3
+tools/task-metrics.py compare --baseline-label LABEL --candidate-label LABEL`;
+the command refuses unequal task sets/counts or missing/mismatched task versions
+and reports capability, route/mode, token, command, output, duration, and failure
+evidence. Raw benchmark trajectories remain ignored
 under `tools/out/` while their compact run records retain artifact pointers.
 Project configuration changes require explicit task scope; owner-scope
 configuration remains proposal-only unless the user authorizes the exact write.

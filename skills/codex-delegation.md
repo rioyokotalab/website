@@ -52,6 +52,11 @@ Do not claim token savings without matched measured telemetry. When telemetry is
 unavailable, use `null` and record only observable proxies; never silently treat
 unknown tokens or review time as zero.
 
+Use `tools/task-metrics.py compare` for promotion decisions. Its default strict
+mode requires the same tasks, repeat counts, and task versions; inspect its
+route/mode dimensions, capability failures, token ranges, output/command cost,
+durations, warnings, and raw artifact pointers before accepting its recommendation.
+
 ## Decision checklist
 
 Delegate only if every answer is yes:

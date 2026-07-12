@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import statistics
 import tempfile
 from pathlib import Path
 from typing import Any, Iterable
@@ -23,7 +24,10 @@ V2_REQUIRED = V1_REQUIRED | {
     "setup_duration_ms", "worker_duration_ms", "grader_duration_ms", "review_duration_ms", "total_duration_ms",
     "changed_files", "retries", "escalation", "failure_phase", "failure_category", "artifact",
 }
-V2_ALLOWED = V2_REQUIRED | {"handoff_mode", "inspection_mode"}
+V2_ALLOWED = V2_REQUIRED | {
+    "handoff_mode", "inspection_mode", "prompt_mode", "task_version",
+    "repo_ref", "repo_commit", "codex_cli", "run_p2p",
+}
 NULLABLE_NUMBERS = {
     "capability_score", "f2p", "p2p", "scope", "completion", "input_tokens", "cached_input_tokens",
     "output_tokens", "reasoning_output_tokens", "effective_tokens", "prompt_bytes", "instruction_bytes",
@@ -81,6 +85,21 @@ def validate_row(row: dict[str, Any]) -> list[str]:
                 errors.append(f"{key} must be boolean")
         if row.get("critical_pass") is not None and not isinstance(row.get("critical_pass"), bool):
             errors.append("critical_pass must be boolean or null")
+        if row.get("task_version") is not None and (
+            not isinstance(row.get("task_version"), int) or isinstance(row.get("task_version"), bool)
+            or row["task_version"] < 1
+        ):
+            errors.append("task_version must be a positive integer or null")
+        if row.get("run_p2p") is not None and not isinstance(row.get("run_p2p"), bool):
+            errors.append("run_p2p must be boolean or null")
+        allowed_modes = {
+            "handoff_mode": {"durable", "runner-lite", "runner-structured", "runner", "unknown"},
+            "inspection_mode": {"default", "bounded", "focused", "unknown"},
+            "prompt_mode": {"full", "compact", "unknown"},
+        }
+        for key, choices in allowed_modes.items():
+            if key in row and row[key] not in choices:
+                errors.append(f"invalid {key}")
         if not isinstance(row.get("changed_files"), list) or not all(isinstance(item, str) for item in row.get("changed_files", [])):
             errors.append("changed_files must be an array of strings")
         if len(set(row.get("changed_files", []))) != len(row.get("changed_files", [])):
@@ -223,6 +242,12 @@ def benchmark_row(result: dict[str, Any], stdout_override: Path | None = None) -
         "artifact": f"tools/out/agent-benchmark/{run_id}/result.json",
         "handoff_mode": str(result.get("handoff_mode") or "unknown"),
         "inspection_mode": str(result.get("inspection_mode") or "unknown"),
+        "prompt_mode": str(result.get("prompt_mode") or "unknown"),
+        "task_version": result.get("task_version") if isinstance(result.get("task_version"), int) else None,
+        "repo_ref": str(result.get("repo_ref") or "unknown"),
+        "repo_commit": str(result.get("repo_commit") or "unknown"),
+        "codex_cli": str(result.get("codex_cli") or "unknown"),
+        "run_p2p": result.get("run_p2p") if isinstance(result.get("run_p2p"), bool) else None,
     }
     return row
 
@@ -289,6 +314,166 @@ def summarize(label: str | None, path: Path = METRICS) -> dict[str, Any]:
     }
 
 
+def _portfolio_samples(groups: dict[str, list[dict[str, Any]]], key: str) -> tuple[list[int], list[str]]:
+    samples: list[int] = []
+    missing: list[str] = []
+    repeats = len(next(iter(groups.values()))) if groups else 0
+    ordered = {task: sorted(rows, key=lambda row: (str(row.get("date")), str(row.get("run_id"))))
+               for task, rows in groups.items()}
+    for index in range(repeats):
+        values = []
+        for task, rows in ordered.items():
+            value = rows[index].get(key)
+            if not isinstance(value, int) or isinstance(value, bool):
+                missing.append(str(rows[index].get("run_id") or f"{task}[{index}]") + f":{key}")
+            else:
+                values.append(value)
+        if len(values) == len(ordered):
+            samples.append(sum(values))
+    return samples, missing
+
+
+def _metric_comparison(baseline: list[int], candidate: list[int]) -> dict[str, Any]:
+    baseline_median = statistics.median(baseline)
+    candidate_median = statistics.median(candidate)
+    delta = None if baseline_median == 0 else round((candidate_median / baseline_median - 1) * 100, 1)
+    if max(candidate) < min(baseline):
+        relation = "candidate-better-nonoverlap"
+    elif max(baseline) < min(candidate):
+        relation = "candidate-worse-nonoverlap"
+    else:
+        relation = "overlap"
+    return {
+        "baseline_samples": baseline,
+        "candidate_samples": candidate,
+        "baseline_median": baseline_median,
+        "candidate_median": candidate_median,
+        "median_change_percent": delta,
+        "baseline_range": [min(baseline), max(baseline)],
+        "candidate_range": [min(candidate), max(candidate)],
+        "range_relation": relation,
+    }
+
+
+def _run_dimensions(rows: list[dict[str, Any]]) -> dict[str, list[Any]]:
+    keys = ("model", "effort", "handoff_mode", "inspection_mode", "prompt_mode",
+            "task_version", "repo_commit", "run_p2p")
+    return {key: sorted({row.get(key, "unknown") for row in rows}, key=lambda value: str(value)) for key in keys}
+
+
+def compare_labels(baseline_label: str, candidate_label: str, path: Path = METRICS) -> dict[str, Any]:
+    parsed, blanks, parse_errors = read_jsonl(path)
+    rows = [row for _, row in parsed if row.get("schema_version") == 2]
+    baseline = [row for row in rows if row.get("run_label") == baseline_label]
+    candidate = [row for row in rows if row.get("run_label") == candidate_label]
+    errors = list(parse_errors)
+    warnings: list[str] = []
+    if not baseline:
+        errors.append(f"no v2 rows for baseline label: {baseline_label}")
+    if not candidate:
+        errors.append(f"no v2 rows for candidate label: {candidate_label}")
+    baseline_groups: dict[str, list[dict[str, Any]]] = {}
+    candidate_groups: dict[str, list[dict[str, Any]]] = {}
+    for row in baseline:
+        baseline_groups.setdefault(str(row.get("task_id")), []).append(row)
+    for row in candidate:
+        candidate_groups.setdefault(str(row.get("task_id")), []).append(row)
+    if set(baseline_groups) != set(candidate_groups):
+        errors.append(
+            f"task sets differ: baseline={sorted(baseline_groups)} candidate={sorted(candidate_groups)}"
+        )
+    task_ids = sorted(set(baseline_groups) & set(candidate_groups))
+    repeat_counts: dict[str, dict[str, int]] = {}
+    for task in task_ids:
+        b_count, c_count = len(baseline_groups[task]), len(candidate_groups[task])
+        repeat_counts[task] = {"baseline": b_count, "candidate": c_count}
+        if b_count != c_count:
+            errors.append(f"run counts differ for {task}: baseline={b_count} candidate={c_count}")
+        b_versions = {row.get("task_version") for row in baseline_groups[task] if row.get("task_version") is not None}
+        c_versions = {row.get("task_version") for row in candidate_groups[task] if row.get("task_version") is not None}
+        if not b_versions or not c_versions:
+            errors.append(f"{task}: task_version missing from one or both labels")
+        elif b_versions != c_versions or len(b_versions) != 1:
+            errors.append(f"task versions differ for {task}: baseline={sorted(b_versions)} candidate={sorted(c_versions)}")
+    all_counts = {len(group) for group in baseline_groups.values()} | {len(group) for group in candidate_groups.values()}
+    if len(all_counts) > 1:
+        errors.append("labels do not contain an equal repeat count for every task")
+    for name, selected in (("baseline", baseline), ("candidate", candidate)):
+        if any(row.get("run_p2p") is None for row in selected):
+            warnings.append(f"{name}: run_p2p telemetry missing from at least one row")
+        for key in ("model", "effort", "handoff_mode", "inspection_mode", "prompt_mode"):
+            if any(row.get(key) in (None, "unknown") for row in selected):
+                warnings.append(f"{name}: {key} missing from at least one row")
+
+    metric_results: dict[str, Any] = {}
+    missing_telemetry: list[str] = []
+    if not errors and task_ids:
+        for key in ("effective_tokens", "input_tokens", "cached_input_tokens", "output_tokens",
+                    "tool_output_chars", "completed_commands", "failed_commands",
+                    "worker_duration_ms", "grader_duration_ms", "total_duration_ms"):
+            b_samples, b_missing = _portfolio_samples(baseline_groups, key)
+            c_samples, c_missing = _portfolio_samples(candidate_groups, key)
+            missing_telemetry.extend(b_missing + c_missing)
+            if b_samples and c_samples and len(b_samples) == len(c_samples):
+                metric_results[key] = _metric_comparison(b_samples, c_samples)
+    if missing_telemetry:
+        warnings.append("missing telemetry: " + ", ".join(sorted(missing_telemetry)))
+
+    candidate_failures = [
+        {"run_id": row.get("run_id"), "task_id": row.get("task_id"),
+         "score": row.get("capability_score"), "phase": row.get("failure_phase"),
+         "category": row.get("failure_category"), "artifact": row.get("artifact")}
+        for row in candidate if not row.get("capability_pass")
+    ]
+    capability_gate = bool(candidate) and not candidate_failures
+    score_gate = all(
+        min(row.get("capability_score") or 0 for row in candidate_groups[task]) >=
+        min(row.get("capability_score") or 0 for row in baseline_groups[task])
+        for task in task_ids
+    ) if task_ids else False
+    def delta_at_most(key: str, maximum: float) -> bool:
+        value = metric_results.get(key, {}).get("median_change_percent")
+        return isinstance(value, (int, float)) and value <= maximum
+    def median_not_increased(key: str) -> bool:
+        metric = metric_results.get(key, {})
+        baseline_value = metric.get("baseline_median")
+        candidate_value = metric.get("candidate_median")
+        return isinstance(baseline_value, (int, float)) and isinstance(candidate_value, (int, float)) and candidate_value <= baseline_value
+    gates = {
+        "candidate_all_capability_pass": capability_gate,
+        "no_task_score_regression": score_gate,
+        "effective_tokens_improve_5_percent": delta_at_most("effective_tokens", -5.0),
+        "tool_output_not_increased": delta_at_most("tool_output_chars", 0.0),
+        "failed_commands_not_increased": median_not_increased("failed_commands"),
+        "total_duration_not_over_5_percent": delta_at_most("total_duration_ms", 5.0),
+    }
+    if errors:
+        recommendation = "invalid-comparison"
+    elif not capability_gate or not score_gate:
+        recommendation = "reject-capability-regression"
+    elif not gates["effective_tokens_improve_5_percent"]:
+        recommendation = "reject-no-token-gain"
+    elif all((gates["tool_output_not_increased"], gates["failed_commands_not_increased"],
+              gates["total_duration_not_over_5_percent"])):
+        recommendation = "promote-after-required-full-regression"
+    else:
+        recommendation = "review-observed-tradeoffs"
+    return {
+        "status": "pass" if not errors else "fail",
+        "safe_to_compare": not errors,
+        "baseline": {"label": baseline_label, "runs": len(baseline), "dimensions": _run_dimensions(baseline)},
+        "candidate": {"label": candidate_label, "runs": len(candidate), "dimensions": _run_dimensions(candidate)},
+        "matched": {"task_ids": task_ids, "repeat_counts": repeat_counts},
+        "metrics": metric_results,
+        "gates": gates,
+        "candidate_failures": candidate_failures,
+        "recommendation": recommendation,
+        "blank_lines_skipped": blanks,
+        "warnings": warnings,
+        "errors": errors,
+    }
+
+
 def selftest() -> dict[str, Any]:
     event_lines = [
         {"type": "item.started", "item": {"type": "command_execution", "status": "in_progress", "aggregated_output": "wrong"}},
@@ -320,7 +505,23 @@ def selftest() -> dict[str, Any]:
         assert actual["appended"] == 1 and duplicate["duplicates"] == ["selftest-run"]
         validation = validate_file(metrics)
         assert validation["status"] == "pass" and validation["blank_lines_skipped"] == 1
-    return {"status": "pass", "command_event_deduplication": "pass", "dry_run": "pass", "append_and_dedupe": "pass", "legacy_and_v2_validation": "pass"}
+        comparison_path = root / "comparison.jsonl"
+        comparison_rows = []
+        for label, effective in (("baseline", 20), ("candidate", 15)):
+            for index in range(2):
+                comparison_rows.append({
+                    **row, "run_id": f"{label}-{index}", "run_label": label,
+                    "task_id": "WBD-999", "task_version": 1,
+                    "effective_tokens": effective, "run_p2p": True,
+                })
+        comparison_path.write_text("\n".join(json.dumps(item) for item in comparison_rows) + "\n", encoding="utf-8")
+        comparison = compare_labels("baseline", "candidate", comparison_path)
+        assert comparison["status"] == "pass"
+        assert comparison["recommendation"] == "promote-after-required-full-regression"
+        comparison_path.write_text("\n".join(json.dumps(item) for item in comparison_rows[:-1]) + "\n", encoding="utf-8")
+        unsafe = compare_labels("baseline", "candidate", comparison_path)
+        assert unsafe["status"] == "fail" and not unsafe["safe_to_compare"]
+    return {"status": "pass", "command_event_deduplication": "pass", "dry_run": "pass", "append_and_dedupe": "pass", "legacy_and_v2_validation": "pass", "safe_comparison": "pass"}
 
 
 def parser() -> argparse.ArgumentParser:
@@ -329,6 +530,10 @@ def parser() -> argparse.ArgumentParser:
     validate = sub.add_parser("validate"); validate.add_argument("--path", type=Path, default=METRICS)
     importer = sub.add_parser("import-benchmark"); importer.add_argument("--run-label", required=True); importer.add_argument("--dry-run", action="store_true")
     summary = sub.add_parser("summarize"); summary.add_argument("--run-label")
+    comparison = sub.add_parser("compare")
+    comparison.add_argument("--baseline-label", required=True)
+    comparison.add_argument("--candidate-label", required=True)
+    comparison.add_argument("--path", type=Path, default=METRICS)
     sub.add_parser("selftest")
     return command
 
@@ -338,6 +543,7 @@ def main() -> int:
     if args.command == "validate": result = validate_file(args.path)
     elif args.command == "import-benchmark": result = import_benchmark(args.run_label, dry_run=args.dry_run)
     elif args.command == "summarize": result = summarize(args.run_label)
+    elif args.command == "compare": result = compare_labels(args.baseline_label, args.candidate_label, args.path)
     else: result = selftest()
     print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
     return 0 if result.get("status") == "pass" else 1

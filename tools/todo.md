@@ -7,9 +7,6 @@ id: T-121.
 
 ## Active
 
-- **T-120 — Add decision-grade comparison logging**
-  - Add a reproducible baseline/candidate comparison that reports matched tasks, capability gates, token categories, command failures, tool output, timing, route, and missing evidence.
-  - Make unsafe comparisons fail loudly instead of relying on manual arithmetic.
 - **T-117 — Final regression and recommendations**
   - Run the final suite, summarize retained/rejected experiments, document remaining uncertainty, and update the canonical process files.
   - Produce a driver report with reproducible evidence and recommendations for the next benchmark expansion.
@@ -20,6 +17,7 @@ None.
 
 ## Recently completed
 
+- **T-120 — Decision logging completed:** future rows retain task/repo/runtime/mode identity, and strict comparisons report repeated distributions, gates, failures, and tradeoffs while rejecting unsafe matches (`tools/out/t120-decision-logging.md`).
 - **T-119 — Focused inspection retained:** six focused trials across two bilingual HTML tasks scored 100; median effective tokens fell 21.7% and tool output 59.2%. A simpler bounded variant failed CRLF scope and was rejected (`tools/out/t119-focused-inspection.md`).
 - **T-118 — Repeatability rule established:** three matched runner-lite and durable portfolios all scored 100; token ranges did not overlap (29,098–30,046 versus 42,958–57,936), and future process promotions require repeated portfolio medians/ranges (`tools/out/t118-repeatability.md`).
 - **T-116 — Runner-lite handoff retained:** matched WBD-001/003 stayed 100/100 while effective tokens fell 15.2%, tool output 12.6%, and worker duration 56.7%; redundant schema enforcement increased tokens 47.8% and was rejected (`tools/out/t116-handoff-iteration.md`).

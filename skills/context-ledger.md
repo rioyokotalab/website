@@ -104,7 +104,10 @@ deletes it after grading) containing:
 - Self-noted gaps: anything a reviewer should double-check.
 Metrics: one schema-v2 line PER instrumented task attempted, validated by
 `tools/task-metrics.py`; unknown telemetry stays null. Legacy v1 is retained
-only for uninstrumented/history compatibility. Driver tier is driver-codex or
+only for uninstrumented/history compatibility. Benchmark rows also record task
+version, repository commit, Codex CLI, prompt/handoff/inspection modes, and
+whether P2P ran; strict comparisons fail when identity evidence is insufficient.
+Driver tier is driver-codex or
 driver-claude. codex-log line format for
 drivers: `date | <brand>-driver (<model>) | tasks | report path | n/a |
 outcome` (brand = claude or codex; claude drivers use agent "claude",

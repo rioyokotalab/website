@@ -77,7 +77,13 @@
         "failure_category": {"type": ["string", "null"]},
         "artifact": {"type": ["string", "null"]},
         "handoff_mode": {"enum": ["durable", "runner-lite", "runner-structured", "runner", "unknown"]},
-        "inspection_mode": {"enum": ["default", "bounded", "focused", "unknown"]}
+        "inspection_mode": {"enum": ["default", "bounded", "focused", "unknown"]},
+        "prompt_mode": {"enum": ["full", "compact", "unknown"]},
+        "task_version": {"type": ["integer", "null"], "minimum": 1},
+        "repo_ref": {"type": "string"},
+        "repo_commit": {"type": "string"},
+        "codex_cli": {"type": "string"},
+        "run_p2p": {"type": ["boolean", "null"]}
       },
       "additionalProperties": false
     }
