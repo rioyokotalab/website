@@ -486,6 +486,11 @@ img.frame, #gallery img {
 section#gallery {
 	overflow: visible;
 }
+.location-map {
+	width: 80%;
+	height: 500px;
+	border: 1px solid #999;
+}
 /* Figures inside content */
 section.content p[align="center"] img {
 	border-radius: 6px;

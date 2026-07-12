@@ -34,6 +34,7 @@ class Document(HTMLParser):
         self.canonicals: list[str] = []
         self.alternates: dict[str, list[str]] = {}
         self.current_links: list[dict[str, str]] = []
+        self.iframes: list[dict[str, str]] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -75,6 +76,8 @@ class Document(HTMLParser):
                 self.images_without_alt += 1
             if values.get("loading", "").lower() != "lazy":
                 self.eager_images.append(values.get("src", ""))
+        if tag == "iframe":
+            self.iframes.append(values)
         if tag == "script" and not values.get("src") and values.get("type", "text/javascript").lower() not in ("application/ld+json",):
             self.inline_executable_scripts += 1
         if values.get("id") == "menubar_hdr":
@@ -135,6 +138,13 @@ def main() -> int:
             expected_current_count = 1 if relative == "contact/index.html" else 2
         if len(document.current_links) != expected_current_count or any(link.get("aria-current") != "page" or link.get("href") != "index.html" for link in document.current_links):
             fail(findings, path, "current-page navigation state mismatch")
+        if relative == "contact/index.html":
+            expected_map_title = "Map of YOKOTA Laboratory" if expected_lang == "en" else "横田研究室所在地の地図"
+            frame = document.iframes[0] if len(document.iframes) == 1 else {}
+            if frame.get("class") != "location-map" or frame.get("title") != expected_map_title or frame.get("loading") != "lazy" or frame.get("referrerpolicy") != "no-referrer-when-downgrade" or "style" in frame or "width" in frame or "height" in frame:
+                fail(findings, path, "accessible map embed mismatch")
+        elif document.iframes:
+            fail(findings, path, "unexpected iframe")
         if document.html_lang.lower() != expected_lang:
             fail(findings, path, f"lang must be {expected_lang}")
         duplicates = sorted(key for key, count in Counter(document.ids).items() if count > 1)
