@@ -1,18 +1,4 @@
 # Security headers (server honors .htaccess with mod_headers; verified 2026-07-05)
-Options -Indexes
-
-# Defense in depth: the deploy allowlist prevents these files from reaching
-# www; deny them if a server-side or manual copy ever bypasses deployment.
-<FilesMatch "(^\.|~$|\.(?:bak|old|orig|save|swp|tmp|temp|map|md|json|jsonl|toml|ya?ml|tex|cls|sh|py|lock|log|ini|conf)$)">
-<IfModule mod_authz_core.c>
-Require all denied
-</IfModule>
-<IfModule !mod_authz_core.c>
-Order allow,deny
-Deny from all
-</IfModule>
-</FilesMatch>
-
 <IfModule mod_headers.c>
 Header set X-Content-Type-Options "nosniff"
 Header set X-Frame-Options "SAMEORIGIN"
