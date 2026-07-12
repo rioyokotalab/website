@@ -5,12 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-39 — make the mobile navigation control accessible
-Replace the decorative hamburger `div` on all 26 pages with a real button,
-localized accessible name, `aria-controls`, and synchronized `aria-expanded`.
-Preserve its exact appearance/position and verify keyboard, pointer, EN/JP, and
-mobile behavior.
-
 ### T-40 — simplify the legacy menu JavaScript
 Replace the 2015 classList compatibility implementation and global helper
 surface with small modern DOM code scoped to the responsive menu. Preserve the
@@ -56,6 +50,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-39 replaced all 26 decorative hamburger divs with localized real buttons, synchronized `aria-expanded`, preserved geometry within 1px, and permanently enforced the accessible control contract (`4c6748f`).
 - 2026-07-13 T-36 migrated all 145 uniform `<p align="center">` instances to a shared semantic class; computed centering and representative wrapper geometry remained identical, while heterogeneous table layout attributes were intentionally retained (`75a215c`).
 - 2026-07-13 T-37 added zero-dependency standards/accessibility enforcement for mirrored paths, languages, unique IDs, landmarks/navigation/skip links, image semantics/loading, fragments, stylesheet versions, and safe script/link semantics; it now runs automatically before every publish.
 - 2026-07-13 T-38 replaced duplicated desktop/mobile `topnav` IDs with a shared class across all 26 pages and aligned two duplicated EN event anchors with JP; every ID is unique, fragments are distinct, and menu geometry stayed within 1px (`9a44e31`).
