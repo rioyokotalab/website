@@ -186,6 +186,9 @@ def main() -> int:
         logos = [image for image in document.image_attrs if urlsplit(image.get("src", "")).path.endswith("/" + expected_logo)]
         if len(logos) != 1 or logos[0].get("width") != expected_logo_width or logos[0].get("height") != "65":
             fail(findings, path, "header logo intrinsic dimensions mismatch")
+        prioritized = [image for image in document.image_attrs if image.get("fetchpriority")]
+        if len(prioritized) != 1 or prioritized[0].get("fetchpriority", "").lower() != "high" or not re.search(r"/banner-(?:top|sub)\.(?:png|jpg)$", urlsplit(prioritized[0].get("src", "")).path):
+            fail(findings, path, "hero image fetch priority mismatch")
         if document.inline_executable_scripts:
             fail(findings, path, "executable inline script")
         if document.inline_styles:
