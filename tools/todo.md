@@ -11,7 +11,11 @@ tools/state/session.md. Next free id: T-15.
 
 ## Active
 
-(none — T-12 awaits owner input below)
+### T-12 — add Google Analytics (GA4) to the website
+Owner supplied measurement ID `G-DVRGG7FDLX` and selected privacy-first basic
+consent. Replace the 53 placeholder snippets with a shared bilingual consent
+loader, add accessible choice/settings UI, verify no pre-consent Google request,
+then commit/push/publish under the direct DRIVER gates. Evidence: `tools/out/t12-ga.md`.
 
 ## Proposed (round 2)
 
@@ -22,12 +26,6 @@ First step: record the policy decision in decisions.md; valuable because it
 prevents an unconditional analytics launch from outrunning lab governance.
 
 ## Blocked / awaiting user
-
-### T-12 — add Google Analytics (GA4) to the website
-Placeholder implementation is complete: all 27 public HTML pages plus 26
-templates contain exactly one tag, and parity/byte/local HTTP checks pass.
-Awaiting the owner's real `G-...` measurement ID and privacy/consent decision;
-do not publish the placeholder. Evidence: `tools/out/t12-ga.md`.
 
 (T-9 was cleared per user instruction 2026-07-12 without an upload decision;
 reviewed JSONL retained at `tools/out/researchmap-import.jsonl`.)

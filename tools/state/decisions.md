@@ -1,5 +1,9 @@
 # Durable decisions (newest first; one-line rationale each)
 
+- 2026-07-12 T-12 GA4 policy: use measurement ID `G-DVRGG7FDLX` with
+  privacy-first basic consent—no Google tag/request before explicit acceptance;
+  persist accept/reject locally and keep settings reversible—because the owner
+  selected privacy-first behavior.
 - 2026-07-12 Direct Codex publish exception: a user-started DRIVER has standing
   authority to publish/push completed owner-requested repository changes after
   mandatory preflight, without a separate permission prompt; dispatched/MCP

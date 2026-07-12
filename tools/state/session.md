@@ -1,21 +1,21 @@
 driver: codex
-updated: 2026-07-12T20:40+0900
-task: idle
-status: idle
+updated: 2026-07-12T21:06+0900
+task: T-12 add Google Analytics (GA4) to the website
+status: in-progress
 
 ## Now
-- Goal: idle after T-14; T-12 remains blocked.
-- Last done: completed and verified the direct Codex DRIVER standing publish/push policy with mandatory fail-closed preflight; dispatched/MCP workers remain prohibited.
-- Next: commit and push T-14 plus ledger bookkeeping after pull/rebase; do not deploy T-12's placeholder. Then await owner direction on T-12.
+- Goal: complete T-12 with GA4 `G-DVRGG7FDLX` and privacy-first basic consent, then verify/push/publish.
+- Last done: implementation verification passed, pull/rebase was current, and exact T-12 scope was committed as `4c8a20a`.
+- Next: run and inspect deletion-bearing `./deploy.sh --dry-run`; if uploads/deletions are expected, run the interactive publish pipeline, push, and verify live pages/assets and consent behavior.
 
 ## Working set
-- T-14 policy: `AGENTS.md`, `skills/publish-and-verify.md`.
-- Ledger: `tools/todo.md`, `tools/state/session.md`, `tools/state/decisions.md`.
-- Evidence: `tools/out/t14-direct-publish-policy.md`; `tools/out/driver-report-20260712-2040.md`.
-- Verification passed: targeted stale-policy `rg`, markdown/CLAUDE size checks, `git diff --check`, full diff review.
+- Site: `index.html`, 26 `en/**/*.html` + `jp/**/*.html`, 26 `Templates/*.dwt`, `js/analytics-consent.js`, `style.css`.
+- Ledger/evidence: `tools/todo.md`, `tools/state/session.md`, `tools/state/decisions.md`, `tools/out/t12-ga.md`, `tools/out/t12-consent.py`.
+- Sources: https://developers.google.com/tag-platform/security/concepts/consent-mode and https://developers.google.com/tag-platform/security/guides/consent.
+- Verify: exact target/count/parity checks, JS syntax, browser/network consent behavior, local HTTP, scoped whitespace, dry-run deletion review, live check.
 
 ## Open questions
-- Optional future task: shell-level defense-in-depth in `publish.sh`; not required for T-14.
+- None; consent text will disclose GA purpose, local choice storage, and a persistent change-settings control.
 
 ## Awaiting user
-- T-12: real GA4 `G-...` measurement ID and privacy/consent decision; never publish `G-XXXXXXXXXX`.
+- None.

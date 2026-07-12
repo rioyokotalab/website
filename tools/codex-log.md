@@ -378,4 +378,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | codex-driver (gpt-5) | T-10 T-11 T-12 selective Sol apply; T-13 declined | tools/out/driver-report-20260712-2003.md | n/a | done; no publish/push/config apply
 2026-07-12 | codex-driver (gpt-5) | T-11 applied verification and cold-restart handoff | tools/out/driver-report-20260712-2024.md | n/a | done; restart ready
 2026-07-12 | codex-driver (GPT-5) | no task; cold-start resume verification | tools/out/driver-report-20260712-2032.md | n/a | idle-ready
-2026-07-12 | codex-driver (gpt-5) | T-14 direct DRIVER standing publish/push policy | tools/out/driver-report-20260712-2040.md | n/a | done; push pending preflight; deploy blocked by T-12
+2026-07-12 | codex-driver (gpt-5) | T-14 direct DRIVER standing publish/push policy | tools/out/driver-report-20260712-2040.md | n/a | done; pushed 8b79297; deploy blocked by T-12
