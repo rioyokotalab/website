@@ -332,8 +332,12 @@ def main() -> int:
             frame = document.iframes[0] if len(document.iframes) == 1 else {}
             if frame.get("class") != "location-map" or frame.get("title") != expected_map_title or frame.get("loading") != "lazy" or frame.get("referrerpolicy") != "no-referrer-when-downgrade" or "style" in frame or "width" in frame or "height" in frame:
                 fail(findings, path, "accessible map embed mismatch")
+            if len(re.findall(r'<address>', text, flags=re.I)) != 1 or len(re.findall(r'</address>', text, flags=re.I)) != 1 or not re.search(r'</address>\s*<p class="text-center">\s*<iframe', text, flags=re.I):
+                fail(findings, path, "contact address semantics mismatch")
         elif document.iframes:
             fail(findings, path, "unexpected iframe")
+        elif re.search(r'</?address\b', text, flags=re.I):
+            fail(findings, path, "unexpected address element")
         if document.html_lang.lower() != expected_lang:
             fail(findings, path, f"lang must be {expected_lang}")
         heading_name = "YOKOTA Laboratory" if expected_lang == "en" else "横田研究室"

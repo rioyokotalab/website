@@ -103,6 +103,9 @@ body {
 	-webkit-text-size-adjust: 100%;
 	-webkit-font-smoothing: antialiased;
 }
+address {
+	font-style: normal;
+}
 
 .skip-link {
 	position: fixed;
