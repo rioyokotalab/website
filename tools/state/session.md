@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T03:14+0900
-task: T-79 audit CSS redundancy after modernization
+updated: 2026-07-13T03:24+0900
+task: T-80 replace obsolete member-table column sizing
 status: in-progress
 
 ## Now
-- Goal: remove only proven-redundant CSS while preserving the established visual design and every modernized state.
-- Last done: T-78 audited all 26 routes at 320/1200px plus the root entry without JavaScript; the only confirmed loss was an inert mobile hamburger, now progressively exposed by an early `html.js` hook while navigation stays expanded without scripts. Two permanent tests cover all routes and all 12 browser tests pass.
-- Next: inventory duplicate declarations and selectors absent from source/runtime; exercise all page families plus mobile/desktop, dark, print, forced-colors, consent, open-menu, table, and gallery states before removing only independently proven redundancy.
+- Goal: replace the final mirrored obsolete `<col width>` attributes without moving or resizing the member biography tables.
+- Last done: T-79 removed rules whose nine class tokens and one ID token were absent from every public HTML/runtime script, added a gate over all remaining selectors, and matched baseline/working geometry plus 27 computed properties exactly in 60 route/state pairs spanning desktop/mobile, light/dark, print, and forced colors.
+- Next: capture both member-table column geometries at 320/390/1200px and print; replace the two `width="72"` attributes with one shared class rule, enforce the migration, and compare exact rendered columns before/after.
 
 ## Working set
-- `style.css`; all public markup and runtime-generated component DOM; CSS coverage/static selector inventory; screen/print/dark/forced-color geometry and appearance contracts; standards/test bookkeeping.
+- `en/member/index.html`, `jp/member/index.html`, `style.css`, standards checks; mirrored member biography columns at screen/print responsive states; cache/ledger bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

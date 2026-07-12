@@ -273,10 +273,6 @@ h1 {
 	text-decoration: none;
 	border-bottom: 1px solid rgba(255,255,255,0.6);
 }
-.tel strong {
-	font-size: 20px;
-	font-weight: bold;
-}
 /**************************
 /* Top navigation (sticky bar below the header)
 **************************/
@@ -355,10 +351,6 @@ ul.topnav li.active a, ul.topnav a[aria-current="page"], ul.topnav a:hover {
 	-webkit-backdrop-filter: blur(2px);
 	backdrop-filter: blur(2px);
 }
-.subImg .slogan {
-	left: auto;
-	right: 16px;
-}
 .slogan h2 {
 	padding-bottom: 2px;
 	color: #fff;
@@ -387,29 +379,6 @@ ul.topnav li.active a, ul.topnav a[aria-current="page"], ul.topnav a:hover {
 }
 .grid {
 	float: left;
-}
-.colDark, .colLight {
-	padding-bottom: 12px;
-	color: #fff;
-	background: #002855;
-	border-radius: 8px;
-}
-.colLight {
-	background: #164272;
-}
-.colDark h3, .colLight h3 {
-	margin: 12px 14px 6px;
-	font-size: 15px;
-	font-weight: 700;
-	border-bottom: 1px solid rgba(255,255,255,0.4);
-	padding-bottom: 4px;
-}
-.colDark a, .colLight a {
-	display: block;
-	color: #cfdcec;
-}
-.colDark a:hover, .colLight a:hover {
-	color: #fff;
 }
 .grid p {
 	padding: 1em;
@@ -468,11 +437,6 @@ table :is(td, th).line {
 .width-92pct { width: 92%; }
 .width-98pct { width: 98%; }
 .width-100pct { width: 100%; }
-table :is(td, th).uline {
-	border-top: 1px solid var(--border);
-	border-bottom: 1px solid var(--border);
-	padding: 6px 4px;
-}
 /*************
 /* Main content
 *************/
@@ -505,16 +469,6 @@ section.content > h3.heading:first-child, section.content h3.heading:first-of-ty
 #sub .grid h3 {
 	margin: 0 0 0.6em;
 	font-size: 17px;
-}
-.alignleft {
-	float: left;
-	clear: left;
-	margin: 4px 16px 12px 1px;
-}
-.alignright {
-	float: right;
-	clear: right;
-	margin: 4px 1px 12px 16px;
 }
 img.frame, #gallery img {
 	border: 0;
@@ -709,17 +663,9 @@ table.table tr:nth-child(even) td {
 	width: 74%;
 }
 
-#subpage #sub {
-	float: left;
-	width: 22%;
-	overflow: hidden;
-}
 /* grid columns */
 .col1 {
 	width: 23%;
-}
-.col2 {
-	width: 48%;
 }
 .col3 {
 	width: 100%;
@@ -730,14 +676,6 @@ table.table tr:nth-child(even) td {
 #gallery .grid {
 	width: 23%;
 	margin-right: 2%;
-}
-#subpage #sub .grid {
-	width: 100%;
-	float: none;
-	padding-bottom: 30px;
-}
-.topgrid {
-	height: 160px;
 }
 h1 {
 	padding: 10px 0 0 3px;
@@ -793,11 +731,6 @@ h1 {
 }
 img.frame, #gallery img {
 	border-width: 0;
-}
-.alignleft, .alignright {
-	float: none;
-	display: block;
-	margin: 0 auto 10px;
 }
 #footer .grid p {
 	text-align: center;

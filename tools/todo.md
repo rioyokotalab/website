@@ -1,14 +1,14 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-80.
+`tools/state/session.md`. Next free id: T-81.
 
 ## Active
 
-### T-79 — audit CSS redundancy after modernization
-Inventory duplicate declarations, unreachable legacy selectors, and overridden
-rules using coverage from all page families/states; remove only byte-identical
-or demonstrably unused CSS with full screen/print/forced-color parity checks.
+### T-80 — replace obsolete member-table column sizing
+Replace the final mirrored `<col width>` presentational attributes with a
+shared semantic class, preserving the exact EN/JP biography-table geometry at
+mobile/desktop and keeping print and narrow local-scroll behavior unchanged.
 
 ## Blocked / awaiting user
 
@@ -34,7 +34,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-78 verified every public route at 320/1200px plus the root entry without JavaScript, kept content/navigation/images/gallery originals/contact metadata usable, hid the inert mobile hamburger only when JavaScript fails, and added two permanent regression tests; all 12 browser tests pass (pending commit).
+- 2026-07-13 T-79 removed 67 lines tied exclusively to nine absent legacy classes and one absent wrapper ID, added a repeatable source-reference gate for all 58 remaining classes and 13 IDs, and matched 60 baseline/working computed renders exactly across screen, dark, print, and forced-color states (pending commit).
+- 2026-07-13 T-78 verified every public route at 320/1200px plus the root entry without JavaScript, kept content/navigation/images/gallery originals/contact metadata usable, hid the inert mobile hamburger only when JavaScript fails, and added two permanent regression tests; all 12 browser tests pass (`157b872`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-77 added tolerant rendered-layout contracts for 14 EN/JP representative routes at 320/390/900/901/1200px, plus runtime responsive-image density and local keyboard table scrolling checks; all four layout tests pass (`d5b424c`).
 - 2026-07-13 T-76 added conventional npm test/test:browser/install commands with reviewed compatibility aliases, enforced the script surface, added EN/JP 900/901px menu and six-family print contracts, and passed all 8 browser plus fast security tests (`175d0b0`).
 - 2026-07-13 T-75 wrapped pinned Lightbox with localized modal semantics, named controls/images, inert background, focus entry/trap/return, kept arrow/Escape/close behavior, passed first/next/last tests across six galleries, and added permanent Playwright coverage (`adac83b`; live publish reserved for user/Claude site-publisher).

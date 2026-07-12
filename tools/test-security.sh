@@ -11,3 +11,4 @@ tools/test-deploy-policy.sh
 python3 tools/supply-chain-check.py
 python3 tools/generate-sitemap.py --check
 python3 tools/standards-check.py
+python3 tools/css-selector-check.py
