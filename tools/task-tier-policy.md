@@ -4,7 +4,7 @@ Maps `task_type` to the default codex worker the orchestrator chooses before dis
 
 ## Architecture (2026-07-11)
 
-Five logical workers in `tools/codex-workers.json`, the single source of truth: `codex-spark-low` and `codex-spark-medium` (pool spark, model `gpt-5.3-codex-spark`, effort low/medium); `codex-medium` (standard, `gpt-5.6-terra`, medium); `codex-high` (standard, `gpt-5.6-sol`, high); `codex-low` (legacy, `gpt-5.6-terra`, low).
+Five logical workers in `tools/codex-workers.json`, the single source of truth: `codex-spark-low` and `codex-spark-medium` (pool spark, model `gpt-5.3-codex-spark`, effort low/medium); `codex-low` and `codex-medium` (standard, `gpt-5.6-terra`, low/medium); and `codex-high` (standard, `gpt-5.6-sol`, high).
 
 Mandatory dispatch contract: startup pins in .mcp.json are a safety net only; every codex call passes per-call `model=<worker.model>`, `config={"model_reasoning_effort":<worker.effort>}`, `sandbox:"danger-full-access"`, and approval policy `never`. Server names are routing labels only.
 
@@ -25,6 +25,13 @@ prefer-spark selects codex-spark-medium for an eligible, spark-suitable ROUTINE-
 
 - MECHANICAL-LOW -> `codex-spark-low`: `mechanical-edit`, `verify-parity`, `git-summary`, `deploy-publish` pre-checks, and `metadata-lookup` including direct network fetches per `skills/web-lookup.md`. Capacity fallback -> `codex-medium`; never escalate to high just for size.
 - ROUTINE-MEDIUM -> substitution boundary: tightly-bounded, limited-context, cheap-retry work -> `codex-spark-medium`; broader, context-heavy, ambiguous, long-running work -> `codex-medium`. Covers heavier edit-script drafting, multi-file sweeps, and `other`. Per observed 2026-07-11 results, bounded well-specified `translation`/`content-draft` batches MAY be routed to `codex-medium`; keep scopes small — recorded failures were oversized scopes, cutoffs, and one unauthorized-apply overreach.
+- BOUNDED-TERRA-LOW -> `codex-low`: explicit offline acceptance criteria,
+  one or two implementation files, deterministic F2P/P2P, and either local
+  JS state repair or image-assisted static CSS repair. It is also the cheapest
+  vision-capable route; Spark cannot accept image inputs. Evidence from the
+  2026-07-13 WBD suite is deliberately narrow: privacy JS and reference-image
+  CSS both scored 100 at Terra/low. Do not generalize this to ambiguous
+  diagnosis, security policy design, or broad multi-file work.
 - COMPLEX-HIGH -> `codex-high`: house-style-critical `content-draft`, `translation` where nuance dominates, `exporter-logic`, `diagnosis`, `figure-production`, `config-edit`. Never downgraded to spark even under capacity pressure.
 
 Note: historical medians predate the worker rename; `tier` in metrics records worker names, while legacy `low`/`medium`/`high` values remain in history. metadata-lookup success was depressed by pre-network-access sandbox DNS blocks; expect improvement now that codex fetches directly.
@@ -51,7 +58,19 @@ Note: historical medians predate the worker rename; `tier` in metrics records wo
 | tooling-fix | codex-spark-low | 22236 | 100.0 | 1 | 2026-07-12 |
 | context-check | codex-spark-low | 12953 | 100.0 | 1 | 2026-07-12 |
 
-Failover ladder: spark -> `codex-medium` -> `codex-high` -> Opus -> Fable, one hop per failure, max one cross-pool failover per task. A failed same-worker environment retry is terminal: record the error and report a blocker. After the final available escalation-ladder endpoint fails, report a blocker; do not restart the ladder. These limits are per task for the run and may not be reset by reclassifying or redispatching the same failure.
+Failover ladder: spark -> `codex-low` for BOUNDED-TERRA-LOW-compatible tasks,
+otherwise `codex-medium` -> `codex-high` -> the configured non-Codex endpoints,
+one hop per failure and at most one cross-pool failover per task. A failed
+same-worker environment retry is terminal: record the error and report a
+blocker. After the final endpoint fails, do not restart the ladder by
+reclassifying the same failure.
+
+Before a second capability escalation, compare deterministic failure signatures.
+If two different routes miss the same assertion, pause route spending and audit
+the task contract/grader: hidden requirements must become explicit acceptance
+criteria, and semantic HTML must not be graded by attribute order. Resume at the
+cheapest plausible route after the contract is versioned. This is not a retry;
+it is evaluator repair and must be logged/excluded from matched comparisons.
 
 ## Latency guardrails
 

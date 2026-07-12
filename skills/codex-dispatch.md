@@ -14,6 +14,12 @@ Per-call contract (MANDATORY — server names are routing labels only):
 - Use exactly the dispatched worker; report hard failures with evidence.
   Never silently reroute or self-escalate — failover and escalation
   decisions belong to the orchestrator.
+- The orchestrator compares deterministic failure signatures before a second
+  capability escalation. The same missed assertion on two routes triggers a
+  task-contract/grader audit, not a third model spend. Promote hidden acceptance
+  requirements into the prompt, make semantic graders representation-invariant,
+  version the task, exclude contaminated runs, then restart from the cheapest
+  plausible route.
 
 Output-file-first:
 - `tools/out/<task>.md|.py` IS the deliverable; chat replies are pointers.

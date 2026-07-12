@@ -5,9 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-- **T-115 — Iteration 2: optimize model/effort routing and escalation**
-  - Calibrate the cheapest passing route by task class, with explicit automatic escalation on deterministic failure signals.
-  - Re-run the fixed suite and compare cost, capability, latency, and review burden with baseline.
 - **T-116 — Iteration 3: optimize handoff, review, and logging overhead**
   - Reduce duplicated narrative in worker outputs while preserving commands, evidence, failures, and machine-readable results.
   - Test whether compact handoffs lower total tokens without shifting hidden work to the driver.
@@ -21,6 +18,10 @@ None.
 
 ## Recently completed
 
+- **T-115 — Routing/escalation optimized:** selected portfolio is 4/4 at
+  115,236 effective tokens (-12.7% vs baseline); bounded JS/visual work passes
+  Terra/low, and identical two-route failures now trigger contract/grader audit
+  before more escalation (`tools/out/t115-routing-iteration.md`).
 - **T-114 — Progressive disclosure retained:** capability 2/4→3/4, mean
   90.25→92.5, effective tokens -8.2%, input -25.5%, worker time -21.8%, tool
   output -36.7%; matched passing tasks remain 100 (`tools/out/t114-context-iteration.md`).
