@@ -5,10 +5,10 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-90 — identify alternate-language navigation links
-Audit every visible EN↔JP switch against document language and mirrored route;
-add machine-readable destination-language hints where absent, enforce exact
-pairing, and verify the accessibility tree and pixels remain unchanged.
+### T-91 — expose contact details with native semantics
+Audit the mirrored contact blocks and mark the existing postal, telephone, and
+email details as an address without changing their wording or presentation;
+keep the map separate and verify EN/JP structural parity.
 
 ## Blocked / awaiting user
 
@@ -34,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-90 added exact destination-language metadata to all 26 visible EN↔JP switches, enforces mirrored href/text/hreflang triples statically, and passed two route-wide browser contracts plus fast and staging checks (pending commit).
 - 2026-07-13 T-89 traversed every focusable element on all 26 routes at 390/1200px in both directions, found the floated header logo left its link with a 0×0 focus box, gave that anchor containing geometry without moving the layout, and passed the 50.8-second exhaustive keyboard contract plus six layout/forced-color contracts (pending commit).
 - 2026-07-13 T-88 inventoried all 207 image elements and their link/caption context, removed one Japanese machine-generated placeholder from an English decorative event image, and now enforces the exact localized image-role set across all 26 routes; fast checks and two route-wide browser contracts pass (pending commit).
 - 2026-07-13 T-87 replaced 26 CSS-hidden institutional headings with metadata, added one localized native off-screen `h1` per page without changing the visible H2→H3 structure, and passed exact static gates plus seven route/layout/no-JS browser contracts (pending commit).

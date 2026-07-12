@@ -304,6 +304,12 @@ def main() -> int:
         expected_canonical = expected_alternates["en" if expected_lang == "en" else "ja"]
         if document.canonicals != expected_canonical or document.alternates != expected_alternates:
             fail(findings, path, "canonical or alternate-language metadata mismatch")
+        other_lang = "ja" if expected_lang == "en" else "en"
+        switch_text = "JAPANESE" if expected_lang == "en" else "ENGLISH"
+        switch_href = f"../{'jp' if expected_lang == 'en' else 'en'}/index.html" if relative == "index.html" else f"../../{'jp' if expected_lang == 'en' else 'en'}/{relative}"
+        switch_pattern = rf'<a href="{re.escape(switch_href)}" hreflang="{other_lang}">{switch_text}</a>'
+        if len(re.findall(switch_pattern, text)) != 1:
+            fail(findings, path, "alternate-language navigation mismatch")
         expected_og = {
             "og:url": expected_canonical,
             "og:locale": ["en_US" if expected_lang == "en" else "ja_JP"],
