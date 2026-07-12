@@ -1,5 +1,8 @@
 # Durable decisions (newest first; one-line rationale each)
 
+- 2026-07-12 Round-2 redesign proposals declined: keep the current public
+  design and apply only Sol's non-design work; no T-13 prototype or redesign
+  plan is an active implementation target.
 - 2026-07-12 Context ledger adopted: all cross-session context lives in
   tools/todo.md + tools/state/{session,facts,decisions}.md with size
   budgets (tools/check-md-size.py, pre-commit), because session restarts

@@ -38,3 +38,6 @@ Decisive: Sol's exact validated T-11 overlay plus best GA/T-13 quality beat Opus
 T11 owner base: sol, optionally borrowing Opus's structural Codex rollback/update pattern
 ```
 
+Owner consolidation (2026-07-12): applied Sol's T-10 README and T-12
+53-target placeholder implementation; restored Sol's T-11 proposal without
+applying configuration; declined all T-13 redesign directions. No publish/push.

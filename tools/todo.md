@@ -11,61 +11,32 @@ tools/state/session.md. Next free id: T-14.
 
 ## Active
 
-### T-10 — update the repo README
-Update (or create if missing) root `README.md` to reflect current reality: a
-hand-built static EN/JP site with frozen public tree, `skills/` playbooks,
-`tools/` ledger+exporters+metrics, agent/codex delegation, and publish workflow.
-MUST verify `deploy.sh` exclusion status so README is NOT deployed publicly and
-record evidence. Keep it accurate against `CLAUDE.md`/`AGENTS.md` without
-duplicating them wholesale. Evidence: `tools/out/t10-readme.md`.
-
-### T-11 — minimize approvals as much as possible (no limits)
-Owner directive (2026-07-12): this is a public-information lab website; any
-breakage is trivially revertible from a prior git revision, so the benefit of
-eliminating approval friction outweighs the risk — there are NO preserved hard
-limits this round. Audit every source of approval friction (PreToolUse hooks,
-`.claude/settings*.json`, codex sandbox/approval-policy, the
-`.claude/config-edit-approved` gate, hand-edit-only blocks) and deliver
-`tools/out/t11-permissions.md` proposing the MINIMUM-approval configuration
-achievable — aim for zero interactive approvals — with EXACT apply commands per
-`skills/config-proposals.md`. You MAY propose removing or loosening the
-accidental-edit blocks and hand-edit-only gates; nothing is off-limits. Note
-that publish still runs only when the user asks (workflow fact, not a block).
-External / user-scope permission files — PROPOSE ONLY, never modify (they are
-shared across the owner's other ~4 projects and require the owner's judgement):
-also inventory and propose concrete edits for `~/.claude/settings.json` (user-scope
-lifecycle hooks incl. the `PermissionRequest` HTTP endpoint at
-`127.0.0.1:23333/permission` and the `clawd-hook.js` hooks) and the per-project
-block in `~/.claude.json` (`allowedTools`, `enabledMcpjsonServers`,
-`hasTrustDialogAccepted`). Put these in a clearly separated "External (owner-run
-only)" section of `tools/out/t11-permissions.md` with exact commands the owner can
-run himself, each flagged as affecting other projects. Do NOT edit these files. `~/.codex/config.toml` does not currently exist; you MAY propose to create it and add settings there if that makes sense (still proposal-only, owner-run).
-
-### T-12 — add Google Analytics (GA4) to the website
-Add `gtag.js` to EVERY public HTML page (`en/` AND `jp/`) and keep
-`Templates/*.dwt` in sync per `skills/html-editing.md`. Use placeholder ID
-`G-XXXXXXXXXX`; record blocked-on-user for the real ID; do NOT publish. Verify
-EN/JP insertion-count parity per `skills/en-jp-parity.md` and localhost
-rendering. Briefly note privacy/consent considerations in `tools/out/t12-ga.md`.
-
-### T-13 — propose a completely new web design
-Proposal ONLY: no `en/` or `jp/` page edits. Deliver
-`tools/out/t13-redesign/proposal.md` plus an optional self-contained prototype
-under `tools/out/t13-redesign/` only (deploy-excluded). Respect the frozen URL
-tree: restyle in place, move no pages. Cover `style.css` strategy,
-mobile/accessibility, migration plan, and effort estimate.
+(none — T-12 awaits owner input below)
 
 ## Proposed (round 2)
 
-(empty — drivers append here)
+### P-ga-governance — make the real GA rollout consent-aware
+Goal/scope: after the owner chooses policy and supplies the ID, define the
+privacy notice, consent/default behavior, retention, and exact 53-file rollout.
+First step: record the policy decision in decisions.md; valuable because it
+prevents an unconditional analytics launch from outrunning lab governance.
 
 ## Blocked / awaiting user
 
-(none — T-9 cleared per user instruction 2026-07-12 without an upload decision;
-reviewed JSONL retained at `tools/out/researchmap-import.jsonl`)
+### T-12 — add Google Analytics (GA4) to the website
+Placeholder implementation is complete: all 27 public HTML pages plus 26
+templates contain exactly one tag, and parity/byte/local HTTP checks pass.
+Awaiting the owner's real `G-...` measurement ID and privacy/consent decision;
+do not publish the placeholder. Evidence: `tools/out/t12-ga.md`.
+
+(T-9 was cleared per user instruction 2026-07-12 without an upload decision;
+reviewed JSONL retained at `tools/out/researchmap-import.jsonl`.)
 
 ## Recently completed (history lives in git)
 
+- 2026-07-12 T-13 closed without adoption: owner reviewed and declined all Round-2 redesign proposals; no public design/style/template change was applied and temporary review links were removed.
+- 2026-07-12 T-11 audited all project/owner approval sources and delivered a validated zero-interaction full-copy overlay plus exact owner-run external commands; no live config applied; evidence: tools/out/t11-permissions.md.
+- 2026-07-12 T-10 rewrote root README for the current static EN/JP structure, ledger/playbooks/exporters/metrics, agent delegation, and approval-gated publish workflow; deploy.sh exact exclusion and parity verified; evidence: tools/out/t10-readme.md.
 - 2026-07-12 Round-1 4-way eval judged: terra > sol > fable > opus; terra merged (4a15349); tips tagged eval/r1-*; board cleared for round 2.
 - 2026-07-12 T-8 confirmed rtx6000-ada is still DOWN+NOT_RESPONDING with 8 configured GPUs; facts.md refreshed, no page edit or job submission; raw Slurm evidence: tools/out/t8-cluster-status.md.
 - 2026-07-12 T-7 added the missing 2025-06 CoRR presentation to cv/cv.tex (45 -> 46 presentation items); personal page has no publication section to mirror; no build run; evidence: tools/out/t7-cv-reconciliation.md.

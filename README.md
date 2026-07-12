@@ -1,171 +1,111 @@
 # YOKOTA Laboratory website
 
-Source for <https://www.rio.scrc.iir.isct.ac.jp>. This is a hand-built static
-HTML site with no build step. The `jp/` and `en/` trees mirror one another, and
-the folder structure is the live URL structure.
+Source for <https://www.rio.scrc.iir.isct.ac.jp>. The site is hand-built static
+HTML: there is no framework, package install, compilation, or generated public
+tree. Files in the deployed set are served at the corresponding URL.
 
-## Quick start
+The public URL tree is intentionally frozen. Improvements should restyle or
+edit pages in place, not move them. The `en/` and `jp/` HTML trees mirror one
+another so the language switch can replace one prefix with the other.
 
-Do this once. Afterward, start Claude Code in the repository and describe what
-you want in plain language.
+## Repository map
 
-1. Ask the lab administrator for the SFTP server password.
+| Path | Purpose |
+| --- | --- |
+| `en/`, `jp/` | Mirrored English and Japanese public pages. |
+| `Templates/` | Dreamweaver-era page templates; keep site-wide markup in sync with them. |
+| `style.css`, `js/`, `images/` | Shared public presentation and assets. Some English pages reuse assets under `jp/`. |
+| `cv/` | Public `cv.pdf` plus repo-only TeX sources and build script. |
+| `skills/` | Canonical playbooks for editing, parity, content, lookup, exporting, and publishing. |
+| `tools/` | Cross-session ledger, exporters, checks, worker registry, metrics, and transient `out/` deliverables. |
+| `CLAUDE.md`, `AGENTS.md` | Role-specific operating rules for Claude and Codex. |
+| `publish.sh`, `deploy.sh` | Approval-gated publish pipeline and SFTP mirror implementation. |
 
-2. Install the prerequisites for your computer.
+The authoritative playbook index is [`skills/README.md`](skills/README.md).
+Read the skill for the area being changed before editing; the root README is
+an orientation guide, not a replacement for those procedures.
 
-   **A. Personal macOS MacBook**
+## Working on the site
 
-   Install Homebrew, load it into this shell, and install Git, lftp, GitHub CLI,
-   and Node.js:
+At the start of a driver session, read:
 
-   ```sh
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   if [ -x /opt/homebrew/bin/brew ]; then eval "$(/opt/homebrew/bin/brew shellenv)"; else eval "$(/usr/local/bin/brew shellenv)"; fi
-   brew install git lftp gh node python
-   ```
+- `tools/todo.md` for active and blocked tasks;
+- `tools/state/session.md` for the current handoff and next step;
+- the relevant portions of `tools/state/facts.md` and
+  `tools/state/decisions.md` when the task needs them.
 
-   **B. Hinadori login node (Linux)**
+Checkpoint in-flight work in `tools/state/session.md` according to
+`skills/context-ledger.md`. Durable context belongs in the ledger or a task
+deliverable, not only in chat.
 
-   Git, Python 3, and lftp are generally already installed. The following
-   installs GitHub CLI and Node.js only if they are missing, entirely under
-   your home directory and without `sudo`:
+For a normal page change:
 
-   ```sh
-   mkdir -p "$HOME/.local/bin"
-   case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) printf '\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "$HOME/.profile"; export PATH="$HOME/.local/bin:$PATH" ;; esac
-   if ! command -v gh >/dev/null 2>&1; then
-     GH_VERSION=$(curl -fsSL https://api.github.com/repos/cli/cli/releases/latest | python3 -c 'import json,sys; print(json.load(sys.stdin)["tag_name"].removeprefix("v"))')
-     case "$(uname -m)" in x86_64) GH_ARCH=amd64 ;; aarch64|arm64) GH_ARCH=arm64 ;; *) echo "Unsupported architecture: $(uname -m)"; exit 1 ;; esac
-     curl -fsSL "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_${GH_ARCH}.tar.gz" -o "/tmp/gh_${GH_VERSION}.tar.gz"
-     tar -xzf "/tmp/gh_${GH_VERSION}.tar.gz" -C /tmp
-     install -m 755 "/tmp/gh_${GH_VERSION}_linux_${GH_ARCH}/bin/gh" "$HOME/.local/bin/gh"
-   fi
-   if ! command -v node >/dev/null 2>&1; then
-     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-     export NVM_DIR="$HOME/.nvm"
-     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-     nvm install --lts
-   fi
-   ```
+1. Read `skills/html-editing.md`, `skills/en-jp-parity.md`, and any
+   content-specific playbook.
+2. Edit both language trees where applicable, preserve legacy HTML/CRLF
+   conventions, and update the matching templates for site-wide markup.
+3. Run the scoped parity and link checks described by the playbooks.
+4. Preview locally and inspect both languages.
+5. Publish only after the user explicitly approves the reviewed change in the
+   current conversation.
 
-3. Install Claude Code and Codex CLI. Codex CLI 0.144.0 or newer is required
-   for the MCP workers.
+There is no build step. A simple local preview from the repository root is:
 
-   ```sh
-   curl -fsSL https://claude.ai/install.sh | bash
-   npm install -g @openai/codex
-   claude --version
-   codex --version
-   ```
+```sh
+python3 -m http.server 8000
+```
 
-   Confirm that the last command reports version 0.144.0 or newer.
+Then open <http://localhost:8000/jp/index.html> and the corresponding `/en/`
+page.
 
-4. Authenticate GitHub, Claude Code, and Codex. Complete the browser or terminal
-   prompts opened by each command.
+## Agents and Codex delegation
 
-   ```sh
-   gh auth login --git-protocol https --web
-   gh auth setup-git
-   claude auth login
-   codex login
-   ```
+Claude can coordinate the specialized site agents and dispatch bounded work to
+the Codex worker registry in `tools/codex-workers.json`. Codex can also be
+started directly as the repository driver. Both roles share the same ledger
+and playbooks, so a handoff is reconstructed from disk rather than conversation
+history.
 
-5. Clone the repository over HTTPS and enter it.
+Recurring worker routing and task metrics live in
+`tools/task-tier-policy.md`, `tools/task-metrics.jsonl`, and
+`tools/codex-log.md`. Hand-edit-only agent/config changes are prepared as full
+proposals under `tools/out/`; see `skills/config-proposals.md` for the review
+and apply contract.
 
-   ```sh
-   git clone https://github.com/rioyokotalab/website.git
-   cd website
-   ```
+## Exporters and derived records
 
-6. Configure the password-only SFTP connection. This adds the `web` host only
-   when it is absent, prompts without echoing the password, and keeps all
-   credential files readable only by you.
+`tools/` includes exporters for researchmap and ORCID plus checks for their
+state. The detailed workflow is in `skills/exporters.md`. External account
+updates, researchmap/ORCID operations, and CV PDF builds require the explicit
+authorization described there; credentials and login UIs are never automated.
 
-   ```sh
-   mkdir -p "$HOME/.ssh"
-   chmod 700 "$HOME/.ssh"
-   touch "$HOME/.ssh/config"
-   chmod 600 "$HOME/.ssh/config"
-   if ! grep -Eq '^[[:space:]]*Host[[:space:]]+web([[:space:]]|$)' "$HOME/.ssh/config"; then
-     cat >> "$HOME/.ssh/config" <<'EOF'
-   Host web
-   	HostName web-o3.noc.titech.ac.jp
-   	User gsic0017
-   	ControlMaster auto
-   	ControlPath ~/.ssh/cm-%r@%h-%p
-   	ControlPersist yes
-   EOF
-   fi
-   bash -c 'umask 077; read -rsp "web server password: " p; printf "%s\n" "$p" > "$HOME/.ssh/web-password"; echo'
-   cat > "$HOME/.ssh/web-askpass" <<'EOF'
-   #!/bin/sh
-   cat "$HOME/.ssh/web-password"
-   EOF
-   chmod 700 "$HOME/.ssh/web-askpass"
-   ```
+The context ledger separates current work by purpose:
 
-7. Register the five Codex MCP worker labels at Claude Code user scope. These
-   commands are generated from `tools/codex-workers.json` by
-   `tools/gen-codex-mcp.py`:
+- `tools/todo.md`: task board;
+- `tools/state/session.md`: single in-flight handoff;
+- `tools/state/facts.md`: verified current facts;
+- `tools/state/decisions.md`: durable choices and rationale.
 
-   ```sh
-   claude mcp add-json --scope user codex-spark-low '{"type":"stdio","command":"codex","args":["-c","sandbox_mode=\"workspace-write\"","-c","approval_policy=\"never\"","mcp-server"]}'
-   claude mcp add-json --scope user codex-spark-medium '{"type":"stdio","command":"codex","args":["-c","sandbox_mode=\"workspace-write\"","-c","approval_policy=\"never\"","mcp-server"]}'
-   claude mcp add-json --scope user codex-medium '{"type":"stdio","command":"codex","args":["-c","sandbox_mode=\"workspace-write\"","-c","approval_policy=\"never\"","mcp-server"]}'
-   claude mcp add-json --scope user codex-high '{"type":"stdio","command":"codex","args":["-c","sandbox_mode=\"workspace-write\"","-c","approval_policy=\"never\"","mcp-server"]}'
-   claude mcp add-json --scope user codex-low '{"type":"stdio","command":"codex","args":["-c","sandbox_mode=\"workspace-write\"","-c","approval_policy=\"never\"","mcp-server"]}'
-   ```
+## Publishing and deployment boundary
 
-   The repository’s committed `.mcp.json` supplies the required project-scope
-   definitions automatically. Accept Claude Code’s one-time project trust
-   prompt when it appears; both scopes are required for the project agents.
+Publishing is approval-gated. The complete edit, preview, approval, publish,
+live-verification, and Git synchronization procedure is
+`skills/publish-and-verify.md`. Codex does not run the publishing commands;
+publishing is performed by the user or Claude's site-publisher after explicit
+approval.
 
-8. Create the local Claude Code hooks that start the preview server when a
-   session opens and stop it when the session ends. This file is gitignored.
+`deploy.sh` mirrors the deploy-included repository tree to the SFTP web root
+with deletion. Its exclusions protect repository-only material from both
+upload and remote deletion. They include `.git/`, `.agents/`, `.claude/`,
+`.codex/`, `tools/`, `skills/`, the deployment scripts, agent/config docs,
+and the CV sources. `README.md` is explicitly excluded by
+`-x '^README\.md$'`, so this file is not part of the public website.
 
-   ```sh
-   mkdir -p .claude
-   cat > .claude/settings.local.json <<'EOF'
-   {
-     "hooks": {
-       "SessionStart": [{ "hooks": [{ "type": "command", "timeout": 10,
-         "command": "f=$PWD/.claude/http-server.pid; if ! { [ -f \"$f\" ] && kill -0 \"$(cat \"$f\")\" 2>/dev/null; }; then { nohup python3 -m http.server 8000 >/dev/null 2>&1 & echo $! > \"$f\"; }; fi" }] }],
-       "SessionEnd": [{ "hooks": [{ "type": "command", "timeout": 10,
-         "command": "f=$PWD/.claude/http-server.pid; if [ -f \"$f\" ]; then p=$(cat \"$f\"); if [ -n \"$p\" ] && ps -p \"$p\" -o command= 2>/dev/null | grep -q http.server; then kill \"$p\" 2>/dev/null; fi; rm -f \"$f\"; fi" }] }]
-     }
-   }
-   EOF
-   ```
+## Invariants
 
-9. Start Claude Code from the repository folder. Everything after this is
-   conversational.
-
-   ```sh
-   claude
-   ```
-
-## How it works: updating the website
-
-Tell Claude Code what to change in plain language. Claude follows the site’s
-rules, updates the matching Japanese and English pages, and lets you inspect
-the result at <http://localhost:8000/jp/index.html> and the `/en/` counterpart.
-Nothing goes live until you say **OK**. Claude then publishes the approved
-change, commits and pushes it to GitHub, and verifies the live site.
-
-Deployment mirrors the repository’s deployed set to `www/` over SFTP with
-`mirror -R --delete`: new and changed files are uploaded, and files removed
-locally are removed remotely. Excluded repo-only paths are neither uploaded nor
-deleted remotely. The exclusions include `.git`, `.claude`, `tools`, deployment
-scripts, `CLAUDE.md`, `README.md`, `AGENTS.md`, `.mcp.json`, `.gitignore`, and
-the CV sources (`cv/cv.tex`, `cv/cv.cls`, and `cv/build-cv.sh`); the built
-`cv/cv.pdf` is deployed.
-
-## Rules that keep the site healthy
-
-- Every page must exist at the same path in both `jp/` and `en/`; the language
-  toggle swaps `/jp/` and `/en/` in the URL.
-- Preview both languages and give explicit approval before publishing.
-- Never upload `.git` or repository-only tooling to the public server.
-- Keep `.dont-remove-me`; it is a hosting marker file.
-- Let Claude Code handle editing, preview startup, publishing, pushing, and live
-  verification so the repository and server stay synchronized.
+- Preserve every public path and EN/JP counterpart.
+- Keep shared markup in `Templates/*.dwt` synchronized with pages.
+- Preserve `.dont-remove-me` and never expose credentials or `.git`.
+- Add `rel="noopener noreferrer"` to new `target="_blank"` links.
+- Do not publish or push merely because an edit is complete; follow the
+  approval and ownership rules in the role instructions and publish playbook.

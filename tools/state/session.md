@@ -1,20 +1,21 @@
-driver: fable (coordinator)
-updated: 2026-07-12T15:17+0900
-task: Round 2 4-way eval setup
-status: in-progress
+driver: codex
+updated: 2026-07-12T20:09+0900
+task: idle
+status: idle
 
 ## Now
-- Goal: establish the judge-only ledger, reseed the shared Round 2 board, and prepare all contestant branches from one judge-free scaffold.
-- Last done: Round 1 verdict captured; judge log/checklist, Round 2 tasks, and canonical model-evaluation protocol drafted.
-- Next: git surgery worker commits `main`, creates the judge-free scaffold, records its SHA, and resets all four contestant branches.
+- Goal: none — owner-selected Round-2 consolidation is complete locally.
+- Last done: applied Sol's T-10 README and exact 53-target T-12 GA placeholder implementation; restored the cleaned T-11 proposal/evidence without applying config; recorded that all T-13 redesign proposals were declined; committed locally with no publish or push.
+- Next: resume T-12 only after the owner supplies a real GA4 measurement ID and privacy/consent decision; optional T-11 proposal application remains owner-reviewed and separate.
 
 ## Working set
-- Files: `tools/judge/{log,todo}.md`; `tools/todo.md`; `skills/{model-eval,README}.md`; `tools/state/session.md`.
-- Scratch: `tools/out/r2-drafts.md`.
-- Verify: requested line limits, task IDs/rules, judge-only protection lifecycle, and one shared scaffold SHA for all branches.
+- Tracked result: README.md; root/en/jp HTML; Templates/*.dwt; ledger/judge/bookkeeping.
+- Evidence: tools/out/t10-readme.md; tools/out/t11-permissions.md + cleaned bundle; tools/out/t12-ga.md; tools/out/t12-insert-ga.py; tools/out/driver-report-20260712-2003.md.
+- Verification: Sol tag byte match; 53/53 markers and 106 placeholder references; 27/27 localhost HTTP 200; CRLF-aware diff; proposal JSON/TOML/Python parse; Markdown/CLAUDE budgets.
 
 ## Open questions
-- None for file drafting; follow-up worker must record the scaffold SHA in `tools/judge/todo.md`.
+- None for the completed consolidation.
 
 ## Awaiting user
-- Run the four contestants after setup and branch reset complete.
+- T-12: real GA4 `G-...` measurement ID and privacy/consent decision; never publish `G-XXXXXXXXXX`.
+- Optional T-11: review and separately run proposal commands if desired; no configuration was applied.
