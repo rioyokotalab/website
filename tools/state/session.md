@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T00:59+0900
-task: T-38 eliminate duplicate document identifiers
+updated: 2026-07-13T01:09+0900
+task: T-36 reduce obsolete presentational markup safely
 status: in-progress
 
 ## Now
-- Goal: make every HTML `id` unique without changing navigation layout or historical content.
-- Last done: converted both menus on all 26 pages from duplicated IDs to shared `topnav` class, updated CSS/cache version, and aligned EN `ev190903_2/_1` anchors with JP. All page IDs are unique; security suite passes; desktop/mobile menu geometry stays within 1px and distinct fragments resolve (browser 3/3).
-- Next: remove temporary test, run full publish/size checks, preview/publish T-38, verify live IDs/fragments/layout, then implement T-37 permanent standards checks.
+- Goal: migrate only repeated high-confidence presentational markup to CSS while preserving computed layout and content.
+- Last done: T-37 standards checker passes and is integrated into every pre-publish security run; live T-38 ID uniqueness and event fragment were browser-verified. README documents enforced invariants.
+- Next: commit/push the repository-only T-37 tooling, inventory obsolete attributes by tag/pattern, choose the smallest repeated pattern with exact computed-style equivalence, and handle it as an isolated browser-compared batch.
 
 ## Working set
-- All 26 EN/JP pages, EN news anchors, `style.css` and cache-bust references, browser/fragment tests, ledger/bookkeeping.
+- Selected EN/JP HTML pattern, shared CSS/cache bump only if needed, browser geometry/computed-style tests, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

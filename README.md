@@ -146,6 +146,13 @@ tools/test-security.sh --live
 `publish.sh` always runs the offline suite before its deploy preview. The
 Playwright consent suite above remains the deeper browser-runtime check.
 
+The same pre-publish suite runs `tools/standards-check.py` across every EN/JP
+document. It enforces mirrored paths, correct document languages, unique IDs,
+one header/main/footer, distinctly labeled navigation landmarks, localized
+skip links, image alternatives and loading classification, valid local
+fragments, a consistent stylesheet version, and the absence of JavaScript URLs,
+inline event handlers, or executable inline scripts.
+
 The live server enforces a same-origin-first Content Security Policy, allowing
 only the pinned cdnjs gallery assets, consent-gated Google Analytics, and the
 Google Maps contact-page frame. It also sends a restrictive Permissions Policy
