@@ -5,11 +5,10 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-87 — expose one meaningful page-level heading
-Audit the rendered heading tree on every route; replace CSS-hidden institutional
-`h1` elements with non-heading metadata and promote each visible page banner (or
-add a visually hidden home-page lab title) so every EN/JP document exposes
-exactly one useful `h1` without changing pixels or wording.
+### T-88 — audit meaningful image alternatives
+Inventory rendered images by purpose across every EN/JP route; distinguish
+decorative, linked, informational, and gallery images, then correct only missing,
+redundant, or misleading alternatives while preserving all pixels and wording.
 
 ## Blocked / awaiting user
 
@@ -35,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-87 replaced 26 CSS-hidden institutional headings with metadata, added one localized native off-screen `h1` per page without changing the visible H2→H3 structure, and passed exact static gates plus seven route/layout/no-JS browser contracts (pending commit).
 - 2026-07-13 T-86 confirmed all 26 header logo/home links were unnamed in the accessibility tree, added concise localized logo alternatives without visual changes, enforced parity, and passed route-wide name/runtime plus fast checks (pending commit).
 - 2026-07-13 T-85 made long content links and home-news cells safely wrappable, restored missing JP Computers table containment/helper parity, and passed all 52 pages plus EN/JP consent under WCAG text-spacing overrides; fast checks and six affected browser contracts pass (`278b2a8`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-84 replaced the legacy -10px heading scroll margin with 24px after reproducing 27px of Japanese-heading clipping beneath the 81px sticky bar; every heading-target link passes at 320/900/901/1200px and all 18 browser tests pass (`919593a`; live publish reserved for user/Claude site-publisher).

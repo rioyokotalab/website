@@ -330,6 +330,11 @@ def main() -> int:
             fail(findings, path, "unexpected iframe")
         if document.html_lang.lower() != expected_lang:
             fail(findings, path, f"lang must be {expected_lang}")
+        heading_name = "YOKOTA Laboratory" if expected_lang == "en" else "横田研究室"
+        hidden_h1 = rf'<h1 class="visually-hidden">{re.escape(heading_name)}</h1>'
+        institution = r'<p class="institution-name">'
+        if len(re.findall(hidden_h1, text, flags=re.I)) != 1 or len(re.findall(r'<h1\b', text, flags=re.I)) != 1 or len(re.findall(institution, text, flags=re.I)) != 1 or re.search(r'\baria-level=', text, flags=re.I):
+            fail(findings, path, "page-level accessible heading mismatch")
         logo_name = "YOKOTA Laboratory" if expected_lang == "en" else "横田研究室"
         if len(re.findall(rf'<div class="logomark"><img\b[^>]*\balt="{re.escape(logo_name)}"', text)) != 1:
             fail(findings, path, "localized header-logo alternative mismatch")

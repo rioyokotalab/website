@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:02+0900
-task: T-87 expose one meaningful page-level heading
+updated: 2026-07-13T04:08+0900
+task: T-88 audit meaningful image alternatives
 status: in-progress
 
 ## Now
-- Goal: ensure every page exposes exactly one useful top-level heading in the accessibility tree while leaving its rendered design unchanged.
-- Last done: T-86 confirmed `.htitle > a` was unnamed because its image alt was empty and all textual children were display-none; localized logo alternatives now name all 26 links, with exact standards and route-wide accessibility/runtime tests passing.
-- Next: inventory accessible headings; change the hidden institutional `h1` to non-heading metadata, promote each subpage's visually identical banner heading, give EN/JP home pages a visually hidden lab-name `h1`, update selectors, and compare exact screen/print geometry plus heading trees.
+- Goal: ensure image alternatives communicate purpose without repeating nearby text or exposing decorative filenames.
+- Last done: T-87 replaced CSS-hidden institutional headings with non-heading metadata and added exactly one localized native visually-hidden `h1` per page; static gates and seven route/layout/no-JS browser contracts pass without visible layout changes.
+- Next: inventory every rendered image's element role, link context, alternative, caption, and EN/JP pairing; reproduce accessibility-tree problems before making narrow corrections.
 
 ## Working set
-- 26 header institutional labels and banner headings; EN/JP home main headings; heading accessibility trees; CSS selectors/visual equivalence, standards/tests/cache/ledger bookkeeping.
+- Public image elements, links/captions, accessible names/descriptions, EN/JP pairing, standards/browser tests.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
