@@ -170,6 +170,17 @@ def fail(findings: list[str], path: Path, message: str) -> None:
     findings.append(f"{path.relative_to(ROOT)}: {message}")
 
 
+def pdf_link_counts(text: str) -> tuple[int, int]:
+    """Return (all PDF anchors, anchors declaring the PDF media type)."""
+    pattern = re.compile(
+        r"<a\b(?=[^>]*\bhref\s*=\s*([\"'])[^\"']+\.pdf(?:[?#][^\"']*)?\1)[^>]*>",
+        flags=re.I,
+    )
+    anchors = [match.group(0) for match in pattern.finditer(text)]
+    typed = sum(bool(re.search(r"\btype\s*=\s*([\"'])application/pdf\1", anchor, flags=re.I)) for anchor in anchors)
+    return len(anchors), typed
+
+
 def jpeg_dimensions(path: Path) -> tuple[int, int] | None:
     data = path.read_bytes()
     if not data.startswith(b"\xff\xd8"):
@@ -349,8 +360,8 @@ def main() -> int:
             if len(re.findall(r'<table class="width-90pct" aria-labelledby="sub002">', visible_member)) != 1:
                 fail(findings, path, "active-student table name mismatch")
         expected_pdf_links = 1 if relative == "member/yokota.html" else 0
-        pdf_links = re.findall(r'<a href="[^"]+\.pdf"\s+type="application/pdf"', text, flags=re.I)
-        if len(pdf_links) != expected_pdf_links or len(re.findall(r'<a href="[^"]+\.pdf"', text, flags=re.I)) != expected_pdf_links:
+        all_pdf_links, typed_pdf_links = pdf_link_counts(text)
+        if typed_pdf_links != expected_pdf_links or all_pdf_links != expected_pdf_links:
             fail(findings, path, "local PDF link media type mismatch")
         if document.html_lang.lower() != expected_lang:
             fail(findings, path, f"lang must be {expected_lang}")

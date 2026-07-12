@@ -281,10 +281,13 @@ def run_codex(task: dict[str, Any], task_id: str, workspace: Path, artifact: Pat
     }
 
 
-def task_route(task: dict[str, Any], model: str | None, effort: str | None) -> tuple[str, str, str]:
+def task_route(task: dict[str, Any], model: str | None, effort: str | None,
+               worker_override: str | None = None) -> tuple[str, str, str]:
     registry = json.loads((ROOT / "tools" / "codex-workers.json").read_text(encoding="utf-8"))
     workers = registry["workers"] if "workers" in registry else registry
-    worker_name = task.get("default_worker") or task["worker"]
+    worker_name = worker_override or task.get("default_worker") or task["worker"]
+    if worker_name not in workers:
+        raise ValueError(f"unknown worker: {worker_name}")
     worker = workers[worker_name]
     return model or worker["model"], effort or worker["effort"], worker_name
 
@@ -300,7 +303,7 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
     task = tasks[args.task_id]
     if task.get("held_out") and not args.include_held_out:
         raise SystemExit(f"{args.task_id} is held out; pass --include-held-out only after candidate freeze")
-    model, effort, worker_name = task_route(task, args.model, args.effort)
+    model, effort, worker_name = task_route(task, args.model, args.effort, args.worker)
     run_id = args.run_id or f"{datetime.now().strftime('%Y%m%d-%H%M%S')}-{args.task_id.lower()}-{uuid.uuid4().hex[:6]}"
     artifact = ARTIFACTS_ROOT / run_id
     artifact.mkdir(parents=True, exist_ok=False)
@@ -465,6 +468,7 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--run-id")
     run.add_argument("--run-label", default="development")
     run.add_argument("--model")
+    run.add_argument("--worker")
     run.add_argument("--effort", choices=("low", "medium", "high"))
     run.add_argument("--prompt-mode", choices=("full", "compact"), default="full")
     run.add_argument("--timeout", type=int)

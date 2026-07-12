@@ -4,5 +4,6 @@
   "20260713-070550-wbd-002-374a47": "Pre-baseline environment calibration: isolated workers could not invoke the pinned Playwright CLI; excluded so all compared baseline tasks use the same repaired runtime.",
   "20260713-070720-wbd-003-494f45": "Pre-baseline grader calibration: functionally correct conservative focus used an equivalent DOM expression rejected by the initial source-spelling assertion; browser P2P passed. Grader generalized before comparison.",
   "20260713-071002-wbd-001-e0c6e0": "Pre-baseline runtime calibration: grader launched owner Playwright while tests resolved the copied workspace package, causing a two-installation error. Grader now launches the workspace-pinned binary and any P2P failure is disqualifying.",
-  "20260713-071502-wbd-004-fcfa87": "Runner calibration: variadic --image consumed the positional prompt, so Codex exited before a turn. Prompts now use explicit stdin and the visual task was rerun."
+  "20260713-071502-wbd-004-fcfa87": "Runner calibration: variadic --image consumed the positional prompt, so Codex exited before a turn. Prompts now use explicit stdin and the visual task was rerun.",
+  "20260713-074453-wbd-002-eee9dd": "Evaluator calibration: candidate satisfied every semantic/static/browser assertion, but standards-check incorrectly required type immediately after href. Attribute-order-independent checker and regression tests added before rerun."
 }
