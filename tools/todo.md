@@ -31,6 +31,16 @@ test dependency or cache can enter the deployed tree.
 
 ## Blocked / awaiting user
 
+### T-28 — minimize deploy and web-server exposure
+Positive-allowlist staging is deployed and verified: only 149 manifest files
+can upload, rogue/stale remote paths delete, staging symlinks fail closed, and
+the sentinel alone is preserved. The first server-layer `.htaccess` denial
+attempt caused global HTTP 500 and was immediately rolled back in `0371605`.
+Existing server config already denies directory listings and `.htaccess`, but
+`.dont-remove-me` remains HTTP 200. Completing dotfile/source denial requires a
+compatible Apache/vhost rule supplied by the server administrator; do not retry
+unknown `.htaccess` directives on production.
+
 ### T-25 — purge archived PDF blobs from Git history
 Rewritten main and all eight local evaluation tags contain zero `tools/papers/`
 objects; GitHub main was lease-force-updated and fresh clones contain zero paper
@@ -43,7 +53,6 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-28 replaced broad repository mirroring with a positive public-file staging allowlist, preserves only the remote sentinel, deletes rogue/stale remote files, rejects staging symlinks, and adds Apache directory/dotfile/source/backup denial with isolated policy regressions.
 - 2026-07-13 T-27 removed and deployed one expired password-bearing meeting invitation from both news pages without replaying or logging its value; live pages are byte-identical to commit `0c7077b` with zero sensitive query/meeting URLs, while institutional professional contact remains intentionally public.
 - 2026-07-13 T-24 removed stale model-evaluation/judge infrastructure, the redundant researchmap implementation report, all 41 tracked paper PDFs (261 MiB), and disposable local browser/npm/Python caches; removed all live references and corrected the preview-hook scope note.
 - 2026-07-12 T-23 removed and deployed deletion of 26 unused Dreamweaver `.dwt` templates and all 264 `Instance*` control comments; all 26 live pages and the CV are byte-identical to commit `9636ff7`, with the template URL returning 404.

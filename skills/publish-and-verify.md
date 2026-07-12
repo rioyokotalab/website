@@ -29,6 +29,9 @@ Before publishing or pushing, the DRIVER must:
    has no publish blocker, the worktree contains no unrelated changes that the
    pipeline would sweep, and deploy-included content has no known placeholder.
    Do not publish `G-XXXXXXXXXX`. Preview locally in proportion to the change.
+   `publish.sh` always runs the deterministic offline `tools/test-security.sh`
+   suite before its deploy preview. Use `tools/test-security.sh --live` for
+   read-only post-deploy header and deploy-exclusion checks.
 4. For a live publish, run `./deploy.sh --dry-run` and inspect every deletion
    and unexpected upload. The script may use configured authentication; never
    inspect or expose credential files and never invoke raw `ssh` or `lftp`.

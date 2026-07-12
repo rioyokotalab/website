@@ -1,19 +1,19 @@
 driver: codex
-updated: 2026-07-13T01:43+0900
-task: T-28 minimize deploy and web-server exposure
+updated: 2026-07-12T23:55+0900
+task: T-29 add continuous security regression checks
 status: in-progress
 
 ## Now
-- Goal: publish and live-verify T-28 fail-closed deployment and server exposure controls.
-- Last done: commit `747cdc0` deployed the allowlist and removed stale remote `tools/`, but immediate validation found HTTP 500 on all paths because this Apache host rejects one or more new `.htaccess` access-control directives. Clean deploy dry-run confirms the staging policy itself converges.
-- Next: roll `.htaccess` back to the previously working header-only form via commit-before-deploy, verify public 200s immediately, then retain server-layer denial as unresolved and rely on positive staging plus existing server directory controls.
+- Goal: make security invariants deterministic and pre-publish enforced.
+- Last done: T-29 offline harness passes, deploy policy and seven publish scenarios pass, and live mode validates HTTPS redirect/headers/status while correctly flagging only the known public `.dont-remove-me` T-28 blocker. One missing `rel` was repaired in JP news.
+- Next: rebase, inspect the deletion-bearing dry-run, publish/push the completed T-29 scope, then verify the changed live news page and remote commit.
 
 ## Working set
-- T-28 public roots: `.htaccess`, `index.html`, `style.css`, `en/`, `jp/`, `images/`, `js/`, and only `cv/cv.pdf`.
-- Publish scope: `.htaccess` plus repository-only deploy/publish scripts, manifest, tests, docs, and ledger. Expected remote deletion: stale empty `tools/` directory only.
+- Prepared scope: `tools/security-check.py`, `tools/test-security.sh`, publish/test integration, README/playbook, one JP news link hardening, ledger/bookkeeping.
+- Verification passed: offline security/deploy suites, seven publish cases, Markdown budgets. Live audit has exactly one expected T-28 finding for `/.dont-remove-me`.
 
 ## Open questions
-- Rollback condition triggered and is being applied; do not claim T-28 complete until public HTTP is restored.
+- T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
 
 ## Awaiting user
 - T-25 remains pending automatic GitHub server GC; unrelated to T-27 implementation.

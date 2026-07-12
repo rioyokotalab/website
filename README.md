@@ -129,6 +129,23 @@ npm run test:consent:install
 npm run test:consent
 ```
 
+### Security regression tests
+
+Run the deterministic, credential-free pre-publish checks with:
+
+```sh
+tools/test-security.sh
+```
+
+Add read-only checks of live response headers and deploy-excluded paths with:
+
+```sh
+tools/test-security.sh --live
+```
+
+`publish.sh` always runs the offline suite before its deploy preview. The
+Playwright consent suite above remains the deeper browser-runtime check.
+
 ## Repository map
 
 | Path | Purpose |

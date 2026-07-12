@@ -32,6 +32,11 @@ new_case() {
 	git -C "$WORK" config user.name "Publish Test"
 	git -C "$WORK" config user.email "publish-test@example.invalid"
 	cp "$ROOT/publish.sh" "$WORK/publish.sh"
+	mkdir -p "$WORK/tools"
+	cat > "$WORK/tools/test-security.sh" <<'EOF'
+#!/bin/bash
+exit 0
+EOF
 	cat > "$WORK/deploy.sh" <<'EOF'
 #!/bin/bash
 set -euo pipefail
@@ -42,8 +47,8 @@ fi
 echo deploy >> "$PUBLISH_TEST_LOG"
 [ "${PUBLISH_TEST_DEPLOY_FAIL:-0}" != "1" ]
 EOF
-	chmod +x "$WORK/publish.sh" "$WORK/deploy.sh"
-	git -C "$WORK" add publish.sh deploy.sh
+	chmod +x "$WORK/publish.sh" "$WORK/deploy.sh" "$WORK/tools/test-security.sh"
+	git -C "$WORK" add publish.sh deploy.sh tools/test-security.sh
 	git -C "$WORK" commit -m "install publish test fixture" >/dev/null
 }
 

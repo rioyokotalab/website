@@ -83,6 +83,11 @@ check_placeholders
 echo "No known deploy-included placeholders found."
 
 echo
+echo "== Security regression check =="
+phase="security regression check"
+tools/test-security.sh
+
+echo
 echo "== Uncommitted changes =="
 if git status --porcelain | grep -q .; then
 	git status --short

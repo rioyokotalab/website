@@ -393,4 +393,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-13 | codex-driver (gpt-5) | T-25 purge PDF archive from Git history | tools/out/driver-report-20260713-0034.md | n/a | reachable history purged; GitHub GC pending
 2026-07-13 | codex-driver (gpt-5) | seed T-26 through T-30 website security backlog | tools/out/driver-report-20260713-0043.md | n/a | done; implementation not started
 2026-07-13 | codex-driver (gpt-5) | T-27 remove expired invitation secret and audit public exposure | tools/out/driver-report-20260713-0111.md | n/a | verified; publish pending
-2026-07-13 | codex-driver (gpt-5) | T-28 fail-closed deploy staging and server exposure | tools/out/driver-report-20260713-0136.md | n/a | verified; publish pending
+2026-07-13 | codex-driver (gpt-5) | T-28 fail-closed deploy staging and server exposure | tools/out/driver-report-20260713-0136.md | n/a | partial; allowlist live, Apache denial rolled back after 500
