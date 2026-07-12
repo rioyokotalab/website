@@ -200,7 +200,7 @@ def main() -> int:
     focus_selector = "a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible"
     if style_text.count(focus_selector) != 2 or "outline: 2px solid #fff;" not in style_text or "box-shadow: 0 0 0 4px var(--accent-hover) !important;" not in style_text:
         findings.append("two-tone keyboard focus indicator mismatch")
-    if style_text.count("#main a {") != 1 or "text-decoration-thickness: 0.08em;" not in style_text or "text-underline-offset: 0.15em;" not in style_text:
+    if style_text.count("#main a {") != 2 or "text-decoration-thickness: 0.08em;" not in style_text or "text-underline-offset: 0.15em;" not in style_text:
         findings.append("non-color content-link indicator mismatch")
     if style_text.count("@media (forced-colors: active)") != 1 or 'ul.topnav a[aria-current="page"]' not in style_text or "outline: 3px solid Highlight;" not in style_text:
         findings.append("forced-colors state/focus treatment mismatch")
@@ -421,6 +421,8 @@ def main() -> int:
             fail(findings, path, "requires one versioned stylesheet")
         else:
             style_versions.add(matches[0])
+        if not re.search(r'<link\s+rel="stylesheet"\s+href="[^"]*style\.css\?v=[^"]+"\s+media="all">', text):
+            fail(findings, path, "screen/print stylesheet media mismatch")
         for asset in ("pagetop.js?v=20260713", "responsive-menu.js?v=20260713b"):
             if text.count(asset) != 1:
                 fail(findings, path, f"versioned {asset.split('?')[0]} mismatch")

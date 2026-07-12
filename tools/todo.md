@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-74 — modernize print presentation
-Audit print previews for navigation clutter, fixed controls, consent UI, clipped
-tables, and hidden destinations; add a small print-only layer that prioritizes
-page content and useful link context without affecting screen presentation.
-
 ### T-75 — audit gallery dialog accessibility
 Verify Lightbox focus entry, labeling, next/previous/close controls, keyboard
 operation, focus containment, escape behavior, and focus return in EN/JP; add
@@ -39,7 +34,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-73 verified all 26 pages reflow without page-level horizontal overflow at 640/320px effective widths and confirmed EN/JP consent/menu plus map, keyboard-scrolling tables, and fully measurable gallery close controls fit at 200%/400% equivalents (audit-only).
+- 2026-07-13 T-74 enabled shared CSS for print, added a content-first A4 layer with plain page titles and constrained images/tables, hid navigation/sidebar/footer/fixed/consent/map/gallery chrome, eliminated all 1,920–3,276px overflow across 26 pages, and preserved exact screen geometry (pending commit).
+- 2026-07-13 T-73 verified all 26 pages reflow without page-level horizontal overflow at 640/320px effective widths and confirmed EN/JP consent/menu plus map, keyboard-scrolling tables, and fully measurable gallery close controls fit at 200%/400% equivalents (`cca4535`, audit-only).
 - 2026-07-13 T-72 measured all 1,920 visible mobile targets at 320/390px; 946 small text links all passed the 24px center-spacing exception, while consent/menu/settings controls measured 48/55.5/35px and the hamburger 42px, so no layout-expanding CSS was warranted (`e76fee4`, audit-only).
 - 2026-07-13 T-71 kept seven 39.66MiB gallery originals as zoom targets, added visually inspected 720/1200px display variants (0.92/2.21MiB; 97.7%/94.4% reductions), enforced dimensions/byte budgets/source selection, and verified 1x/2x/3x EN/JP Lightbox behavior (`8189edf`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-70 added distinct normal/forced-color current-page navigation, forced-color focus overrides, expanded the collapsed 22px dot-like menu control to a 42px three-bar target, and passed EN/JP 320/390/900/901px operation checks (`8c9748d`; live publish reserved for user/Claude site-publisher).

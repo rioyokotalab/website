@@ -977,3 +977,78 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 		box-shadow: none !important;
 	}
 }
+
+@media print {
+	@page {
+		margin: 15mm;
+	}
+	html,
+	body {
+		color: #000 !important;
+		background: #fff !important;
+		font-size: 10pt;
+	}
+	#header,
+	#navbar,
+	#sub,
+	#footer,
+	#pagetop,
+	#menubar_hdr,
+	.skip-link,
+	.analytics-consent,
+	.analytics-consent-settings,
+	.location-map,
+	.lightboxOverlay,
+	.lightbox {
+		display: none !important;
+	}
+	#wrapper,
+	#main,
+	.inner {
+		float: none !important;
+		width: 100% !important;
+		max-width: none !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	#mainBanner {
+		margin: 0 0 1.5em;
+		line-height: 1.4;
+		background: none !important;
+	}
+	#mainBanner img {
+		display: none !important;
+	}
+	#mainBanner .slogan {
+		position: static;
+		max-width: none;
+		padding: 0;
+		background: none;
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
+	#mainBanner .slogan h2,
+	#mainBanner .slogan h3 {
+		color: #000 !important;
+	}
+	#main a {
+		color: #000 !important;
+		text-decoration: underline;
+	}
+	#main img {
+		max-width: 100% !important;
+		height: auto !important;
+	}
+	.mobile-table-containment > section table {
+		display: table;
+		max-width: 100%;
+		overflow: visible;
+	}
+	tr,
+	img,
+	h2,
+	h3,
+	h4 {
+		break-inside: avoid;
+	}
+}
