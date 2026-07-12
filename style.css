@@ -438,6 +438,22 @@ table td.line {
 .vertical-top {
 	vertical-align: top;
 }
+.width-8pct { width: 8%; }
+.width-9pct { width: 9%; }
+.width-14pct { width: 14%; }
+.width-15pct { width: 15%; }
+.width-16pct { width: 16%; }
+.width-24pct { width: 24%; }
+.width-76pct { width: 76%; }
+.width-84pct { width: 84%; }
+.width-85pct { width: 85%; }
+.width-86pct { width: 86%; }
+.width-88pct { width: 88%; }
+.width-90pct { width: 90%; }
+.width-91pct { width: 91%; }
+.width-92pct { width: 92%; }
+.width-98pct { width: 98%; }
+.width-100pct { width: 100%; }
 table td.uline {
 	border-top: 1px solid var(--border);
 	border-bottom: 1px solid var(--border);

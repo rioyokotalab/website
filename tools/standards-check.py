@@ -145,8 +145,12 @@ def main() -> int:
         findings.append(f"expected 26 bilingual pages, found {len(pages)}")
     style_versions: set[str] = set()
     remaining_named_anchors = 0
+    table_width_classes = 0
     for path in pages:
         text = path.read_text(encoding="utf-8")
+        table_width_classes += len(re.findall(r'\bwidth-\d+pct\b', text))
+        if re.search(r'<(?:table|td|th)\b[^>]*\s(?:width|align)=', text, flags=re.I):
+            fail(findings, path, "legacy table width or alignment attribute")
         if re.search(r'/\s+class="content-width-', text):
             fail(findings, path, "class placed after self-closing slash")
         named_anchors = len(re.findall(r'<a\s+name=', text, flags=re.I))
@@ -265,6 +269,8 @@ def main() -> int:
         findings.append("stylesheet cache versions differ across pages")
     if remaining_named_anchors:
         findings.append(f"legacy named anchors remain: {remaining_named_anchors}")
+    if table_width_classes != 91:
+        findings.append(f"table width class count mismatch: {table_width_classes}")
     for script in sorted((ROOT / "js").glob("*.js")):
         source = script.read_text(encoding="utf-8")
         if re.search(r"\.style\b|setAttribute\s*\(\s*['\"]style['\"]", source):

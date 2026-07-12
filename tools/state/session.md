@@ -5,8 +5,8 @@ status: in-progress
 
 ## Now
 - Goal: remove remaining table presentation attributes only in homogeneous, computed-style-verified groups while retaining heterogeneous widths and alignment until explicitly mapped.
-- Last done: T-57 first batch removes 40 table border, 12 cellpadding, 12 cellspacing, one redundant image border, and migrates 8 gray cells to `.table-heading-cell`; permanent checks reject all four legacy attributes. Full suite passes; EN/JP home/News/member/computers table styles/geometry are exact at desktop/mobile, as are heading-cell colors/weights and the image border.
-- Next: rebase, inspect/publish the first T-57 CSS/cache checkpoint, verify live attributes, then map 91 heterogeneous widths and 26 table center alignments to explicit shared classes for the second batch.
+- Last done: T-57 second batch maps all 91 table/cell widths to explicit percentage classes and removes 26 inert align=center attributes (an attempted centering class was rejected by geometry tests before publish). Zero legacy table presentation attributes remain. Full suite passes; representative EN/JP table/cell width, margin, x-position, and height are exact across home/News/member/computers at desktop/mobile.
+- Next: rebase, inspect and publish the CSS/cache second T-57 checkpoint, verify representative live table layout, then close T-57 and start T-58 structural accessibility audit.
 
 ## Working set
 - First batch: table border/cellpadding/cellspacing/bgcolor across home/News/member/computers plus shared CSS/cache. Second batch: exact width/center mappings. Regression checks and family/viewport geometry throughout.
