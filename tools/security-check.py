@@ -130,7 +130,10 @@ def tracked_secret_checks() -> list[Finding]:
         if not encoded:
             continue
         relative = encoded.decode("utf-8", errors="surrogateescape")
-        data = (ROOT / relative).read_bytes()
+        path = ROOT / relative
+        if not path.is_file():
+            continue
+        data = path.read_bytes()
         if b"\0" in data:
             continue
         text = data.decode("utf-8", errors="replace")

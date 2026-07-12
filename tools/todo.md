@@ -1,11 +1,48 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-31.
+`tools/state/session.md`. Next free id: T-38.
 
 ## Active
 
-None.
+### T-31 — make language switching resilient without JavaScript
+Replace all 26 `javascript:void(0)`/inline `onclick` language controls with
+ordinary mirrored EN/JP links, remove the now-unused `chglang.js` loader and
+asset, and verify every counterpart path plus keyboard behavior. Preserve the
+exact labels, placement, and visual styling.
+
+### T-32 — replace the legacy eval-based menu script
+Rewrite the tiny packed `ddmenu_min.js` as readable event-listener code without
+`eval`, preserve desktop dropdown and mobile behavior, run browser regression
+checks, then remove `'unsafe-eval'` from CSP after a report-only/live gate.
+
+### T-33 — externalize repeated executable inline scripts
+Move the repeated responsive-menu bootstrap from all 26 pages into a shared
+deferred script, inventory remaining inline script types, and tighten
+`script-src` as far as possible without disturbing JSON-LD or functionality.
+
+### T-34 — add unobtrusive accessibility landmarks and skip navigation
+Add consistent `header`, `nav`, `main`, and `footer` semantics plus a
+keyboard-visible skip link across mirrored pages using existing containers and
+minimal CSS. Preserve layout, navigation text, and visual identity; test EN/JP
+desktop/mobile focus order.
+
+### T-35 — complete image accessibility and loading hints
+Resolve the four images without `alt`, classify decorative versus informative
+text accurately, and add lazy loading only to below-the-fold images where it is
+safe. Preserve gallery behavior and ensure above-the-fold logo/banner images
+remain eager.
+
+### T-36 — reduce obsolete presentational markup safely
+Inventory deprecated HTML presentation attributes/elements and migrate only
+high-confidence repeated patterns into existing CSS without changing computed
+layout. Work in small mirrored batches with screenshot/computed-style checks.
+
+### T-37 — add standards and accessibility regression tooling
+Add deterministic local checks for document language, unique IDs, landmarks,
+image alternatives, link/button semantics, and malformed local references;
+document optional browser/validator checks and integrate stable offline rules
+into pre-publish without adding deployed dependencies.
 
 ## Blocked / awaiting user
 
