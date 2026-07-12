@@ -39,7 +39,7 @@ lifecycle hooks incl. the `PermissionRequest` HTTP endpoint at
 block in `~/.claude.json` (`allowedTools`, `enabledMcpjsonServers`,
 `hasTrustDialogAccepted`). Put these in a clearly separated "External (owner-run
 only)" section of `tools/out/t11-permissions.md` with exact commands the owner can
-run himself, each flagged as affecting other projects. Do NOT edit these files.
+run himself, each flagged as affecting other projects. Do NOT edit these files. `~/.codex/config.toml` does not currently exist; you MAY propose to create it and add settings there if that makes sense (still proposal-only, owner-run).
 
 ### T-12 — add Google Analytics (GA4) to the website
 Add `gtag.js` to EVERY public HTML page (`en/` AND `jp/`) and keep
