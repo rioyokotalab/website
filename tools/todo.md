@@ -1,14 +1,35 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-44.
+`tools/state/session.md`. Next free id: T-49.
 
 ## Active
 
-### T-43 — add canonical and alternate-language metadata
-Add self-canonical plus reciprocal `hreflang="en"`, `hreflang="ja"`, and
-`x-default` links to mirrored pages with exact URL/path verification. Ensure no
-visible content or layout changes and extend standards enforcement.
+### T-44 — identify the current page in navigation
+Add `aria-current="page"` to the exact current destination in desktop and
+mobile navigation where that destination is present. Keep labels, links, and
+styling unchanged, and permanently reject missing, duplicate, or false current
+states.
+
+### T-45 — improve embedded map semantics and responsiveness
+Give the EN/JP Google Maps embeds localized accessible titles, replace legacy
+presentation attributes with shared CSS, and keep their current dimensions and
+responsive behavior stable.
+
+### T-46 — reserve intrinsic logo width
+Add verified intrinsic width alongside the existing logo height on every page
+to reduce layout shift before image decode. Confirm desktop/mobile geometry and
+do not change rendered dimensions.
+
+### T-47 — add asynchronous decoding to noncritical images
+Apply `decoding="async"` to lazy content imagery while retaining the existing
+loading classification and dimensions. Verify galleries, portraits, and news
+images without altering visible content or order.
+
+### T-48 — remove remaining inline presentation styles
+Migrate repeated inline style blocks and `style` attributes to narrowly scoped
+shared classes, preserve representative computed styles, then remove
+`'unsafe-inline'` from the CSP style policy after report-only and browser gates.
 
 ## Blocked / awaiting user
 
@@ -34,6 +55,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-43 added exact self-canonical and reciprocal EN/JA/x-default metadata to all 26 pages, permanently enforced mirrored mappings, and passed representative no-layout-change browser checks (`966b87b`).
 - 2026-07-13 T-42 modernized root metadata, removed an invalid empty meta element, and added a styled bilingual no-script fallback; browser checks preserved EN/JP/non-English routing and verified the fallback (`3c97aae`).
 - 2026-07-13 T-41 gave every back-to-top control a stable target and localized accessible name, honored reduced-motion preferences in CSS/JS, and added permanent regression coverage; normal and reduced-motion browser behavior passed in EN/JP (`0569865`).
 - 2026-07-13 T-40 folded responsive navigation into one scoped modern script, removed 26 obsolete loaders and the 2015 global/polyfill asset, and corrected desktop button visibility caught by regression; EN/JP keyboard/pointer and desktop/mobile behavior passed (`7e7e940`).

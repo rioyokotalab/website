@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-43 add canonical and alternate-language metadata
+task: T-44 identify the current page in navigation
 status: in-progress
 
 ## Now
-- Goal: give all mirrored pages exact self-canonical and reciprocal EN/JP/x-default discovery metadata without changing visible content or layout.
-- Last done: T-43 exact canonical/EN/JA/x-default mappings pass permanent standards checks on all 26 pages; the full deterministic suite and representative EN/JP root/profile browser DOM and unchanged header geometry checks pass.
-- Next: rebase, inspect the metadata-only deployment preview, publish T-43, verify live discovery links, then close T-43 and seed the next modernization tasks.
+- Goal: expose exact current-page state to assistive technology in both navigation variants without changing links, labels, or presentation.
+- Last done: T-44 exact current-page markers and permanent page-specific count checks pass the full deterministic suite. Browser checks cover paired desktop/mobile destinations, mobile-only Contact, and deliberately unmarked News/profile pages while preserving 112px desktop header geometry.
+- Next: rebase, inspect the navigation-markup-only deployment preview, publish T-44, verify representative live markers, then close T-44 and start T-45.
 
 ## Working set
-- All 26 mirrored EN/JP pages, exact metadata standards checks, representative layout/browser verification, ledger/bookkeeping.
+- All 26 mirrored EN/JP navigation copies, page-specific current-state standards checks, representative assistive DOM/layout verification, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

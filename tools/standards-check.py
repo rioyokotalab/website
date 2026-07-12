@@ -33,6 +33,7 @@ class Document(HTMLParser):
         self.pagetop: dict[str, str] | None = None
         self.canonicals: list[str] = []
         self.alternates: dict[str, list[str]] = {}
+        self.current_links: list[dict[str, str]] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -56,6 +57,8 @@ class Document(HTMLParser):
             self.alternates.setdefault(values["hreflang"].lower(), []).append(values.get("href", ""))
         if tag == "a":
             href = values.get("href", "")
+            if "aria-current" in values:
+                self.current_links.append(values)
             if values.get("class") == "skip-link":
                 self.skip = href
             if href.startswith("#") and len(href) > 1:
@@ -122,6 +125,16 @@ def main() -> int:
         expected_canonical = expected_alternates["en" if expected_lang == "en" else "ja"]
         if document.canonicals != expected_canonical or document.alternates != expected_alternates:
             fail(findings, path, "canonical or alternate-language metadata mismatch")
+        current_destinations = {
+            "index.html", "about/index.html", "research/index.html",
+            "achievements/index.html", "member/index.html", "computers/index.html",
+            "teaching/index.html", "picture/index.html", "contact/index.html",
+        }
+        expected_current_count = 0
+        if relative in current_destinations:
+            expected_current_count = 1 if relative == "contact/index.html" else 2
+        if len(document.current_links) != expected_current_count or any(link.get("aria-current") != "page" or link.get("href") != "index.html" for link in document.current_links):
+            fail(findings, path, "current-page navigation state mismatch")
         if document.html_lang.lower() != expected_lang:
             fail(findings, path, f"lang must be {expected_lang}")
         duplicates = sorted(key for key, count in Counter(document.ids).items() if count > 1)
