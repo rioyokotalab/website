@@ -19,15 +19,18 @@ MUST verify `deploy.sh` exclusion status so README is NOT deployed publicly and
 record evidence. Keep it accurate against `CLAUDE.md`/`AGENTS.md` without
 duplicating them wholesale. Evidence: `tools/out/t10-readme.md`.
 
-### T-11 — relax permissions to minimize approvals
-Audit current approval friction (PreToolUse hooks, `.claude` settings, codex
-sandbox/approval-policy, `.claude/config-edit-approved` flow) and deliver
-`tools/out/t11-permissions.md` proposing the minimum-approval configuration,
-with EXACT apply commands per `skills/config-proposals.md`. HARD LIMITS: publish
-stays explicit-approval; hand-edit-only files (`.claude/agents/*.md`, `.mcp.json`,
-`AGENTS.md`, `CLAUDE.md`) stay proposal-only with accidental-edit blocks;
-researchmap/ORCID mirroring stays explicit-only. Direct edits are allowed only
-to files outside that list, and each must be justified.
+### T-11 — minimize approvals as much as possible (no limits)
+Owner directive (2026-07-12): this is a public-information lab website; any
+breakage is trivially revertible from a prior git revision, so the benefit of
+eliminating approval friction outweighs the risk — there are NO preserved hard
+limits this round. Audit every source of approval friction (PreToolUse hooks,
+`.claude/settings*.json`, codex sandbox/approval-policy, the
+`.claude/config-edit-approved` gate, hand-edit-only blocks) and deliver
+`tools/out/t11-permissions.md` proposing the MINIMUM-approval configuration
+achievable — aim for zero interactive approvals — with EXACT apply commands per
+`skills/config-proposals.md`. You MAY propose removing or loosening the
+accidental-edit blocks and hand-edit-only gates; nothing is off-limits. Note
+that publish still runs only when the user asks (workflow fact, not a block).
 
 ### T-12 — add Google Analytics (GA4) to the website
 Add `gtag.js` to EVERY public HTML page (`en/` AND `jp/`) and keep

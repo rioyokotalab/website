@@ -305,3 +305,4 @@
 {"date":"2026-07-12","task_type":"content-draft","agent":"coordinator","tier":"codex-high","duration_ms":null,"success":true,"note":"round-2 setup drafting: judge ledger split, board reseed T-10..T-13, skills/model-eval.md"}
 {"date":"2026-07-12","task_type":"other","agent":"coordinator","tier":"codex-spark-medium","duration_ms":null,"success":false,"note":"round-2 git surgery attempt 1: .git read-only under workspace-write sandbox; env failure, redispatched full-access"}
 {"date":"2026-07-12","task_type":"other","agent":"coordinator","tier":"codex-spark-medium","duration_ms":null,"success":true,"note":"round-2 git surgery attempt 2 full-access: r1 tags, main commit, shared scaffold, 4 branch resets"}
+{"date":"2026-07-12","task_type":"other","agent":"coordinator","tier":"codex-spark-medium","duration_ms":null,"success":true,"note":"round-2 T-11 rewrite: owner removed hard limits (no-limit approval minimization), scaffold+branches rebuilt"}
