@@ -1,5 +1,6 @@
 (function () {
 	"use strict";
+	document.documentElement.classList.add("js");
 
 	var control = document.getElementById("menubar_hdr");
 	var menu = document.getElementById("menubar-s");

@@ -206,6 +206,8 @@ def main() -> int:
         findings.append("forced-colors state/focus treatment mismatch")
     if "width: 42px;\n\tmin-height: 42px;" not in style_text:
         findings.append("mobile menu target-size mismatch")
+    if style_text.count("html.js #menubar_hdr {") != 1:
+        findings.append("progressive mobile-menu control mismatch")
     if style_text.count("--oral-highlight: #cc0000;") != 1 or style_text.count("--oral-highlight: #ff6b6b;") != 1 or "color: var(--oral-highlight);" not in style_text:
         findings.append("light/dark oral-highlight palette mismatch")
     root_text = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -426,7 +428,7 @@ def main() -> int:
             style_versions.add(matches[0])
         if not re.search(r'<link\s+rel="stylesheet"\s+href="[^"]*style\.css\?v=[^"]+"\s+media="all">', text):
             fail(findings, path, "screen/print stylesheet media mismatch")
-        for asset in ("pagetop.js?v=20260713", "responsive-menu.js?v=20260713b"):
+        for asset in ("pagetop.js?v=20260713", "responsive-menu.js?v=20260713c"):
             if text.count(asset) != 1:
                 fail(findings, path, f"versioned {asset.split('?')[0]} mismatch")
     if len(style_versions) != 1:

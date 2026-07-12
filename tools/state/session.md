@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T06:04+0900
-task: T-78 audit no-JavaScript resilience
+updated: 2026-07-13T03:14+0900
+task: T-79 audit CSS redundancy after modernization
 status: in-progress
 
 ## Now
-- Goal: verify every public route remains navigable and content-complete without JavaScript, with explicit fallbacks only for confirmed essential losses.
-- Last done: T-77 added tolerant contracts over 14 EN/JP page-family routes at five responsive boundaries (70 rendered states), requiring ordered visible/contained major regions and exact page width; added 1x/2x/3x responsive-source and 320px local table-scroll checks; all four layout tests pass.
-- Next: launch JavaScript-disabled contexts across all 26 pages plus root entry, verify primary/utility/navigation links, content text/images/local URLs, gallery-original destinations, contact data and metadata; inspect mobile menu discoverability and classify enhancements versus essential fallback gaps.
+- Goal: remove only proven-redundant CSS while preserving the established visual design and every modernized state.
+- Last done: T-78 audited all 26 routes at 320/1200px plus the root entry without JavaScript; the only confirmed loss was an inert mobile hamburger, now progressively exposed by an early `html.js` hook while navigation stays expanded without scripts. Two permanent tests cover all routes and all 12 browser tests pass.
+- Next: inventory duplicate declarations and selectors absent from source/runtime; exercise all page families plus mobile/desktop, dark, print, forced-colors, consent, open-menu, table, and gallery states before removing only independently proven redundancy.
 
 ## Working set
-- Root plus all 26 routes in JavaScript-disabled 320/1200px contexts; navigation/content/gallery/contact/canonical metadata and overflow; any semantic noscript/fallback markup with parity/checker/tests; ledger/bookkeeping.
+- `style.css`; all public markup and runtime-generated component DOM; CSS coverage/static selector inventory; screen/print/dark/forced-color geometry and appearance contracts; standards/test bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-78 — audit no-JavaScript resilience
-Disable scripting on every public route and verify language entry, navigation,
-content, images, gallery-original links, contact details, and crawler metadata
-remain usable; add only semantic fallbacks for confirmed losses.
-
 ### T-79 — audit CSS redundancy after modernization
 Inventory duplicate declarations, unreachable legacy selectors, and overridden
 rules using coverage from all page families/states; remove only byte-identical
@@ -39,7 +34,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-77 added tolerant rendered-layout contracts for 14 EN/JP representative routes at 320/390/900/901/1200px, plus runtime responsive-image density and local keyboard table scrolling checks; all four layout tests pass (pending commit).
+- 2026-07-13 T-78 verified every public route at 320/1200px plus the root entry without JavaScript, kept content/navigation/images/gallery originals/contact metadata usable, hid the inert mobile hamburger only when JavaScript fails, and added two permanent regression tests; all 12 browser tests pass (pending commit).
+- 2026-07-13 T-77 added tolerant rendered-layout contracts for 14 EN/JP representative routes at 320/390/900/901/1200px, plus runtime responsive-image density and local keyboard table scrolling checks; all four layout tests pass (`d5b424c`).
 - 2026-07-13 T-76 added conventional npm test/test:browser/install commands with reviewed compatibility aliases, enforced the script surface, added EN/JP 900/901px menu and six-family print contracts, and passed all 8 browser plus fast security tests (`175d0b0`).
 - 2026-07-13 T-75 wrapped pinned Lightbox with localized modal semantics, named controls/images, inert background, focus entry/trap/return, kept arrow/Escape/close behavior, passed first/next/last tests across six galleries, and added permanent Playwright coverage (`adac83b`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-74 enabled shared CSS for print, added a content-first A4 layer with plain page titles and constrained images/tables, hid navigation/sidebar/footer/fixed/consent/map/gallery chrome, eliminated all 1,920–3,276px overflow across 26 pages, and preserved exact screen geometry (`59586d6`; live publish reserved for user/Claude site-publisher).

@@ -848,7 +848,7 @@ h3.heading, #sub .grid h3 {
 	color: rgba(255,255,255,0.85);
 }
 /* hamburger button */
-#menubar_hdr {
+html.js #menubar_hdr {
 	appearance: none;
 	display: block;
 	position: absolute;
