@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:48+0900
-task: T-105 full modernization release-readiness sweep
-status: in-progress
+updated: 2026-07-13T04:57+0900
+task: idle
+status: idle
 
 ## Now
-- Goal: verify the accumulated modernization series as one clean, deployable, regression-free release candidate.
-- Last done: T-104 audited every exposed link/button and embedded frame on all 26 routes after dynamic privacy controls initialize, and permanently rejects empty names/titles.
-- Next: run all fast and browser contracts, dry-run the positive-allowlist deploy, inspect status/diff/cache/generated artifacts, clean test debris, then checkpoint final release readiness and pending live-publication boundary.
+- Goal: idle; the continuous modernization window is release-ready.
+- Last done: T-106 permanently covers all 26 browser-repaired DOMs and confirms every native date, data table, contact address, and embedded map remains inside `main`; T-105 passed the complete release sweep.
+- Next: user or Claude site-publisher may live-publish and verify the pushed post–T-60 commits; Codex must not run the live publication.
 
 ## Working set
-- Full static/browser suites, staging allowlist, repository/test artifacts, final status/report/publish boundary.
+- Clean main branch, final driver report `tools/out/driver-report-20260713-0453.md`, live publication pending user/Claude.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

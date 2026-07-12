@@ -397,3 +397,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-13 | codex-driver (gpt-5) | T-29 continuous security regression checks | tools/out/driver-report-20260712-2353.md | n/a | done; published 270d494, T-28 sentinel remains visible
 2026-07-13 | codex-driver (gpt-5) | T-26 CSP, Permissions Policy, and cautious HSTS | tools/out/driver-report-20260713-0001.md | n/a | done; report-only and enforcement deployed, browser clean
 2026-07-13 | codex-driver (gpt-5) | T-30 third-party and test-tool supply chain | tools/out/driver-report-20260713-0006.md | n/a | done; hashes/lock/audit/staging verified, push pending
+2026-07-13 | codex-driver (gpt-5) | T-31–T-106 continuous conservative modernization | tools/out/driver-report-20260713-0453.md | n/a | done; pushed and release-ready, post-T-60 live publication pending user/Claude
