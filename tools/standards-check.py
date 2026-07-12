@@ -38,6 +38,7 @@ class Document(HTMLParser):
         self.current_links: list[dict[str, str]] = []
         self.iframes: list[dict[str, str]] = []
         self.inline_styles = 0
+        self.og_properties: dict[str, list[str]] = {}
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -57,6 +58,8 @@ class Document(HTMLParser):
             self.landmarks[tag] += 1
         if tag == "nav":
             self.nav_labels.append(values.get("aria-label", ""))
+        if tag == "meta" and values.get("property", "").lower().startswith("og:"):
+            self.og_properties.setdefault(values["property"].lower(), []).append(values.get("content", ""))
         if tag == "link" and values.get("rel", "").lower() == "canonical":
             self.canonicals.append(values.get("href", ""))
         if tag == "link" and values.get("rel", "").lower() == "alternate" and values.get("hreflang"):
@@ -107,6 +110,9 @@ def main() -> int:
         '<noscript>',
         '<a href="en/index.html" lang="en">English</a>',
         '<a href="jp/index.html" lang="ja">日本語</a>',
+        '<meta property="og:url" content="https://www.rio.scrc.iir.isct.ac.jp/">',
+        '<meta property="og:locale" content="ja_JP">',
+        '<meta property="og:locale:alternate" content="en_US">',
     )
     if any(item not in root_text for item in root_requirements):
         findings.append("root redirect metadata or bilingual no-script fallback mismatch")
@@ -145,6 +151,13 @@ def main() -> int:
         expected_canonical = expected_alternates["en" if expected_lang == "en" else "ja"]
         if document.canonicals != expected_canonical or document.alternates != expected_alternates:
             fail(findings, path, "canonical or alternate-language metadata mismatch")
+        expected_og = {
+            "og:url": expected_canonical,
+            "og:locale": ["en_US" if expected_lang == "en" else "ja_JP"],
+            "og:locale:alternate": ["ja_JP" if expected_lang == "en" else "en_US"],
+        }
+        if any(document.og_properties.get(key) != value for key, value in expected_og.items()):
+            fail(findings, path, "Open Graph URL or locale metadata mismatch")
         current_destinations = {
             "index.html", "about/index.html", "research/index.html",
             "achievements/index.html", "member/index.html", "computers/index.html",

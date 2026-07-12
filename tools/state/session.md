@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-52 add crawler discovery files
+task: T-53 complete locale-aware social metadata
 status: in-progress
 
 ## Now
-- Goal: expose only the canonical public page inventory through minimal crawler discovery files and keep it synchronized automatically.
-- Last done: T-52 generates 27 unique canonical URLs (root + 26 pages), each with EN/JA/x-default alternates, plus minimal robots.txt. Both are required by the positive deploy allowlist/staging fixture and public security inventory; the pre-publish suite rejects stale output. XML/MIME checks and all 27 local URLs pass with no repository-only paths.
-- Next: rebase, inspect the expected two-file upload with no deletions, publish T-52, verify live MIME/content and all sitemap URLs, then close T-52 and start T-53.
+- Goal: make Open Graph URL/locale discovery agree exactly with canonical bilingual metadata without changing page content or layout.
+- Last done: T-53 aligns all 27 og:url values with clean canonicals and adds exact primary/alternate en_US/ja_JP locales. Permanent checks cover root and all mirrored pages; full suite and representative EN/JP directory/profile browser head checks pass with unchanged 112px desktop header geometry.
+- Next: rebase, inspect the 27-HTML metadata-only deployment preview, publish T-53, verify representative live heads, then close T-53 and seed the next queue.
 
 ## Working set
-- `robots.txt`, `sitemap.xml`, deterministic generator, deploy allowlist/staging requirements, public security inventory, exact URL/alternate validation, ledger/bookkeeping.
+- Root plus all 26 EN/JP HTML heads, exact OG URL/locale standards checks, representative browser head/layout verification, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
