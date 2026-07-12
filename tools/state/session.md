@@ -1,22 +1,19 @@
 driver: codex
-updated: 2026-07-12T22:55+0900
-task: T-22 audit website/CV/researchmap/ORCID field mirroring
-status: awaiting-user
+updated: 2026-07-12T23:01+0900
+task: idle
+status: idle
 
 ## Now
-- Goal: push the completed local T-22 decisions and hand off live deployment plus two manual external imports.
-- Last done: standardized CV postal code 152-8550, removed the Keio RA role, rebuilt the 22-page CV PDF, and confirmed no supported automatic external writer exists in this repository.
-- Next: verify full scope, commit and push the website/CV changes, then leave T-22 awaiting owner/Claude live deployment and the owner's manual researchmap/ORCID uploads. Codex must not run the deploy scripts.
+- Goal: idle after T-22 field reconciliation and external imports.
+- Last done: owner imported the approved researchmap and ORCID selections; all transient T-22 output files were removed. Local profile/CV fixes are already pushed through `e38ac96`.
+- Next: T-20 and T-21 both require explicit exact-scope authorization for project agent configuration/policy edits.
 
 ## Working set
-- Outputs: `tools/out/t22-field-reconciliation.md`, `tools/out/researchmap-import.jsonl`, `tools/out/orcid-works-selection.bib`; full comparison export `tools/out/orcid-works.bib`.
-- Push scope: prior commit `1e96330` plus `cv/cv.tex`, rebuilt `cv/cv.pdf`, and current ledger/report updates. Verify exporter tests, repository-wide RA/address search, CV metadata, markdown budgets, and remote main; live deploy remains external.
+- T-22 commits: `1e96330`, `e38ac96`; researchmap and ORCID imports completed manually by the owner.
+- `tools/out/` is empty. Website/CV live deployment was not performed by Codex under the repository hard rule.
 
 ## Open questions
-- The repository has no researchmap WebAPI write client or configured credential interface; adding one would be separate credential-bearing scope. Do not inspect credentials or automate login.
-- ORCID bulk update remains manual BibTeX import; never automate the login UI.
+- None for T-22.
 
 ## Awaiting user
 - T-18 requires owner access to GA Admin; no credentials should be shared.
-- T-22 external files are owner-approved but require the owner to upload them manually; no credentials should be shared.
-- T-22 pushed site/CV changes require the owner or Claude site-publisher to deploy them live.
