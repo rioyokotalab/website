@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T03:47+0900
-task: T-69 audit non-color link identification
+updated: 2026-07-13T04:00+0900
+task: T-70 strengthen forced-colors compatibility
 status: in-progress
 
 ## Now
-- Goal: ensure inline content links are identifiable without relying only on color while preserving navigation, cards, logos, galleries, and the site's restrained visual style.
-- Last done: T-68 classified all 38 tables, added 312 native row headers and 8 column headers, marked 8 layout tables presentational, enforced exact per-page semantics, matched accessibility-tree roles, and preserved exact cell/table geometry and computed styling at 390/1200px.
-- Next: compute adjacent inline link/text color ratios and current text-decoration across all pages, group failures by structural context, then design the narrowest selector that underlines prose links without affecting navigation or image-only links.
+- Goal: preserve visible controls, focus, boundaries, and selected/current states when user-agent forced colors replace the normal palette, without altering normal-mode presentation.
+- Last done: T-69 measured all 183 visible main-content text links at only 1.43:1 versus surrounding text, added a thin underline scoped to #main, verified every content link in light/dark modes, left navigation/sidebar/footer/gallery visuals unchanged, and preserved geometry.
+- Next: emulate forced-colors active on representative EN/JP desktop/mobile pages, inventory transparent/lost boundaries and state indicators for menus, consent, current links, focus, tables, and back-to-top, then add only targeted system-color overrides.
 
 ## Working set
-- All visible anchors and adjacent text contexts in light/dark modes; computed colors/decorations and structural selectors; any scoped CSS/cache bump/checker; ledger/bookkeeping.
+- Representative home/news/computers/contact pages plus consent banner under forced colors; screenshots/computed system colors/focus/current state; any scoped media overrides/cache bump/checker; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

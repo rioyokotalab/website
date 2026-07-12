@@ -154,6 +154,11 @@ a:hover {
 	text-decoration: underline;
 	text-underline-offset: 3px;
 }
+#main a {
+	text-decoration: underline;
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.15em;
+}
 a:active, a:focus:not(:focus-visible) {
 	outline: 0;
 }

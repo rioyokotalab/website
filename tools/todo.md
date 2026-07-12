@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-69 — audit non-color link identification
-Measure whether inline content links are distinguishable from surrounding text
-without hover or color perception, then add the narrowest content-only underline
-treatment needed while leaving navigation, cards, logos, and galleries intact.
-
 ### T-70 — strengthen forced-colors compatibility
 Exercise Windows-style forced-colors rendering for navigation, menus, consent,
 focus rings, current-page state, and image links; add system-color overrides
@@ -45,7 +40,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-68 added 312 scoped row headers and 8 scoped column headers to genuine data tables, removed table semantics from 8 layout tables, enforced exact classification, matched accessibility-tree roles, and preserved exact computed geometry/styles (pending commit).
+- 2026-07-13 T-69 found all 183 visible main-content text links relied on a 1.43:1 color difference, added a thin content-only underline in light/dark modes, kept all site chrome unchanged, and preserved exact geometry (pending commit).
+- 2026-07-13 T-68 added 312 scoped row headers and 8 scoped column headers to genuine data tables, removed table semantics from 8 layout tables, enforced exact classification, matched accessibility-tree roles, and preserved exact computed geometry/styles (`5dccd09`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-67 corrected four route-mismatched titles, made all 26 bilingual titles/descriptions unique and page-local, mirrored them into Open Graph metadata, enforced structure/length/uniqueness, and preserved exact mobile/desktop geometry (`e79ab88`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-66 added a deploy-manifest-aware gate for 1,676 local public URLs/fragments including directory indexes, same-origin absolutes, extended media attributes, and CSS assets, with positive/negative fixture tests (`e0b6c66`).
 - 2026-07-13 T-65 scanned computed persistent text contrast on all 26 pages in light/dark modes, raised only the dark oral-highlight red from 3.12:1 to 6.61:1, removed one near-invisible stray EN hero character, and ended with zero scan failures (`b22cf0b`; live publish reserved for user/Claude site-publisher).
