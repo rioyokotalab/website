@@ -23,6 +23,7 @@ class Document(HTMLParser):
         self.images = 0
         self.images_without_alt = 0
         self.eager_images: list[str] = []
+        self.image_attrs: list[dict[str, str]] = []
         self.landmarks = Counter()
         self.nav_labels: list[str] = []
         self.skip: str | None = None
@@ -71,6 +72,7 @@ class Document(HTMLParser):
         if any(key.startswith("on") for key in values):
             self.unsafe_semantics.append(line)
         if tag == "img":
+            self.image_attrs.append(values)
             self.images += 1
             if "alt" not in values:
                 self.images_without_alt += 1
@@ -167,6 +169,11 @@ def main() -> int:
             fail(findings, path, "accessible back-to-top link mismatch")
         if document.images_without_alt:
             fail(findings, path, "image without alt")
+        expected_logo = "logoE.png" if expected_lang == "en" else "logo.png"
+        expected_logo_width = "450" if expected_lang == "en" else "436"
+        logos = [image for image in document.image_attrs if urlsplit(image.get("src", "")).path.endswith("/" + expected_logo)]
+        if len(logos) != 1 or logos[0].get("width") != expected_logo_width or logos[0].get("height") != "65":
+            fail(findings, path, "header logo intrinsic dimensions mismatch")
         if document.inline_executable_scripts:
             fail(findings, path, "executable inline script")
         if document.unsafe_semantics:

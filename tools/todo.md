@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-45 — improve embedded map semantics and responsiveness
-Give the EN/JP Google Maps embeds localized accessible titles, replace legacy
-presentation attributes with shared CSS, and keep their current dimensions and
-responsive behavior stable.
-
 ### T-46 — reserve intrinsic logo width
 Add verified intrinsic width alongside the existing logo height on every page
 to reduce layout shift before image decode. Confirm desktop/mobile geometry and
@@ -49,6 +44,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-45 added localized accessible map titles, moved embed presentation into shared CSS, permanently enforced the contract, and preserved exact desktop/mobile dimensions (`d8c111a`).
 - 2026-07-13 T-44 marked exact current destinations for assistive technology in desktop/mobile navigation, permanently enforced linked/mobile-only/unlinked states, and preserved header geometry (`227fef0`).
 - 2026-07-13 T-43 added exact self-canonical and reciprocal EN/JA/x-default metadata to all 26 pages, permanently enforced mirrored mappings, and passed representative no-layout-change browser checks (`966b87b`).
 - 2026-07-13 T-42 modernized root metadata, removed an invalid empty meta element, and added a styled bilingual no-script fallback; browser checks preserved EN/JP/non-English routing and verified the fallback (`3c97aae`).
