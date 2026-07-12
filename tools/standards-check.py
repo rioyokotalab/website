@@ -356,6 +356,9 @@ def main() -> int:
         date_pairs = re.findall(r'<time datetime="(\d{4}-\d{2}-\d{2})">(\d{4}\.\d{2}\.\d{2})</time>', visible_text)
         if relative == "index.html":
             expected_dates = 32 if expected_lang == "en" else 14
+            caption = "News" if expected_lang == "en" else "ニュース"
+            if len(re.findall(rf'<table class="wn width-98pct">\s*<caption class="visually-hidden">{caption}</caption>', text)) != 1:
+                fail(findings, path, "home-news table caption mismatch")
             if len(date_pairs) != expected_dates or any(iso.replace("-", ".") != visible for iso, visible in date_pairs):
                 fail(findings, path, "home-news time semantics mismatch")
             try:

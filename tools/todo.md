@@ -5,10 +5,10 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-98 — name home-news data tables
-Give the two visible home-news tables concise localized native captions that are
-available to assistive technology but visually hidden; preserve table geometry,
-row headings, wording, and EN/JP presentation.
+### T-99 — name full news-archive tables
+Associate each yearly archive table with its existing year heading and give the
+nested seminar-details table a concise localized name; preserve every visible
+string, hierarchy, row, and screen/print dimension.
 
 ## Blocked / awaiting user
 
@@ -34,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-98 added localized native visually-hidden captions to the two home-news tables, preserved 1×1 clipped geometry and all 48 rendered row headers, and passed exact static, five layout/name browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-97 proved the mirrored empty `#gallery` hooks had no runtime/navigation consumers, removed both hooks and five dead selector families while preserving live frame rules, synchronized root/route cache versions, and passed CSS-source, six layout/no-JS, fast, and staging checks (pending commit).
 - 2026-07-13 T-96 classified seven empty semantic containers, retained three spacing paragraphs and two CSS-referenced gallery hooks, removed only two zero-purpose Japanese profile articles, and passed exact static, five layout/runtime, fast, and staging checks (pending commit).
 - 2026-07-13 T-95 removed 20 empty legacy `tbody` artifacts from the EN/JP news archives while retaining all three nonempty explicit sections and every row, and passed source/rendered-DOM, five layout/browser, fast, and staging checks (pending commit).

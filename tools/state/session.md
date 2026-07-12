@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:35+0900
-task: T-98 name home-news data tables
+updated: 2026-07-13T04:37+0900
+task: T-99 name full news-archive tables
 status: in-progress
 
 ## Now
-- Goal: expose concise localized names for the home-news data tables without adding visible text or changing geometry.
-- Last done: T-97 removed two unused empty gallery hooks and five exclusive dead CSS selector families, retained live `img.frame` styling, synchronized root/route CSS cache versions, and passed CSS-source, six layout/no-JS, fast, and staging checks.
-- Next: inspect rendered table names, add native visually-hidden EN/JP captions to the two home-news tables, enforce exact placement/text, and compare table geometry/accessibility trees.
+- Goal: expose useful names for every EN/JP full news-archive table without adding visible content or changing dimensions.
+- Last done: T-98 added native localized visually-hidden captions to both home-news tables, preserved clipped 1×1 caption geometry and 48 total row headers, and passed exact static, five layout/name browser, fast, and staging checks.
+- Next: map 11 yearly tables per language to existing `Y20xx` headings, name the one nested seminar-details table per language, enforce all 24 names, and compare accessibility/layout trees.
 
 ## Working set
-- EN/JP home-news tables, native captions, accessible names, row structure and geometry, standards/browser tests.
+- EN/JP news archive tables, year headings/IDs, nested seminar table, accessible names, layout/browser tests.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
