@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T03:27+0900
-task: T-81 audit reduced-motion behavior
+updated: 2026-07-13T03:31+0900
+task: T-82 audit forced-colors component usability
 status: in-progress
 
 ## Now
-- Goal: ensure reduced-motion preference suppresses every nonessential local and gallery transition while preserving immediate, understandable state changes.
-- Last done: T-80 replaced the two mirrored obsolete member `<col width="72">` attributes with `.member-table-column`, expanded the standards gate to reject width/alignment on `<col>`, and matched all column/row/cell geometry exactly in eight EN/JP screen/print pairs.
-- Next: inventory computed transition/animation/scroll behavior across representative pages, open menu/consent/Lightbox states under normal and reduced preferences, then add only scoped overrides for confirmed residual motion and a browser regression contract.
+- Goal: verify every modernized interactive state remains distinguishable and operable when user colors override the palette.
+- Last done: T-81 found reduced motion left global 150ms link transitions and Lightbox 600/600/700ms fades/resizing active; CSS now caps motion at 0.01ms and the wrapper sets gallery durations to zero only for the preference, restores defaults dynamically, and all 14 browser tests pass.
+- Next: render EN/JP mobile/desktop components in forced colors; inspect system-color mapping, focus/current indicators, local overflow, modal controls and consent actions; add a permanent browser contract and only fix demonstrated failures.
 
 ## Working set
-- `style.css`, `js/pagetop.js`, pinned Lightbox runtime states, responsive menu and consent components, Playwright motion tests, cache/ledger bookkeeping.
+- EN/JP home/news/picture pages in forced-colors contexts; nav/focus/link/consent/table/Lightbox states; `style.css` only if a confirmed loss exists; Playwright/ledger bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

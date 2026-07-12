@@ -21,6 +21,14 @@
 		const image = dialog.querySelector(".lb-image");
 		const number = dialog.querySelector(".lb-number");
 		const controls = [previous, next, close, cancel].filter(Boolean);
+		const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+		const motionOptions = { fadeDuration: 600, imageFadeDuration: 600, resizeDuration: 700 };
+		const applyMotionPreference = () => {
+			if (!window.lightbox) return;
+			window.lightbox.option(motionPreference.matches ? {
+				fadeDuration: 0, imageFadeDuration: 0, resizeDuration: 0
+			} : motionOptions);
+		};
 		let trigger = null;
 		let open = false;
 		let inerted = [];
@@ -28,6 +36,8 @@
 		dialog.setAttribute("role", "dialog");
 		dialog.setAttribute("aria-modal", "true");
 		dialog.setAttribute("aria-label", labels.dialog);
+		applyMotionPreference();
+		motionPreference.addEventListener("change", applyMotionPreference);
 		[[previous, labels.previous], [next, labels.next], [close, labels.close], [cancel, labels.cancel]].forEach(([control, label]) => {
 			if (control) {
 				control.setAttribute("role", "button");
