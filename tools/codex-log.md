@@ -352,3 +352,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | site-coordinator | seed round-3 tasks T-6..T-9 | tools/todo.md | - | success
 2026-07-12 | codex-driver (gpt-5) | T-6,T-7,T-8,T-9 | tools/out/driver-report-20260712-1109.md | n/a | T-6/T-7/T-8 complete; T-9 awaiting user review of 29-record researchmap JSONL
 2026-07-12 | site-coordinator | round-4 A/B prep (fable/opus branches) | (git branches) | - | success after one cutoff-recovery
+2026-07-12 | site-coordinator | round-4 rubric persisted for cold restart | tools/state/ab-round4.md | - | success

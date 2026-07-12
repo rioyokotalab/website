@@ -296,3 +296,4 @@
 {"date":"2026-07-12","task_type":"config-edit","agent":"site-editor","tier":"none","duration_ms":0,"success":true,"note":"round-4 prep complete: fable/opus at e009223+parity patch; web-lookup cap scope codified on main"}
 {"date":"2026-07-12","task_type":"other","agent":"site-coordinator","tier":"none","duration_ms":0,"success":true,"note":"T-9 researchmap-import.jsonl lives in terra branch commit; tools/out cleared for cold starts"}
 {"date":"2026-07-12","task_type":"config-edit","agent":"site-editor","tier":"none","duration_ms":129851,"success":false,"note":"round-4 prep follow-up also cut off at final commit step; committed by codex full-access call; lesson: cap site-editor calls at ~8 steps"}
+{"date":"2026-07-12","task_type":"config-edit","agent":"site-coordinator","tier":"codex-spark-low","duration_ms":60000,"success":true,"note":"persisted round-4 A/B rubric+protocol to tools/state/ab-round4.md for cold-session grading (est duration)"}
