@@ -1,0 +1,12 @@
+# Positive public-site allowlist for rsync. Order matters: allow selected roots,
+# then reject everything else. The cv directory intentionally exposes one PDF.
++ /.htaccess
++ /index.html
++ /style.css
++ /en/***
++ /jp/***
++ /images/***
++ /js/***
++ /cv/
++ /cv/cv.pdf
+- *

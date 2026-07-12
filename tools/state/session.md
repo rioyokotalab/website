@@ -1,19 +1,19 @@
 driver: codex
-updated: 2026-07-13T01:15+0900
-task: T-27 remove public secrets and unnecessary personal exposure
+updated: 2026-07-13T01:36+0900
+task: T-28 minimize deploy and web-server exposure
 status: in-progress
 
 ## Now
-- Goal: publish and live-verify the completed T-27 exposure cleanup.
-- Last done: rebase clean; live dry-run shows exactly two modified files (`en/news/index.html`, `jp/news/index.html`) and zero deletions.
-- Next: run the publish transaction, then verify live EN/JP contain zero sensitive query/meeting URLs, match local bytes, and GitHub main matches.
+- Goal: publish and live-verify T-28 fail-closed deployment and server exposure controls.
+- Last done: staging contains exactly 149 manifest files; isolated tests prove unexpected files cannot stage, rogue/stale remote files delete, sentinel survives, symlinks fail closed, and all seven publish regressions pass. Real dry-run shows only `.htaccess` upload plus deletion of the stale empty remote `tools/` directory.
+- Next: run publish transaction; immediately verify public pages remain 200, `.dont-remove-me` changes from 200 to denied, directory listing/source paths are denied/absent, remote `tools/` is gone, and a clean dry-run has no changes.
 
 ## Working set
-- T-27 publish scope: `en/news/index.html`, `jp/news/index.html`, decisions/facts/ledger.
-- Audit evidence: current tracked files zero key/token/query shapes; reachable history contains the expired URL in two commits; value was never replayed or written to output/logs.
+- T-28 public roots: `.htaccess`, `index.html`, `style.css`, `en/`, `jp/`, `images/`, `js/`, and only `cv/cv.pdf`.
+- Publish scope: `.htaccess` plus repository-only deploy/publish scripts, manifest, tests, docs, and ledger. Expected remote deletion: stale empty `tools/` directory only.
 
 ## Open questions
-- Historical Git objects retain the expired URL. Another history rewrite would invalidate hashes again while GitHub still caches prior unreachable commits; it remains outside current scope.
+- Apache directive compatibility cannot be proven locally because Apache is not installed; immediate live 200/403 checks are mandatory, with rollback on HTTP 500.
 
 ## Awaiting user
 - T-25 remains pending automatic GitHub server GC; unrelated to T-27 implementation.

@@ -42,11 +42,11 @@ die_preflight() {
 
 is_deploy_included() {
 	case "$1" in
-		.git/*|.agents/*|.claude/*|.codex/*|tools/*|skills/*|deploy.sh|publish.sh|CLAUDE.md|README.md|.gitignore|.mcp.json|AGENTS.md|cv/cv.tex|cv/cv.cls|cv/build-cv.sh)
-			return 1
+		.htaccess|index.html|style.css|en/*|jp/*|images/*|js/*|cv/cv.pdf)
+			return 0
 			;;
 		*)
-			return 0
+			return 1
 			;;
 	esac
 }

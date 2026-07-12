@@ -7,12 +7,20 @@
 #
 # Pass --dry-run to preview what would be uploaded without changing anything.
 set -euo pipefail
-cd "$(dirname "$0")"
+ROOT=$(cd "$(dirname "$0")" && pwd)
+cd "$ROOT"
 
 DRY_RUN=""
 if [ "${1:-}" = "--dry-run" ]; then
 	DRY_RUN="--dry-run"
 fi
+
+# Build a fresh positive-allowlist staging tree. Anything not selected by
+# tools/deploy-files.filter cannot be uploaded, even if it is untracked or a
+# future repository file that nobody remembered to exclude.
+STAGE=$(mktemp -d)
+trap 'rm -rf "$STAGE"' EXIT
+tools/stage-public-site.sh "$STAGE" "$ROOT"
 
 # Make sure the SSH master connection is alive; re-establish it from the
 # stored password file if possible, otherwise ask the user to log in.
@@ -27,10 +35,6 @@ if ! ssh -O check web >/dev/null 2>&1; then
 	fi
 fi
 
-# mirror -R: local -> remote; uploads new/changed files only.
-# Never uploads .git or repo-only files (including local test tooling and
-# browser artifacts; only the built cv.pdf is served from the CV sources).
-# --delete: files removed locally are also removed from the remote, so the
-# server stays an exact mirror of the deployed set. Excluded paths (-x below)
-# are never uploaded AND never deleted remotely.
-lftp -e "mirror -R --delete --verbose $DRY_RUN -x '^\.git/' -x '^\.agents/' -x '^\.claude/' -x '^\.codex/' -x '^\.playwright/' -x '^node_modules/' -x '^tests/' -x '^tools/' -x '^skills/' -x '^deploy\.sh$' -x '^publish\.sh$' -x '^CLAUDE\.md$' -x '^README\.md$' -x '^package\.json$' -x '^package-lock\.json$' -x '^playwright\.config\.js$' -x '^\.gitignore$' -x '^\.mcp\.json$' -x '^AGENTS\.md$' -x '^cv/cv\.tex$' -x '^cv/cv\.cls$' -x '^cv/build-cv\.sh$' . www; bye" sftp://web
+# mirror -R: allowlisted staging tree -> remote. --delete removes anything
+# outside the public manifest from www, except the required server sentinel.
+lftp -e "mirror -R --delete --verbose $DRY_RUN -x '^\.dont-remove-me$' '$STAGE' www; bye" sftp://web

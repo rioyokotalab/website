@@ -67,7 +67,7 @@ Canonical copies live in `skills/`: html-editing (CRLF, case-insensitive tags, t
 
 ## Deployment details
 
-`publish.sh` calls `deploy.sh`, which mirrors the deploy-included tree to SFTP `www/` with deletion. Preview deletion-bearing deploys with `./deploy.sh --dry-run`; excluded repo/config/CV-source paths (including `skills/` and `tools/`) are defined in `deploy.sh`.
+`publish.sh` calls `deploy.sh`, which builds the positive-allowlist staging tree defined by `tools/deploy-files.filter`, then mirrors it to SFTP `www/` with deletion while preserving only `.dont-remove-me`. Preview every deletion-bearing deploy with `./deploy.sh --dry-run`; validate policy changes with `tools/test-deploy-policy.sh`.
 
 - Deployment is SFTP-only to web root `www/`; never expose credentials and never upload/deploy `.git`.
 

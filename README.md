@@ -224,12 +224,12 @@ credentials, force operations, unexpected deploy changes, and material scope
 expansion remain fail-closed. The complete procedure is
 `skills/publish-and-verify.md`.
 
-`deploy.sh` mirrors the deploy-included repository tree to the SFTP web root
-with deletion. Its exclusions protect repository-only material from both
-upload and remote deletion. They include `.git/`, `.agents/`, `.claude/`,
-`.codex/`, local browser-test tooling and artifacts, `tools/`, `skills/`, the
-deployment scripts, agent/config docs, and the CV sources. `README.md` is explicitly excluded by
-`-x '^README\.md$'`, so this file is not part of the public website.
+`deploy.sh` builds a fresh positive-allowlist staging tree, then mirrors it to
+the SFTP web root with deletion. Only `.htaccess`, `index.html`, `style.css`,
+`en/`, `jp/`, `images/`, `js/`, and `cv/cv.pdf` can enter the staging tree;
+`.dont-remove-me` is the sole preserved remote exception. The manifest lives in
+`tools/deploy-files.filter`, and `tools/test-deploy-policy.sh` verifies that
+unexpected repository files cannot upload and stale remote files are removed.
 
 ## Invariants
 

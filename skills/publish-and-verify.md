@@ -77,10 +77,9 @@ Deploy facts:
   `SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git push`; on "Permission denied
   (publickey)" the user runs `sh ~/scripts/ssh-agent-setup.sh` once per
   reboot in a real tmux pane.
-- Excluded from deploy (never uploaded AND never deleted remotely): .git,
-  .agents, .claude, .codex, .playwright, node_modules, tests, tools, skills, deploy.sh,
-  publish.sh, CLAUDE.md, README.md, package.json, package-lock.json,
-  playwright.config.js, .gitignore, .mcp.json, AGENTS.md, cv/cv.tex, cv/cv.cls,
-  cv/build-cv.sh.
+- Deployment is positive-allowlist based (`tools/deploy-files.filter`): only
+  `.htaccess`, `index.html`, `style.css`, `en/`, `jp/`, `images/`, `js/`, and
+  `cv/cv.pdf` enter the staging tree. The remote mirror deletes non-manifest
+  files while preserving only `.dont-remove-me`.
 - NEVER upload `.git` or credentials. The Codex WORKER prohibition and direct
   DRIVER exception are defined above.

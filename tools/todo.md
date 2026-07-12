@@ -14,14 +14,6 @@ after confirming HTTPS coverage; do not enable `includeSubDomains` or preload
 without separately verifying every subdomain. Test headers and browser behavior
 locally and live before tightening from report-only to enforcement.
 
-### T-28 — minimize deploy and web-server exposure
-Convert the current broad mirror into a verified deploy allowlist or equivalent
-fail-closed exclusion scheme so only public HTML/assets, `cv/cv.pdf`, and
-required server files can reach `www/`. Disable directory listing and access to
-dotfiles, source/config/backup/temp/map files at the server layer; add isolated
-regression fixtures proving unexpected root files cannot be uploaded and remote
-public files cannot be accidentally deleted.
-
 ### T-29 — add continuous security regression checks
 Create a credential-free security test command covering HTTPS redirects,
 required response headers, forbidden/mixed-content URLs, external-link rel
@@ -51,7 +43,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-27 removed one expired password-bearing meeting invitation from both news pages without replaying or logging its value; current tracked key/token/query scans, CV metadata, and 107-image GPS/metadata scans are clean, while institutional professional contact remains intentionally public.
+- 2026-07-13 T-28 replaced broad repository mirroring with a positive public-file staging allowlist, preserves only the remote sentinel, deletes rogue/stale remote files, rejects staging symlinks, and adds Apache directory/dotfile/source/backup denial with isolated policy regressions.
+- 2026-07-13 T-27 removed and deployed one expired password-bearing meeting invitation from both news pages without replaying or logging its value; live pages are byte-identical to commit `0c7077b` with zero sensitive query/meeting URLs, while institutional professional contact remains intentionally public.
 - 2026-07-13 T-24 removed stale model-evaluation/judge infrastructure, the redundant researchmap implementation report, all 41 tracked paper PDFs (261 MiB), and disposable local browser/npm/Python caches; removed all live references and corrected the preview-hook scope note.
 - 2026-07-12 T-23 removed and deployed deletion of 26 unused Dreamweaver `.dwt` templates and all 264 `Instance*` control comments; all 26 live pages and the CV are byte-identical to commit `9636ff7`, with the template URL returning 404.
 - 2026-07-12 T-18 owner confirmed GA4 event-data retention is 2 months and Google Signals/advertising features remain disabled; no credentials or account details were stored.

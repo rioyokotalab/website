@@ -5,7 +5,7 @@ skill files matching the task before acting; codex workers read the same
 files when the task or AGENTS.md points to them. Dispatches cite skill paths
 (e.g. "apply skills/html-editing.md") instead of restating rules.
 
-Repo-only: `skills/` is excluded from deploy (`deploy.sh -x '^skills/'`).
+Repo-only: `skills/` is absent from the positive deployment allowlist.
 Skills are normal git-tracked files, NOT hand-edit-only: when a convention
 changes, update the matching skill in the same change set.
 

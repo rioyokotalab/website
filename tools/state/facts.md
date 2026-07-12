@@ -39,6 +39,10 @@ Update in place when reality changes; date entries. No procedures here
   blocks non-browser clients.
 
 ## Tooling / environment
+- 2026-07-13 deployment is positive-allowlist staged via
+  `tools/deploy-files.filter` + `tools/stage-public-site.sh`: public roots are
+  `.htaccess`, root index/CSS, EN/JP, images, JS, and `cv/cv.pdf`; the remote
+  mirror preserves only `.dont-remove-me` and deletes other non-manifest files.
 - 2026-07-13 Git history was rewritten to remove all `tools/papers/` paths;
   GitHub main and eight local evaluation tags have new commit IDs. Fresh clones
   contain zero paper paths. Existing clones should be recloned or carefully
