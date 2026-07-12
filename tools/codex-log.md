@@ -394,3 +394,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-13 | codex-driver (gpt-5) | seed T-26 through T-30 website security backlog | tools/out/driver-report-20260713-0043.md | n/a | done; implementation not started
 2026-07-13 | codex-driver (gpt-5) | T-27 remove expired invitation secret and audit public exposure | tools/out/driver-report-20260713-0111.md | n/a | verified; publish pending
 2026-07-13 | codex-driver (gpt-5) | T-28 fail-closed deploy staging and server exposure | tools/out/driver-report-20260713-0136.md | n/a | partial; allowlist live, Apache denial rolled back after 500
+2026-07-13 | codex-driver (gpt-5) | T-29 continuous security regression checks | tools/out/driver-report-20260712-2353.md | n/a | done; published 270d494, T-28 sentinel remains visible

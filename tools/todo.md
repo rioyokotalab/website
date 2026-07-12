@@ -14,14 +14,6 @@ after confirming HTTPS coverage; do not enable `includeSubDomains` or preload
 without separately verifying every subdomain. Test headers and browser behavior
 locally and live before tightening from report-only to enforcement.
 
-### T-29 — add continuous security regression checks
-Create a credential-free security test command covering HTTPS redirects,
-required response headers, forbidden/mixed-content URLs, external-link rel
-attributes, local path traversal/broken references, deploy-excluded leakage,
-known placeholder IDs, secret-pattern scanning with reviewed allowlists, and
-privacy-first zero-request-before-consent behavior. Make it deterministic and
-run it from the pre-publish pipeline without introducing network writes.
-
 ### T-30 — audit third-party and test-tool supply chain
 Verify every CDN resource is HTTPS, version-pinned, and protected by correct SRI
 and `crossorigin`; evaluate whether self-hosting the small Lightbox/jQuery
@@ -53,6 +45,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-29 added and published deterministic credential-free security checks for public references, mixed/sensitive URLs, external-link isolation, consent-loader/static pre-consent requests, secret/placeholder patterns, exact deploy staging, HTTPS redirects, headers, and excluded live paths; `publish.sh` now enforces the offline suite, and live mode correctly preserves visibility of T-28's sentinel blocker (`270d494`).
 - 2026-07-13 T-27 removed and deployed one expired password-bearing meeting invitation from both news pages without replaying or logging its value; live pages are byte-identical to commit `0c7077b` with zero sensitive query/meeting URLs, while institutional professional contact remains intentionally public.
 - 2026-07-13 T-24 removed stale model-evaluation/judge infrastructure, the redundant researchmap implementation report, all 41 tracked paper PDFs (261 MiB), and disposable local browser/npm/Python caches; removed all live references and corrected the preview-hook scope note.
 - 2026-07-12 T-23 removed and deployed deletion of 26 unused Dreamweaver `.dwt` templates and all 264 `Instance*` control comments; all 26 live pages and the CV are byte-identical to commit `9636ff7`, with the template URL returning 404.

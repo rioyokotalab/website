@@ -1,16 +1,15 @@
 driver: codex
-updated: 2026-07-12T23:55+0900
-task: T-29 add continuous security regression checks
-status: in-progress
+updated: 2026-07-13T00:00+0900
+task: idle
+status: idle
 
 ## Now
-- Goal: make security invariants deterministic and pre-publish enforced.
-- Last done: T-29 offline harness passes, deploy policy and seven publish scenarios pass, and live mode validates HTTPS redirect/headers/status while correctly flagging only the known public `.dont-remove-me` T-28 blocker. One missing `rel` was repaired in JP news.
-- Next: rebase, inspect the deletion-bearing dry-run, publish/push the completed T-29 scope, then verify the changed live news page and remote commit.
+- Goal: no task in flight.
+- Last done: T-29 published as `270d494`; live JP news is byte-identical, origin/main matches, and the live audit reports only T-28's known public sentinel.
+- Next: select T-26 or T-30 from the active ledger.
 
 ## Working set
-- Prepared scope: `tools/security-check.py`, `tools/test-security.sh`, publish/test integration, README/playbook, one JP news link hardening, ledger/bookkeeping.
-- Verification passed: offline security/deploy suites, seven publish cases, Markdown budgets. Live audit has exactly one expected T-28 finding for `/.dont-remove-me`.
+- None.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
