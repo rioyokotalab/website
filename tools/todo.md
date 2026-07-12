@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-107.
+`tools/state/session.md`. Next free id: T-108.
 
 ## Active
 
@@ -31,6 +31,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-107 made the exhaustive keyboard-order contract deterministic for cross-origin map internals by collapsing consecutive parent-iframe focus states while still requiring the complete top-level order; isolated 26-route × 2-width traversal passes in 51.3 seconds (pending final full suite/commit).
 - 2026-07-13 T-106 audited the browser-repaired DOM on all 26 routes and permanently enforces that every native date, data table, contact address, and embedded map remains inside the main landmark (pending final commit).
 - 2026-07-13 T-105 passed all fast checks, 36/36 browser tests in 4.7 minutes, allowlisted staging dry-run, Git object verification, zero-vulnerability offline audit, public permissions/symlink review, and generated-artifact cleanup (pending final commit).
 - 2026-07-13 T-104 audited every rendered link/button and embedded frame across all 26 routes after dynamic privacy controls initialize, and permanently rejects empty accessible names/titles (pending commit).

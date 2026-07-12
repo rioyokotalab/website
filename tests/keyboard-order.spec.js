@@ -39,12 +39,16 @@ test("every route has a complete, duplicate-free keyboard sequence", async ({ br
 				}));
 				const visited = [];
 				await page.locator("body").focus();
-				for (let index = 0; index < expected.length; index += 1) {
+				for (let attempt = 0; attempt < expected.length + 100 && visited.length < expected.length; attempt += 1) {
 					await page.keyboard.press("Tab");
-					visited.push(await page.evaluate(() => {
+					const focused = await page.evaluate(() => {
 						const element = document.activeElement;
 						return `${element?.dataset.keyboardTarget || ""}:${element?.tagName || ""}:${element?.id || element?.getAttribute?.("href") || ""}`;
-					}));
+					});
+					// Cross-origin frames can consume multiple internal Tab stops while
+					// document.activeElement remains the same iframe. Count that top-level
+					// target once, then continue until focus returns to this document.
+					if (focused !== visited.at(-1)) visited.push(focused);
 				}
 				expect(visited, `${language}/${route} at ${width}px`).toEqual(expected);
 				await page.keyboard.press("Shift+Tab");

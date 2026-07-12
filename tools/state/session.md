@@ -1,11 +1,11 @@
 driver: codex
-updated: 2026-07-13T04:57+0900
+updated: 2026-07-13T05:03+0900
 task: idle
 status: idle
 
 ## Now
 - Goal: idle; the continuous modernization window is release-ready.
-- Last done: T-106 permanently covers all 26 browser-repaired DOMs and confirms every native date, data table, contact address, and embedded map remains inside `main`; T-105 passed the complete release sweep.
+- Last done: T-107 corrected cross-origin iframe-internal Tab modeling in the exhaustive keyboard contract; all 26 routes at 390/1200px pass in 51.3 seconds. T-106 semantic containment and T-105 release sweep pass.
 - Next: user or Claude site-publisher may live-publish and verify the pushed post–T-60 commits; Codex must not run the live publication.
 
 ## Working set
