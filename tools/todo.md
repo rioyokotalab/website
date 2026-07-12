@@ -1,15 +1,16 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-85.
+`tools/state/session.md`. Next free id: T-86.
 
 ## Active
 
-### T-84 — audit sticky-header anchor positioning
-Follow every local in-page navigation link on EN/JP pages at mobile and desktop,
-verify the target heading remains fully visible below sticky navigation and
-inside the viewport, and replace the legacy negative scroll margin only if
-measurements confirm clipping; retain a browser contract.
+### T-85 — audit user text-spacing resilience
+Apply WCAG-style user overrides for line, paragraph, letter, and word spacing
+to every public page at mobile and desktop; detect clipped or overlapping text,
+page-level overflow, and unusable navigation/component controls, fixing only
+confirmed constraints without altering default presentation and retaining a
+browser contract.
 
 ## Blocked / awaiting user
 
@@ -35,7 +36,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-83 added a permanent runtime-health contract over all 52 route/viewport loads, all mobile menus, and all gallery families, with zero uncaught exceptions, error-console messages, same-origin request failures, or local HTTP errors (pending commit).
+- 2026-07-13 T-84 replaced the legacy -10px heading scroll margin with 24px after reproducing 27px of Japanese-heading clipping beneath the 81px sticky bar; every heading-target link passes at 320/900/901/1200px and all 18 browser tests pass (pending commit).
+- 2026-07-13 T-83 added a permanent runtime-health contract over all 52 route/viewport loads, all mobile menus, and all gallery families, with zero uncaught exceptions, error-console messages, same-origin request failures, or local HTTP errors (`4efd88d`).
 - 2026-07-13 T-82 found current-page specificity masking the forced-color keyboard ring and programmatic Lightbox close focus lacking `:focus-visible`, added two scoped system-highlight overrides, and permanently covers EN/JP nav/link/consent/menu/table/gallery paths; all 16 browser tests pass (`6e5fd56`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-81 suppressed every CSS transition to at most 0.01ms and Lightbox fades/resizing to 0ms only under reduced-motion preference, retained ordinary 600/600/700ms gallery timings, handled live preference changes, and added two permanent browser tests; all 14 browser tests pass (`b37c792`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-80 replaced the final two mirrored `<col width="72">` attributes with one shared class, expanded the legacy-attribute gate to `<col>`, and matched all EN/JP column/row/cell geometry exactly at 320/390/1200px and print (`17ddf92`; live publish reserved for user/Claude site-publisher).

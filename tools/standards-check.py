@@ -208,6 +208,8 @@ def main() -> int:
         findings.append("mobile menu target-size mismatch")
     if style_text.count("html.js #menubar_hdr {") != 1:
         findings.append("progressive mobile-menu control mismatch")
+    if style_text.count("scroll-margin-top: 24px;") != 1:
+        findings.append("sticky-header anchor offset mismatch")
     if style_text.count("--oral-highlight: #cc0000;") != 1 or style_text.count("--oral-highlight: #ff6b6b;") != 1 or "color: var(--oral-highlight);" not in style_text:
         findings.append("light/dark oral-highlight palette mismatch")
     root_text = (ROOT / "index.html").read_text(encoding="utf-8")

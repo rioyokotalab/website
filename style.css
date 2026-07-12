@@ -468,7 +468,7 @@ h3.heading, #sub .grid h3 {
 	border-bottom: 2px solid var(--border);
 }
 h3.heading[id] {
-	scroll-margin-top: -10px;
+	scroll-margin-top: 24px;
 }
 section.content > h3.heading:first-child, section.content h3.heading:first-of-type {
 	margin-top: 0;
