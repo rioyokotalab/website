@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-54 unify responsive navigation breakpoint
+task: T-55 migrate obsolete nowrap table attributes
 status: in-progress
 
 ## Now
-- Goal: eliminate the 801–900px gap where mobile CSS is active but the hamburger script returns without wiring the control.
-- Last done: T-54 replaces the 800px JS cutoff with the CSS-equivalent 900px media query and removes the exact-900 overlap by moving desktop CSS to min-width 901px. Script/style references are cache-busted and enforced. Full suite passes; EN/JP controls open/close correctly at 800/801/850/900 and remain desktop-hidden at 901, while <=800 geometry is exact against live.
-- Next: rebase, inspect the JS/CSS/cache deployment preview, publish T-54, verify live 850/900/901 behavior, then close T-54 and start T-55.
+- Goal: replace all obsolete nowrap attributes with a shared class while preserving exact News date-cell wrapping and table geometry.
+- Last done: T-55 migrates all 152 News nowrap attributes (98 EN, 54 JP) to `.no-wrap`, cache-busts shared CSS, and permanently enforces zero legacy attributes/exact class counts. Full suite passes; recent/middle/old cells retain nowrap, cell dimensions, and row heights within 1px in both languages at desktop/mobile.
+- Next: rebase, inspect the two-News/CSS/cache deployment preview, publish T-55, verify live computed nowrap, then close T-55 and start T-56 in bounded News/non-News batches.
 
 ## Working set
-- `js/responsive-menu.js`, its 26 cache-busted references, exact standards check, EN/JP boundary browser behavior/geometry, ledger/bookkeeping.
+- EN/JP News table cells, shared `.no-wrap` CSS/cache bump, exact standards counts, representative desktop/mobile row geometry, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

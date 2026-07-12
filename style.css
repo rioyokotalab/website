@@ -432,6 +432,9 @@ table td.line {
 	border-bottom: 1px solid var(--border);
 	padding: 6px 4px;
 }
+.no-wrap {
+	white-space: nowrap;
+}
 table td.uline {
 	border-top: 1px solid var(--border);
 	border-bottom: 1px solid var(--border);

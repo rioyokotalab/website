@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-54 — unify responsive navigation breakpoint
-Match the navigation script's activation boundary to the CSS 900px mobile
-breakpoint so the hamburger remains operable from 801–900px. Preserve behavior
-and geometry below 801px and above 900px, with boundary browser coverage.
-
 ### T-55 — migrate obsolete nowrap table attributes
 Replace all 152 legacy `nowrap` attributes with a shared semantic presentation
 class, preserving exact computed white-space and table geometry across EN/JP
@@ -53,6 +48,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-54 unified responsive JS/CSS at a non-overlapping mobile ≤900px/desktop ≥901px boundary, fixed the inert 801–900px hamburger, cache-busted assets, and passed EN/JP boundary/live checks (`4676d13`).
 - 2026-07-13 T-53 aligned all 27 Open Graph URLs to clean canonicals, added reciprocal en_US/ja_JP locale metadata, enforced exact head values, and preserved representative layout (`1a8cd47`).
 - 2026-07-13 T-52 added minimal robots and a generated 27-URL bilingual sitemap with three alternates per URL, integrated both into positive deployment/security checks, excluded repo-only paths, and verified every live destination (`d3ad764`).
 - 2026-07-13 T-51 replaced 100 heading anchors and 200 News event anchors with semantic/same-position IDs, collision-safely preserved all historical aliases, eliminated legacy `name` markup, and matched representative fragment positions exactly at desktop/mobile (`8aa8582`, `02d5a3f`, `91a70fc`).

@@ -39,12 +39,18 @@ class Document(HTMLParser):
         self.iframes: list[dict[str, str]] = []
         self.inline_styles = 0
         self.og_properties: dict[str, list[str]] = {}
+        self.legacy_nowrap = 0
+        self.no_wrap_classes = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
         line = self.getpos()[0]
         if tag == "style" or "style" in values:
             self.inline_styles += 1
+        if "nowrap" in values:
+            self.legacy_nowrap += 1
+        if "no-wrap" in values.get("class", "").split():
+            self.no_wrap_classes += 1
         if tag == "html":
             self.html_lang = values.get("lang", "")
         if tag == "body":
@@ -213,6 +219,9 @@ def main() -> int:
             fail(findings, path, "executable inline script")
         if document.inline_styles:
             fail(findings, path, "inline presentation style")
+        expected_no_wrap = 98 if path.relative_to(ROOT).as_posix() == "en/news/index.html" else 54 if path.relative_to(ROOT).as_posix() == "jp/news/index.html" else 0
+        if document.legacy_nowrap or document.no_wrap_classes != expected_no_wrap:
+            fail(findings, path, "legacy nowrap or no-wrap class count mismatch")
         if document.unsafe_semantics:
             fail(findings, path, "JavaScript URL or inline event handler")
         missing_fragments = sorted(set(document.fragments) - document.targets)
