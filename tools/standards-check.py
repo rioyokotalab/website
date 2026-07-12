@@ -202,7 +202,7 @@ def main() -> int:
         findings.append("two-tone keyboard focus indicator mismatch")
     if style_text.count("#main a {") != 2 or "text-decoration-thickness: 0.08em;" not in style_text or "text-underline-offset: 0.15em;" not in style_text:
         findings.append("non-color content-link indicator mismatch")
-    if style_text.count("@media (forced-colors: active)") != 1 or 'ul.topnav a[aria-current="page"]' not in style_text or "outline: 3px solid Highlight;" not in style_text:
+    if style_text.count("@media (forced-colors: active)") != 1 or 'ul.topnav a[aria-current="page"]' not in style_text or style_text.count("outline: 3px solid Highlight !important;") != 2:
         findings.append("forced-colors state/focus treatment mismatch")
     if "width: 42px;\n\tmin-height: 42px;" not in style_text:
         findings.append("mobile menu target-size mismatch")

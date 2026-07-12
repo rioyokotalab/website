@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T03:31+0900
-task: T-82 audit forced-colors component usability
+updated: 2026-07-13T03:37+0900
+task: T-83 audit browser runtime health on every route
 status: in-progress
 
 ## Now
-- Goal: verify every modernized interactive state remains distinguishable and operable when user colors override the palette.
-- Last done: T-81 found reduced motion left global 150ms link transitions and Lightbox 600/600/700ms fades/resizing active; CSS now caps motion at 0.01ms and the wrapper sets gallery durations to zero only for the preference, restores defaults dynamically, and all 14 browser tests pass.
-- Next: render EN/JP mobile/desktop components in forced colors; inspect system-color mapping, focus/current indicators, local overflow, modal controls and consent actions; add a permanent browser contract and only fix demonstrated failures.
+- Goal: make uncaught client-side errors and failed local runtime resources impossible to introduce unnoticed on any public route.
+- Last done: T-82 found the current-page forced-color outline out-specificed the keyboard ring and Lightbox's programmatically focused close control did not match `:focus-visible`; two scoped Highlight outlines now preserve both states and two permanent EN/JP component tests pass within the 16-test suite.
+- Next: attach pageerror/console/requestfailed listeners before loading all 26 routes at 320/1200px, reject analytics to isolate local behavior, exercise mobile menus and representative galleries, classify external cancellations separately, fix only local failures, and retain the contract.
 
 ## Working set
-- EN/JP home/news/picture pages in forced-colors contexts; nav/focus/link/consent/table/Lightbox states; `style.css` only if a confirmed loss exists; Playwright/ledger bookkeeping.
+- all 26 public routes at mobile/desktop; local scripts/styles/images and component interactions; new Playwright runtime-health contract; ledger/test bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
