@@ -1,19 +1,19 @@
 driver: codex
-updated: 2026-07-12T23:01+0900
+updated: 2026-07-12T23:24+0900
 task: idle
 status: idle
 
 ## Now
-- Goal: idle after T-22 field reconciliation and external imports.
-- Last done: owner imported the approved researchmap and ORCID selections; all transient T-22 output files were removed. Local profile/CV fixes are already pushed through `e38ac96`.
-- Next: T-20 and T-21 both require explicit exact-scope authorization for project agent configuration/policy edits.
+- Goal: idle after T-20 preview portability and T-21 native Codex delegation policy.
+- Last done: zero-fork benchmark agent independently matched the root's 22-versus-21 exclusion audit and found the same missing `.agents` documentation; root review caught one harmless duplicated final line and fixed the documentation omission. T-20 isolation tests pass.
+- Next: no authorized active task remains; T-18 still requires owner-side GA Admin work.
 
 ## Working set
-- T-22 commits: `1e96330`, `e38ac96`; researchmap and ORCID imports completed manually by the owner.
-- `tools/out/` is empty. Website/CV live deployment was not performed by Codex under the repository hard rule.
+- T-20 verification: JSON/Bash syntax, no account path in hooks, simultaneous two-clone start/stop, corrupt cross-clone PID protection, default port retained.
+- T-21 benchmark: `fork_turns=none`, 67-word/579-character pointer prompt, root baseline 28 ms, exact material finding match; runtime token telemetry unavailable, so no numeric token-savings claim.
 
 ## Open questions
-- None for T-22.
+- Native agent handoff was complete but contained one duplicated trailing phrase; mandatory root review prevented it from propagating.
 
 ## Awaiting user
 - T-18 requires owner access to GA Admin; no credentials should be shared.

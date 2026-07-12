@@ -82,8 +82,9 @@ persistence.
 - Claude driver: CLAUDE.md. codex driver: AGENTS.md "Driving this repo".
   Handoff = checkpoint session.md + stop; the next driver (either brand)
   resumes at Session start step 2. Nothing else needs to transfer.
-- codex drivers work solo (no subagents/fan-out): smaller steps, more
-  frequent checkpoints; assume death at any step.
+- Codex drivers may use native subagents under `skills/codex-delegation.md`;
+  the root DRIVER alone owns `session.md`, checkpoints before delegation, and
+  verifies every result. Subagent handoffs live under `tools/out/`, not chat.
 - Driver bookkeeping in tools/task-metrics.jsonl uses agent claude|codex
   and tier driver-claude|driver-codex; workers keep tier = worker name.
 

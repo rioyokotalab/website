@@ -194,6 +194,12 @@ Recurring worker routing and task metrics live in
 configuration remains proposal-only unless the user authorizes the exact write.
 See `skills/config-proposals.md` for the review contract.
 
+A directly started Codex DRIVER may use native Codex subagents under
+`skills/codex-delegation.md`. Delegation is reserved for bounded independent
+work where minimal-context handoff saves more root context than it costs; the
+root DRIVER retains ledger ownership, review, verification, and all publish or
+push authority. Claude's `.claude/agents/` definitions remain Claude-specific.
+
 ## Exporters and derived records
 
 `tools/` includes exporters for researchmap and ORCID plus checks for their

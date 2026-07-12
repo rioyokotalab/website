@@ -1,5 +1,10 @@
 # Durable decisions (newest first; one-line rationale each)
 
+- 2026-07-12 T-21 Codex DRIVER delegation: native subagents are allowed only
+  for bounded independent work when minimal-context handoff plus root review is
+  cheaper than solo root work; the root retains ledger/config/publish authority
+  and independent verification, because capability must not be traded for token
+  savings.
 - 2026-07-12 T-16 publish transaction order: rebase and dry-run first, then
   commit+push before live deployment, so push failure cannot change production
   and any partial deploy is traceable to an existing GitHub commit.

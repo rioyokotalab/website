@@ -45,9 +45,15 @@ checkpoints it). Drivers: own session.md.
    over.
 2. Checkpoint session.md per skills/context-ledger.md (task start, each
    completed step, before risky/long ops, session end); set driver: codex.
-3. Work solo — no subagents, no fan-out: small steps, frequent
-   checkpoints; assume the session can die at any step. Durable state =
-   ledger + tools/out/ + commits, never chat.
+3. Delegate selectively through native Codex subagents according to
+   `skills/codex-delegation.md`. Stay solo for small, serial, context-heavy, or
+   security-sensitive work; delegate only bounded independent work when the
+   expected root-context savings exceed handoff/review cost. Use minimal context
+   forks and on-disk pointers, disjoint scopes, and at most two concurrent
+   subagents by default. Subagents never own `session.md`, project/owner config,
+   publishing, pushes, credentials, or final decisions. The DRIVER reviews and
+   proportionally verifies every result before acting. Durable state remains
+   ledger + `tools/out/` + commits, never chat.
 4. Follow skills/publish-and-verify.md. A DRIVER normally publishes and pushes
    completed owner-requested repository changes without a separate permission
    prompt. Report the preflight scope while proceeding; stop instead of asking

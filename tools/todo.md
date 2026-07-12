@@ -5,20 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-20 — make the Claude preview hook account-portable
-Replace the absolute `/home/rioyokota/website` path in the committed Claude
-SessionStart/SessionEnd hook with a project-root-aware form, under explicit
-project-config scope, then verify concurrent clones do not control each other's
-preview process.
-
-### T-21 — allow Codex to use agents without capability loss
-Design and apply a direct Codex DRIVER delegation policy that permits agents for
-bounded, independent work while minimizing root-context/token usage. Preserve
-full task quality through explicit context pointers, tier/model selection,
-output-file-first handoffs, non-overlapping write scopes, root review, and
-proportional verification; benchmark representative solo versus delegated tasks
-before replacing the current work-solo rule.
-
 ## Blocked / awaiting user
 
 ### T-18 — confirm GA Admin privacy settings
@@ -28,6 +14,8 @@ request or automate credentials. Record only the confirmed settings afterward.
 
 ## Recently completed
 
+- 2026-07-12 T-21 enabled bounded native Codex delegation with minimal context forks, strict authority boundaries, output-first handoff, root review, and proportional verification; a zero-fork benchmark matched the root baseline and exposed one documentation omission that was fixed.
+- 2026-07-12 T-20 replaced account-specific Claude preview hooks with a project-root-aware helper and verified simultaneous clone isolation, stale-PID ownership protection, and default port compatibility.
 - 2026-07-12 T-22 audited website/CV/researchmap/ORCID fields, corrected the NII title and exporter parsing, standardized postal code 152-8550, removed the Keio RA role, rebuilt the CV, and completed the owner-reviewed researchmap and ORCID imports; transient outputs were removed.
 - 2026-07-12 T-17 added pinned real-Chromium consent regression coverage for EN/JP desktop/mobile, keyboard use, persistence, revocation, and the zero-request-before-consent boundary; browser tooling and artifacts are deploy-excluded.
 - 2026-07-12 T-16 hardened `publish.sh`: main/rebase/placeholder/dry-run gates, commit+push before deploy, clean-worktree push, phase-specific failure states, and seven isolated regression scenarios.
