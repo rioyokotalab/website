@@ -536,7 +536,7 @@ section.content p[align="center"] img {
 	background: #fff;
 }
 /* legacy bgcolor attribute on table header cells */
-td[bgcolor="#eeeeee"] {
+.table-heading-cell {
 	background: var(--thead-bg);
 	color: var(--thead-text);
 	font-weight: 700;

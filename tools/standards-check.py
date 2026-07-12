@@ -43,6 +43,8 @@ class Document(HTMLParser):
         self.no_wrap_classes = 0
         self.legacy_valign = 0
         self.vertical_top_classes = 0
+        self.legacy_base_presentation = 0
+        self.table_heading_classes = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -57,6 +59,10 @@ class Document(HTMLParser):
             self.legacy_valign += 1
         if "vertical-top" in values.get("class", "").split():
             self.vertical_top_classes += 1
+        if any(attribute in values for attribute in ("border", "cellpadding", "cellspacing", "bgcolor")):
+            self.legacy_base_presentation += 1
+        if "table-heading-cell" in values.get("class", "").split():
+            self.table_heading_classes += 1
         if tag == "html":
             self.html_lang = values.get("lang", "")
         if tag == "body":
@@ -236,6 +242,9 @@ def main() -> int:
         expected_vertical_top = vertical_top_counts.get(path.relative_to(ROOT).as_posix(), 0)
         if document.legacy_valign or document.vertical_top_classes != expected_vertical_top:
             fail(findings, path, "legacy valign or vertical-top class count mismatch")
+        expected_heading_cells = 4 if path.relative_to(ROOT).as_posix() in ("en/computers/index.html", "jp/computers/index.html") else 0
+        if document.legacy_base_presentation or document.table_heading_classes != expected_heading_cells:
+            fail(findings, path, "legacy base presentation or table heading class mismatch")
         if document.unsafe_semantics:
             fail(findings, path, "JavaScript URL or inline event handler")
         missing_fragments = sorted(set(document.fragments) - document.targets)

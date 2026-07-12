@@ -5,10 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-56 — migrate obsolete vertical-alignment attributes
-Replace all 588 `valign="top"` table-cell attributes with a shared class in
-bounded page-family batches, retaining exact computed alignment and row sizes.
-
 ### T-57 — modernize remaining table presentation attributes
 Inventory and migrate legacy table border, alignment, spacing, width, and
 background attributes only where shared classes can preserve computed layout
@@ -43,6 +39,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-56 migrated all 588 raw valign=top attributes across home/profile/News, enforced zero legacy and rendered counts, and preserved representative alignment/cell/row geometry within 1px across families/viewports (`ad217cb`).
 - 2026-07-13 T-55 migrated all 152 News nowrap attributes to a shared class, enforced zero legacy usage/exact EN/JP counts, and preserved representative cell/row geometry within 1px at desktop/mobile (`b59384a`).
 - 2026-07-13 T-54 unified responsive JS/CSS at a non-overlapping mobile ≤900px/desktop ≥901px boundary, fixed the inert 801–900px hamburger, cache-busted assets, and passed EN/JP boundary/live checks (`4676d13`).
 - 2026-07-13 T-53 aligned all 27 Open Graph URLs to clean canonicals, added reciprocal en_US/ja_JP locale metadata, enforced exact head values, and preserved representative layout (`1a8cd47`).
