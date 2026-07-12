@@ -1,4 +1,4 @@
-# Skill: HTML editing (Dreamweaver-era pages)
+# Skill: HTML editing (legacy static pages)
 
 - Edit page HTML only with small python3 scripts using
   `open(path, newline='', encoding='utf-8')` for BOTH read and write, so CRLF
@@ -9,10 +9,10 @@
   `re.split(r'<li[^>]*>', text, flags=re.I)`.
 - Keep class/id names stable: `style.css` is written against existing
   selectors, floats, and table layouts.
-- If you edit `style.css`, bump `style.css?v=YYYYMMDD` in ALL pages and
-  `Templates/*.dwt` with a scripted replace.
-- Site-wide strings (nav, footer, header) must also update `Templates/*.dwt`.
-  Preserve `.dont-remove-me`.
+- If you edit `style.css`, bump `style.css?v=YYYYMMDD` in ALL pages with a
+  scripted replace.
+- Site-wide strings (nav, footer, header) must update every affected EN/JP page
+  directly with a CRLF-safe script. Preserve `.dont-remove-me`.
 - New `target="_blank"` links need `rel="noopener noreferrer"`.
 - Galleries: pinned cdnjs Lightbox 2.11 / jQuery 3.7 with SRI; do not change
   versions casually.

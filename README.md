@@ -134,7 +134,6 @@ npm run test:consent
 | Path | Purpose |
 | --- | --- |
 | `en/`, `jp/` | Mirrored English and Japanese public pages. |
-| `Templates/` | Dreamweaver-era page templates; keep site-wide markup in sync with them. |
 | `style.css`, `js/`, `images/` | Shared public presentation and assets. Some English pages reuse assets under `jp/`. |
 | `cv/` | Public `cv.pdf` plus repo-only TeX sources and build script. |
 | `skills/` | Canonical playbooks for editing, parity, content, lookup, exporting, and publishing. |
@@ -235,7 +234,8 @@ deployment scripts, agent/config docs, and the CV sources. `README.md` is explic
 ## Invariants
 
 - Preserve every public path and EN/JP counterpart.
-- Keep shared markup in `Templates/*.dwt` synchronized with pages.
+- Update shared navigation, header, and footer markup directly across all EN/JP
+  pages with a CRLF-safe scripted replacement.
 - Preserve `.dont-remove-me` and never expose credentials or `.git`.
 - Add `rel="noopener noreferrer"` to new `target="_blank"` links.
 - Publish/push only from an eligible direct DRIVER after the role, scope,

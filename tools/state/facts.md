@@ -19,9 +19,9 @@ Update in place when reality changes; date entries. No procedures here
   with 8 configured GPUs/500000 MB (read-only sinfo+scontrol query).
   Refresh CPU facts only via site-checker probes; never guess.
 - Every external target="_blank" link carries rel="noopener noreferrer".
-- Page HTML is Dreamweaver-era (floats, table layouts, CRLF, legacy
-  uppercase unclosed <LI>); style.css targets existing selectors — keep
-  class/id names stable.
+- Page HTML retains legacy floats, table layouts, CRLF, and uppercase unclosed
+  `<LI>`, but the unused Dreamweaver templates/control comments were removed
+  in T-23; style.css targets existing selectors — keep class/id names stable.
 - Frozen public tree: en/ and jp/ mirror every path 1:1; js/chglang.js
   swaps the prefix, so missing counterparts 404.
 

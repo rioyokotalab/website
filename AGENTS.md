@@ -109,12 +109,12 @@ verification.
 - Achievements: sections sub001–sub007, newest-first; international
   citations English on both pages, domestic Japanese on both; entries carry
   data-date and other data-* attributes (skills/achievements.md).
-- style.css is shared with ?v=YYYYMMDD cache busting; Templates/*.dwt must
-  stay in sync with site-wide strings; new target="_blank" links need
+- style.css is shared with ?v=YYYYMMDD cache busting; site-wide strings are
+  synchronized directly across pages; new target="_blank" links need
   rel="noopener noreferrer".
 - Repo map: en/ and jp/ mirrored sections (about, research, achievements,
   member, computers, teaching, picture; header: contact, links; unlinked:
-  news, software); shared style.css, images/, js/; Templates/*.dwt;
+  news, software); shared style.css, images/, js/;
   .htaccess; cv/ (cv.pdf served, sources repo-only); tools/ (scripts, state,
 tools/out/ deliverables); skills/ (playbooks). tools/, skills/, .claude/,
 .mcp.json, AGENTS.md, CLAUDE.md, README.md are deploy-excluded.

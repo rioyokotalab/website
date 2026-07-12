@@ -1,18 +1,19 @@
 driver: codex
-updated: 2026-07-12T23:31+0900
-task: idle
-status: idle
+updated: 2026-07-12T23:52+0900
+task: T-23 remove legacy Dreamweaver templates
+status: in-progress
 
 ## Now
-- Goal: idle with no active or blocked ledger tasks.
-- Last done: owner confirmed T-18 GA4 event-data retention is 2 months and Google Signals/advertising features remain disabled; recorded only the settings outcome.
-- Next: await a new owner task.
+- Goal: publish the verified removal of unused Dreamweaver templates and control comments.
+- Last done: deletion-bearing live dry-run passed: 26 expected HTML uploads, the pending rebuilt CV PDF from T-22, and removal of the obsolete remote `Templates/` directory; no unrelated upload/deletion.
+- Next: run `publish.sh`, confirm its repeated dry-run, then verify 26 live pages contain zero Dreamweaver markers, the live CV matches locally, the remote template path is absent, and GitHub main matches.
 
 ## Working set
-- T-18 confirmation is owner-supplied account state; no login, credentials, or external write by Codex.
+- Scope: all 26 EN/JP HTML pages (comment-only edits), remove `Templates/`, update `README.md`, `AGENTS.md`, `CLAUDE.md`, `skills/html-editing.md`, ledger/bookkeeping.
+- Publish gate: remote dry-run must show only 26 HTML uploads plus deletion of obsolete `Templates/`; stop on any other deletion or unexpected upload.
 
 ## Open questions
-- None.
+- No content-level HTML differences. `git diff --check` reports CRLF as trailing whitespace on changed legacy lines; byte comparison verifies exact marker-only transformation.
 
 ## Awaiting user
 - None.
