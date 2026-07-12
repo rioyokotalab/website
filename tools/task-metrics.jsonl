@@ -280,3 +280,6 @@
 {"date":"2026-07-12","task_type":"git-summary","agent":"site-editor","tier":"none","duration_ms":14404,"success":true,"note":"commit 017ef57: CLAUDE.md parity wording; proposal scratch removed"}
 {"date":"2026-07-12","task_type":"config-edit","agent":"site-coordinator","tier":"codex-spark-medium","duration_ms":60000,"success":true,"note":"driver-report telemetry spec: context-ledger + dispatch skill edits (est duration)"}
 {"date":"2026-07-12","task_type":"config-edit","agent":"site-coordinator","tier":"codex-spark-medium","duration_ms":60000,"success":true,"note":"AGENTS.md driver-report proposal in tools/out/agents-driver-report/ (est duration)"}
+{"date":"2026-07-12","task_type":"git-summary","agent":"site-editor","tier":"none","duration_ms":9785,"success":true,"note":"commit e812014: driver session report telemetry; proposal scratch removed"}
+{"date":"2026-07-12","task_type":"mechanical-edit","agent":"site-coordinator","tier":"codex-spark-low","duration_ms":60000,"success":true,"note":"seed round-3 harder driver tasks T-6..T-9 (est duration)"}
+{"date":"2026-07-12","task_type":"mechanical-edit","agent":"site-coordinator","tier":"codex-spark-low","duration_ms":60000,"success":true,"note":"seed round-3 harder driver tasks T-6..T-9 (est duration)"}

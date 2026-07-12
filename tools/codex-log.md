@@ -350,4 +350,5 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | site-coordinator | driver-report telemetry: skill edits | skills/context-ledger.md | - | pass
 2026-07-12 | site-coordinator | AGENTS.md driver-report proposal | tools/out/agents-driver-report/README.md | - | updated AGENTS.md.new with exact block replacement
  | AGENTS.md block replacement complete. DRIVER_REPORT_MATCH=02026-07-12 | site-coordinator | AGENTS.md driver-report proposal | tools/out/agents-driver-report/README.md | - | completed; MATCH_COUNT=1 DRIVER_REPORT_MATCH=1 BYTES=8423
-2026-07-12 | site-coordinator | AGENTS.md driver-report proposal | tools/out/agents-driver-report/README.md | - | completed
+2026-07-12 | site-coordinator | AGENTS.md driver-report proposal | tools/out/agents-driver-report/README.md | - | completed2026-07-12 | site-coordinator | seed round-3 tasks T-6..T-9 | tools/todo.md | - | success
+2026-07-12 | site-coordinator | seed round-3 tasks T-6..T-9 | tools/todo.md | - | success
