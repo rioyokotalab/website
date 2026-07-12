@@ -1,14 +1,15 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-81.
+`tools/state/session.md`. Next free id: T-82.
 
 ## Active
 
-### T-80 — replace obsolete member-table column sizing
-Replace the final mirrored `<col width>` presentational attributes with a
-shared semantic class, preserving the exact EN/JP biography-table geometry at
-mobile/desktop and keeping print and narrow local-scroll behavior unchanged.
+### T-81 — audit reduced-motion behavior
+Exercise scrolling, navigation, consent, and all gallery overlay transitions
+with `prefers-reduced-motion: reduce`; suppress nonessential motion still
+delivered by local or pinned third-party styles while retaining clear state
+changes and adding a permanent browser contract.
 
 ## Blocked / awaiting user
 
@@ -34,7 +35,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-79 removed 67 lines tied exclusively to nine absent legacy classes and one absent wrapper ID, added a repeatable source-reference gate for all 58 remaining classes and 13 IDs, and matched 60 baseline/working computed renders exactly across screen, dark, print, and forced-color states (pending commit).
+- 2026-07-13 T-80 replaced the final two mirrored `<col width="72">` attributes with one shared class, expanded the legacy-attribute gate to `<col>`, and matched all EN/JP column/row/cell geometry exactly at 320/390/1200px and print (pending commit).
+- 2026-07-13 T-79 removed 67 lines tied exclusively to nine absent legacy classes and one absent wrapper ID, added a repeatable source-reference gate for all 58 remaining classes and 13 IDs, and matched 60 baseline/working computed renders exactly across screen, dark, print, and forced-color states (`4d40725`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-78 verified every public route at 320/1200px plus the root entry without JavaScript, kept content/navigation/images/gallery originals/contact metadata usable, hid the inert mobile hamburger only when JavaScript fails, and added two permanent regression tests; all 12 browser tests pass (`157b872`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-77 added tolerant rendered-layout contracts for 14 EN/JP representative routes at 320/390/900/901/1200px, plus runtime responsive-image density and local keyboard table scrolling checks; all four layout tests pass (`d5b424c`).
 - 2026-07-13 T-76 added conventional npm test/test:browser/install commands with reviewed compatibility aliases, enforced the script surface, added EN/JP 900/901px menu and six-family print contracts, and passed all 8 browser plus fast security tests (`175d0b0`).

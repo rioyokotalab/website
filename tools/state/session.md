@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T03:24+0900
-task: T-80 replace obsolete member-table column sizing
+updated: 2026-07-13T03:27+0900
+task: T-81 audit reduced-motion behavior
 status: in-progress
 
 ## Now
-- Goal: replace the final mirrored obsolete `<col width>` attributes without moving or resizing the member biography tables.
-- Last done: T-79 removed rules whose nine class tokens and one ID token were absent from every public HTML/runtime script, added a gate over all remaining selectors, and matched baseline/working geometry plus 27 computed properties exactly in 60 route/state pairs spanning desktop/mobile, light/dark, print, and forced colors.
-- Next: capture both member-table column geometries at 320/390/1200px and print; replace the two `width="72"` attributes with one shared class rule, enforce the migration, and compare exact rendered columns before/after.
+- Goal: ensure reduced-motion preference suppresses every nonessential local and gallery transition while preserving immediate, understandable state changes.
+- Last done: T-80 replaced the two mirrored obsolete member `<col width="72">` attributes with `.member-table-column`, expanded the standards gate to reject width/alignment on `<col>`, and matched all column/row/cell geometry exactly in eight EN/JP screen/print pairs.
+- Next: inventory computed transition/animation/scroll behavior across representative pages, open menu/consent/Lightbox states under normal and reduced preferences, then add only scoped overrides for confirmed residual motion and a browser regression contract.
 
 ## Working set
-- `en/member/index.html`, `jp/member/index.html`, `style.css`, standards checks; mirrored member biography columns at screen/print responsive states; cache/ledger bookkeeping.
+- `style.css`, `js/pagetop.js`, pinned Lightbox runtime states, responsive menu and consent components, Playwright motion tests, cache/ledger bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

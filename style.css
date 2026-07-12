@@ -437,6 +437,7 @@ table :is(td, th).line {
 .width-92pct { width: 92%; }
 .width-98pct { width: 98%; }
 .width-100pct { width: 100%; }
+.member-table-column { width: 72px; }
 /*************
 /* Main content
 *************/

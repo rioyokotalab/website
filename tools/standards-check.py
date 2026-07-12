@@ -243,7 +243,7 @@ def main() -> int:
     for path in pages:
         text = path.read_text(encoding="utf-8")
         table_width_classes += len(re.findall(r'\bwidth-\d+pct\b', text))
-        if re.search(r'<(?:table|td|th)\b[^>]*\s(?:width|align)=', text, flags=re.I):
+        if re.search(r'<(?:table|col|td|th)\b[^>]*\s(?:width|align)=', text, flags=re.I):
             fail(findings, path, "legacy table width or alignment attribute")
         if re.search(r'<meta\s+name="keywords"\s+content=""|\stype="text/(?:javascript|css)"', text, flags=re.I):
             fail(findings, path, "empty keywords or redundant MIME type")
@@ -435,6 +435,8 @@ def main() -> int:
         findings.append("stylesheet cache versions differ across pages")
     if any(len(metadata_titles[language]) != 13 or len(metadata_descriptions[language]) != 13 for language in ("en", "ja")):
         findings.append("bilingual page titles and descriptions must be unique")
+    if sum(path.read_text(encoding="utf-8").count('class="member-table-column"') for path in pages) != 2 or style_text.count(".member-table-column { width: 72px; }") != 1:
+        findings.append("mirrored member-table column sizing mismatch")
     if remaining_named_anchors:
         findings.append(f"legacy named anchors remain: {remaining_named_anchors}")
     if table_width_classes != 91:
