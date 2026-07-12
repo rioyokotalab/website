@@ -1,14 +1,34 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-49.
+`tools/state/session.md`. Next free id: T-54.
 
 ## Active
 
-### T-48 — remove remaining inline presentation styles
-Migrate repeated inline style blocks and `style` attributes to narrowly scoped
-shared classes, preserve representative computed styles, then remove
-`'unsafe-inline'` from the CSP style policy after report-only and browser gates.
+### T-49 — reserve dimensions for all content images
+Populate missing width and height attributes from verified local image headers
+for every lazy content image. Preserve responsive computed sizes and permanently
+reject dimensionless images to reduce layout shifts during loading.
+
+### T-50 — prioritize the above-the-fold hero image
+Add `fetchpriority="high"` to the single hero banner on each bilingual page,
+while keeping logos normally eager and all content images lazy. Verify request
+priority/geometry and enforce exactly one high-priority image per page.
+
+### T-51 — modernize legacy named section anchors
+Replace empty `<a name>` targets with IDs on their semantic headings or stable
+adjacent targets in small page-family batches. Preserve every public fragment,
+visual position, and EN/JP parity while removing obsolete anchor markup.
+
+### T-52 — add crawler discovery files
+Generate a minimal `robots.txt` and XML sitemap from the exact canonical page
+inventory, include them in the positive deployment allowlist, and add parity,
+URL, and exclusion regression checks without exposing repository-only paths.
+
+### T-53 — complete locale-aware social metadata
+Add exact Open Graph locale and alternate-locale metadata to mirrored EN/JP
+pages, align canonical Open Graph URLs, and verify the generated head metadata
+without changing visible content.
 
 ## Blocked / awaiting user
 
@@ -34,6 +54,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-48 migrated five style blocks, eleven style attributes, and runtime style mutations into shared classes; exact computed parity passed, a strict policy produced zero report-only violations across consent/menu/scroll/gallery/map tests, and CSP now enforces without style `unsafe-inline` (`4fa5652`, `c8bccd3`, `4650272`).
 - 2026-07-13 T-47 paired all 155 lazy content images with asynchronous decoding, permanently enforced the relationship, and passed browser decode/load checks across news, portraits, research, galleries, and computer imagery (`579a41d`).
 - 2026-07-13 T-46 added verified intrinsic 450x65 EN and 436x65 JP dimensions to all 26 header logos, enforced them, and preserved desktop/mobile geometry within 0.0625px (`d0a7d99`).
 - 2026-07-13 T-45 added localized accessible map titles, moved embed presentation into shared CSS, permanently enforced the contract, and preserved exact desktop/mobile dimensions (`d8c111a`).

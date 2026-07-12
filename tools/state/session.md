@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-48 remove remaining inline presentation styles
+task: T-49 reserve dimensions for all content images
 status: in-progress
 
 ## Now
-- Goal: migrate the remaining five inline style blocks and eleven style attributes to scoped shared classes with computed-style parity, then safely remove style `'unsafe-inline'` through a report-only gate.
-- Last done: T-48 runtime-class/report-only checkpoint was published as `c8bccd3`. Live dual headers are exact, and the strict policy produced zero violations across EN/JP loads, consent accept/reject/settings, mobile menu, scroll/back-to-top, Lightbox, and map behavior. The strict policy is now prepared for enforcement with permanent source checks rejecting unsafe-inline/report-only fallback.
-- Next: run the full suite, rebase, inspect the `.htaccess`-only dry-run, enforce the strict style CSP, then repeat live header and representative interaction checks before closing T-48.
+- Goal: eliminate missing intrinsic dimensions from all content images using verified local image headers while preserving responsive rendering.
+- Last done: T-49 resolved 104 incomplete occurrences (60 unique local assets) through verified file headers, stores exact natural dimensions, and preserves former 220px/638px/70%/95%/98% presentation through five shared classes. Permanent checks reject invalid dimensions and malformed class placement. Full suite passes; four representative image families match live loaded geometry within 1px at desktop/mobile, and an aborted-image test proves space is reserved before load.
+- Next: rebase, inspect the CSS/cache/content deployment preview, publish T-49, verify representative live dimensions and strict CSP, then close T-49 and start T-50.
 
 ## Working set
-- EN/JP home/research/news markup, shared CSS/cache bump, inline-style standards enforcement, computed-style/geometry browser comparisons, then `.htaccess` report-only/enforcement gates.
+- Dimensionless content-image occurrences across EN/JP computers/research/picture and other pages, local image headers, exact standards enforcement, representative geometry/gallery checks, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

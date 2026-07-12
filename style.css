@@ -60,6 +60,11 @@ img {
 	max-width: 100%;
 	height: auto;
 }
+.content-width-220 { width: 220px; }
+.content-width-638 { width: 638px; }
+.content-width-70 { width: 70%; }
+.content-width-95 { width: 95%; }
+.content-width-98 { width: 98%; }
 /* -------------------------------------------------------------- */
 
 :root {

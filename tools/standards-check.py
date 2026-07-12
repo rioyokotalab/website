@@ -122,6 +122,8 @@ def main() -> int:
     style_versions: set[str] = set()
     for path in pages:
         text = path.read_text(encoding="utf-8")
+        if re.search(r'/\s+class="content-width-', text):
+            fail(findings, path, "class placed after self-closing slash")
         document = Document()
         document.feed(text)
         expected_lang = "en" if path.relative_to(ROOT).parts[0] == "en" else "ja"
@@ -175,6 +177,8 @@ def main() -> int:
             fail(findings, path, "accessible back-to-top link mismatch")
         if document.images_without_alt:
             fail(findings, path, "image without alt")
+        if any(not image.get("width", "").isdigit() or not image.get("height", "").isdigit() or int(image["width"]) < 1 or int(image["height"]) < 1 for image in document.image_attrs):
+            fail(findings, path, "image missing valid intrinsic dimensions")
         if document.lazy_images_without_async:
             fail(findings, path, "lazy image missing asynchronous decode hint")
         expected_logo = "logoE.png" if expected_lang == "en" else "logo.png"
