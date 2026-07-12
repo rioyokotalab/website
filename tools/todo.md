@@ -22,12 +22,13 @@ before replacing the current work-solo rule.
 ## Blocked / awaiting user
 
 ### T-22 — audit website/CV/researchmap/ORCID field mirroring
-Audit and safe local fixes are complete; review
-`tools/out/t22-field-reconciliation.md`, the 29-line
-`tools/out/researchmap-import.jsonl`, and the nine-work
-`tools/out/orcid-works-selection.bib`. Owner decisions remain for manual
-external imports, the authoritative postal code, and whether the Keio RA role
-should be website-visible. Never automate either account login.
+Audit and safe local fixes are complete: postal code 152-8550 is consistent,
+the Keio RA role is removed everywhere, and the CV PDF is rebuilt. Automatic
+external writes are unavailable without adding a credential-bearing researchmap
+WebAPI client; ORCID is manual-only. Owner uploads remain for the approved
+29-line `tools/out/researchmap-import.jsonl` and nine-work
+`tools/out/orcid-works-selection.bib`; the owner or Claude site-publisher must
+deploy the pushed CV/profile changes. Never automate either account login.
 
 ### T-18 — confirm GA Admin privacy settings
 In the GA4 property, set event-data retention to 2 months and confirm Google
