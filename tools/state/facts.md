@@ -8,6 +8,8 @@ Update in place when reality changes; date entries. No procedures here
   `js/analytics-consent.js` blocks all Google tag requests until acceptance,
   persists/reopens bilingual choices locally, and keeps advertising consent
   denied; commit `5199bbd`.
+- 2026-07-12 owner confirmed GA4 event-data retention is 2 months and Google
+  Signals/advertising features remain disabled.
 - 2026-07-12 parity audit found en=19 vs jp=114 files and 0 broken local
   links across 16 core index pages; HTML page paths mirror, while JP-only
   files are shared image assets.

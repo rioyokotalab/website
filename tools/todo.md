@@ -7,13 +7,9 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Blocked / awaiting user
 
-### T-18 — confirm GA Admin privacy settings
-In the GA4 property, set event-data retention to 2 months and confirm Google
-Signals/advertising features remain disabled. This is owner-account work; never
-request or automate credentials. Record only the confirmed settings afterward.
-
 ## Recently completed
 
+- 2026-07-12 T-18 owner confirmed GA4 event-data retention is 2 months and Google Signals/advertising features remain disabled; no credentials or account details were stored.
 - 2026-07-12 T-21 enabled bounded native Codex delegation with minimal context forks, strict authority boundaries, output-first handoff, root review, and proportional verification; a zero-fork benchmark matched the root baseline and exposed one documentation omission that was fixed.
 - 2026-07-12 T-20 replaced account-specific Claude preview hooks with a project-root-aware helper and verified simultaneous clone isolation, stale-PID ownership protection, and default port compatibility.
 - 2026-07-12 T-22 audited website/CV/researchmap/ORCID fields, corrected the NII title and exporter parsing, standardized postal code 152-8550, removed the Keio RA role, rebuilt the CV, and completed the owner-reviewed researchmap and ORCID imports; transient outputs were removed.
