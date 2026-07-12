@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:16+0900
-task: T-71 audit oversized image delivery
+updated: 2026-07-13T04:36+0900
+task: T-72 audit mobile touch targets
 status: in-progress
 
 ## Now
-- Goal: identify material image transfer waste relative to rendered dimensions and choose only lossless or visually verified reductions that retain every original and preserve appearance.
-- Last done: T-70 confirmed forced colors preserved content/consent/tables but erased current-page distinction and exposed a 22px dot-like menu icon; added normal/forced current state, forced focus, and a 42x42 three-bar button, then passed forced screenshots and EN/JP 320/390/900/901 operation.
-- Next: collect encoded bytes, intrinsic dimensions, MIME, alpha/animation metadata, and maximum rendered sizes for all images across 390/1200px pages; rank byte/pixel oversupply and distinguish shared hero/gallery/content assets before proposing edits.
+- Goal: make standalone mobile controls comfortably operable while respecting WCAG inline-text exceptions and preserving content density and desktop geometry.
+- Last done: T-71 isolated seven gallery originals totaling 39.66MiB, retained them for Lightbox, added 720/1200px display variants totaling 0.92/2.21MiB, preserved ICC profiles, visually inspected difficult pairs, enforced dimensions/450KiB budgets, and verified EN/JP 1x/2x/3x source selection plus original zoom.
+- Next: render every page at 320/390px, inventory visible anchor/button bounding boxes and center-to-center spacing by structural context, exclude inline prose links, and rank standalone targets below 24/44px before any CSS change.
 
 ## Working set
-- All public raster assets plus rendered usage at 390/1200px; file type/dimensions/bytes/alpha and duplicate hashes; candidate optimization report or verified variants; ledger/bookkeeping.
+- All 26 pages at 320/390px with mobile menus open and consent states; target geometry/context/spacing; any tightly scoped mobile CSS/cache bump/checker; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

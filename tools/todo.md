@@ -1,15 +1,29 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-72.
+`tools/state/session.md`. Next free id: T-76.
 
 ## Active
 
-### T-71 — audit oversized image delivery
-Inventory intrinsic versus rendered image dimensions and encoded sizes across
-representative desktop/mobile pages, identify only material transfer waste, and
-propose or generate visually lossless variants without replacing originals
-until rendered parity and deployment impact are verified.
+### T-72 — audit mobile touch targets
+Measure every visible interactive target and spacing at 320/390px, distinguish
+inline-text exceptions from standalone controls, and enlarge only undersized
+navigation or control targets without reflowing content links or desktop layout.
+
+### T-73 — verify high-zoom reflow
+Exercise representative EN/JP pages at browser-equivalent 200% and 400% zoom,
+including open menus, consent, tables, maps, and galleries; fix only content
+loss, overlap, or two-dimensional page scrolling while retaining normal layout.
+
+### T-74 — modernize print presentation
+Audit print previews for navigation clutter, fixed controls, consent UI, clipped
+tables, and hidden destinations; add a small print-only layer that prioritizes
+page content and useful link context without affecting screen presentation.
+
+### T-75 — audit gallery dialog accessibility
+Verify Lightbox focus entry, labeling, next/previous/close controls, keyboard
+operation, focus containment, escape behavior, and focus return in EN/JP; add
+local compatibility fixes only where the pinned library leaves a real gap.
 
 ## Blocked / awaiting user
 
@@ -35,7 +49,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-70 added distinct normal/forced-color current-page navigation, forced-color focus overrides, expanded the collapsed 22px dot-like menu control to a 42px three-bar target, and passed EN/JP 320/390/900/901px operation checks (pending commit).
+- 2026-07-13 T-71 kept seven 39.66MiB gallery originals as zoom targets, added visually inspected 720/1200px display variants (0.92/2.21MiB; 97.7%/94.4% reductions), enforced dimensions/byte budgets/source selection, and verified 1x/2x/3x EN/JP Lightbox behavior (pending commit).
+- 2026-07-13 T-70 added distinct normal/forced-color current-page navigation, forced-color focus overrides, expanded the collapsed 22px dot-like menu control to a 42px three-bar target, and passed EN/JP 320/390/900/901px operation checks (`8c9748d`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-69 found all 183 visible main-content text links relied on a 1.43:1 color difference, added a thin content-only underline in light/dark modes, kept all site chrome unchanged, and preserved exact geometry (`d7e1d21`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-68 added 312 scoped row headers and 8 scoped column headers to genuine data tables, removed table semantics from 8 layout tables, enforced exact classification, matched accessibility-tree roles, and preserved exact computed geometry/styles (`5dccd09`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-67 corrected four route-mismatched titles, made all 26 bilingual titles/descriptions unique and page-local, mirrored them into Open Graph metadata, enforced structure/length/uniqueness, and preserved exact mobile/desktop geometry (`e79ab88`; live publish reserved for user/Claude site-publisher).
@@ -52,7 +67,3 @@ recloned or carefully reset to rewritten main.
 - 2026-07-13 T-56 migrated all 588 raw valign=top attributes across home/profile/News, enforced zero legacy and rendered counts, and preserved representative alignment/cell/row geometry within 1px across families/viewports (`ad217cb`).
 - 2026-07-13 T-55 migrated all 152 News nowrap attributes to a shared class, enforced zero legacy usage/exact EN/JP counts, and preserved representative cell/row geometry within 1px at desktop/mobile (`b59384a`).
 - 2026-07-13 T-54 unified responsive JS/CSS at a non-overlapping mobile ≤900px/desktop ≥901px boundary, fixed the inert 801–900px hamburger, cache-busted assets, and passed EN/JP boundary/live checks (`4676d13`).
-- 2026-07-13 T-53 aligned all 27 Open Graph URLs to clean canonicals, added reciprocal en_US/ja_JP locale metadata, enforced exact head values, and preserved representative layout (`1a8cd47`).
-- 2026-07-13 T-52 added minimal robots and a generated 27-URL bilingual sitemap with three alternates per URL, integrated both into positive deployment/security checks, excluded repo-only paths, and verified every live destination (`d3ad764`).
-- 2026-07-13 T-51 replaced 100 heading anchors and 200 News event anchors with semantic/same-position IDs, collision-safely preserved all historical aliases, eliminated legacy `name` markup, and matched representative fragment positions exactly at desktop/mobile (`8aa8582`, `02d5a3f`, `91a70fc`).
-- 2026-07-13 T-50 added exactly one high fetch priority to each page's hero banner, enforced the classification, and preserved EN/JP home/subpage geometry within 1px at desktop/mobile (`c413ba6`).

@@ -169,6 +169,31 @@ def fail(findings: list[str], path: Path, message: str) -> None:
     findings.append(f"{path.relative_to(ROOT)}: {message}")
 
 
+def jpeg_dimensions(path: Path) -> tuple[int, int] | None:
+    data = path.read_bytes()
+    if not data.startswith(b"\xff\xd8"):
+        return None
+    offset = 2
+    sof_markers = {0xC0, 0xC1, 0xC2, 0xC3, 0xC5, 0xC6, 0xC7, 0xC9, 0xCA, 0xCB, 0xCD, 0xCE, 0xCF}
+    while offset + 4 <= len(data):
+        if data[offset] != 0xFF:
+            offset += 1
+            continue
+        marker = data[offset + 1]
+        offset += 2
+        if marker in (0xD8, 0xD9) or 0xD0 <= marker <= 0xD7:
+            continue
+        length = int.from_bytes(data[offset:offset + 2], "big")
+        if length < 2 or offset + length > len(data):
+            return None
+        if marker in sof_markers and length >= 7:
+            height = int.from_bytes(data[offset + 3:offset + 5], "big")
+            width = int.from_bytes(data[offset + 5:offset + 7], "big")
+            return width, height
+        offset += length
+    return None
+
+
 def main() -> int:
     findings: list[str] = []
     style_text = (ROOT / "style.css").read_text(encoding="utf-8")
@@ -333,6 +358,16 @@ def main() -> int:
             fail(findings, path, "image without alt")
         if any(not image.get("width", "").isdigit() or not image.get("height", "").isdigit() or int(image["width"]) < 1 or int(image["height"]) < 1 for image in document.image_attrs):
             fail(findings, path, "image missing valid intrinsic dimensions")
+        responsive_images = [image for image in document.image_attrs if image.get("srcset")]
+        expected_responsive = 7 if relative == "picture/index.html" else 0
+        responsive_pattern = re.compile(r"^(.*)/(2026-4|2026-3|2025-10|2025-9|2025-9-2|2025-4|2024-12)\.jpg$")
+        if len(responsive_images) != expected_responsive:
+            fail(findings, path, "responsive gallery image count mismatch")
+        for image in responsive_images:
+            match = responsive_pattern.match(image.get("src", ""))
+            expected_srcset = f"{match.group(1)}/{match.group(2)}-720.jpg 720w, {match.group(1)}/{match.group(2)}-1200.jpg 1200w" if match else ""
+            if image.get("srcset") != expected_srcset or image.get("sizes") != "(max-width: 900px) calc(100vw - 32px), 589px":
+                fail(findings, path, "responsive gallery source mismatch")
         if document.lazy_images_without_async:
             fail(findings, path, "lazy image missing asynchronous decode hint")
         expected_logo = "logoE.png" if expected_lang == "en" else "logo.png"
@@ -399,6 +434,17 @@ def main() -> int:
         findings.append(f"table width class count mismatch: {table_width_classes}")
     if lightbox_counts != {"en": 63, "ja": 80}:
         findings.append(f"Lightbox link counts mismatch: {lightbox_counts}")
+    variant_names = {f"{name}-{width}.jpg" for name in ("2026-4", "2026-3", "2025-10", "2025-9", "2025-9-2", "2025-4", "2024-12") for width in (720, 1200)}
+    variant_dir = ROOT / "jp/picture/images"
+    actual_variants = {path.name for path in variant_dir.glob("*-*.jpg") if re.search(r"-(?:720|1200)\.jpg$", path.name)}
+    if actual_variants != variant_names:
+        findings.append("responsive gallery variant inventory mismatch")
+    for name in sorted(variant_names):
+        path = variant_dir / name
+        width = 720 if name.endswith("-720.jpg") else 1200
+        expected_dimensions = (width, width * 3 // 4)
+        if not path.is_file() or jpeg_dimensions(path) != expected_dimensions or path.stat().st_size > 450 * 1024:
+            fail(findings, path, "responsive gallery variant dimensions or byte budget mismatch")
     for script in sorted((ROOT / "js").glob("*.js")):
         source = script.read_text(encoding="utf-8")
         if re.search(r"\.style\b|setAttribute\s*\(\s*['\"]style['\"]", source):
