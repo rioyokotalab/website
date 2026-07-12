@@ -23,3 +23,18 @@ Round-1 branch tips are preserved as `eval/r1-sol`, `eval/r1-terra`,
 Timing caveat: commit spans included idle/review/bookkeeping time and contestant
 runs started sequentially. Metric sums were self-reported and sometimes
 estimated or overlapping; session values are endpoint timestamps, not durations.
+
+```text
+2026-07-12 | Round 2 | judge gpt-5.6-sol (also sol contestant; evidence-cited review)
+Board: T-10..T-13 + proposal-quality bonus; 110-point total
+Scores: sol 110, opus 104, fable 102, terra 96
+Ranking: sol > opus > fable > terra; winner sol b8a2b6d
+Owner times: sol 40m30s; terra 40m48s raw / ~30m48s if stall included; fable 33m03s; opus 32m11s
+Terra's ~10m approval stall credited; inclusion in raw time remains ambiguous; no wait-log penalty
+External-file alert resolved as owner/runtime effects; no contestant penalty
+All four: judge=0, hand-edit-only=0, deploy=0; GA core coverage identical
+Nobody committed gitignored tools/out deliverables; shared protocol gap, no differential penalty
+Decisive: Sol's exact validated T-11 overlay plus best GA/T-13 quality beat Opus's broader apply script
+T11 owner base: sol, optionally borrowing Opus's structural Codex rollback/update pattern
+```
+
