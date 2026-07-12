@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:48+0900
-task: T-73 verify high-zoom reflow
+updated: 2026-07-13T05:00+0900
+task: T-74 modernize print presentation
 status: in-progress
 
 ## Now
-- Goal: preserve content and operation at browser-equivalent 200%/400% zoom without two-dimensional page scrolling, clipping, or fixed-overlay obstruction.
-- Last done: T-72 measured 1,920 visible targets at 320/390px; all 946 sub-24px text links passed the 24px center-spacing exception, open mobile nav items were 55.5px, consent buttons 48px, settings 35px, and hamburger 42px, so no density-changing CSS was justified.
-- Next: emulate 200% (640px effective) and 400% (320px effective) reflow across representative EN/JP long/short/table/map/gallery pages, inspect document overflow and fixed overlays with menus/consent open, and isolate true clipping from intentional table scroll regions.
+- Goal: make printed/PDF pages content-first and legible by removing interactive chrome and fixed overlays while retaining useful content, tables, maps, and link destinations.
+- Last done: T-73 verified all 26 pages have zero page-level horizontal overflow at 640/320px, consent and open menus fit EN/JP, maps fit, table overflow remains keyboard-local, and Lightbox image/close controls fit after its documented transition; no reflow CSS was needed.
+- Next: emulate print media on representative home/news/research/contact/profile/gallery pages, inventory visible navigation/fixed overlays/clipping/page widths and link destination behavior, then add the smallest print-only stylesheet rules supported by the audit.
 
 ## Working set
-- Representative page families at 640/320px effective widths with menu/consent/table/gallery states; overflow/occlusion geometry and screenshots; any scoped reflow CSS/cache bump/checker; ledger/bookkeeping.
+- Representative EN/JP print rendering at A4-like viewport; visible regions, fixed controls, table/image/map widths and link annotations; print-only CSS/cache bump/checker; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
