@@ -48,9 +48,14 @@ checkpoints it). Drivers: own session.md.
    stay proposal-only (skills/config-proposals.md); Claude-side hooks do
    not bind you, so self-enforce. `git pull --rebase` before any push.
 5. Session-end bookkeeping (commits silently with other work): update
-   session.md + todo.md; append tools/task-metrics.jsonl
-   {"agent":"codex","tier":"driver-codex",...} and a codex-driver line to
-   tools/codex-log.md.
+   session.md + todo.md; write the driver session report to
+   tools/out/driver-report-<YYYYMMDD-HHMM>.md per skills/context-ledger.md
+   "Driver session report" (model/effort used, per-task outcomes +
+   verification, escalations and network fetches, self-noted gaps); append
+   ONE tools/task-metrics.jsonl line PER task attempted
+   {"agent":"codex","tier":"driver-codex","model":"<model>",...} and a
+   codex-log.md line `date | codex-driver (<model>) | tasks | report path
+   | n/a | outcome`.
 
 ## Skills (canonical playbooks — read before the matching work)
 The repo-root `skills/` folder is the single source for recurring

@@ -34,7 +34,7 @@ Logging (last actions of every delegated task):
   `date | calling agent | task | output file | conversationId | outcome`.
 - The orchestrator appends one line to `tools/task-metrics.jsonl`:
   `{"date","task_type","agent","tier","duration_ms","success","note"}` with
-  `tier` = worker name (drivers: driver-claude|driver-codex). Fixed task_type enum: mechanical-edit, content-draft,
+  `tier` = worker name (drivers: driver-claude|driver-codex; driver lines may add a "model" key). Fixed task_type enum: mechanical-edit, content-draft,
   translation, metadata-lookup, verify-parity, git-summary, deploy-publish,
   exporter-logic, diagnosis, figure-production, config-edit, other.
 

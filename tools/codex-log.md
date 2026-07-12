@@ -347,3 +347,7 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | site-coordinator | seed driver-test tasks T-2..T-5 | tools/todo.md | - | success
 2026-07-12 | codex-driver | resume ledger tasks T-2..T-5 | tools/out/doi-spotcheck.md | n/a | T-2/T-4/T-5 complete; T-3 edit verified, awaiting user dry-run
 2026-07-12 | site-coordinator | CLAUDE.md parity-wording proposal | tools/out/claude-parity-wording/README.md | - | completed
+2026-07-12 | site-coordinator | driver-report telemetry: skill edits | skills/context-ledger.md | - | pass
+2026-07-12 | site-coordinator | AGENTS.md driver-report proposal | tools/out/agents-driver-report/README.md | - | updated AGENTS.md.new with exact block replacement
+ | AGENTS.md block replacement complete. DRIVER_REPORT_MATCH=02026-07-12 | site-coordinator | AGENTS.md driver-report proposal | tools/out/agents-driver-report/README.md | - | completed; MATCH_COUNT=1 DRIVER_REPORT_MATCH=1 BYTES=8423
+2026-07-12 | site-coordinator | AGENTS.md driver-report proposal | tools/out/agents-driver-report/README.md | - | completed

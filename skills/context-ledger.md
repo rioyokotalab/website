@@ -83,3 +83,22 @@ persistence.
   frequent checkpoints; assume death at any step.
 - Driver bookkeeping in tools/task-metrics.jsonl uses agent claude|codex
   and tier driver-claude|driver-codex; workers keep tier = worker name.
+
+## Driver session report (reviewer telemetry)
+Every codex driver session ends by writing
+tools/out/driver-report-<YYYYMMDD-HHMM>.md (transient; the reviewer
+deletes it after grading) containing:
+- model + reasoning effort actually used; session start/end times.
+- Per task attempted: id, outcome (done | blocked | awaiting-user |
+  failed), files touched, verification commands run and their results.
+- Escalations: every sandbox/approval escalation requested (and whether
+  the user approved), every network fetch (URLs), every rule the session
+  could not follow and why.
+- Self-noted gaps: anything a reviewer should double-check.
+Metrics: one line PER task attempted, tier driver-codex, plus an optional
+"model" key (allowed only on driver-* lines). codex-log line format for
+drivers: `date | codex-driver (<model>) | tasks | report path | n/a |
+outcome`. The Claude review pass grades the report against git diff (not
+against session.md claims), records the verdict as a metrics line
+(task_type "other", note "driver-review: ..."), then deletes the report
+scratch.
