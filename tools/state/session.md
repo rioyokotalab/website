@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:42+0900
-task: T-102 enforce names for every rendered data table
+updated: 2026-07-13T04:44+0900
+task: T-103 enforce rendered landmark structure
 status: in-progress
 
 ## Now
-- Goal: verify and permanently enforce that every rendered data table across all 26 routes has a useful accessible name.
-- Last done: T-101 associated both student data tables with localized `sub002` headings, retained six faculty/secretary/alumni tables as presentational, and passed exact static, five layout/name browser, fast, and staging checks.
-- Next: enumerate every browser-exposed table/name by route, confirm expected home/hardware/student/year/seminar inventory, reject empty/duplicate names within a route, and preserve presentation-table exclusion.
+- Goal: verify browser parsing preserves one localized, navigable landmark structure on every route.
+- Last done: T-102 audited all 26 accessibility trees and permanently enforces the exact route inventory, nonempty route-unique names for all 30 rendered data tables, and presentation-table exclusion.
+- Next: enumerate banner/main/contentinfo/navigation landmarks in the rendered tree, assert exact localized primary/secondary navigation names and one of each structural landmark, then retain the route-wide contract.
 
 ## Working set
-- All routes' browser-exposed tables, accessible names, presentation-table exclusion, permanent regression coverage.
+- All routes' rendered landmarks, localized navigation names, browser parsing, permanent accessibility coverage.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
