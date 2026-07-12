@@ -360,3 +360,11 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | coordinator | pre-round-2 permission consolidation into committed settings.json + scaffold rebuild | tools/out/t11-settings-fix.md | session-this | pass
 2026-07-12 | codex-driver (coordinator) | round-2 T-11 external-scope extension + scaffold rebuild | tools/todo.md, tools/out/r2-t11-external.md | this-session | done
 2026-07-12 | agent coordinator | round-2 T-11 codex-config-toml note + scaffold rebuild | tools/todo.md, tools/out/r2-t11-codextoml.md | <this session> | 
+2026-07-12 | coordinator (codex) | mid-run contestant peek (read-only) | tools/out/contestant-peek.md | <this session> | outcome
+2026-07-12 | coordinator | 2nd mid-run contestant peek (read-only) | tools/out/contestant-peek2.md | this-session | PASS
+2026-07-12 | codex-driver () | 3rd contestant peek | /home/rioyokota/website/tools/out/contestant-peek3.md | conversation-unknown | PASS
+2026-07-12 | coordinator | 3rd contestant peek | /home/rioyokota/website/tools/out/contestant-peek3.md | n/a | PASS
+2026-07-12 | codex-driver | 4th contestant peek | /home/rioyokota/website/tools/out/contestant-peek4.md | n/a | pass
+2026-07-12 | coordinator | 5th contestant peek | tools/out/contestant-peek5.md | n/a | PASS
+2026-07-12 | coordinator | 6th contestant peek | tools/out/contestant-peek6.md | n/a | pass
+2026-07-12 | coordinator | record terra approval-wait timing credit | tools/judge/todo.md | <this session> | pass
