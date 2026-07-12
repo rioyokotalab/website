@@ -496,19 +496,10 @@ section.content > h3.heading:first-child, section.content h3.heading:first-of-ty
 	margin: 0 0 0.6em;
 	font-size: 17px;
 }
-img.frame, #gallery img {
+img.frame {
 	border: 0;
 	border-radius: 6px;
 	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
-}
-#gallery .gridWrapper {
-	padding: 0;
-}
-#gallery img {
-	margin: 5px;
-}
-section#gallery {
-	overflow: visible;
 }
 .location-map {
 	width: 80%;
@@ -700,10 +691,6 @@ table.table tr:nth-child(even) td {
 .col4 {
 	width: 100%;
 }
-#gallery .grid {
-	width: 23%;
-	margin-right: 2%;
-}
 h1 {
 	padding: 10px 0 0 3px;
 }
@@ -756,7 +743,7 @@ h1 {
 .grid p {
 	text-align: left;
 }
-img.frame, #gallery img {
+img.frame {
 	border-width: 0;
 }
 #footer .grid p {

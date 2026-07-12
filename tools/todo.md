@@ -1,14 +1,14 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-97.
+`tools/state/session.md`. Next free id: T-99.
 
 ## Active
 
-### T-97 — retire empty gallery hooks and dead CSS
-Confirm the mirrored empty `#gallery` sections have no runtime, navigation, or
-layout consumers; remove the hooks and their exclusive selectors together,
-preserve live image-frame styling, and compare screen/print geometry.
+### T-98 — name home-news data tables
+Give the two visible home-news tables concise localized native captions that are
+available to assistive technology but visually hidden; preserve table geometry,
+row headings, wording, and EN/JP presentation.
 
 ## Blocked / awaiting user
 
@@ -34,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-97 proved the mirrored empty `#gallery` hooks had no runtime/navigation consumers, removed both hooks and five dead selector families while preserving live frame rules, synchronized root/route cache versions, and passed CSS-source, six layout/no-JS, fast, and staging checks (pending commit).
 - 2026-07-13 T-96 classified seven empty semantic containers, retained three spacing paragraphs and two CSS-referenced gallery hooks, removed only two zero-purpose Japanese profile articles, and passed exact static, five layout/runtime, fast, and staging checks (pending commit).
 - 2026-07-13 T-95 removed 20 empty legacy `tbody` artifacts from the EN/JP news archives while retaining all three nonempty explicit sections and every row, and passed source/rendered-DOM, five layout/browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-94 added valid ISO/native time semantics to 96 English and 100 Japanese single-day archive dates, preserved four legacy styled separators and all four visible multi-day ranges, and passed exact static, five layout/browser, fast, and staging checks (pending commit).

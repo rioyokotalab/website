@@ -214,6 +214,7 @@ def main() -> int:
     if style_text.count("--oral-highlight: #cc0000;") != 1 or style_text.count("--oral-highlight: #ff6b6b;") != 1 or "color: var(--oral-highlight);" not in style_text:
         findings.append("light/dark oral-highlight palette mismatch")
     root_text = (ROOT / "index.html").read_text(encoding="utf-8")
+    root_style_versions = set(re.findall(r"style\.css\?v=([^\"']+)", root_text))
     root_requirements = (
         '<meta charset="UTF-8">',
         '<meta name="viewport"',
@@ -349,6 +350,8 @@ def main() -> int:
             fail(findings, path, "empty table section")
         if re.search(r'<article\b[^>]*>\s*</article>', text, flags=re.I):
             fail(findings, path, "empty article element")
+        if re.search(r'<section\b[^>]*>\s*</section>', text, flags=re.I):
+            fail(findings, path, "empty section element")
         visible_text = re.sub(r'<!--.*?-->', '', text, flags=re.S)
         date_pairs = re.findall(r'<time datetime="(\d{4}-\d{2}-\d{2})">(\d{4}\.\d{2}\.\d{2})</time>', visible_text)
         if relative == "index.html":
@@ -496,7 +499,7 @@ def main() -> int:
         for asset in ("pagetop.js?v=20260713", "responsive-menu.js?v=20260713c"):
             if text.count(asset) != 1:
                 fail(findings, path, f"versioned {asset.split('?')[0]} mismatch")
-    if len(style_versions) != 1:
+    if len(style_versions) != 1 or root_style_versions != style_versions:
         findings.append("stylesheet cache versions differ across pages")
     if any(len(metadata_titles[language]) != 13 or len(metadata_descriptions[language]) != 13 for language in ("en", "ja")):
         findings.append("bilingual page titles and descriptions must be unique")

@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:33+0900
-task: T-97 retire empty gallery hooks and dead CSS
+updated: 2026-07-13T04:35+0900
+task: T-98 name home-news data tables
 status: in-progress
 
 ## Now
-- Goal: remove the final empty gallery hooks and only the CSS that cannot match afterward, without changing live frame/image styling.
-- Last done: T-96 retained three deliberate spacing paragraphs and two CSS-referenced gallery hooks, removed only two zero-purpose JP profile articles, and passed exact static, five layout/runtime, fast, and staging checks.
-- Next: prove `#gallery` has no JS/link/fragment consumers, split combined live/dead selectors, remove two hooks and exclusive rules, update cache/version and source-reference gates, then compare geometry.
+- Goal: expose concise localized names for the home-news data tables without adding visible text or changing geometry.
+- Last done: T-97 removed two unused empty gallery hooks and five exclusive dead CSS selector families, retained live `img.frame` styling, synchronized root/route CSS cache versions, and passed CSS-source, six layout/no-JS, fast, and staging checks.
+- Next: inspect rendered table names, add native visually-hidden EN/JP captions to the two home-news tables, enforce exact placement/text, and compare table geometry/accessibility trees.
 
 ## Working set
-- EN/JP research `#gallery` hooks, five CSS selector families, source references, screen/print/runtime tests.
+- EN/JP home-news tables, native captions, accessible names, row structure and geometry, standards/browser tests.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
