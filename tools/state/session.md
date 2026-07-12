@@ -1,19 +1,19 @@
 driver: codex
-updated: 2026-07-12T22:02+0900
+updated: 2026-07-12T22:19+0900
 task: idle
 status: idle
 
 ## Now
-- Goal: idle after T-16 publish-pipeline hardening.
-- Last done: `publish.sh` now enforces main/rebase/placeholder/dry-run gates, commits and pushes before deploy, pushes clean ahead commits, and reports safe partial states; seven isolated tests pass.
-- Next: start T-17 unless the owner explicitly authorizes T-20 project-config work.
+- Goal: idle after T-17 real-browser consent regression coverage.
+- Last done: pinned Playwright 1.61.1 and its headless Chromium locally; four EN/JP desktop/mobile tests cover keyboard use, accept/reject persistence, revocation, and zero Google requests before consent. All repo-only test files and artifacts are deploy-excluded.
+- Next: start T-22 field reconciliation; T-20 and T-21 change project agent configuration/policy and require explicit exact-scope authorization before direct edits.
 
 ## Working set
-- T-16 files: `publish.sh`, `tools/test-publish.sh`, `skills/publish-and-verify.md`.
-- Verification passed: Bash syntax; executable modes; clean-ahead push; nonconflicting rebase; conflicting rebase abort; included/excluded placeholder behavior; push failure prevents deploy; deploy failure reports pushed/possibly-partial state; markdown/diff/empty-output checks.
+- T-17 files: `package.json`, `package-lock.json`, `playwright.config.js`, `tests/analytics-consent.spec.js`, `.gitignore`, `README.md`, `deploy.sh`, `skills/publish-and-verify.md`.
+- Verification passed: clean npm install/audit, four Playwright tests in real headless Chromium, Node/Bash syntax, markdown budgets, diff whitespace, deploy-exclusion inspection, empty `tools/out/`.
 
 ## Open questions
-- None for T-16; T-20 remains separately scoped.
+- None for T-17. The static site retains no build step; Playwright is test-only.
 
 ## Awaiting user
 - T-18 requires owner access to GA Admin; no credentials should be shared.

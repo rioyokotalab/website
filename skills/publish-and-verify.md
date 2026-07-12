@@ -78,7 +78,9 @@ Deploy facts:
   (publickey)" the user runs `sh ~/scripts/ssh-agent-setup.sh` once per
   reboot in a real tmux pane.
 - Excluded from deploy (never uploaded AND never deleted remotely): .git,
-  .claude, tools, skills, deploy.sh, publish.sh, CLAUDE.md, README.md,
-  .gitignore, .mcp.json, AGENTS.md, cv/cv.tex, cv/cv.cls, cv/build-cv.sh.
+  .claude, .codex, .playwright, node_modules, tests, tools, skills, deploy.sh,
+  publish.sh, CLAUDE.md, README.md, package.json, package-lock.json,
+  playwright.config.js, .gitignore, .mcp.json, AGENTS.md, cv/cv.tex, cv/cv.cls,
+  cv/build-cv.sh.
 - NEVER upload `.git` or credentials. The Codex WORKER prohibition and direct
   DRIVER exception are defined above.

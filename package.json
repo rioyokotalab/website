@@ -1,0 +1,11 @@
+{
+  "name": "yokota-lab-website-tests",
+  "private": true,
+  "scripts": {
+    "test:consent:install": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright install --only-shell chromium",
+    "test:consent": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1"
+  }
+}

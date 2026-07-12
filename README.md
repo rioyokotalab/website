@@ -117,6 +117,18 @@ cd "$HOME/website"
 python3 -m http.server 8000
 ```
 
+### Browser consent regression tests
+
+The site still has no build step. These commands install repo-only test
+dependencies and a local Chromium build, then verify the bilingual privacy
+banner and its pre-consent network boundary in a real browser:
+
+```sh
+npm ci
+npm run test:consent:install
+npm run test:consent
+```
+
 ## Repository map
 
 | Path | Purpose |
@@ -210,8 +222,8 @@ expansion remain fail-closed. The complete procedure is
 `deploy.sh` mirrors the deploy-included repository tree to the SFTP web root
 with deletion. Its exclusions protect repository-only material from both
 upload and remote deletion. They include `.git/`, `.agents/`, `.claude/`,
-`.codex/`, `tools/`, `skills/`, the deployment scripts, agent/config docs,
-and the CV sources. `README.md` is explicitly excluded by
+`.codex/`, local browser-test tooling and artifacts, `tools/`, `skills/`, the
+deployment scripts, agent/config docs, and the CV sources. `README.md` is explicitly excluded by
 `-x '^README\.md$'`, so this file is not part of the public website.
 
 ## Invariants

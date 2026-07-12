@@ -28,9 +28,9 @@ if ! ssh -O check web >/dev/null 2>&1; then
 fi
 
 # mirror -R: local -> remote; uploads new/changed files only.
-# Never uploads .git or repo-only files (this script, CLAUDE.md, .gitignore,
-# cv.tex/cv.cls/build-cv.sh — only the built cv.pdf is served).
+# Never uploads .git or repo-only files (including local test tooling and
+# browser artifacts; only the built cv.pdf is served from the CV sources).
 # --delete: files removed locally are also removed from the remote, so the
 # server stays an exact mirror of the deployed set. Excluded paths (-x below)
 # are never uploaded AND never deleted remotely.
-lftp -e "mirror -R --delete --verbose $DRY_RUN -x '^\.git/' -x '^\.agents/' -x '^\.claude/' -x '^\.codex/' -x '^tools/' -x '^skills/' -x '^deploy\.sh$' -x '^publish\.sh$' -x '^CLAUDE\.md$' -x '^README\.md$' -x '^\.gitignore$' -x '^\.mcp\.json$' -x '^AGENTS\.md$' -x '^cv/cv\.tex$' -x '^cv/cv\.cls$' -x '^cv/build-cv\.sh$' . www; bye" sftp://web
+lftp -e "mirror -R --delete --verbose $DRY_RUN -x '^\.git/' -x '^\.agents/' -x '^\.claude/' -x '^\.codex/' -x '^\.playwright/' -x '^node_modules/' -x '^tests/' -x '^tools/' -x '^skills/' -x '^deploy\.sh$' -x '^publish\.sh$' -x '^CLAUDE\.md$' -x '^README\.md$' -x '^package\.json$' -x '^package-lock\.json$' -x '^playwright\.config\.js$' -x '^\.gitignore$' -x '^\.mcp\.json$' -x '^AGENTS\.md$' -x '^cv/cv\.tex$' -x '^cv/cv\.cls$' -x '^cv/build-cv\.sh$' . www; bye" sftp://web
