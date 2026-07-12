@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:36+0900
-task: T-72 audit mobile touch targets
+updated: 2026-07-13T04:48+0900
+task: T-73 verify high-zoom reflow
 status: in-progress
 
 ## Now
-- Goal: make standalone mobile controls comfortably operable while respecting WCAG inline-text exceptions and preserving content density and desktop geometry.
-- Last done: T-71 isolated seven gallery originals totaling 39.66MiB, retained them for Lightbox, added 720/1200px display variants totaling 0.92/2.21MiB, preserved ICC profiles, visually inspected difficult pairs, enforced dimensions/450KiB budgets, and verified EN/JP 1x/2x/3x source selection plus original zoom.
-- Next: render every page at 320/390px, inventory visible anchor/button bounding boxes and center-to-center spacing by structural context, exclude inline prose links, and rank standalone targets below 24/44px before any CSS change.
+- Goal: preserve content and operation at browser-equivalent 200%/400% zoom without two-dimensional page scrolling, clipping, or fixed-overlay obstruction.
+- Last done: T-72 measured 1,920 visible targets at 320/390px; all 946 sub-24px text links passed the 24px center-spacing exception, open mobile nav items were 55.5px, consent buttons 48px, settings 35px, and hamburger 42px, so no density-changing CSS was justified.
+- Next: emulate 200% (640px effective) and 400% (320px effective) reflow across representative EN/JP long/short/table/map/gallery pages, inspect document overflow and fixed overlays with menus/consent open, and isolate true clipping from intentional table scroll regions.
 
 ## Working set
-- All 26 pages at 320/390px with mobile menus open and consent states; target geometry/context/spacing; any tightly scoped mobile CSS/cache bump/checker; ledger/bookkeeping.
+- Representative page families at 640/320px effective widths with menu/consent/table/gallery states; overflow/occlusion geometry and screenshots; any scoped reflow CSS/cache bump/checker; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

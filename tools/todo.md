@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-72 — audit mobile touch targets
-Measure every visible interactive target and spacing at 320/390px, distinguish
-inline-text exceptions from standalone controls, and enlarge only undersized
-navigation or control targets without reflowing content links or desktop layout.
-
 ### T-73 — verify high-zoom reflow
 Exercise representative EN/JP pages at browser-equivalent 200% and 400% zoom,
 including open menus, consent, tables, maps, and galleries; fix only content
@@ -49,7 +44,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-71 kept seven 39.66MiB gallery originals as zoom targets, added visually inspected 720/1200px display variants (0.92/2.21MiB; 97.7%/94.4% reductions), enforced dimensions/byte budgets/source selection, and verified 1x/2x/3x EN/JP Lightbox behavior (pending commit).
+- 2026-07-13 T-72 measured all 1,920 visible mobile targets at 320/390px; 946 small text links all passed the 24px center-spacing exception, while consent/menu/settings controls measured 48/55.5/35px and the hamburger 42px, so no layout-expanding CSS was warranted (audit-only).
+- 2026-07-13 T-71 kept seven 39.66MiB gallery originals as zoom targets, added visually inspected 720/1200px display variants (0.92/2.21MiB; 97.7%/94.4% reductions), enforced dimensions/byte budgets/source selection, and verified 1x/2x/3x EN/JP Lightbox behavior (`8189edf`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-70 added distinct normal/forced-color current-page navigation, forced-color focus overrides, expanded the collapsed 22px dot-like menu control to a 42px three-bar target, and passed EN/JP 320/390/900/901px operation checks (`8c9748d`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-69 found all 183 visible main-content text links relied on a 1.43:1 color difference, added a thin content-only underline in light/dark modes, kept all site chrome unchanged, and preserved exact geometry (`d7e1d21`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-68 added 312 scoped row headers and 8 scoped column headers to genuine data tables, removed table semantics from 8 layout tables, enforced exact classification, matched accessibility-tree roles, and preserved exact computed geometry/styles (`5dccd09`; live publish reserved for user/Claude site-publisher).
