@@ -1,14 +1,14 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-101.
+`tools/state/session.md`. Next free id: T-103.
 
 ## Active
 
-### T-101 — name active-student data tables
-Associate the two active-student tables with their existing localized section
-headings while retaining faculty/secretary/alumni layout tables as
-presentational; preserve all names, rows, and geometry.
+### T-102 — enforce names for every rendered data table
+Audit all routes in both languages through the browser accessibility tree;
+ensure every non-presentational table has a nonempty contextual name while
+layout tables remain excluded, and make the invariant permanent.
 
 ## Blocked / awaiting user
 
@@ -34,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-101 associated both active-student data tables with their existing localized `sub002` headings, retained six rendered faculty/secretary/alumni tables as presentational, and passed exact static, five layout/name browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-100 added localized native visually-hidden captions to both Hinadori hardware tables, preserved their four column headers/specifications and 1×1 clipped caption geometry, and passed exact static, five layout/name browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-99 associated 22 yearly archive tables with their existing localized year headings, named two nested seminar-details tables, and passed exact static, five layout/name browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-98 added localized native visually-hidden captions to the two home-news tables, preserved 1×1 clipped geometry and all 48 rendered row headers, and passed exact static, five layout/name browser, fast, and staging checks (pending commit).
@@ -49,9 +50,3 @@ recloned or carefully reset to rewritten main.
 - 2026-07-13 T-88 inventoried all 207 image elements and their link/caption context, removed one Japanese machine-generated placeholder from an English decorative event image, and now enforces the exact localized image-role set across all 26 routes; fast checks and two route-wide browser contracts pass (pending commit).
 - 2026-07-13 T-87 replaced 26 CSS-hidden institutional headings with metadata, added one localized native off-screen `h1` per page without changing the visible H2→H3 structure, and passed exact static gates plus seven route/layout/no-JS browser contracts (pending commit).
 - 2026-07-13 T-86 confirmed all 26 header logo/home links were unnamed in the accessibility tree, added concise localized logo alternatives without visual changes, enforced parity, and passed route-wide name/runtime plus fast checks (pending commit).
-- 2026-07-13 T-85 made long content links and home-news cells safely wrappable, restored missing JP Computers table containment/helper parity, and passed all 52 pages plus EN/JP consent under WCAG text-spacing overrides; fast checks and six affected browser contracts pass (`278b2a8`; live publish reserved for user/Claude site-publisher).
-- 2026-07-13 T-84 replaced the legacy -10px heading scroll margin with 24px after reproducing 27px of Japanese-heading clipping beneath the 81px sticky bar; every heading-target link passes at 320/900/901/1200px and all 18 browser tests pass (`919593a`; live publish reserved for user/Claude site-publisher).
-- 2026-07-13 T-83 added a permanent runtime-health contract over all 52 route/viewport loads, all mobile menus, and all gallery families, with zero uncaught exceptions, error-console messages, same-origin request failures, or local HTTP errors (`4efd88d`).
-- 2026-07-13 T-82 found current-page specificity masking the forced-color keyboard ring and programmatic Lightbox close focus lacking `:focus-visible`, added two scoped system-highlight overrides, and permanently covers EN/JP nav/link/consent/menu/table/gallery paths; all 16 browser tests pass (`6e5fd56`; live publish reserved for user/Claude site-publisher).
-- 2026-07-13 T-81 suppressed every CSS transition to at most 0.01ms and Lightbox fades/resizing to 0ms only under reduced-motion preference, retained ordinary 600/600/700ms gallery timings, handled live preference changes, and added two permanent browser tests; all 14 browser tests pass (`b37c792`; live publish reserved for user/Claude site-publisher).
-- 2026-07-13 T-80 replaced the final two mirrored `<col width="72">` attributes with one shared class, expanded the legacy-attribute gate to `<col>`, and matched all EN/JP column/row/cell geometry exactly at 320/390/1200px and print (`17ddf92`; live publish reserved for user/Claude site-publisher).

@@ -344,6 +344,10 @@ def main() -> int:
             hardware_caption = "Hinadori cluster hardware" if expected_lang == "en" else "ひなどりクラスタのハードウェア"
             if len(re.findall(rf'<table class="width-98pct">\s*<caption class="visually-hidden">{hardware_caption}</caption>', text)) != 1:
                 fail(findings, path, "cluster hardware table caption mismatch")
+        if relative == "member/index.html":
+            visible_member = re.sub(r'<!--.*?-->', '', text, flags=re.S)
+            if len(re.findall(r'<table class="width-90pct" aria-labelledby="sub002">', visible_member)) != 1:
+                fail(findings, path, "active-student table name mismatch")
         expected_pdf_links = 1 if relative == "member/yokota.html" else 0
         pdf_links = re.findall(r'<a href="[^"]+\.pdf"\s+type="application/pdf"', text, flags=re.I)
         if len(pdf_links) != expected_pdf_links or len(re.findall(r'<a href="[^"]+\.pdf"', text, flags=re.I)) != expected_pdf_links:

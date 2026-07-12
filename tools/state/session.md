@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:40+0900
-task: T-101 name active-student data tables
+updated: 2026-07-13T04:42+0900
+task: T-102 enforce names for every rendered data table
 status: in-progress
 
 ## Now
-- Goal: expose localized contextual names for the two student data tables while leaving layout-only member tables semantically presentational.
-- Last done: T-100 added native localized visually-hidden captions to both Hinadori hardware tables, preserved four headers/specifications and clipped geometry, and passed exact static, five layout/name browser, fast, and staging checks.
-- Next: distinguish active student tables from commented postdoc and role=presentation faculty/secretary/alumni tables, associate only the data tables with `sub002`, and verify accessible table inventory/geometry.
+- Goal: verify and permanently enforce that every rendered data table across all 26 routes has a useful accessible name.
+- Last done: T-101 associated both student data tables with localized `sub002` headings, retained six faculty/secretary/alumni tables as presentational, and passed exact static, five layout/name browser, fast, and staging checks.
+- Next: enumerate every browser-exposed table/name by route, confirm expected home/hardware/student/year/seminar inventory, reject empty/duplicate names within a route, and preserve presentation-table exclusion.
 
 ## Working set
-- EN/JP member tables, `sub002` headings, data versus presentation roles, accessible inventory and geometry.
+- All routes' browser-exposed tables, accessible names, presentation-table exclusion, permanent regression coverage.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
