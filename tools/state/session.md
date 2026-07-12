@@ -1,12 +1,12 @@
 driver: codex
-updated: 2026-07-13T08:07+0900
-task: T-118
+updated: 2026-07-13T08:15+0900
+task: T-119
 status: in_progress
 
 ## Now
 - Goal: spend the three-hour window ending about 2026-07-13T09:44+0900 establishing a defensible web-development regression suite, then iteratively reduce Codex token use without degrading capability and improve logging so future routing decisions are evidence-based.
-- Last done: completed T-116. Runner-lite kept WBD-001/003 at 100/100 and reduced matched effective tokens 15.2%, tool output 12.6%, and worker duration 56.7%; redundant schema enforcement increased effective tokens 47.8% and was rejected.
-- Next: repeat representative Spark/low and Terra/low runner-lite tasks, quantify run-to-run variation, and define an evidence threshold so route/process changes are not promoted from a lucky cache result.
+- Last done: completed T-118. Three matched runner-lite/durable portfolios all passed at 100; effective-token ranges did not overlap (29,098–30,046 versus 42,958–57,936), so a repeated-portfolio promotion rule is now canonical.
+- Next: test whether locate-first, bounded-range source inspection lowers cost on WBD-002's large bilingual HTML files without losing exact secure-link semantics.
 
 ## Working set
 - `tools/todo.md`
@@ -22,7 +22,7 @@ status: in_progress
 - `tools/task-metrics.schema.json`
 
 ## Open questions
-- How many matched repeats are needed to distinguish a real process improvement from prompt-cache variance without spending more on benchmarking than the optimization can save.
+- Whether explicit bounded inspection guidance changes actual command output/context behavior or merely adds prompt tokens.
 
 ## Awaiting user
 - None.

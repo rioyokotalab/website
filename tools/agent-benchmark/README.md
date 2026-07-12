@@ -29,6 +29,14 @@ optimization candidate is frozen. A passing optimization needs every critical
 assertion, at least 85/100 on every matched task, no lower aggregate score, no
 P2P or scope regression, and lower measured worker plus review/repair cost.
 
+For a process-wide optimization, use at least two representative tasks and
+three baseline/candidate portfolio samples. Compare portfolio medians and full
+ranges, not isolated task minima. Promotion requires all capability gates,
+candidate median effective tokens at least 5% below baseline, and no unexplained
+regression in failures, tool output, or total duration. Non-overlapping ranges
+are strong evidence; overlapping ranges make the cost claim inconclusive. After
+freezing the candidate, run every visible task and the held-out task once.
+
 `effective_tokens` is `input_tokens - cached_input_tokens + output_tokens`.
 Reasoning output is retained separately because runner usage reports it as a
 subset/detail of output accounting; it is not added twice.
