@@ -1,15 +1,15 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-84.
+`tools/state/session.md`. Next free id: T-85.
 
 ## Active
 
-### T-83 — audit browser runtime health on every route
-Load all public routes at mobile and desktop with analytics rejected, exercise
-the menu and gallery-capable families, and fail on uncaught exceptions, error
-console messages, or failed same-origin requests; fix confirmed local runtime
-faults without changing content or presentation and retain a permanent test.
+### T-84 — audit sticky-header anchor positioning
+Follow every local in-page navigation link on EN/JP pages at mobile and desktop,
+verify the target heading remains fully visible below sticky navigation and
+inside the viewport, and replace the legacy negative scroll margin only if
+measurements confirm clipping; retain a browser contract.
 
 ## Blocked / awaiting user
 
@@ -35,7 +35,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-82 found current-page specificity masking the forced-color keyboard ring and programmatic Lightbox close focus lacking `:focus-visible`, added two scoped system-highlight overrides, and permanently covers EN/JP nav/link/consent/menu/table/gallery paths; all 16 browser tests pass (pending commit).
+- 2026-07-13 T-83 added a permanent runtime-health contract over all 52 route/viewport loads, all mobile menus, and all gallery families, with zero uncaught exceptions, error-console messages, same-origin request failures, or local HTTP errors (pending commit).
+- 2026-07-13 T-82 found current-page specificity masking the forced-color keyboard ring and programmatic Lightbox close focus lacking `:focus-visible`, added two scoped system-highlight overrides, and permanently covers EN/JP nav/link/consent/menu/table/gallery paths; all 16 browser tests pass (`6e5fd56`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-81 suppressed every CSS transition to at most 0.01ms and Lightbox fades/resizing to 0ms only under reduced-motion preference, retained ordinary 600/600/700ms gallery timings, handled live preference changes, and added two permanent browser tests; all 14 browser tests pass (`b37c792`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-80 replaced the final two mirrored `<col width="72">` attributes with one shared class, expanded the legacy-attribute gate to `<col>`, and matched all EN/JP column/row/cell geometry exactly at 320/390/1200px and print (`17ddf92`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-79 removed 67 lines tied exclusively to nine absent legacy classes and one absent wrapper ID, added a repeatable source-reference gate for all 58 remaining classes and 13 IDs, and matched 60 baseline/working computed renders exactly across screen, dark, print, and forced-color states (`4d40725`; live publish reserved for user/Claude site-publisher).

@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T03:37+0900
-task: T-83 audit browser runtime health on every route
+updated: 2026-07-13T03:40+0900
+task: T-84 audit sticky-header anchor positioning
 status: in-progress
 
 ## Now
-- Goal: make uncaught client-side errors and failed local runtime resources impossible to introduce unnoticed on any public route.
-- Last done: T-82 found the current-page forced-color outline out-specificed the keyboard ring and Lightbox's programmatically focused close control did not match `:focus-visible`; two scoped Highlight outlines now preserve both states and two permanent EN/JP component tests pass within the 16-test suite.
-- Next: attach pageerror/console/requestfailed listeners before loading all 26 routes at 320/1200px, reject analytics to isolate local behavior, exercise mobile menus and representative galleries, classify external cancellations separately, fix only local failures, and retain the contract.
+- Goal: prevent sticky navigation from obscuring headings reached through page-local section links while preserving ordinary layout.
+- Last done: T-83 now loads all 26 routes at 320/1200px, cycles every mobile menu, opens/closes every gallery family, and fails on browser exceptions, error-console output, failed same-origin requests or local HTTP errors; all 52 route states passed cleanly.
+- Next: enumerate all same-document hash links to heading targets, follow them at 320/900/901/1200px, compare target top/bottom against sticky navigation and viewport bounds, then replace the legacy `scroll-margin-top: -10px` only if clipping is reproduced and add a contract.
 
 ## Working set
-- all 26 public routes at mobile/desktop; local scripts/styles/images and component interactions; new Playwright runtime-health contract; ledger/test bookkeeping.
+- all same-document hash links and heading targets; `h3.heading[id]` scroll margin; responsive sticky-nav geometry; Playwright/style/cache/ledger bookkeeping as findings require.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
