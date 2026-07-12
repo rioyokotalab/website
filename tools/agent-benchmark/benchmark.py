@@ -135,16 +135,24 @@ const { chromium } = require('@playwright/test');
     return output
 
 
-def prompt_for(task: dict[str, Any], task_id: str, prompt_mode: str) -> str:
+def prompt_for(task: dict[str, Any], task_id: str, prompt_mode: str, handoff_mode: str) -> str:
     paths = ", ".join(task["authorized_paths"])
     context = ", ".join(task.get("context", []))
     deliverable = f"tools/out/benchmark-{task_id.lower()}.md"
+    if handoff_mode == "runner":
+        handoff = (
+            "The instrumented runner captures your validated final JSON, raw trajectory, patch, and metrics. "
+            "Do not edit tools/out or tools/codex-log. Run at most one focused static/syntax check; the independent "
+            "grader runs the complete P2P suite."
+        )
+    else:
+        handoff = f"Record the required structured result in {deliverable}."
     if prompt_mode == "compact":
         return (
             f"Benchmark WORKER task {task_id}. {task['prompt']}\n"
             f"Scope: {paths}. Read: {context}. Offline only. Do not deploy, publish, push, "
             f"touch credentials, configuration, tests, or ledger. Implement and run targeted checks. "
-            f"Record the required structured result in {deliverable}."
+            f"{handoff}"
         )
     return f"""You are a bounded WORKER in an isolated benchmark copy of the YOKOTA Lab website.
 
@@ -158,9 +166,8 @@ network. Never run publishing/deployment commands, ssh, lftp, or git push. Do no
 access credentials. Preserve CRLF and EN/JP parity where applicable.
 
 Inspect the failure, implement the smallest complete fix, and run targeted local
-checks. Write the required output-file-first structured result to {deliverable}
-and follow the repository's delegated-task logging rule. Do not merely propose a
-patch: make the authorized edits in this isolated workspace.
+checks. {handoff}
+Do not merely propose a patch: make the authorized edits in this isolated workspace.
 """
 
 
@@ -226,8 +233,8 @@ def sha256_file(path: Path) -> str:
 
 def run_codex(task: dict[str, Any], task_id: str, workspace: Path, artifact: Path,
               *, model: str, effort: str, prompt_mode: str, reference: Path | None,
-              timeout_seconds: int) -> dict[str, Any]:
-    prompt = prompt_for(task, task_id, prompt_mode)
+              timeout_seconds: int, handoff_mode: str) -> dict[str, Any]:
+    prompt = prompt_for(task, task_id, prompt_mode, handoff_mode)
     prompt_path = artifact / "prompt.txt"
     stdout_path = artifact / "stdout.jsonl"
     stderr_path = artifact / "stderr.log"
@@ -240,6 +247,8 @@ def run_codex(task: dict[str, Any], task_id: str, workspace: Path, artifact: Pat
     ]
     if reference:
         command.extend(["--image", str(reference)])
+    if handoff_mode == "runner":
+        command.extend(["--output-schema", str(BENCHMARK_DIR / "final.schema.json")])
     env = os.environ.copy()
     env["PLAYWRIGHT_BROWSERS_PATH"] = str(ROOT / ".playwright" / "browsers")
     env["NODE_PATH"] = str(ROOT / "node_modules")
@@ -322,6 +331,7 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
         "effort": effort,
         "worker": worker_name,
         "prompt_mode": args.prompt_mode,
+        "handoff_mode": args.handoff_mode,
         "codex_cli": subprocess.run(["codex", "--version"], text=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.DEVNULL).stdout.strip(),
     }
@@ -335,7 +345,8 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
         result["fixture"] = fixture["mutation"]
         execution = run_codex(task, args.task_id, workspace, artifact, model=model,
                               effort=effort, prompt_mode=args.prompt_mode,
-                              reference=reference, timeout_seconds=args.timeout or task["timeout_seconds"])
+                              reference=reference, timeout_seconds=args.timeout or task["timeout_seconds"],
+                              handoff_mode=args.handoff_mode)
         result["execution"] = execution
         diff = run_checked(["git", "diff", "--binary", "HEAD"], cwd=workspace).stdout
         (artifact / "candidate.patch").write_text(diff, encoding="utf-8")
@@ -471,6 +482,7 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--worker")
     run.add_argument("--effort", choices=("low", "medium", "high"))
     run.add_argument("--prompt-mode", choices=("full", "compact"), default="full")
+    run.add_argument("--handoff-mode", choices=("durable", "runner"), default="durable")
     run.add_argument("--timeout", type=int)
     run.add_argument("--workspace-root")
     run.add_argument("--run-p2p", action="store_true")

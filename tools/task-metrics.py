@@ -23,7 +23,7 @@ V2_REQUIRED = V1_REQUIRED | {
     "setup_duration_ms", "worker_duration_ms", "grader_duration_ms", "review_duration_ms", "total_duration_ms",
     "changed_files", "retries", "escalation", "failure_phase", "failure_category", "artifact",
 }
-V2_ALLOWED = V2_REQUIRED
+V2_ALLOWED = V2_REQUIRED | {"handoff_mode"}
 NULLABLE_NUMBERS = {
     "capability_score", "f2p", "p2p", "scope", "completion", "input_tokens", "cached_input_tokens",
     "output_tokens", "reasoning_output_tokens", "effective_tokens", "prompt_bytes", "instruction_bytes",
@@ -221,6 +221,7 @@ def benchmark_row(result: dict[str, Any], stdout_override: Path | None = None) -
         "failure_phase": failure_phase,
         "failure_category": failure_category,
         "artifact": f"tools/out/agent-benchmark/{run_id}/result.json",
+        "handoff_mode": str(result.get("handoff_mode") or "unknown"),
     }
     return row
 

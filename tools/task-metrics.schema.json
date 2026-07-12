@@ -75,7 +75,8 @@
         "escalation": {"type": ["string", "null"]},
         "failure_phase": {"type": ["string", "null"]},
         "failure_category": {"type": ["string", "null"]},
-        "artifact": {"type": ["string", "null"]}
+        "artifact": {"type": ["string", "null"]},
+        "handoff_mode": {"enum": ["durable", "runner", "unknown"]}
       },
       "additionalProperties": false
     }

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "summary", "changed_files", "verification", "remaining"],
+  "properties": {
+    "status": {"enum": ["complete", "partial", "failed"]},
+    "summary": {"type": "string", "maxLength": 500},
+    "changed_files": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "verification": {"type": "array", "items": {"type": "string"}, "maxItems": 6},
+    "remaining": {"type": "array", "items": {"type": "string"}, "maxItems": 6}
+  }
+}

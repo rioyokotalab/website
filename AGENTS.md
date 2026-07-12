@@ -112,7 +112,12 @@ than silently changing model/effort.
 - Work only in authorized scope. Write the named `tools/out/` deliverable
   incrementally when required; it ends with the `## Structured result` fields
   defined in `skills/codex-dispatch.md`.
-- Last delegated action appends exactly one newline-safe `tools/codex-log.md`
+- A short instrumented run may explicitly use runner-captured handoff. The
+  runner retains raw JSONL, stderr, patch, grade, metrics, and a schema-validated
+  final response and owns the log append; the worker does not load the dispatch
+  playbook or edit `tools/out/`/`tools/codex-log.md`. Keep output-file-first for
+  lookup, long, incremental, or interruption-prone work.
+- Otherwise, the last delegated action appends exactly one newline-safe `tools/codex-log.md`
   line: `date | calling agent | task | output file | conversationId | outcome`.
 - Never run concurrent writers on overlapping scope. Never revert, overwrite,
   or discard partial work to hide a conflict.

@@ -30,6 +30,12 @@ Output-file-first:
   confirmed + hypotheses / remaining), kept as the final content.
 - The calling agent confirms the file exists and is non-empty, spot-checks at
   least one claim, and keeps its final message short (~15 lines).
+- Exception for short instrumented edits: the caller may declare
+  runner-captured mode with a final-response schema. The runner durably retains
+  raw JSONL, stderr, patch, grade, metrics, and validated final response and owns
+  the log append. The worker does not edit `tools/out/`/`tools/codex-log.md` or
+  load this playbook. Never use this mode for lookup batches, incremental/long
+  work, or tasks whose recovery depends on output-file-first checkpoints.
 
 Fan-out:
 - Independent bounded subtasks -> multiple codex calls in ONE turn, disjoint
