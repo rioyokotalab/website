@@ -1,12 +1,12 @@
 driver: codex
-updated: 2026-07-13T07:27+0900
+updated: 2026-07-13T07:31+0900
 task: T-114
 status: in_progress
 
 ## Now
 - Goal: spend the three-hour window ending about 2026-07-13T09:44+0900 establishing a defensible web-development regression suite, then iteratively reduce Codex token use without degrading capability and improve logging so future routing decisions are evidence-based.
-- Last done: completed T-113. Four baseline rows are imported as valid schema-v2 metrics; raw-event recomputation reports 31 successful and 7 failed commands producing 228,423 tool-output characters, with token/gate/failure provenance and artifact pointers.
-- Next: commit the calibrated baseline/logging checkpoint, then slim auto-loaded instructions, remove redundant AGENTS/ledger reads from self-contained work, precreate handoff output, use compact task capsules, and rerun the visible suite.
+- Last done: T-114 candidate reduces auto-loaded `AGENTS.md` from 9,654 to 6,394 bytes while preserving authority/security/site invariants; self-contained tasks no longer request AGENTS/global-ledger rereads and fresh fixtures precreate the ignored handoff directory.
+- Next: commit the context candidate, run WBD-001 through WBD-004 with compact capsules and unchanged default routes, import schema-v2 metrics, and retain/reject based on matched scores and cost.
 
 ## Working set
 - `tools/todo.md`

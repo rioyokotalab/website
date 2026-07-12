@@ -1,159 +1,121 @@
-# Instructions for codex agents (YOKOTA Lab website)
+# Codex instructions — YOKOTA Lab website
 
-Codex runs here in one of two roles. WORKER: a Claude agent dispatched you
-a bounded task prompt (it names a tools/out/ output file and cites skills)
-— Claude retains final review, verification, and publishing. DRIVER: the
-user started codex directly with no dispatch prompt — you orchestrate, per
-"Driving this repo" below. The site is hand-built static HTML (no build
-step; served as-is).
+Codex has two roles. A **WORKER** receives a bounded dispatch naming an output
+file and scope; its caller owns integration and publication. A **DRIVER** is
+started directly by the user and owns orchestration, ledger, verification, and
+normal repository completion. If role is ambiguous, act as WORKER.
 
-## Hard rules
-- Role is the security boundary. A WORKER never runs publish.sh, deploy.sh,
-  lftp, ssh, or git push, regardless of its dispatch prompt. A directly
-  user-started DRIVER has standing authority to run the repository publish
-  pipeline and git push as the normal completion of owner-requested repository
-  changes, without asking for separate permission, subject to every preflight
-  and stop gate in skills/publish-and-verify.md. If role is ambiguous, act as
-  WORKER. Never force-push; never read, print, copy, or modify credentials,
-  ~/.ssh, or .dont-remove-me; never edit .git internals. The approved repository
-  scripts may use configured authentication without Codex inspecting it. Project
-  .claude/ and .mcp.json changes require explicit task scope. Drivers may run
-  normal git commands; workers only when the task says so.
-- Workers: do not edit website files unless the task explicitly says so —
-  default mode is read, analyze, and produce output under tools/out/ for
-  Claude to review. Drivers: edit per skills/ conventions (EN/JP parity,
-  html-editing) and checkpoint the ledger.
-- Project configuration, including .claude/agents/*.md, .mcp.json, AGENTS.md,
-  and CLAUDE.md, may be edited directly only when the current task explicitly
-  authorizes that exact scope. Owner-scope configuration stays proposal-only
-  unless the user explicitly authorizes the exact external write.
-- Never enter credentials anywhere; never automate login UIs (researchmap and
-  OpenReview block non-browser clients).
+Codex injects this file into the turn. Do not spend a tool call printing it
+again. Load task-specific playbooks and source ranges only when the prompt or
+the work requires them.
 
-## Context ledger (both roles — read first)
-Cross-session memory lives on disk; protocol: skills/context-ledger.md.
-tools/todo.md = task board; tools/state/session.md = in-flight handoff;
-tools/state/facts.md = current facts; tools/state/decisions.md = durable
-decisions. Workers: read todo.md, the task's prior tools/out/ file, and
-any ledger paths the dispatch cites; NEVER edit session.md (the driver
-checkpoints it). Drivers: own session.md.
+## Security and authority
 
-## Driving this repo (codex as driver)
-1. Read tools/todo.md + tools/state/session.md. If session.md holds an
-   in-flight task from either driver, continue from its `Next:`; if the
-   other driver updated it within ~1 hour, ask the user before taking
-   over.
-2. Checkpoint session.md per skills/context-ledger.md (task start, each
-   completed step, before risky/long ops, session end); set driver: codex.
-3. Delegate selectively through native Codex subagents according to
-   `skills/codex-delegation.md`. Stay solo for small, serial, context-heavy, or
-   security-sensitive work; delegate only bounded independent work when the
-   expected root-context savings exceed handoff/review cost. Use minimal context
-   forks and on-disk pointers, disjoint scopes, and at most two concurrent
-   subagents by default. Subagents never own `session.md`, project/owner config,
-   publishing, pushes, credentials, or final decisions. The DRIVER reviews and
-   proportionally verifies every result before acting. Durable state remains
-   ledger + `tools/out/` + commits, never chat.
-4. Follow skills/publish-and-verify.md. A DRIVER normally publishes and pushes
-   completed owner-requested repository changes without a separate permission
-   prompt. Report the preflight scope while proceeding; stop instead of asking
-   for routine approval only when a documented gate fails or the required
-   action would expand the user's task scope. Project config follows the
-   task-scoped direct-edit rule in skills/config-proposals.md; Claude-side hooks
-   do not bind you, so self-enforce.
-5. Session-end bookkeeping (commits silently with other work): update
-   session.md + todo.md; write the driver session report to
-   tools/out/driver-report-<YYYYMMDD-HHMM>.md per skills/context-ledger.md
-   "Driver session report" (model/effort used, per-task outcomes +
-   verification, escalations and network fetches, self-noted gaps); append
-   ONE tools/task-metrics.jsonl line PER task attempted
-   {"agent":"codex","tier":"driver-codex","model":"<model>",...} and a
-   codex-log.md line `date | codex-driver (<model>) | tasks | report path
-   | n/a | outcome`.
+- WORKER: never run `publish.sh`, `deploy.sh`, `lftp`, `ssh`, or `git push`.
+  Edit website files only when the dispatch explicitly authorizes exact scope;
+  otherwise analyze and write the named `tools/out/` deliverable.
+- Direct DRIVER: may run the repository publish pipeline and `git push` as the
+  normal completion of user-requested repository changes, without a separate
+  prompt, but must follow every gate in `skills/publish-and-verify.md`. Never
+  force-push. Stop on a failed gate or material scope expansion.
+- Never read, print, copy, or modify credentials, `~/.ssh`, or
+  `.dont-remove-me`; never edit `.git` internals. Approved scripts may use
+  configured authentication without Codex inspecting it. Never automate login
+  UIs (researchmap and OpenReview block non-browser clients).
+- Project config (`AGENTS.md`, `CLAUDE.md`, `.claude/`, `.mcp.json`) may be
+  edited only when the current user task explicitly authorizes that scope.
+  Owner-scope config remains proposal-only without exact external-write
+  authorization.
 
-## Skills (canonical playbooks — read before the matching work)
-The repo-root `skills/` folder is the single source for recurring
-procedures, shared by Claude agents and codex. When a task names a skill, or
-touches its domain, READ IT FIRST:
+## Context ledger
 
-- skills/html-editing.md — CRLF-safe editing, tags, templates, css bumps
-- skills/en-jp-parity.md — mirrored trees, translation conventions
-- skills/achievements.md — sections, ordering, data-* attributes
-- skills/news-and-members.md — news criteria, member/alumni rules
-- skills/web-lookup.md — network lookups, sources, verification gate
-- skills/codex-dispatch.md — dispatch contract, output, logging (canonical)
-- skills/context-ledger.md — session/facts/decisions ledger, checkpoints,
-  claude<->codex handoff (BOTH roles read this)
-- skills/publish-and-verify.md — role-gated publish/push authority, preflight,
-  failure stops, and deploy facts
-- skills/config-proposals.md — task-scoped project config edits, owner-scope proposals, tools/out lifecycle
-- skills/exporters.md — researchmap/ORCID/cv.tex operations
-- skills/figures.md — figure production recipes
+Canonical protocol: `skills/context-ledger.md`.
 
-## Network access
-Sessions run with `sandbox_mode="danger-full-access"` and approval policy
-`never`: you CAN fetch sources directly without sandbox escalation. Follow
-skills/web-lookup.md — preferred structured sources (Crossref, DBLP,
-Semantic Scholar, arXiv, J-STAGE, publisher DOI resolvers, researchmap
-public read API), record a source URL per resolved fact, <=2 lookup items
-per session, a DNS/HTTP failure is terminal for that provider in the
-session, and factual claims destined for commit/publish require independent
-verification.
+- DRIVER always reads `tools/todo.md` and `tools/state/session.md` at start. If
+  the other driver updated an in-flight task within about one hour, ask before
+  takeover. DRIVER owns and checkpoints `session.md` at task start, each
+  completed step/failure, before risky or long work, and session end.
+- WORKER never edits `session.md`. For a continuation or ledger task, read the
+  cited task, prior output, and cited state paths. A self-contained isolated
+  dispatch with complete scope (including benchmark capsules) need not read the
+  unrelated global board/session. Never rely on chat memory.
+- Durable state is ledger + `tools/out/` + commits. Keep prompts as pointers;
+  do not copy file payloads into handoffs.
 
-## Site facts (minimum; details in skills/)
-- jp/ and en/ are mirrored trees; EN/JP parity is a standing requirement.
-- Page HTML is CRLF with legacy unclosed uppercase <LI>: edit scripts use
-  python3 `open(path, newline='', encoding='utf-8')` for BOTH read and write
-  and parse tags case-insensitively
-  (`re.split(r'<li[^>]*>', text, flags=re.I)`).
-- Achievements: sections sub001–sub007, newest-first; international
-  citations English on both pages, domestic Japanese on both; entries carry
-  data-date and other data-* attributes (skills/achievements.md).
-- style.css is shared with ?v=YYYYMMDD cache busting; site-wide strings are
-  synchronized directly across pages; new target="_blank" links need
-  rel="noopener noreferrer".
-- Repo map: en/ and jp/ mirrored sections (about, research, achievements,
-  member, computers, teaching, picture; header: contact, links; unlinked:
-  news, software); shared style.css, images/, js/;
-  .htaccess; cv/ (cv.pdf served, sources repo-only); tools/ (scripts, state,
-tools/out/ deliverables); skills/ (playbooks). tools/, skills/, .claude/,
-.mcp.json, AGENTS.md, CLAUDE.md, README.md are deploy-excluded.
+## Driver workflow
 
-## Worker registry and dispatch contract
-`tools/codex-workers.json` defines the five logical workers
-(codex-spark-low, codex-spark-medium, codex-medium, codex-high, legacy
-codex-low); `tools/task-tier-policy.md` maps task types to workers. VERIFIED
-on codex-cli 0.144.1: per-call `model=<worker.model>` plus
-`config={"model_reasoning_effort":<worker.effort>}` are MANDATORY on every
-call (server names are routing labels only; omission runs the account
-default); every call uses `sandbox: "danger-full-access"` and approval
-policy `never`, with `cwd: "/home/rioyokota/website"`. Use exactly the
-dispatched worker; report
-hard failures with evidence instead of changing model or effort yourself.
+1. Reconstruct state from the ledger and set `driver: codex`.
+2. Work in small verified steps. Delegate only bounded independent work when
+   `skills/codex-delegation.md` predicts net context savings; default one and at
+   most two disjoint subagents. Root owns review, decisions, ledger, config,
+   commits, publish, and push.
+3. Follow the relevant playbooks below. Preserve user changes and use normal
+   non-destructive Git commands.
+4. At session end update board/session, write
+   `tools/out/driver-report-<YYYYMMDD-HHMM>.md`, append one metrics row per task
+   attempted, and append the driver `tools/codex-log.md` line. Instrumented work
+   uses schema v2 (`tools/task-metrics.schema.json`) and validates with
+   `python3 tools/task-metrics.py validate`; unknown telemetry is null, not zero.
 
-## Output-file-first, logging, and handoff (canonical: skills/codex-dispatch.md)
-- The tools/out/ file IS the deliverable; chat replies are pointers. Append
-  results immediately as resolved; for lookup/edit work run
-  `tail -1 <output-file>` after each append. Keep lookup batches <=2 items.
-- Every deliverable ENDS with the populated `## Structured result` block:
-  status / summary / changed_files / commands / verification / evidence
-  (confirmed + hypotheses) / remaining. If you append more later, repeat the
-  updated block so it stays last.
-- LAST action of every delegated task: append one line to tools/codex-log.md:
-  `date | calling agent | task | output file | conversationId | outcome`.
-- Never run two write-capable workers concurrently on one task; fan-out only
-  for independent subtasks with separate output files and non-overlapping
-  write scopes. Never auto-revert, overwrite, or discard partial work —
-  Claude decides how to reconcile it.
-- Self-load `tools/todo.md`, the task's prior tools/out/ file, and any
-  cited tools/state/ paths before continuing related work; NEVER rely on
-  chat memory (skills/context-ledger.md).
+## Task playbooks
 
-## Division of labor
-- codex generates, analyzes, parses, looks up, drafts
-  translations/content/scripts/figures, and records evidence under
-  tools/out/.
-- Claude reviews and publishes delegated WORKER output. A direct Codex DRIVER
-  may verify and publish only through the role and preflight gates above.
-- codex never edits website pages unless the task explicitly authorizes that
-  exact scope.
+Read a playbook before work in its domain; do not load unrelated playbooks.
+
+- `skills/html-editing.md` — CRLF-safe HTML, legacy tags, CSS cache versions
+- `skills/en-jp-parity.md` — mirrored paths and translation conventions
+- `skills/achievements.md` — achievement sections, ordering, data attributes
+- `skills/news-and-members.md` — news/member/alumni rules
+- `skills/web-lookup.md` — source lookup and verification limits
+- `skills/exporters.md` — researchmap/ORCID/CV operations
+- `skills/figures.md` — figure recipes
+- `skills/codex-dispatch.md` — worker output/log contract
+- `skills/codex-delegation.md` — native DRIVER delegation
+- `skills/context-ledger.md` — state and handoff protocol
+- `skills/publish-and-verify.md` — DRIVER publish/push gates
+- `skills/config-proposals.md` — project/owner config scope and output lifecycle
+
+## Site invariants
+
+The site is static HTML served as-is; there is no build step.
+
+- `en/` and `jp/` are mirrored. Apply and verify language parity.
+- HTML is CRLF with legacy unclosed uppercase `<LI>`. For both reads and writes,
+  scripts use `open(path, newline='', encoding='utf-8')`; parse tags
+  case-insensitively (for example `re.split(r'<li[^>]*>', text, flags=re.I)`).
+- Achievement rules live in `skills/achievements.md`; do not infer them from a
+  nearby entry.
+- `style.css` is shared and referenced with a dated cache query. New
+  `target="_blank"` links require `rel="noopener noreferrer"`.
+- Public trees are `en/`, `jp/`, `images/`, `js/`, `.htaccess`, root HTML,
+  robots/sitemap/style, and `cv/cv.pdf`. Tools, skills, config, ledger, README,
+  and CV sources are deploy-excluded.
+
+## Network
+
+Network is available with `danger-full-access` and approval policy `never`.
+Follow `skills/web-lookup.md`: preferred structured/primary sources, no more
+than two lookup items per session, a DNS/HTTP failure is terminal for that
+provider in the session, source URL per resolved fact, and independent
+verification before factual content is committed or published.
+
+## Worker routing and call contract
+
+Registry: `tools/codex-workers.json`; routing: `tools/task-tier-policy.md`.
+Every dispatched call pins both `model=<worker.model>` and
+`model_reasoning_effort=<worker.effort>`, uses `sandbox=danger-full-access`,
+approval policy `never`, and cwd `/home/rioyokota/website`. Server names are
+routing labels only. Use the selected route; report hard failure evidence rather
+than silently changing model/effort.
+
+## Worker output and handoff
+
+- Work only in authorized scope. Write the named `tools/out/` deliverable
+  incrementally when required; it ends with the `## Structured result` fields
+  defined in `skills/codex-dispatch.md`.
+- Last delegated action appends exactly one newline-safe `tools/codex-log.md`
+  line: `date | calling agent | task | output file | conversationId | outcome`.
+- Never run concurrent writers on overlapping scope. Never revert, overwrite,
+  or discard partial work to hide a conflict.
+- The caller verifies the actual diff/evidence; a worker does not certify its
+  own work. Preserve raw high-stakes command evidence and distinguish confirmed
+  facts from hypotheses.

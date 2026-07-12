@@ -87,6 +87,7 @@ def make_fixture(task_id: str, ref: str, workspace: Path, reference_output: Path
     reference = make_visual_reference(workspace, reference_output) if task_id == "WBD-004" and reference_output else None
     mutation = load_task_ops().mutate(task_id, workspace)
     commit_mutated_fixture(workspace, task_id)
+    (workspace / "tools" / "out").mkdir(parents=True, exist_ok=True)
     return {"mutation": mutation, "reference": str(reference) if reference else None}
 
 
