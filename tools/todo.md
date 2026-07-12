@@ -5,10 +5,10 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-92 — identify linked document media types
-Audit links to locally served documents and annotate their media type where the
-format is already explicit to readers; preserve labels and target behavior, and
-enforce EN/JP parity without changing layout.
+### T-93 — add machine-readable home-news dates
+Wrap the exact visible dates in both home-page news tables with native time
+semantics and ISO values; preserve displayed text and table geometry, enforce
+date validity/order/parity, and leave ambiguous ranges untouched.
 
 ## Blocked / awaiting user
 
@@ -34,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-92 identified the two mirrored CV downloads as `application/pdf`, retained their explicit labels/new-tab behavior, and passed exact static, two route-wide browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-91 wrapped the unchanged EN/JP postal, telephone, and email text in native address semantics, kept maps outside, neutralized default italics, and passed exact static, five browser/layout, fast, and staging checks (pending commit).
 - 2026-07-13 T-90 added exact destination-language metadata to all 26 visible EN↔JP switches, enforces mirrored href/text/hreflang triples statically, and passed two route-wide browser contracts plus fast and staging checks (pending commit).
 - 2026-07-13 T-89 traversed every focusable element on all 26 routes at 390/1200px in both directions, found the floated header logo left its link with a 0×0 focus box, gave that anchor containing geometry without moving the layout, and passed the 50.8-second exhaustive keyboard contract plus six layout/forced-color contracts (pending commit).

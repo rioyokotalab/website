@@ -338,6 +338,10 @@ def main() -> int:
             fail(findings, path, "unexpected iframe")
         elif re.search(r'</?address\b', text, flags=re.I):
             fail(findings, path, "unexpected address element")
+        expected_pdf_links = 1 if relative == "member/yokota.html" else 0
+        pdf_links = re.findall(r'<a href="[^"]+\.pdf"\s+type="application/pdf"', text, flags=re.I)
+        if len(pdf_links) != expected_pdf_links or len(re.findall(r'<a href="[^"]+\.pdf"', text, flags=re.I)) != expected_pdf_links:
+            fail(findings, path, "local PDF link media type mismatch")
         if document.html_lang.lower() != expected_lang:
             fail(findings, path, f"lang must be {expected_lang}")
         heading_name = "YOKOTA Laboratory" if expected_lang == "en" else "横田研究室"
