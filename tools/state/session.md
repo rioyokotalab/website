@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:28+0900
-task: T-95 remove empty table-section artifacts
+updated: 2026-07-13T04:30+0900
+task: T-96 remove empty semantic article artifacts
 status: in-progress
 
 ## Now
-- Goal: remove redundant empty table-section markup without altering any rows, grouping, or rendered geometry.
-- Last done: T-94 marked 96 EN and 100 JP single-day archive dates with valid ISO/native time semantics, preserved four styled separators and four ranges, and passed exact static, five layout/browser, fast, and staging checks.
-- Next: distinguish 20 empty `tbody` pairs from 13 nonempty table sections, remove only the empty pairs, enforce absence, and compare news tables across viewports/print.
+- Goal: remove semantically misleading empty containers only when they have no visual or runtime purpose.
+- Last done: T-95 removed 20 empty EN/JP news `tbody` artifacts, retained all three nonempty explicit sections and every row, and passed source/rendered-DOM, five layout/browser, fast, and staging checks.
+- Next: classify empty articles/sections/paragraphs by computed geometry and selector/runtime references; remove only zero-geometry unreferenced articles and preserve spacing paragraphs/gallery hooks.
 
 ## Working set
-- EN/JP news table sections, row/group counts and order, screen/print geometry, standards/browser tests.
+- Empty semantic containers, computed geometry, selector/runtime references, standards/layout tests.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

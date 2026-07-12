@@ -1,14 +1,14 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-95.
+`tools/state/session.md`. Next free id: T-97.
 
 ## Active
 
-### T-95 — remove empty table-section artifacts
-Audit explicit table-section elements in both news archives; remove only empty
-legacy `tbody` pairs that follow rows, preserve all nonempty sections and row
-order, and verify browser table geometry and accessibility semantics.
+### T-96 — remove empty semantic article artifacts
+Audit empty semantic containers across the mirrored trees; remove only elements
+that contribute neither content nor layout, retain deliberate spacing and
+gallery hooks, and enforce the resulting minimal inventory.
 
 ## Blocked / awaiting user
 
@@ -34,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-95 removed 20 empty legacy `tbody` artifacts from the EN/JP news archives while retaining all three nonempty explicit sections and every row, and passed source/rendered-DOM, five layout/browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-94 added valid ISO/native time semantics to 96 English and 100 Japanese single-day archive dates, preserved four legacy styled separators and all four visible multi-day ranges, and passed exact static, five layout/browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-93 added valid ISO/native time semantics to all 32 rendered English and 14 rendered Japanese home-news dates, deliberately excluded 18 commented Japanese historical rows, and passed exact static, five browser/layout, fast, and staging checks (pending commit).
 - 2026-07-13 T-92 identified the two mirrored CV downloads as `application/pdf`, retained their explicit labels/new-tab behavior, and passed exact static, two route-wide browser, fast, and staging checks (pending commit).

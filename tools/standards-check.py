@@ -345,6 +345,8 @@ def main() -> int:
             fail(findings, path, "local PDF link media type mismatch")
         if document.html_lang.lower() != expected_lang:
             fail(findings, path, f"lang must be {expected_lang}")
+        if re.search(r'<tbody>\s*</tbody>', text, flags=re.I):
+            fail(findings, path, "empty table section")
         visible_text = re.sub(r'<!--.*?-->', '', text, flags=re.S)
         date_pairs = re.findall(r'<time datetime="(\d{4}-\d{2}-\d{2})">(\d{4}\.\d{2}\.\d{2})</time>', visible_text)
         if relative == "index.html":
