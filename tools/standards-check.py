@@ -41,6 +41,8 @@ class Document(HTMLParser):
         self.og_properties: dict[str, list[str]] = {}
         self.legacy_nowrap = 0
         self.no_wrap_classes = 0
+        self.legacy_valign = 0
+        self.vertical_top_classes = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -51,6 +53,10 @@ class Document(HTMLParser):
             self.legacy_nowrap += 1
         if "no-wrap" in values.get("class", "").split():
             self.no_wrap_classes += 1
+        if "valign" in values:
+            self.legacy_valign += 1
+        if "vertical-top" in values.get("class", "").split():
+            self.vertical_top_classes += 1
         if tag == "html":
             self.html_lang = values.get("lang", "")
         if tag == "body":
@@ -222,6 +228,14 @@ def main() -> int:
         expected_no_wrap = 98 if path.relative_to(ROOT).as_posix() == "en/news/index.html" else 54 if path.relative_to(ROOT).as_posix() == "jp/news/index.html" else 0
         if document.legacy_nowrap or document.no_wrap_classes != expected_no_wrap:
             fail(findings, path, "legacy nowrap or no-wrap class count mismatch")
+        vertical_top_counts = {
+            "en/index.html": 64, "jp/index.html": 28,
+            "en/member/yokota.html": 16, "jp/member/yokota.html": 16,
+            "en/news/index.html": 210, "jp/news/index.html": 218,
+        }
+        expected_vertical_top = vertical_top_counts.get(path.relative_to(ROOT).as_posix(), 0)
+        if document.legacy_valign or document.vertical_top_classes != expected_vertical_top:
+            fail(findings, path, "legacy valign or vertical-top class count mismatch")
         if document.unsafe_semantics:
             fail(findings, path, "JavaScript URL or inline event handler")
         missing_fragments = sorted(set(document.fragments) - document.targets)

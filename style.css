@@ -435,6 +435,9 @@ table td.line {
 .no-wrap {
 	white-space: nowrap;
 }
+.vertical-top {
+	vertical-align: top;
+}
 table td.uline {
 	border-top: 1px solid var(--border);
 	border-bottom: 1px solid var(--border);
