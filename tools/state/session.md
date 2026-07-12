@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-50 prioritize the above-the-fold hero image
+task: T-51 modernize legacy named section anchors
 status: in-progress
 
 ## Now
-- Goal: explicitly prioritize the single above-the-fold hero banner on every mirrored page without changing image loading classes or presentation.
-- Last done: T-50 adds exactly one high fetch priority to the hero banner on every page and permanently rejects missing/extra/non-hero priority hints. Full suite passes; EN/JP home/subpage banners load naturally and preserve live dimensions within 1px at 1280px and 390px.
-- Next: rebase, inspect the hero-markup-only deployment preview, publish T-50, verify representative live attributes, then close T-50 and start T-51 in a small anchor-family batch.
+- Goal: replace obsolete empty named anchors with IDs on semantic target elements while preserving every fragment and scroll destination in reviewable batches.
+- Last done: T-51 first batch migrated the verified 100 heading-start targets (47 EN, 53 JP) to semantic H3 IDs; only 200 News event anchors remain. Permanent checks enforce location/count and fragment/ID validity. A scoped -10px scroll margin exactly preserves historical `scrollY` and visible heading position on tested EN/JP About and Contact targets at desktop/mobile; the full suite passes.
+- Next: rebase, inspect and publish the heading-anchor/CSS-cache checkpoint, verify live fragments, then migrate the remaining News event anchors as a separate T-51 batch.
 
 ## Working set
-- All 26 banner-top/sub image elements, exact fetch-priority standards checks, representative geometry/load browser verification, ledger/bookkeeping.
+- 100 heading-start named anchors across EN/JP, fragment-target and unique-ID standards checks, representative live/local scroll-position comparisons, ledger/bookkeeping. The 200 News event anchors remain a separate T-51 batch.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

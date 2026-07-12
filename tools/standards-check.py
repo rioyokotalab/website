@@ -120,10 +120,17 @@ def main() -> int:
     if len(pages) != 26:
         findings.append(f"expected 26 bilingual pages, found {len(pages)}")
     style_versions: set[str] = set()
+    remaining_named_anchors = 0
     for path in pages:
         text = path.read_text(encoding="utf-8")
         if re.search(r'/\s+class="content-width-', text):
             fail(findings, path, "class placed after self-closing slash")
+        named_anchors = len(re.findall(r'<a\s+name=', text, flags=re.I))
+        remaining_named_anchors += named_anchors
+        if named_anchors and path.relative_to(ROOT).parts[1] != "news":
+            fail(findings, path, "legacy named anchor outside News")
+        if re.search(r'<h[1-6][^>]*><a\s+name=', text, flags=re.I):
+            fail(findings, path, "legacy named anchor inside heading")
         document = Document()
         document.feed(text)
         expected_lang = "en" if path.relative_to(ROOT).parts[0] == "en" else "ja"
@@ -211,6 +218,8 @@ def main() -> int:
                 fail(findings, path, f"versioned {asset.split('?')[0]} mismatch")
     if len(style_versions) != 1:
         findings.append("stylesheet cache versions differ across pages")
+    if remaining_named_anchors != 200:
+        findings.append(f"expected 200 remaining News event anchors, found {remaining_named_anchors}")
     for script in sorted((ROOT / "js").glob("*.js")):
         source = script.read_text(encoding="utf-8")
         if re.search(r"\.style\b|setAttribute\s*\(\s*['\"]style['\"]", source):
