@@ -226,7 +226,7 @@ def main() -> int:
             fail(findings, path, "requires one versioned stylesheet")
         else:
             style_versions.add(matches[0])
-        for asset in ("pagetop.js?v=20260713", "responsive-menu.js?v=20260713"):
+        for asset in ("pagetop.js?v=20260713", "responsive-menu.js?v=20260713b"):
             if text.count(asset) != 1:
                 fail(findings, path, f"versioned {asset.split('?')[0]} mismatch")
     if len(style_versions) != 1:

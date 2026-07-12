@@ -659,7 +659,7 @@ table.table tr:nth-child(even) td {
 	display: none;
 }
 
-@media only screen and (min-width:900px) {
+@media only screen and (min-width:901px) {
 #wrapper, .inner, ul.topnav {
 	max-width: 1080px;
 	width: 100%;

@@ -1,14 +1,33 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-54.
+`tools/state/session.md`. Next free id: T-59.
 
 ## Active
 
-### T-53 — complete locale-aware social metadata
-Add exact Open Graph locale and alternate-locale metadata to mirrored EN/JP
-pages, align canonical Open Graph URLs, and verify the generated head metadata
-without changing visible content.
+### T-54 — unify responsive navigation breakpoint
+Match the navigation script's activation boundary to the CSS 900px mobile
+breakpoint so the hamburger remains operable from 801–900px. Preserve behavior
+and geometry below 801px and above 900px, with boundary browser coverage.
+
+### T-55 — migrate obsolete nowrap table attributes
+Replace all 152 legacy `nowrap` attributes with a shared semantic presentation
+class, preserving exact computed white-space and table geometry across EN/JP
+News and other consumers.
+
+### T-56 — migrate obsolete vertical-alignment attributes
+Replace all 588 `valign="top"` table-cell attributes with a shared class in
+bounded page-family batches, retaining exact computed alignment and row sizes.
+
+### T-57 — modernize remaining table presentation attributes
+Inventory and migrate legacy table border, alignment, spacing, width, and
+background attributes only where shared classes can preserve computed layout
+exactly; split heterogeneous cases rather than normalizing content tables.
+
+### T-58 — audit heading hierarchy and accessible names
+Check all 26 pages for skipped/empty headings and unlabeled interactive
+controls after the semantic migrations, fix only unambiguous structural issues,
+and add page-level regression coverage without changing visible wording.
 
 ## Blocked / awaiting user
 
@@ -34,6 +53,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-53 aligned all 27 Open Graph URLs to clean canonicals, added reciprocal en_US/ja_JP locale metadata, enforced exact head values, and preserved representative layout (`1a8cd47`).
 - 2026-07-13 T-52 added minimal robots and a generated 27-URL bilingual sitemap with three alternates per URL, integrated both into positive deployment/security checks, excluded repo-only paths, and verified every live destination (`d3ad764`).
 - 2026-07-13 T-51 replaced 100 heading anchors and 200 News event anchors with semantic/same-position IDs, collision-safely preserved all historical aliases, eliminated legacy `name` markup, and matched representative fragment positions exactly at desktop/mobile (`8aa8582`, `02d5a3f`, `91a70fc`).
 - 2026-07-13 T-50 added exactly one high fetch priority to each page's hero banner, enforced the classification, and preserved EN/JP home/subpage geometry within 1px at desktop/mobile (`c413ba6`).
@@ -41,19 +61,3 @@ recloned or carefully reset to rewritten main.
 - 2026-07-13 T-48 migrated five style blocks, eleven style attributes, and runtime style mutations into shared classes; exact computed parity passed, a strict policy produced zero report-only violations across consent/menu/scroll/gallery/map tests, and CSP now enforces without style `unsafe-inline` (`4fa5652`, `c8bccd3`, `4650272`).
 - 2026-07-13 T-47 paired all 155 lazy content images with asynchronous decoding, permanently enforced the relationship, and passed browser decode/load checks across news, portraits, research, galleries, and computer imagery (`579a41d`).
 - 2026-07-13 T-46 added verified intrinsic 450x65 EN and 436x65 JP dimensions to all 26 header logos, enforced them, and preserved desktop/mobile geometry within 0.0625px (`d0a7d99`).
-- 2026-07-13 T-45 added localized accessible map titles, moved embed presentation into shared CSS, permanently enforced the contract, and preserved exact desktop/mobile dimensions (`d8c111a`).
-- 2026-07-13 T-44 marked exact current destinations for assistive technology in desktop/mobile navigation, permanently enforced linked/mobile-only/unlinked states, and preserved header geometry (`227fef0`).
-- 2026-07-13 T-43 added exact self-canonical and reciprocal EN/JA/x-default metadata to all 26 pages, permanently enforced mirrored mappings, and passed representative no-layout-change browser checks (`966b87b`).
-- 2026-07-13 T-42 modernized root metadata, removed an invalid empty meta element, and added a styled bilingual no-script fallback; browser checks preserved EN/JP/non-English routing and verified the fallback (`3c97aae`).
-- 2026-07-13 T-41 gave every back-to-top control a stable target and localized accessible name, honored reduced-motion preferences in CSS/JS, and added permanent regression coverage; normal and reduced-motion browser behavior passed in EN/JP (`0569865`).
-- 2026-07-13 T-40 folded responsive navigation into one scoped modern script, removed 26 obsolete loaders and the 2015 global/polyfill asset, and corrected desktop button visibility caught by regression; EN/JP keyboard/pointer and desktop/mobile behavior passed (`7e7e940`).
-- 2026-07-13 T-39 replaced all 26 decorative hamburger divs with localized real buttons, synchronized `aria-expanded`, preserved geometry within 1px, and permanently enforced the accessible control contract (`4c6748f`).
-- 2026-07-13 T-36 migrated all 145 uniform `<p align="center">` instances to a shared semantic class; computed centering and representative wrapper geometry remained identical, while heterogeneous table layout attributes were intentionally retained (`75a215c`).
-- 2026-07-13 T-37 added zero-dependency standards/accessibility enforcement for mirrored paths, languages, unique IDs, landmarks/navigation/skip links, image semantics/loading, fragments, stylesheet versions, and safe script/link semantics; it now runs automatically before every publish.
-- 2026-07-13 T-38 replaced duplicated desktop/mobile `topnav` IDs with a shared class across all 26 pages and aligned two duplicated EN event anchors with JP; every ID is unique, fragments are distinct, and menu geometry stayed within 1px (`9a44e31`).
-- 2026-07-13 T-35 completed image alternatives with localized professor portrait text and decorative alternatives for redundantly captioned gallery images; all content images remain lazy while logos/heroes remain eager (`d44f862`).
-- 2026-07-13 T-34 added semantic header/main/footer landmarks, distinct navigation labels, and localized keyboard-visible skip links to all 26 pages; desktop/mobile geometry stayed within 1px of baseline and live returning-visitor focus reaches main without altering privacy-banner focus (`d94effd`).
-- 2026-07-13 T-33 externalized all 26 repeated responsive-menu bootstraps and the root language redirect, verified EN/JP redirect/mobile/consent behavior 7/7, passed a live report-only gate, then enforced `script-src` without `'unsafe-inline'`; only inert JSON-LD remains inline (`557d795`, `f682185`).
-- 2026-07-13 T-32 found zero consumers of the packed dropdown code, removed all 26 dead loaders and `ddmenu_min.js`, validated a simultaneous report-only policy, then enforced CSP without `'unsafe-eval'`; representative live gallery/navigation/map/consent behavior remained clean (`d305d03`, `a24645c`).
-- 2026-07-13 T-31 replaced all 26 JavaScript-only language controls with direct mirrored links, removed the unused loader/asset, made secret scanning deletion-safe, and verified keyboard/no-JavaScript navigation locally and live without visual or wording changes (`ac6c09b`).
-- 2026-07-13 T-30 independently verified all three pinned CDN assets and their SHA-384/crossorigin tags on six gallery pages, confirmed the exact Playwright 1.61.1 lock has zero known vulnerabilities, added pre-publish offline and disposable online audit commands, documented trusted sources/quarterly cadence, and proved packages/tests/caches cannot enter deploy staging.

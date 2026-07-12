@@ -3,8 +3,8 @@
 
 	var control = document.getElementById("menubar_hdr");
 	var menu = document.getElementById("menubar-s");
-	var viewportWidth = Math.min(window.screen.width, window.innerWidth);
-	if (!control || !menu || viewportWidth > 800) {
+	var mobileNavigation = window.matchMedia("(max-width: 900px)").matches;
+	if (!control || !menu || !mobileNavigation) {
 		return;
 	}
 

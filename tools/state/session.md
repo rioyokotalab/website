@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-53 complete locale-aware social metadata
+task: T-54 unify responsive navigation breakpoint
 status: in-progress
 
 ## Now
-- Goal: make Open Graph URL/locale discovery agree exactly with canonical bilingual metadata without changing page content or layout.
-- Last done: T-53 aligns all 27 og:url values with clean canonicals and adds exact primary/alternate en_US/ja_JP locales. Permanent checks cover root and all mirrored pages; full suite and representative EN/JP directory/profile browser head checks pass with unchanged 112px desktop header geometry.
-- Next: rebase, inspect the 27-HTML metadata-only deployment preview, publish T-53, verify representative live heads, then close T-53 and seed the next queue.
+- Goal: eliminate the 801–900px gap where mobile CSS is active but the hamburger script returns without wiring the control.
+- Last done: T-54 replaces the 800px JS cutoff with the CSS-equivalent 900px media query and removes the exact-900 overlap by moving desktop CSS to min-width 901px. Script/style references are cache-busted and enforced. Full suite passes; EN/JP controls open/close correctly at 800/801/850/900 and remain desktop-hidden at 901, while <=800 geometry is exact against live.
+- Next: rebase, inspect the JS/CSS/cache deployment preview, publish T-54, verify live 850/900/901 behavior, then close T-54 and start T-55.
 
 ## Working set
-- Root plus all 26 EN/JP HTML heads, exact OG URL/locale standards checks, representative browser head/layout verification, ledger/bookkeeping.
+- `js/responsive-menu.js`, its 26 cache-busted references, exact standards check, EN/JP boundary browser behavior/geometry, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
