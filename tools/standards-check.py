@@ -173,10 +173,14 @@ def main() -> int:
     findings: list[str] = []
     style_text = (ROOT / "style.css").read_text(encoding="utf-8")
     focus_selector = "a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible"
-    if style_text.count(focus_selector) != 1 or "outline: 2px solid #fff;" not in style_text or "box-shadow: 0 0 0 4px var(--accent-hover) !important;" not in style_text:
+    if style_text.count(focus_selector) != 2 or "outline: 2px solid #fff;" not in style_text or "box-shadow: 0 0 0 4px var(--accent-hover) !important;" not in style_text:
         findings.append("two-tone keyboard focus indicator mismatch")
     if style_text.count("#main a {") != 1 or "text-decoration-thickness: 0.08em;" not in style_text or "text-underline-offset: 0.15em;" not in style_text:
         findings.append("non-color content-link indicator mismatch")
+    if style_text.count("@media (forced-colors: active)") != 1 or 'ul.topnav a[aria-current="page"]' not in style_text or "outline: 3px solid Highlight;" not in style_text:
+        findings.append("forced-colors state/focus treatment mismatch")
+    if "width: 42px;\n\tmin-height: 42px;" not in style_text:
+        findings.append("mobile menu target-size mismatch")
     if style_text.count("--oral-highlight: #cc0000;") != 1 or style_text.count("--oral-highlight: #ff6b6b;") != 1 or "color: var(--oral-highlight);" not in style_text:
         findings.append("light/dark oral-highlight palette mismatch")
     root_text = (ROOT / "index.html").read_text(encoding="utf-8")

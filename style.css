@@ -317,7 +317,7 @@ ul.topnav a {
 ul.topnav li:first-child a, ul.topnav li:last-child a {
 	width: auto;
 }
-ul.topnav li.active a, ul.topnav a:hover {
+ul.topnav li.active a, ul.topnav a[aria-current="page"], ul.topnav a:hover {
 	color: #fff;
 	text-decoration: none;
 	border-bottom-color: #7ea6d9;
@@ -854,7 +854,8 @@ h3.heading, #sub .grid h3 {
 	position: absolute;
 	top: 35px;
 	right: 5%;
-	width: 22px;
+	width: 42px;
+	min-height: 42px;
 	border: 1px solid rgba(255,255,255,0.7);
 	padding: 8px 8px 2px 8px;
 	background: rgba(255,255,255,0.12);
@@ -963,4 +964,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 	outline: 2px solid #fff;
 	outline-offset: 2px;
 	box-shadow: 0 0 0 4px var(--accent-hover) !important;
+}
+
+@media (forced-colors: active) {
+	ul.topnav a[aria-current="page"] {
+		outline: 2px solid Highlight;
+		outline-offset: -4px;
+	}
+	a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+		outline: 3px solid Highlight;
+		outline-offset: 2px;
+		box-shadow: none !important;
+	}
 }

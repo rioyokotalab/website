@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T04:00+0900
-task: T-70 strengthen forced-colors compatibility
+updated: 2026-07-13T04:16+0900
+task: T-71 audit oversized image delivery
 status: in-progress
 
 ## Now
-- Goal: preserve visible controls, focus, boundaries, and selected/current states when user-agent forced colors replace the normal palette, without altering normal-mode presentation.
-- Last done: T-69 measured all 183 visible main-content text links at only 1.43:1 versus surrounding text, added a thin underline scoped to #main, verified every content link in light/dark modes, left navigation/sidebar/footer/gallery visuals unchanged, and preserved geometry.
-- Next: emulate forced-colors active on representative EN/JP desktop/mobile pages, inventory transparent/lost boundaries and state indicators for menus, consent, current links, focus, tables, and back-to-top, then add only targeted system-color overrides.
+- Goal: identify material image transfer waste relative to rendered dimensions and choose only lossless or visually verified reductions that retain every original and preserve appearance.
+- Last done: T-70 confirmed forced colors preserved content/consent/tables but erased current-page distinction and exposed a 22px dot-like menu icon; added normal/forced current state, forced focus, and a 42x42 three-bar button, then passed forced screenshots and EN/JP 320/390/900/901 operation.
+- Next: collect encoded bytes, intrinsic dimensions, MIME, alpha/animation metadata, and maximum rendered sizes for all images across 390/1200px pages; rank byte/pixel oversupply and distinguish shared hero/gallery/content assets before proposing edits.
 
 ## Working set
-- Representative home/news/computers/contact pages plus consent banner under forced colors; screenshots/computed system colors/focus/current state; any scoped media overrides/cache bump/checker; ledger/bookkeeping.
+- All public raster assets plus rendered usage at 390/1200px; file type/dimensions/bytes/alpha and duplicate hashes; candidate optimization report or verified variants; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
