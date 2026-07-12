@@ -27,3 +27,4 @@ Judge-only, `main`-only checklist; never sync this file to contestant branches.
 - [ ] Clear/reseed `tools/todo.md` for the next round.
 - [ ] Build the next judge-free shared scaffold and resync all four branches.
 - Timing adjustment (owner-reported, 2026-07-12): terra's round-2 run stalled ~10 minutes waiting for an owner approval the owner missed — NOT terra's fault. Judge must subtract ~10 min from terra's wall-clock and note the confound; also flag WHICH approval prompt stalled it if terra's logs show it (relevant evidence for T-11 approval-friction scoring).
+- Standing (2026-07-12): timing = ACTIVE time; subtract documented approval-wait intervals (see skills/model-eval.md) and owner-reported stalls; report raw AND active. Round 2: terra already has a ~10-min owner-reported credit.

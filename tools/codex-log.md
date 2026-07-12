@@ -368,3 +368,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | coordinator | 5th contestant peek | tools/out/contestant-peek5.md | n/a | PASS
 2026-07-12 | coordinator | 6th contestant peek | tools/out/contestant-peek6.md | n/a | pass
 2026-07-12 | coordinator | record terra approval-wait timing credit | tools/judge/todo.md | <this session> | pass
+2026-07-12 | coordinator | timing protocol: approval-wait exclusion | tools/model-eval.md + tools/judge/todo.md | this session | PASS

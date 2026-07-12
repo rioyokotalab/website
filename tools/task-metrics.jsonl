@@ -318,3 +318,4 @@
 {"date":"2026-07-12","task_type":"git-summary","agent":"coordinator","tier":"codex-spark-low","duration_ms":null,"success":true,"note":"5th read-only peek at 4 contestant clones"}
 {"date":"2026-07-12","task_type":"git-summary","agent":"coordinator","tier":"codex-spark-low","duration_ms":null,"success":true,"note":"6th read-only peek at 4 contestant clones; GA anomaly check"}
 {"date":"2026-07-12","task_type":"other","agent":"coordinator","tier":"codex-spark-low","duration_ms":null,"success":true,"note":"judge ledger: terra 10-min approval-wait credit recorded"}
+{"date":"2026-07-12","task_type":"config-edit","agent":"coordinator","tier":"codex-spark-low","duration_ms":null,"success":true,"note":"model-eval protocol: approval-wait excluded from scored timing (active time); driver wait-logging duty added"}

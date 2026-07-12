@@ -37,6 +37,15 @@ Report all available sources, never a single speed claim:
 State the contestant start order or that it is unknown. Treat timing as secondary
 unless start conditions and measurement methods are genuinely comparable.
 
+Approval-wait exclusion (owner decision 2026-07-12): scoring uses ACTIVE time =
+wall-clock minus documented approval/owner-wait stalls. (a) Drivers MUST log any
+blocked-on-approval interval in tools/state/session.md as
+`approval-wait: <start> -> <end> (<prompt>)` the moment they resume, and SHOULD
+include `"approval_wait_ms"` in their metrics notes. (b) The judge subtracts all
+documented waits plus owner-reported stalls from each contestant's wall-clock and
+reports both raw and active times. (c) Undocumented waits are not credited —
+logging the wait is part of ledger discipline and is itself scored.
+
 ## Scoring
 
 Use the Round 1 axes: correctness 40, completeness 30, scope discipline 20,
