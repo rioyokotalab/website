@@ -94,13 +94,18 @@ tools/out/driver-report-<YYYYMMDD-HHMM>.md (transient; the reviewer
 deletes it after grading) containing:
 - model + reasoning effort actually used; session start/end times.
 - Per task attempted: id, outcome (done | blocked | awaiting-user |
-  failed), files touched, verification commands run and their results.
+  failed), files touched, verification commands run and their results; when
+  available include run id, capability/P2P/scope result, actual token categories,
+  prompt/instruction bytes, completed/failed commands and output size, and
+  setup/worker/grader/review durations.
 - Escalations: every sandbox/approval escalation requested (and whether
   the user approved), every network fetch (URLs), every rule the session
   could not follow and why.
 - Self-noted gaps: anything a reviewer should double-check.
-Metrics: one line PER task attempted, tier driver-codex, plus an optional
-"model" key (allowed only on driver-* lines). codex-log line format for
+Metrics: one schema-v2 line PER instrumented task attempted, validated by
+`tools/task-metrics.py`; unknown telemetry stays null. Legacy v1 is retained
+only for uninstrumented/history compatibility. Driver tier is driver-codex or
+driver-claude. codex-log line format for
 drivers: `date | <brand>-driver (<model>) | tasks | report path | n/a |
 outcome` (brand = claude or codex; claude drivers use agent "claude",
 tier "driver-claude"). The Claude review pass grades the report against git diff (not

@@ -39,11 +39,14 @@ least one material claim independently, runs proportional integration tests,
 and rejects or corrects incomplete work. Never accept a subagent's assertion as
 verification of its own work.
 
-Record delegated task duration/outcome in `tools/task-metrics.jsonl` when the
-runtime reports it. Do not claim token savings without measured telemetry. When
-telemetry is unavailable, record only observable proxies: context-fork size,
-prompt size, files loaded by the root, duration, result completeness, and review
-cost.
+Record delegated work with schema v2 (`tools/task-metrics.schema.json`) when the
+runtime reports it. Include worker and root-review cost: actual token categories,
+prompt/instruction bytes, completed/failed commands and output size, setup/
+worker/grader/review durations, retries, score/gates, and failure phase. Raw
+trajectories stay under `tools/out/`; the metrics line stores only their pointer.
+Do not claim token savings without matched measured telemetry. When telemetry is
+unavailable, use `null` and record only observable proxies; never silently treat
+unknown tokens or review time as zero.
 
 ## Decision checklist
 

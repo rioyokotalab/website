@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "1dbd72a",
+  "score_components": {"f2p": 55, "p2p": 25, "scope": 15, "completion": 5},
+  "tasks": [
+    {
+      "id": "WBD-001",
+      "title": "Bilingual CRLF home-news semantics repair",
+      "held_out": false,
+      "version": 1,
+      "prompt": "The newest 2026.02.23 home-news date on both the English and Japanese home pages lost its machine-readable date semantics. Restore the native time element with datetime=2026-02-23 on the existing newest row without changing visible text, links, order, layout, or any other row. Preserve CRLF and legacy HTML. Do not use the network, publish, deploy, push, or edit tests, configuration, or ledger files.",
+      "authorized_paths": ["en/index.html", "jp/index.html"],
+      "context": ["AGENTS.md", "skills/html-editing.md", "skills/en-jp-parity.md", "en/index.html", "jp/index.html"],
+      "worker": "codex-spark-low",
+      "default_worker": "codex-spark-low",
+      "model": "gpt-5.3-codex-spark",
+      "effort": "low",
+      "timeout_seconds": 300,
+      "p2p": [
+        ["python3", "tools/standards-check.py"],
+        ["npx", "playwright", "test", "tests/home-news-dates.spec.js", "tests/home-news-table-name.spec.js", "tests/layout-contracts.spec.js"]
+      ]
+    },
+    {
+      "id": "WBD-002",
+      "title": "Secure named mirrored CV links",
+      "held_out": false,
+      "version": 1,
+      "prompt": "Repair the CV download link on both Yokota profile pages. It must remain a clearly named localized PDF link, safely open in a new tab, and keep the existing destination and layout. Make only the necessary HTML changes. Do not use the network, publish, deploy, push, or edit tests, configuration, or ledger files.",
+      "authorized_paths": ["en/member/yokota.html", "jp/member/yokota.html"],
+      "context": ["AGENTS.md", "skills/html-editing.md", "skills/en-jp-parity.md", "en/member/yokota.html", "jp/member/yokota.html"],
+      "worker": "codex-spark-low",
+      "default_worker": "codex-spark-low",
+      "model": "gpt-5.3-codex-spark",
+      "effort": "low",
+      "timeout_seconds": 300,
+      "p2p": [
+        ["python3", "tools/security-check.py"],
+        ["python3", "tools/standards-check.py"],
+        ["npx", "playwright", "test", "tests/interactive-names.spec.js", "tests/runtime-health.spec.js"]
+      ]
+    },
+    {
+      "id": "WBD-003",
+      "title": "Privacy-first consent revocation",
+      "held_out": false,
+      "version": 1,
+      "prompt": "The analytics consent control regressed. Restore privacy-first behavior: no Google request before explicit acceptance; revoking previously accepted analytics must delete GA cookies, persist rejection, and reload without another Google request; keyboard focus must initially choose Reject. Preserve translations and storage compatibility. Change only js/analytics-consent.js. Do not use the network, publish, deploy, push, or edit tests, configuration, or ledger files.",
+      "authorized_paths": ["js/analytics-consent.js"],
+      "context": ["AGENTS.md", "js/analytics-consent.js", "tests/analytics-consent.spec.js"],
+      "worker": "codex-medium",
+      "default_worker": "codex-medium",
+      "model": "gpt-5.6-terra",
+      "effort": "medium",
+      "timeout_seconds": 600,
+      "p2p": [
+        ["npx", "playwright", "test", "tests/analytics-consent.spec.js"],
+        ["python3", "tools/security-check.py"]
+      ]
+    },
+    {
+      "id": "WBD-004",
+      "title": "Responsive mobile wrapper and menu repair",
+      "held_out": false,
+      "version": 1,
+      "prompt": "At 390x844 the English home-page content is excessively narrow and the opened navigation has become single-column. Use the attached pristine reference screenshot to restore the established mobile wrapper spacing and two-column opened menu while preserving desktop behavior, overflow containment, and existing style. Change only style.css. Do not use the network, publish, deploy, push, or edit tests, configuration, or ledger files.",
+      "authorized_paths": ["style.css"],
+      "context": ["AGENTS.md", "skills/html-editing.md", "style.css", "tests/layout-contracts.spec.js"],
+      "worker": "codex-medium",
+      "default_worker": "codex-medium",
+      "model": "gpt-5.6-terra",
+      "effort": "medium",
+      "timeout_seconds": 600,
+      "p2p": [
+        ["npx", "playwright", "test", "tests/layout-contracts.spec.js", "tests/text-spacing.spec.js"],
+        ["python3", "tools/standards-check.py"]
+      ]
+    },
+    {
+      "id": "WBD-005",
+      "title": "Held-out reduced-motion multi-file repair",
+      "held_out": true,
+      "version": 1,
+      "prompt": "Users requesting reduced motion still see gallery fades and resizing on some pages, while ordinary users must retain the current animation timings. Repair the shared CSS/JavaScript behavior, including live preference changes, and make every page that loads the Lightbox accessibility helper use one current query version. Preserve EN/JP parity, CRLF, and unrelated layout. Do not use the network, publish, deploy, push, or edit tests, configuration, or ledger files.",
+      "authorized_paths": ["style.css", "js/lightbox-accessibility.js", "en/**/*.html", "jp/**/*.html"],
+      "context": ["AGENTS.md", "skills/html-editing.md", "skills/en-jp-parity.md", "style.css", "js/lightbox-accessibility.js"],
+      "worker": "codex-high",
+      "default_worker": "codex-high",
+      "model": "gpt-5.6-sol",
+      "effort": "high",
+      "timeout_seconds": 900,
+      "p2p": [
+        ["npx", "playwright", "test", "tests/reduced-motion.spec.js", "tests/lightbox-accessibility.spec.js", "tests/runtime-health.spec.js"],
+        ["python3", "tools/standards-check.py"]
+      ]
+    }
+  ]
+}

@@ -246,7 +246,11 @@ history.
 
 Recurring worker routing and task metrics live in
 `tools/task-tier-policy.md`, `tools/task-metrics.jsonl`, and
-`tools/codex-log.md`. Project configuration changes require explicit task scope; owner-scope
+`tools/codex-log.md`. Validate and summarize the backward-compatible structured
+metrics with `python3 tools/task-metrics.py validate` and `python3
+tools/task-metrics.py summarize`. Raw benchmark trajectories remain ignored
+under `tools/out/` while their compact run records retain artifact pointers.
+Project configuration changes require explicit task scope; owner-scope
 configuration remains proposal-only unless the user authorizes the exact write.
 See `skills/config-proposals.md` for the review contract.
 

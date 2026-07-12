@@ -1,3 +1,3 @@
 # Durable decisions
 
-No durable decisions recorded.
+- **2026-07-13 — Token optimization is capability-gated by a fixed local web-development suite.** Use detached real-repository tasks with hidden F2P assertions, existing P2P checks, deterministic browser evidence, actual runner token telemetry, and one held-out multi-file task. Retain an optimization only when every critical assertion passes, every task scores at least 85/100, the mean does not fall below baseline, and matched passing runs reduce total worker plus review/repair cost. Rationale: upstream suites supply useful methods but do not match this bilingual build-free maintenance workload closely enough to import wholesale.

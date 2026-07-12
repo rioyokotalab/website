@@ -33,14 +33,22 @@ Fan-out:
 Logging (last actions of every delegated task):
 - codex appends to `tools/codex-log.md`:
   `date | calling agent | task | output file | conversationId | outcome`.
-- The orchestrator appends one line to `tools/task-metrics.jsonl`:
-  `{"date","task_type","agent","tier","duration_ms","success","note"}` with
-  `tier` = worker name (drivers: driver-claude|driver-codex; driver lines may add a "model" key). Fixed task_type enum: mechanical-edit, content-draft,
+- New instrumented work appends one schema-v2 line to
+  `tools/task-metrics.jsonl`; validate with `python3 tools/task-metrics.py
+  validate`. The canonical fields and nullability are in
+  `tools/task-metrics.schema.json`. Preserve run/task identity, model/effort,
+  capability/P2P/scope gates, actual input/cached/output/reasoning tokens,
+  completed/failed command counts, tool-output size, phase durations,
+  changed files, retries/escalation, failure provenance, and the raw artifact
+  pointer. Unknown values are `null`, never fabricated zero. Legacy v1 lines
+  remain accepted for uninstrumented historical work and are never rewritten.
+- `tier` = worker name (drivers: driver-claude|driver-codex). Fixed task_type enum: mechanical-edit, content-draft,
   translation, metadata-lookup, verify-parity, git-summary, deploy-publish,
   exporter-logic, diagnosis, figure-production, config-edit, other.
 
-Prompts pass pointers (paths/URLs/skill names), never payloads; codex reads
-AGENTS.md, the named skills/*.md, and referenced repository files itself.
+Prompts pass pointers (paths/URLs/skill names), never payloads. Repository
+instructions are injected by Codex; do not ask the worker to print them back.
+Workers read only the named task-relevant skills and source ranges.
 
 Context ledger (canonical: skills/context-ledger.md):
 - Point dispatches at on-disk state — skill paths, tools/state/*, the

@@ -399,3 +399,7 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-13 | codex-driver (gpt-5) | T-30 third-party and test-tool supply chain | tools/out/driver-report-20260713-0006.md | n/a | done; hashes/lock/audit/staging verified, push pending
 2026-07-13 | codex-driver (gpt-5) | T-31–T-107 continuous conservative modernization | tools/out/driver-report-20260713-0453.md | n/a | done; pushed and release-ready, post-T-60 live publication pending user/Claude
 2026-07-13 | codex-driver (gpt-5) | T-108 approved live publication and verification | tools/out/driver-report-20260713-0607.md | n/a | done; bd662c7 live, 45/45 bytes match, known T-28 sentinel only
+2026-07-13 | codex-driver | T-109 compare SWE-bench Multimodal and WebDev Arena | tools/out/t109-coding-benchmarks.md | /root/t21_benchmark | complete
+2026-07-13 | codex-driver | T-110 design five repository benchmark capsules | tools/out/t110-task-capsules.md | /root/t21_benchmark | complete
+2026-07-13 | codex-driver | T-111 implement benchmark task manifest and operations | tools/out/t111-task-ops-report.md | /root/t21_benchmark | complete
+2026-07-13 | codex-driver | T-113 implement v2 task metrics schema and utility | tools/out/t113-metrics-report.md | /root/t21_benchmark | complete
