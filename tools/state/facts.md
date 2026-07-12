@@ -38,3 +38,9 @@ Update in place when reality changes; date entries. No procedures here
   deploy.sh (deletion-bearing; --dry-run first).
 - tools/ and skills/ are deploy-excluded; tools/out/ is gitignored
   scratch; tools/state/ is git-tracked.
+- 2026-07-12 pm: codex worker-sandbox outbound DNS/network went DOWN across
+  spark and standard pools (doi.org 000, empty bodies); Claude Bash
+  (site-checker) fallback worked; interactive driver sessions recover via
+  user-approved escalations. Separately: http:// arXiv API URLs 301 with an
+  empty body — always use https. Recheck network before relying on codex
+  lookups.

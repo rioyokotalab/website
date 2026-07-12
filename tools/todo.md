@@ -14,6 +14,10 @@ projects), with 0 updates/deletes and 2 ambiguous existing projects. No
 import or login UI action occurred. Awaiting the user's explicit decision
 whether to manually upload the reviewed JSONL through researchmap Settings
 > Import. Evidence: tools/out/t9-researchmap-drift.md.
+Reviewer note: the 29 inserts are composition-identical to the Cat-5 batch
+already uploaded by the user — likely pending confirmation/processing on
+researchmap's side. Check researchmap's import status BEFORE re-uploading
+(blind re-import would create duplicates).
 
 ## Recently completed (history lives in git)
 - 2026-07-12 T-8 confirmed rtx6000-ada is still DOWN+NOT_RESPONDING with 8 configured GPUs; facts.md refreshed, no page edit or job submission; raw Slurm evidence: tools/out/t8-cluster-status.md.

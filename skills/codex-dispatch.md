@@ -48,3 +48,12 @@ delta; never restate file contents.
 - Workers read the cited ledger paths first and NEVER edit
 tools/state/session.md; the driver checkpoints it. A user-started codex
 DRIVER session (AGENTS.md "Driving this repo") owns session.md instead.
+
+Probe integrity and log hygiene:
+- Copy real command output only — NEVER reconstruct or paraphrase it. Any
+  high-stakes evidence (anything that changes a grade, a recorded fact, or
+  an edit decision) must be written raw to a tools/out/ file and re-checked
+  via a second independent path (different pool, site-checker Bash, or the
+  orchestrator's own Read) before anyone acts on it.
+- Before appending to tools/codex-log.md or tools/task-metrics.jsonl,
+  ensure the file ends with a newline so entries never concatenate.
