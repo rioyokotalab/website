@@ -275,3 +275,5 @@
 {"date":"2026-07-12","task_type":"other","agent":"codex","tier":"driver-codex","duration_ms":180000,"success":true,"note":"driver test round1 (gpt-5.5): 4/4 tasks T-2..T-5 pass, gates respected; edits reset for round2 baseline comparison"}
 {"date":"2026-07-12","task_type":"git-summary","agent":"site-editor","tier":"none","duration_ms":150702,"success":true,"note":"round-2 reset: restore+clean tools/out, baseline commit 7223516"}
 {"date":"2026-07-12","task_type":"other","agent":"codex","tier":"driver-codex","duration_ms":540000,"success":true,"note":"picked up round-2 ledger tasks: T-2/T-4/T-5 complete; T-3 edit statically verified and correctly left awaiting user-run deploy dry-run"}
+{"date":"2026-07-12","task_type":"deploy-publish","agent":"site-editor","tier":"none","duration_ms":79342,"success":true,"note":"config.toml verified, deploy dry-run 0 .agents/.codex, T-3 closed, commit 4757f4a"}
+{"date":"2026-07-12","task_type":"config-edit","agent":"site-coordinator","tier":"codex-spark-medium","duration_ms":45000,"success":true,"note":"CLAUDE.md parity-wording proposal in tools/out/claude-parity-wording/ (est duration)"}

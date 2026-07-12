@@ -346,3 +346,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | site-coordinator | audit-docs | tools/out/audit-docs.md | - | completed
 2026-07-12 | site-coordinator | seed driver-test tasks T-2..T-5 | tools/todo.md | - | success
 2026-07-12 | codex-driver | resume ledger tasks T-2..T-5 | tools/out/doi-spotcheck.md | n/a | T-2/T-4/T-5 complete; T-3 edit verified, awaiting user dry-run
+2026-07-12 | site-coordinator | CLAUDE.md parity-wording proposal | tools/out/claude-parity-wording/README.md | - | completed

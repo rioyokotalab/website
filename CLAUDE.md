@@ -28,7 +28,7 @@ The bookkeeping files tools/task-metrics.jsonl, tools/task-tier-policy.md, tools
 
 ## Structure
 
-`en/` and `jp/` mirror every path; `js/chglang.js` swaps the language prefix, so missing counterparts 404. Nav: `about`, `research`, `achievements`, `member`, `computers`, `teaching`, `picture`; header: `contact`, `links`; unlinked: `news`, `software`. Shared `style.css` with scripted `?v=YYYYMMDD` bumps; pinned cdnjs Lightbox 2.11/jQuery 3.7 with SRI; `Templates/*.dwt` kept in sync; preserve `.dont-remove-me`. Editing and parity rules: `skills/html-editing.md`, `skills/en-jp-parity.md`.
+`en/` and `jp/` mirror every HTML page path (image assets live under `jp/` only and are shared cross-language — see skills/en-jp-parity.md); `js/chglang.js` swaps the language prefix, so missing page counterparts 404. Nav: `about`, `research`, `achievements`, `member`, `computers`, `teaching`, `picture`; header: `contact`, `links`; unlinked: `news`, `software`. Shared `style.css` with scripted `?v=YYYYMMDD` bumps; pinned cdnjs Lightbox 2.11/jQuery 3.7 with SRI; `Templates/*.dwt` kept in sync; preserve `.dont-remove-me`. Editing and parity rules: `skills/html-editing.md`, `skills/en-jp-parity.md`.
 
 ## Delegation to subagents (save rate limit)
 
