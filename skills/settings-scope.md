@@ -38,4 +38,5 @@ does not add a second interactive tool prompt.
   `deny` can still interfere, so the zero-prompt configuration removes them.
 - `skipDangerousModePermissionPrompt` is intentionally ignored in project
   settings and must be owner-scoped.
-- Preview hooks contain an absolute repository path and are machine-coupled.
+- Preview hooks use `CLAUDE_PROJECT_DIR` with a `$PWD` fallback and keep
+  per-clone PID state, so they are account- and clone-portable.

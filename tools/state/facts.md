@@ -31,8 +31,6 @@ Update in place when reality changes; date entries. No procedures here
   numbers — user chose to leave unfilled (2026-07-12). Login UI blocks
   non-browser clients (403); public read API works. OpenReview likewise
   blocks non-browser clients.
-- 41 publication PDFs archived in tools/papers/ as
-  {FirstAuthorLastName}{Year}.pdf (grant-ID extraction source set).
 
 ## Tooling / environment
 - 2026-07-12 T-11 applied and verified: project Claude uses

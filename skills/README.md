@@ -18,7 +18,6 @@ changes, update the matching skill in the same change set.
 | web-lookup.md | any network lookup (Crossref, DBLP, arXiv, J-STAGE, ...) |
 | codex-dispatch.md | every codex delegation (contract, output, logging) |
 | context-ledger.md | session start/end checkpoints, cross-session state, claude<->codex handoff |
-| model-eval.md | recurring four-model rounds, judge protocol, timing, scoring, and branch reset lifecycle |
 | publish-and-verify.md | preview, publish approval, live verify, deploy auth |
 | config-proposals.md | task-scoped project config edits, owner-scope proposals, tools/out lifecycle |
 | settings-scope.md | placing Claude Code settings across user/project/local scopes |
