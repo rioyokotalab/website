@@ -391,3 +391,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | codex-driver (gpt-5) | T-23 remove legacy Dreamweaver templates and markers | tools/out/driver-report-20260712-2348.md | n/a | done; published and live-verified 9636ff7
 2026-07-13 | codex-driver (gpt-5) | T-24 remove stale evaluation, archive, report, and cache artifacts | tools/out/driver-report-20260713-0012.md | n/a | done; repository-only push pending
 2026-07-13 | codex-driver (gpt-5) | T-25 purge PDF archive from Git history | tools/out/driver-report-20260713-0034.md | n/a | reachable history purged; GitHub GC pending
+2026-07-13 | codex-driver (gpt-5) | seed T-26 through T-30 website security backlog | tools/out/driver-report-20260713-0043.md | n/a | done; implementation not started

@@ -1,9 +1,50 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-26.
+`tools/state/session.md`. Next free id: T-31.
 
 ## Active
+
+### T-26 — harden HTTP response headers and CSP
+Inventory every inline script/style, external origin, iframe, form, and browser
+feature used by the 26 public pages; design and deploy a Content-Security-Policy
+that preserves the site and privacy-first consent flow. Add modern
+`Permissions-Policy`, CSP `frame-ancestors`, and a cautious HSTS rollout only
+after confirming HTTPS coverage; do not enable `includeSubDomains` or preload
+without separately verifying every subdomain. Test headers and browser behavior
+locally and live before tightening from report-only to enforcement.
+
+### T-27 — remove public secrets and unnecessary personal exposure
+Audit all tracked and live HTML, PDFs, history-visible text, and URLs for meeting
+passwords/tokens, expired private invitations, email/phone/address overexposure,
+embedded credentials, and sensitive query parameters. Immediately neutralize
+confirmed expired secrets such as historical meeting-password URLs while
+preserving legitimate archival meaning, maintain EN/JP parity, and document
+which contact details are intentionally public. Never test or reuse discovered
+credentials.
+
+### T-28 — minimize deploy and web-server exposure
+Convert the current broad mirror into a verified deploy allowlist or equivalent
+fail-closed exclusion scheme so only public HTML/assets, `cv/cv.pdf`, and
+required server files can reach `www/`. Disable directory listing and access to
+dotfiles, source/config/backup/temp/map files at the server layer; add isolated
+regression fixtures proving unexpected root files cannot be uploaded and remote
+public files cannot be accidentally deleted.
+
+### T-29 — add continuous security regression checks
+Create a credential-free security test command covering HTTPS redirects,
+required response headers, forbidden/mixed-content URLs, external-link rel
+attributes, local path traversal/broken references, deploy-excluded leakage,
+known placeholder IDs, secret-pattern scanning with reviewed allowlists, and
+privacy-first zero-request-before-consent behavior. Make it deterministic and
+run it from the pre-publish pipeline without introducing network writes.
+
+### T-30 — audit third-party and test-tool supply chain
+Verify every CDN resource is HTTPS, version-pinned, and protected by correct SRI
+and `crossorigin`; evaluate whether self-hosting the small Lightbox/jQuery
+dependency set reduces risk. Add repeatable npm lockfile/audit checks for
+Playwright tooling, document update cadence and trusted sources, and ensure no
+test dependency or cache can enter the deployed tree.
 
 ## Blocked / awaiting user
 
