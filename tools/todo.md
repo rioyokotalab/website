@@ -5,15 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-26 — harden HTTP response headers and CSP
-Inventory every inline script/style, external origin, iframe, form, and browser
-feature used by the 26 public pages; design and deploy a Content-Security-Policy
-that preserves the site and privacy-first consent flow. Add modern
-`Permissions-Policy`, CSP `frame-ancestors`, and a cautious HSTS rollout only
-after confirming HTTPS coverage; do not enable `includeSubDomains` or preload
-without separately verifying every subdomain. Test headers and browser behavior
-locally and live before tightening from report-only to enforcement.
-
 ### T-30 — audit third-party and test-tool supply chain
 Verify every CDN resource is HTTPS, version-pinned, and protected by correct SRI
 and `crossorigin`; evaluate whether self-hosting the small Lightbox/jQuery
@@ -45,6 +36,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-26 inventoried all 27 public documents, deployed and browser-tested a narrow report-only CSP, then enforced it with `frame-ancestors 'none'`, restrictive Permissions Policy, and one-day HSTS without subdomains/preload; representative EN/JP home, gallery, research, map, and consent paths remain error-free (`a23a08e`, `3c9ef09`).
 - 2026-07-13 T-29 added and published deterministic credential-free security checks for public references, mixed/sensitive URLs, external-link isolation, consent-loader/static pre-consent requests, secret/placeholder patterns, exact deploy staging, HTTPS redirects, headers, and excluded live paths; `publish.sh` now enforces the offline suite, and live mode correctly preserves visibility of T-28's sentinel blocker (`270d494`).
 - 2026-07-13 T-27 removed and deployed one expired password-bearing meeting invitation from both news pages without replaying or logging its value; live pages are byte-identical to commit `0c7077b` with zero sensitive query/meeting URLs, while institutional professional contact remains intentionally public.
 - 2026-07-13 T-24 removed stale model-evaluation/judge infrastructure, the redundant researchmap implementation report, all 41 tracked paper PDFs (261 MiB), and disposable local browser/npm/Python caches; removed all live references and corrected the preview-hook scope note.

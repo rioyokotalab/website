@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T01:04+0900
-task: T-26 harden HTTP response headers and CSP
-status: in-progress
+updated: 2026-07-13T00:01+0900
+task: idle
+status: idle
 
 ## Now
-- Goal: deploy a compatible CSP, Permissions Policy, and cautious HSTS policy without breaking the static site or consent flow.
-- Last done: report-only policy deployed in `a23a08e`; six representative live pages/PDF return 200 with exact headers, representative EN/JP home/gallery/research/map/consent-accept browser paths produced no actionable policy errors, and consent tests passed 4/4.
-- Next: enforce the unchanged CSP, verify all headers/browser paths live, document the durable policy, then close T-26.
+- Goal: no task in flight.
+- Last done: T-26 report-only phase `a23a08e` and enforcement `3c9ef09` are live; representative status/header/browser tests and consent 4/4 passed. Temporary browser dependencies were removed.
+- Next: continue with T-30 supply-chain audit.
 
 ## Working set
-- `.htaccess`, public HTML/JS/CSS inventory, security test harness, README/playbook, ledger/bookkeeping.
+- None.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

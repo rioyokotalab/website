@@ -4,6 +4,11 @@ Update in place when reality changes; date entries. No procedures here
 (-> skills/), no tasks (-> tools/todo.md).
 
 ## Site / pages
+- 2026-07-13 T-26 deployed an enforced same-origin-first CSP after a clean
+  report-only/browser phase. Exceptions are cdnjs gallery assets, consent-gated
+  GTM/GA, and Google Maps frames. Permissions Policy disables unused powerful
+  features; HSTS is deliberately `max-age=86400` without subdomains/preload.
+  Legacy inline code/style and `ddmenu_min.js` eval remain temporarily allowed.
 - 2026-07-13 security exposure audit: current tracked content has no private-key,
   known API-token, or sensitive-query shapes after removal of one expired 2023
   Zoom invitation from both news pages. The CV has no custom metadata,

@@ -146,6 +146,12 @@ tools/test-security.sh --live
 `publish.sh` always runs the offline suite before its deploy preview. The
 Playwright consent suite above remains the deeper browser-runtime check.
 
+The live server enforces a same-origin-first Content Security Policy, allowing
+only the pinned cdnjs gallery assets, consent-gated Google Analytics, and the
+Google Maps contact-page frame. It also sends a restrictive Permissions Policy
+and one-day HSTS without `includeSubDomains` or preload. Keep the short HSTS
+scope until every relevant subdomain is independently verified.
+
 ## Repository map
 
 | Path | Purpose |
