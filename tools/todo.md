@@ -1,20 +1,36 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-39.
+`tools/state/session.md`. Next free id: T-44.
 
 ## Active
 
-### T-35 — complete image accessibility and loading hints
-Resolve the four images without `alt`, classify decorative versus informative
-text accurately, and add lazy loading only to below-the-fold images where it is
-safe. Preserve gallery behavior and ensure above-the-fold logo/banner images
-remain eager.
+### T-39 — make the mobile navigation control accessible
+Replace the decorative hamburger `div` on all 26 pages with a real button,
+localized accessible name, `aria-controls`, and synchronized `aria-expanded`.
+Preserve its exact appearance/position and verify keyboard, pointer, EN/JP, and
+mobile behavior.
 
-### T-36 — reduce obsolete presentational markup safely
-Inventory deprecated HTML presentation attributes/elements and migrate only
-high-confidence repeated patterns into existing CSS without changing computed
-layout. Work in small mirrored batches with screenshot/computed-style checks.
+### T-40 — simplify the legacy menu JavaScript
+Replace the 2015 classList compatibility implementation and global helper
+surface with small modern DOM code scoped to the responsive menu. Preserve the
+current 800px behavior and remove dead smartphone/screen helpers after browser
+coverage proves equivalence.
+
+### T-41 — improve back-to-top semantics and reduced-motion behavior
+Give the arrow-only back-to-top link localized accessible text, use a stable
+top target instead of an empty fragment, and respect `prefers-reduced-motion`
+for transitions/scrolling without changing the visible circular control.
+
+### T-42 — modernize root redirect metadata and fallback
+Bring root `index.html` metadata in line with bilingual pages, add a no-script
+fallback with direct EN/JP choices, and retain locale-aware redirect behavior
+without a blank dead end. Preserve existing default-to-Japanese policy.
+
+### T-43 — add canonical and alternate-language metadata
+Add self-canonical plus reciprocal `hreflang="en"`, `hreflang="ja"`, and
+`x-default` links to mirrored pages with exact URL/path verification. Ensure no
+visible content or layout changes and extend standards enforcement.
 
 ## Blocked / awaiting user
 
@@ -40,6 +56,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-36 migrated all 145 uniform `<p align="center">` instances to a shared semantic class; computed centering and representative wrapper geometry remained identical, while heterogeneous table layout attributes were intentionally retained (`75a215c`).
 - 2026-07-13 T-37 added zero-dependency standards/accessibility enforcement for mirrored paths, languages, unique IDs, landmarks/navigation/skip links, image semantics/loading, fragments, stylesheet versions, and safe script/link semantics; it now runs automatically before every publish.
 - 2026-07-13 T-38 replaced duplicated desktop/mobile `topnav` IDs with a shared class across all 26 pages and aligned two duplicated EN event anchors with JP; every ID is unique, fragments are distinct, and menu geometry stayed within 1px (`9a44e31`).
 - 2026-07-13 T-35 completed image alternatives with localized professor portrait text and decorative alternatives for redundantly captioned gallery images; all content images remain lazy while logos/heroes remain eager (`d44f862`).
@@ -48,16 +65,3 @@ recloned or carefully reset to rewritten main.
 - 2026-07-13 T-32 found zero consumers of the packed dropdown code, removed all 26 dead loaders and `ddmenu_min.js`, validated a simultaneous report-only policy, then enforced CSP without `'unsafe-eval'`; representative live gallery/navigation/map/consent behavior remained clean (`d305d03`, `a24645c`).
 - 2026-07-13 T-31 replaced all 26 JavaScript-only language controls with direct mirrored links, removed the unused loader/asset, made secret scanning deletion-safe, and verified keyboard/no-JavaScript navigation locally and live without visual or wording changes (`ac6c09b`).
 - 2026-07-13 T-30 independently verified all three pinned CDN assets and their SHA-384/crossorigin tags on six gallery pages, confirmed the exact Playwright 1.61.1 lock has zero known vulnerabilities, added pre-publish offline and disposable online audit commands, documented trusted sources/quarterly cadence, and proved packages/tests/caches cannot enter deploy staging.
-- 2026-07-13 T-26 inventoried all 27 public documents, deployed and browser-tested a narrow report-only CSP, then enforced it with `frame-ancestors 'none'`, restrictive Permissions Policy, and one-day HSTS without subdomains/preload; representative EN/JP home, gallery, research, map, and consent paths remain error-free (`a23a08e`, `3c9ef09`).
-- 2026-07-13 T-29 added and published deterministic credential-free security checks for public references, mixed/sensitive URLs, external-link isolation, consent-loader/static pre-consent requests, secret/placeholder patterns, exact deploy staging, HTTPS redirects, headers, and excluded live paths; `publish.sh` now enforces the offline suite, and live mode correctly preserves visibility of T-28's sentinel blocker (`270d494`).
-- 2026-07-13 T-27 removed and deployed one expired password-bearing meeting invitation from both news pages without replaying or logging its value; live pages are byte-identical to commit `0c7077b` with zero sensitive query/meeting URLs, while institutional professional contact remains intentionally public.
-- 2026-07-13 T-24 removed stale model-evaluation/judge infrastructure, the redundant researchmap implementation report, all 41 tracked paper PDFs (261 MiB), and disposable local browser/npm/Python caches; removed all live references and corrected the preview-hook scope note.
-- 2026-07-12 T-23 removed and deployed deletion of 26 unused Dreamweaver `.dwt` templates and all 264 `Instance*` control comments; all 26 live pages and the CV are byte-identical to commit `9636ff7`, with the template URL returning 404.
-- 2026-07-12 T-18 owner confirmed GA4 event-data retention is 2 months and Google Signals/advertising features remain disabled; no credentials or account details were stored.
-- 2026-07-12 T-21 enabled bounded native Codex delegation with minimal context forks, strict authority boundaries, output-first handoff, root review, and proportional verification; a zero-fork benchmark matched the root baseline and exposed one documentation omission that was fixed.
-- 2026-07-12 T-20 replaced account-specific Claude preview hooks with a project-root-aware helper and verified simultaneous clone isolation, stale-PID ownership protection, and default port compatibility.
-- 2026-07-12 T-22 audited website/CV/researchmap/ORCID fields, corrected the NII title and exporter parsing, standardized postal code 152-8550, removed the Keio RA role, rebuilt the CV, and completed the owner-reviewed researchmap and ORCID imports; transient outputs were removed.
-- 2026-07-12 T-17 added pinned real-Chromium consent regression coverage for EN/JP desktop/mobile, keyboard use, persistence, revocation, and the zero-request-before-consent boundary; browser tooling and artifacts are deploy-excluded.
-- 2026-07-12 T-16 hardened `publish.sh`: main/rebase/placeholder/dry-run gates, commit+push before deploy, clean-worktree push, phase-specific failure states, and seven isolated regression scenarios.
-- 2026-07-12 T-15 aligned README, Claude/Codex role instructions, context ledger, publish playbook, and durable decision on standing direct-DRIVER authority versus dispatched/MCP worker prohibition.
-- 2026-07-12 T-19 restored the README cluster quickstart with exact verified install/auth/clone/config/MCP/hook/check/launch commands; account-portability of the Claude preview hook remains T-20.

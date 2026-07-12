@@ -745,6 +745,7 @@ h3.heading, #sub .grid h3 {
 }
 /* hamburger button */
 #menubar_hdr {
+	appearance: none;
 	display: block;
 	position: absolute;
 	top: 35px;
@@ -754,6 +755,9 @@ h3.heading, #sub .grid h3 {
 	padding: 8px 8px 2px 8px;
 	background: rgba(255,255,255,0.12);
 	border-radius: 6px;
+	color: inherit;
+	cursor: pointer;
+	font: inherit;
 }
 #menubar_hdr span {
 	display: block;

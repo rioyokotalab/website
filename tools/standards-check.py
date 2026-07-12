@@ -28,6 +28,7 @@ class Document(HTMLParser):
         self.skip: str | None = None
         self.unsafe_semantics: list[int] = []
         self.inline_executable_scripts = 0
+        self.menu_button: dict[str, str] | None = None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -61,6 +62,8 @@ class Document(HTMLParser):
                 self.eager_images.append(values.get("src", ""))
         if tag == "script" and not values.get("src") and values.get("type", "text/javascript").lower() not in ("application/ld+json",):
             self.inline_executable_scripts += 1
+        if values.get("id") == "menubar_hdr":
+            self.menu_button = {"tag": tag, **values}
 
 
 def fail(findings: list[str], path: Path, message: str) -> None:
@@ -94,6 +97,10 @@ def main() -> int:
         expected_skip = "Skip to main content" if expected_lang == "en" else "本文へ移動"
         if document.skip != "#wrapper" or expected_skip not in text:
             fail(findings, path, "localized skip link mismatch")
+        expected_menu_label = "Open navigation menu" if expected_lang == "en" else "ナビゲーションメニューを開く"
+        button = document.menu_button or {}
+        if button.get("tag") != "button" or button.get("type") != "button" or button.get("aria-controls") != "menubar-s" or button.get("aria-expanded") != "false" or button.get("aria-label") != expected_menu_label:
+            fail(findings, path, "accessible mobile menu button mismatch")
         if document.images_without_alt:
             fail(findings, path, "image without alt")
         if document.inline_executable_scripts:

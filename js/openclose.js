@@ -83,10 +83,12 @@ function do_onoff(hdr, item)
 		e2.style.display = '';
 		classList(e).remove('close');
 		classList(e).add('open');
+		e.setAttribute('aria-expanded', 'true');
 	} else {
 		e2.style.display = 'none';
 		classList(e).remove('open');
 		classList(e).add('close');
+		e.setAttribute('aria-expanded', 'false');
 	}
 }
 function open_close(hdr, item)
@@ -97,6 +99,7 @@ function open_close(hdr, item)
 
 	classList(e).remove('open');
 	classList(e).add('close');
+	e.setAttribute('aria-expanded', 'false');
 	if (classList(e).contains('open')) {
 //		e.style.display = '';
 		e2.style.display = '';
