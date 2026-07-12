@@ -54,3 +54,70 @@ test("print media is content-first and free of horizontal overflow", async ({ pa
 			.every(element => element.getBoundingClientRect().right <= innerWidth + 0.5))).toBe(true);
 	}
 });
+
+test("representative EN/JP page families keep ordered, viewport-contained regions", async ({ page }) => {
+	const paths = [
+		"/en/index.html", "/jp/index.html", "/en/news/index.html", "/jp/news/index.html",
+		"/en/research/index.html", "/jp/research/index.html",
+		"/en/computers/index.html", "/jp/computers/index.html",
+		"/en/contact/index.html", "/jp/contact/index.html",
+		"/en/picture/index.html", "/jp/picture/index.html",
+		"/en/member/yokota.html", "/jp/member/yokota.html"
+	];
+	for (const width of [320, 390, 900, 901, 1200]) {
+		await page.setViewportSize({ width, height: 800 });
+		for (const path of paths) {
+			await page.goto(path, { waitUntil: "domcontentloaded" });
+			const geometry = await page.evaluate(() => {
+				const selectors = ["#header", "#navbar", "#mainBanner", "#wrapper", "#footer"];
+				const regions = selectors.map(selector => {
+					const element = document.querySelector(selector);
+					const rectangle = element.getBoundingClientRect();
+					return {
+						selector,
+						left: rectangle.left,
+						right: rectangle.right,
+						top: rectangle.top + scrollY,
+						bottom: rectangle.bottom + scrollY,
+						visible: rectangle.width > 0 && rectangle.height > 0 && getComputedStyle(element).display !== "none"
+					};
+				});
+				return { documentWidth: document.documentElement.scrollWidth, regions };
+			});
+			expect(geometry.documentWidth, `${path} at ${width}px`).toBe(width);
+			expect(geometry.regions.every(region => region.visible || (width <= 900 && region.selector === "#navbar")), `${path} at ${width}px`).toBe(true);
+			expect(geometry.regions.every(region => region.left >= -0.5 && region.right <= width + 0.5), `${path} at ${width}px`).toBe(true);
+			for (let index = 1; index < geometry.regions.length; index += 1) {
+				expect(geometry.regions[index].top, `${path} at ${width}px: ${geometry.regions[index].selector}`)
+					.toBeGreaterThanOrEqual(geometry.regions[index - 1].bottom - 1);
+			}
+		}
+	}
+});
+
+test("narrow data tables scroll locally and responsive gallery sources match density", async ({ browser }) => {
+	for (const deviceScaleFactor of [1, 2, 3]) {
+		const context = await browser.newContext({ baseURL: "http://127.0.0.1:8765", viewport: { width: 390, height: 800 }, deviceScaleFactor });
+		await context.addInitScript(([key, value]) => localStorage.setItem(key, value), [storageKey, "rejected"]);
+		const page = await context.newPage();
+		await page.goto("/en/picture/index.html", { waitUntil: "networkidle" });
+		const expectedSuffix = deviceScaleFactor <= 2 ? "-720.jpg" : "-1200.jpg";
+		for (const image of await page.locator("#main img").all().then(images => images.slice(0, 7))) {
+			await image.scrollIntoViewIfNeeded();
+			await image.evaluate(element => element.decode());
+			expect(await image.evaluate(element => new URL(element.currentSrc).pathname)).toMatch(new RegExp(`${expectedSuffix.replace(".", "\\.")}$`));
+		}
+		await context.close();
+	}
+
+	const context = await browser.newContext({ baseURL: "http://127.0.0.1:8765", viewport: { width: 320, height: 800 } });
+	await context.addInitScript(([key, value]) => localStorage.setItem(key, value), [storageKey, "rejected"]);
+	const page = await context.newPage();
+	await page.goto("/en/news/index.html", { waitUntil: "networkidle" });
+	const table = page.locator("table[tabindex=\"0\"]").first();
+	await table.focus();
+	await page.keyboard.press("ArrowRight");
+	await expect.poll(() => table.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
+	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
+	await context.close();
+});

@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T05:51+0900
-task: T-77 add automated rendered-layout smoke coverage
+updated: 2026-07-13T06:04+0900
+task: T-78 audit no-JavaScript resilience
 status: in-progress
 
 ## Now
-- Goal: permanently catch page-level overflow, missing major regions, or gross responsive geometry regressions across representative EN/JP page families without brittle screenshot baselines.
-- Last done: T-76 added conventional npm test and test:browser/install commands, retained consent aliases, enforced the exact reviewed script surface, added 900/901px EN/JP menu and six-family print contracts, and passed all 8 browser plus fast security tests.
-- Next: select representative home/news/research/computers/contact/picture/profile paths, measure invariant region presence/order/viewport containment at 320/390/900/901/1200px, encode tolerant semantic geometry assertions, and rerun the full suite.
+- Goal: verify every public route remains navigable and content-complete without JavaScript, with explicit fallbacks only for confirmed essential losses.
+- Last done: T-77 added tolerant contracts over 14 EN/JP page-family routes at five responsive boundaries (70 rendered states), requiring ordered visible/contained major regions and exact page width; added 1x/2x/3x responsive-source and 320px local table-scroll checks; all four layout tests pass.
+- Next: launch JavaScript-disabled contexts across all 26 pages plus root entry, verify primary/utility/navigation links, content text/images/local URLs, gallery-original destinations, contact data and metadata; inspect mobile menu discoverability and classify enhancements versus essential fallback gaps.
 
 ## Working set
-- tests/layout-contracts.spec.js, representative EN/JP region/document geometry across five boundaries, tolerant invariants only, full browser/security verification; ledger/bookkeeping.
+- Root plus all 26 routes in JavaScript-disabled 320/1200px contexts; navigation/content/gallery/contact/canonical metadata and overflow; any semantic noscript/fallback markup with parity/checker/tests; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
