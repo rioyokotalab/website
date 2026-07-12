@@ -18,7 +18,7 @@ if find "$DEST" -type l -print -quit | grep -q .; then
 	exit 1
 fi
 
-for required in .htaccess index.html style.css en jp images js cv/cv.pdf; do
+for required in .htaccess index.html robots.txt sitemap.xml style.css en jp images js cv/cv.pdf; do
 	[ -e "$DEST/$required" ] || {
 		echo "Required public path is missing from staging: $required" >&2
 		exit 1

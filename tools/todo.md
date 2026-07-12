@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-51 — modernize legacy named section anchors
-Replace empty `<a name>` targets with IDs on their semantic headings or stable
-adjacent targets in small page-family batches. Preserve every public fragment,
-visual position, and EN/JP parity while removing obsolete anchor markup.
-
 ### T-52 — add crawler discovery files
 Generate a minimal `robots.txt` and XML sitemap from the exact canonical page
 inventory, include them in the positive deployment allowlist, and add parity,
@@ -44,6 +39,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-51 replaced 100 heading anchors and 200 News event anchors with semantic/same-position IDs, collision-safely preserved all historical aliases, eliminated legacy `name` markup, and matched representative fragment positions exactly at desktop/mobile (`8aa8582`, `02d5a3f`, `91a70fc`).
 - 2026-07-13 T-50 added exactly one high fetch priority to each page's hero banner, enforced the classification, and preserved EN/JP home/subpage geometry within 1px at desktop/mobile (`c413ba6`).
 - 2026-07-13 T-49 resolved 104 incomplete image-dimension occurrences from 60 verified local assets, preserved percentage/fixed presentation via shared classes, enforced valid dimensions, matched loaded geometry within 1px, and proved pre-load space reservation (`7850281`).
 - 2026-07-13 T-48 migrated five style blocks, eleven style attributes, and runtime style mutations into shared classes; exact computed parity passed, a strict policy produced zero report-only violations across consent/menu/scroll/gallery/map tests, and CSP now enforces without style `unsafe-inline` (`4fa5652`, `c8bccd3`, `4650272`).

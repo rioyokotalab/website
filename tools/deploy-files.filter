@@ -2,6 +2,8 @@
 # then reject everything else. The cv directory intentionally exposes one PDF.
 + /.htaccess
 + /index.html
++ /robots.txt
++ /sitemap.xml
 + /style.css
 + /en/***
 + /jp/***

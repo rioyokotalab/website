@@ -11,14 +11,14 @@ REMOTE="$TMP/remote"
 
 mkdir -p "$SRC"/{en,jp,images,js,cv,tools} "$STAGE" "$REMOTE/en"
 cp "$ROOT/.htaccess" "$SRC/.htaccess"
-touch "$SRC/index.html" "$SRC/style.css" "$SRC/en/index.html" \
+touch "$SRC/index.html" "$SRC/robots.txt" "$SRC/sitemap.xml" "$SRC/style.css" "$SRC/en/index.html" \
 	"$SRC/jp/index.html" "$SRC/images/public.png" "$SRC/js/public.js" \
 	"$SRC/cv/cv.pdf" "$SRC/README.md" "$SRC/package.json" \
 	"$SRC/tools/private.txt" "$SRC/unexpected-root.html"
 
 "$ROOT/tools/stage-public-site.sh" "$STAGE" "$SRC"
 
-for allowed in .htaccess index.html style.css en/index.html jp/index.html \
+for allowed in .htaccess index.html robots.txt sitemap.xml style.css en/index.html jp/index.html \
 	images/public.png js/public.js cv/cv.pdf; do
 	test -e "$STAGE/$allowed"
 done

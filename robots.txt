@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.rio.scrc.iir.isct.ac.jp/sitemap.xml

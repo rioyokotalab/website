@@ -17,7 +17,7 @@ from urllib.parse import unquote, urljoin, urlsplit
 
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC_DIRS = ("en", "jp", "images", "js")
-PUBLIC_FILES = (".htaccess", "index.html", "style.css", "cv/cv.pdf")
+PUBLIC_FILES = (".htaccess", "index.html", "robots.txt", "sitemap.xml", "style.css", "cv/cv.pdf")
 BASE_URL = "https://www.rio.scrc.iir.isct.ac.jp/"
 SENSITIVE_QUERY = re.compile(
     r"(?:^|[?&])(?:pwd|passcode|password|token|access_token|api[_-]?key|secret|auth|signature|sig)=",
