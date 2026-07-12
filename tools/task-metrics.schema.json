@@ -76,7 +76,8 @@
         "failure_phase": {"type": ["string", "null"]},
         "failure_category": {"type": ["string", "null"]},
         "artifact": {"type": ["string", "null"]},
-        "handoff_mode": {"enum": ["durable", "runner", "unknown"]}
+        "handoff_mode": {"enum": ["durable", "runner-lite", "runner-structured", "runner", "unknown"]},
+        "inspection_mode": {"enum": ["default", "bounded", "focused", "unknown"]}
       },
       "additionalProperties": false
     }

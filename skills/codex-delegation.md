@@ -18,6 +18,10 @@ subtasks with separate output files and non-overlapping write scopes. Use the
 smallest useful context fork (`none` for fully on-disk tasks; a short recent
 fork only when necessary). Prompts cite `AGENTS.md`, relevant `skills/`, ledger
 task IDs, source paths, and the exact delta rather than copying file contents.
+For a local change in a large file, give the worker a task-specific search
+literal and cap source inspection at 40 surrounding lines; explicitly require
+the named playbook's preservation/edit method. Avoid generic syntax searches,
+which can emit most of the file while appearing bounded.
 
 ## Authority boundary
 

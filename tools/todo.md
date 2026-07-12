@@ -7,9 +7,6 @@ id: T-121.
 
 ## Active
 
-- **T-119 — Optimize source inspection and command output**
-  - Test locate-first, bounded-range inspection on a large bilingual HTML task.
-  - Retain it only if hidden capability gates pass and measured context/tool-output cost falls.
 - **T-120 — Add decision-grade comparison logging**
   - Add a reproducible baseline/candidate comparison that reports matched tasks, capability gates, token categories, command failures, tool output, timing, route, and missing evidence.
   - Make unsafe comparisons fail loudly instead of relying on manual arithmetic.
@@ -23,6 +20,7 @@ None.
 
 ## Recently completed
 
+- **T-119 — Focused inspection retained:** six focused trials across two bilingual HTML tasks scored 100; median effective tokens fell 21.7% and tool output 59.2%. A simpler bounded variant failed CRLF scope and was rejected (`tools/out/t119-focused-inspection.md`).
 - **T-118 — Repeatability rule established:** three matched runner-lite and durable portfolios all scored 100; token ranges did not overlap (29,098–30,046 versus 42,958–57,936), and future process promotions require repeated portfolio medians/ranges (`tools/out/t118-repeatability.md`).
 - **T-116 — Runner-lite handoff retained:** matched WBD-001/003 stayed 100/100 while effective tokens fell 15.2%, tool output 12.6%, and worker duration 56.7%; redundant schema enforcement increased tokens 47.8% and was rejected (`tools/out/t116-handoff-iteration.md`).
 - **T-115 — Routing/escalation optimized:** selected portfolio is 4/4 at

@@ -135,7 +135,8 @@ const { chromium } = require('@playwright/test');
     return output
 
 
-def prompt_for(task: dict[str, Any], task_id: str, prompt_mode: str, handoff_mode: str) -> str:
+def prompt_for(task: dict[str, Any], task_id: str, prompt_mode: str, handoff_mode: str,
+               inspection_mode: str) -> str:
     paths = ", ".join(task["authorized_paths"])
     context = ", ".join(task.get("context", []))
     deliverable = f"tools/out/benchmark-{task_id.lower()}.md"
@@ -147,12 +148,24 @@ def prompt_for(task: dict[str, Any], task_id: str, prompt_mode: str, handoff_mod
         )
     else:
         handoff = f"Record the required structured result in {deliverable}."
+    inspection = ""
+    if inspection_mode == "bounded":
+        inspection = (
+            " Locate relevant text with rg first; inspect only bounded surrounding ranges. "
+            "Do not print whole source files."
+        )
+    elif inspection_mode == "focused":
+        inspection = (
+            " Locate with rg using the most task-specific literal; inspect at most 40 lines "
+            "around each hit and only the named playbooks. Do not print whole source files "
+            "or search generic syntax tokens. Follow the playbook's preservation/edit method exactly."
+        )
     if prompt_mode == "compact":
         return (
             f"Benchmark WORKER task {task_id}. {task['prompt']}\n"
             f"Scope: {paths}. Read: {context}. Offline only. Do not deploy, publish, push, "
             f"touch credentials, configuration, tests, or ledger. Implement and run targeted checks. "
-            f"{handoff}"
+            f"{handoff}{inspection}"
         )
     return f"""You are a bounded WORKER in an isolated benchmark copy of the YOKOTA Lab website.
 
@@ -166,7 +179,7 @@ network. Never run publishing/deployment commands, ssh, lftp, or git push. Do no
 access credentials. Preserve CRLF and EN/JP parity where applicable.
 
 Inspect the failure, implement the smallest complete fix, and run targeted local
-checks. {handoff}
+checks. {handoff}{inspection}
 Do not merely propose a patch: make the authorized edits in this isolated workspace.
 """
 
@@ -233,8 +246,8 @@ def sha256_file(path: Path) -> str:
 
 def run_codex(task: dict[str, Any], task_id: str, workspace: Path, artifact: Path,
               *, model: str, effort: str, prompt_mode: str, reference: Path | None,
-              timeout_seconds: int, handoff_mode: str) -> dict[str, Any]:
-    prompt = prompt_for(task, task_id, prompt_mode, handoff_mode)
+              timeout_seconds: int, handoff_mode: str, inspection_mode: str) -> dict[str, Any]:
+    prompt = prompt_for(task, task_id, prompt_mode, handoff_mode, inspection_mode)
     prompt_path = artifact / "prompt.txt"
     stdout_path = artifact / "stdout.jsonl"
     stderr_path = artifact / "stderr.log"
@@ -332,6 +345,7 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
         "worker": worker_name,
         "prompt_mode": args.prompt_mode,
         "handoff_mode": args.handoff_mode,
+        "inspection_mode": args.inspection_mode,
         "codex_cli": subprocess.run(["codex", "--version"], text=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.DEVNULL).stdout.strip(),
     }
@@ -346,7 +360,7 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
         execution = run_codex(task, args.task_id, workspace, artifact, model=model,
                               effort=effort, prompt_mode=args.prompt_mode,
                               reference=reference, timeout_seconds=args.timeout or task["timeout_seconds"],
-                              handoff_mode=args.handoff_mode)
+                              handoff_mode=args.handoff_mode, inspection_mode=args.inspection_mode)
         result["execution"] = execution
         diff = run_checked(["git", "diff", "--binary", "HEAD"], cwd=workspace).stdout
         (artifact / "candidate.patch").write_text(diff, encoding="utf-8")
@@ -489,6 +503,7 @@ def parser() -> argparse.ArgumentParser:
         help=("durable worker-owned report; runner-lite runner-owned artifacts; "
               "runner-structured schema-enforced final (runner is its legacy alias)"),
     )
+    run.add_argument("--inspection-mode", choices=("default", "bounded", "focused"), default="default")
     run.add_argument("--timeout", type=int)
     run.add_argument("--workspace-root")
     run.add_argument("--run-p2p", action="store_true")

@@ -17,6 +17,13 @@ worker skips its durable report and log append. `runner-structured` additionally
 enforces `final.schema.json`; it is retained for measuring structured-output
 overhead rather than used by default. `runner` is its legacy alias.
 
+Use `--inspection-mode focused` when target files are large but the edit is
+local. It tells the worker to search for a task-specific literal, inspect no
+more than 40 surrounding lines, and follow the named playbook's preservation
+method. The earlier `bounded` wording remains available for reproducing an
+experiment that reduced output but allowed a CRLF regression. Each result
+records the mode so comparisons do not silently mix inspection strategies.
+
 ```bash
 python3 tools/agent-benchmark/benchmark.py list
 python3 tools/agent-benchmark/benchmark.py selftest
