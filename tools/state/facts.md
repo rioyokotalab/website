@@ -4,6 +4,12 @@ Update in place when reality changes; date entries. No procedures here
 (-> skills/), no tasks (-> tools/todo.md).
 
 ## Site / pages
+- 2026-07-13 security exposure audit: current tracked content has no private-key,
+  known API-token, or sensitive-query shapes after removal of one expired 2023
+  Zoom invitation from both news pages. The CV has no custom metadata,
+  JavaScript, forms, or sensitive query; 107 images have no GPS, embedded email,
+  absolute user path, or secret-query metadata. Institutional contact details
+  remain intentionally public per `tools/state/decisions.md`.
 - 2026-07-12 GA4 `G-DVRGG7FDLX` is live via privacy-first basic consent:
   `js/analytics-consent.js` blocks all Google tag requests until acceptance,
   persists/reopens bilingual choices locally, and keeps advertising consent

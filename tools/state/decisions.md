@@ -1,5 +1,9 @@
 # Durable decisions (newest first; one-line rationale each)
 
+- 2026-07-13 T-27 public-data boundary: retain the lab's institutional office
+  address/phone and professional email in the website/CV as intentional contact
+  information; remove meeting IDs, invitation passwords, and similar ephemeral
+  access URLs after their event because they provide no enduring public value.
 - 2026-07-12 T-21 Codex DRIVER delegation: native subagents are allowed only
   for bounded independent work when minimal-context handoff plus root review is
   cheaper than solo root work; the root retains ledger/config/publish authority
