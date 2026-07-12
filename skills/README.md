@@ -18,7 +18,7 @@ changes, update the matching skill in the same change set.
 | web-lookup.md | any network lookup (Crossref, DBLP, arXiv, J-STAGE, ...) |
 | codex-dispatch.md | every codex delegation (contract, output, logging) |
 | context-ledger.md | session start/end checkpoints, cross-session state, claude<->codex handoff |
-publish-and-verify.md | preview, publish approval, live verify, deploy auth |
+| publish-and-verify.md | preview, publish approval, live verify, deploy auth |
 | config-proposals.md | hand-edit-only config changes, tools/out lifecycle |
 | settings-scope.md | placing Claude Code settings across user/project/local scopes |
 | exporters.md | researchmap / ORCID / cv.tex sync and exports |

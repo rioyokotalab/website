@@ -4,6 +4,9 @@ Update in place when reality changes; date entries. No procedures here
 (-> skills/), no tasks (-> tools/todo.md).
 
 ## Site / pages
+- 2026-07-12 parity audit found en=19 vs jp=114 files and 0 broken local
+  links across 16 core index pages; HTML page paths mirror, while JP-only
+  files are shared image assets.
 - 2026-07-05 Computers page: 81 GPUs. 2-GPU RTX 6000 Ada node CPU = AMD
   EPYC 9654 (user-supplied); 8-GPU RTX 6000 Ada node CPU unknown ("-" in
   table; node down). Refresh only via site-checker probes; never guess.

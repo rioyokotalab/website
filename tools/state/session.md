@@ -1,16 +1,17 @@
 driver: claude
-updated: 2026-07-12T07:20+0900
+updated: 2026-07-12T09:02+0900
 task: idle
 status: idle
 
 ## Now
 - Goal: (idle)
-- Last done: T-1 applied and committed.
+- Last done: Round-2 (gpt-5.6-sol) driver test committed; T-3 closed after dry-run.
 - Next: (none)
 
 ## Working set
-- Files: - (none)
-- Scratch: - (none)
+- Files: (none)
+- Scratch: (none)
+- Verify: (none)
 
 ## Open questions
 - (none)
