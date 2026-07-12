@@ -5,11 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-42 — modernize root redirect metadata and fallback
-Bring root `index.html` metadata in line with bilingual pages, add a no-script
-fallback with direct EN/JP choices, and retain locale-aware redirect behavior
-without a blank dead end. Preserve existing default-to-Japanese policy.
-
 ### T-43 — add canonical and alternate-language metadata
 Add self-canonical plus reciprocal `hreflang="en"`, `hreflang="ja"`, and
 `x-default` links to mirrored pages with exact URL/path verification. Ensure no
@@ -39,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-42 modernized root metadata, removed an invalid empty meta element, and added a styled bilingual no-script fallback; browser checks preserved EN/JP/non-English routing and verified the fallback (`3c97aae`).
 - 2026-07-13 T-41 gave every back-to-top control a stable target and localized accessible name, honored reduced-motion preferences in CSS/JS, and added permanent regression coverage; normal and reduced-motion browser behavior passed in EN/JP (`0569865`).
 - 2026-07-13 T-40 folded responsive navigation into one scoped modern script, removed 26 obsolete loaders and the 2015 global/polyfill asset, and corrected desktop button visibility caught by regression; EN/JP keyboard/pointer and desktop/mobile behavior passed (`7e7e940`).
 - 2026-07-13 T-39 replaced all 26 decorative hamburger divs with localized real buttons, synchronized `aria-expanded`, preserved geometry within 1px, and permanently enforced the accessible control contract (`4c6748f`).

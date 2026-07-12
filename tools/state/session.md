@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-42 modernize root redirect metadata and fallback
+task: T-43 add canonical and alternate-language metadata
 status: in-progress
 
 ## Now
-- Goal: modernize the root redirect document and provide a usable bilingual fallback when JavaScript is disabled, without changing locale routing or normal presentation.
-- Last done: T-42 implementation and permanent standards coverage pass the full deterministic suite. Browser checks prove English routing, Japanese routing, non-English default-to-Japanese routing, and a visible bilingual fallback with JavaScript disabled.
-- Next: rebase, inspect the root-only deployment dry-run, publish T-42, verify the live redirect/fallback document, then close T-42 and start T-43.
+- Goal: give all mirrored pages exact self-canonical and reciprocal EN/JP/x-default discovery metadata without changing visible content or layout.
+- Last done: T-43 exact canonical/EN/JA/x-default mappings pass permanent standards checks on all 26 pages; the full deterministic suite and representative EN/JP root/profile browser DOM and unchanged header geometry checks pass.
+- Next: rebase, inspect the metadata-only deployment preview, publish T-43, verify live discovery links, then close T-43 and seed the next modernization tasks.
 
 ## Working set
-- Root `index.html`, redirect/no-JavaScript browser tests, security regression coverage, ledger/bookkeeping.
+- All 26 mirrored EN/JP pages, exact metadata standards checks, representative layout/browser verification, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

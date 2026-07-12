@@ -31,6 +31,8 @@ class Document(HTMLParser):
         self.menu_button: dict[str, str] | None = None
         self.body_id = ""
         self.pagetop: dict[str, str] | None = None
+        self.canonicals: list[str] = []
+        self.alternates: dict[str, list[str]] = {}
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -48,6 +50,10 @@ class Document(HTMLParser):
             self.landmarks[tag] += 1
         if tag == "nav":
             self.nav_labels.append(values.get("aria-label", ""))
+        if tag == "link" and values.get("rel", "").lower() == "canonical":
+            self.canonicals.append(values.get("href", ""))
+        if tag == "link" and values.get("rel", "").lower() == "alternate" and values.get("hreflang"):
+            self.alternates.setdefault(values["hreflang"].lower(), []).append(values.get("href", ""))
         if tag == "a":
             href = values.get("href", "")
             if values.get("class") == "skip-link":
@@ -105,6 +111,17 @@ def main() -> int:
         document = Document()
         document.feed(text)
         expected_lang = "en" if path.relative_to(ROOT).parts[0] == "en" else "ja"
+        relative = path.relative_to(ROOT / ("en" if expected_lang == "en" else "jp")).as_posix()
+        suffix = relative[:-10] if relative.endswith("index.html") else relative
+        base_url = "https://www.rio.scrc.iir.isct.ac.jp"
+        expected_alternates = {
+            "en": [f"{base_url}/en/{suffix}"],
+            "ja": [f"{base_url}/jp/{suffix}"],
+            "x-default": [f"{base_url}/"],
+        }
+        expected_canonical = expected_alternates["en" if expected_lang == "en" else "ja"]
+        if document.canonicals != expected_canonical or document.alternates != expected_alternates:
+            fail(findings, path, "canonical or alternate-language metadata mismatch")
         if document.html_lang.lower() != expected_lang:
             fail(findings, path, f"lang must be {expected_lang}")
         duplicates = sorted(key for key, count in Counter(document.ids).items() if count > 1)
