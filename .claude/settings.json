@@ -23,7 +23,69 @@
     "ask": [
       "Bash(*publish*)",
       "Bash(*deploy*)"
-    ]
+    ],
+    "allow": [
+      "Bash(./cv/build-cv.sh)",
+      "Bash(SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git *)",
+      "Bash(SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git pull *)",
+      "Bash(SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git push)",
+      "Bash(SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git push*)",
+      "Bash(SSH_AUTH_SOCK=$HOME/.ssh/agent.sock ssh-add *)",
+      "Bash(awk *)",
+      "Bash(chmod *)",
+      "Bash(claude mcp *)",
+      "Bash(codex --version)",
+      "Bash(codex exec *)",
+      "Bash(convert *)",
+      "Bash(cp *)",
+      "Bash(curl *)",
+      "Bash(cut *)",
+      "Bash(echo *)",
+      "Bash(fc-list)",
+      "Bash(file *.pdf)",
+      "Bash(git *)",
+      "Bash(grep *)",
+      "Bash(head *)",
+      "Bash(iconv *)",
+      "Bash(jq *)",
+      "Bash(lftp *)",
+      "Bash(mkdir *)",
+      "Bash(mv *)",
+      "Bash(pdffonts *)",
+      "Bash(pdfinfo *)",
+      "Bash(pdftoppm *)",
+      "Bash(pdftotext *)",
+      "Bash(pip *)",
+      "Bash(python3 *)",
+      "Bash(rclone *)",
+      "Bash(scontrol show *)",
+      "Bash(sed *)",
+      "Bash(sinfo *)",
+      "Bash(sort *)",
+      "Bash(ssh *)",
+      "Bash(ssh-keygen -y -P \"\" -f ~/.ssh/id_ed25519)",
+      "Bash(tail *)",
+      "Bash(tectonic *)",
+      "Bash(unzip *)",
+      "Bash(wc)",
+      "Bash(xxd)",
+      "Bash(yrun *)",
+      "Read(//home/rioyokota/**)",
+      "Read(//home/rioyokota/.ssh/**)",
+      "Read(//tmp/**)",
+      "Skill(update-config)",
+      "WebFetch(domain:arxiv.org)",
+      "WebFetch(domain:drive.google.com)",
+      "WebFetch(domain:swallow-llm.github.io)",
+      "WebSearch",
+      "mcp__codex-high__codex",
+      "mcp__codex-low__codex",
+      "mcp__codex-medium__codex",
+      "mcp__codex-medium__codex-reply",
+      "mcp__codex-spark-low__codex",
+      "mcp__codex-spark-medium__codex"
+    ],
+    "defaultMode": "acceptEdits"
   },
   "hooks": {
     "PostToolUse": [
@@ -87,5 +149,12 @@
         ]
       }
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "codex-high",
+    "codex-medium",
+    "codex-low",
+    "codex-spark-low",
+    "codex-spark-medium"
+  ]
 }
