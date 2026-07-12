@@ -78,6 +78,20 @@ def fail(findings: list[str], path: Path, message: str) -> None:
 
 def main() -> int:
     findings: list[str] = []
+    root_text = (ROOT / "index.html").read_text(encoding="utf-8")
+    root_requirements = (
+        '<meta charset="UTF-8">',
+        '<meta name="viewport"',
+        '<meta name="theme-color" content="#002855">',
+        '<script defer src="js/language-redirect.js"></script>',
+        '<noscript>',
+        '<a href="en/index.html" lang="en">English</a>',
+        '<a href="jp/index.html" lang="ja">日本語</a>',
+    )
+    if any(item not in root_text for item in root_requirements):
+        findings.append("root redirect metadata or bilingual no-script fallback mismatch")
+    if re.search(r'<meta\s+name=["\']\s*["\']', root_text, flags=re.I):
+        findings.append("root redirect contains empty metadata name")
     en_pages = sorted((ROOT / "en").rglob("*.html"))
     jp_pages = sorted((ROOT / "jp").rglob("*.html"))
     if {p.relative_to(ROOT / "en") for p in en_pages} != {p.relative_to(ROOT / "jp") for p in jp_pages}:
