@@ -385,3 +385,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | codex-driver (gpt-5) | T-15 align DRIVER publish documentation | tools/out/driver-report-20260712-2150.md | n/a | done; repository-only push pending
 2026-07-12 | codex-driver (gpt-5) | T-16 harden publish pipeline | tools/out/driver-report-20260712-2202.md | n/a | done; repository-only push pending; no deploy
 2026-07-12 | codex-driver (gpt-5) | T-17 real-browser consent regression coverage | tools/out/driver-report-20260712-2219.md | n/a | done; repository-only push pending; no deploy
+2026-07-12 | codex-driver (gpt-5) | T-22 field reconciliation | tools/out/driver-report-20260712-2241.md | n/a | awaiting owner review; safe local fixes ready to push

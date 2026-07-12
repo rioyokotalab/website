@@ -51,7 +51,7 @@ MONTHS = {m: i+1 for i, m in enumerate(
 VENUE_WORDS = re.compile(
     r'Journal|Conference|Proceedings|Transactions|Workshop|Symposium|SIGKDD|'
     r'NeurIPS|ICLR|ICML|CVPR|ICCV|ECCV|AAAI|EMNLP|COLM|COLING|LREC|ISC|SC\d|HPC|GTC|'
-    r'IEEE|ACM|SIAM|Nature|学会|研究会|大会|シンポジウム|発表会|ワークショップ|研究発表会')
+    r'IEEE|ACM|SIAM|Nature|arXiv|学会|研究会|大会|シンポジウム|発表会|ワークショップ|研究発表会')
 
 # invisible data-date="YYYY-MM"(-DD) on the opening <li> = ResearchMap
 # publication_date; when present it OVERRIDES the heuristic date parse below.

@@ -1,19 +1,21 @@
 driver: codex
-updated: 2026-07-12T22:19+0900
-task: idle
-status: idle
+updated: 2026-07-12T22:41+0900
+task: T-22 audit website/CV/researchmap/ORCID field mirroring
+status: awaiting-user
 
 ## Now
-- Goal: idle after T-17 real-browser consent regression coverage.
-- Last done: pinned Playwright 1.61.1 and its headless Chromium locally; four EN/JP desktop/mobile tests cover keyboard use, accept/reject persistence, revocation, and zero Google requests before consent. All repo-only test files and artifacts are deploy-excluded.
-- Next: start T-22 field reconciliation; T-20 and T-21 change project agent configuration/policy and require explicit exact-scope authorization before direct edits.
+- Goal: review and decide the external/profile follow-ups from the completed T-22 field audit.
+- Last done: produced the field matrix, 29-line researchmap queue, and nine-work ORCID selection; corrected the EN NII title and the exporter arXiv venue parse. Exporter tests and parity checks pass.
+- Next: owner reviews the three T-22 output files and decides whether to perform the manual researchmap/ORCID imports, which postal code is authoritative, and whether the Keio RA role belongs on the website.
 
 ## Working set
-- T-17 files: `package.json`, `package-lock.json`, `playwright.config.js`, `tests/analytics-consent.spec.js`, `.gitignore`, `README.md`, `deploy.sh`, `skills/publish-and-verify.md`.
-- Verification passed: clean npm install/audit, four Playwright tests in real headless Chromium, Node/Bash syntax, markdown budgets, diff whitespace, deploy-exclusion inspection, empty `tools/out/`.
+- Outputs: `tools/out/t22-field-reconciliation.md`, `tools/out/researchmap-import.jsonl`, `tools/out/orcid-works-selection.bib`; full comparison export `tools/out/orcid-works.bib`.
+- Committed scope pending: `en/member/yokota.html`, `tools/researchmap-export.py`, ledger/bookkeeping. Verify exporter tests, CRLF preservation, EN/JP parity, markdown budgets, and diff.
 
 ## Open questions
-- None for T-17. The static site retains no build step; Playwright is test-only.
+- CV postal code 152-8500 conflicts with website 152-8550; no authoritative resolution was found in this pass.
+- CV includes a Keio RA role absent from the website; intent is unknown.
 
 ## Awaiting user
 - T-18 requires owner access to GA Admin; no credentials should be shared.
+- T-22 requires owner review of the generated external import selections and two profile-scope decisions; no credentials should be shared.

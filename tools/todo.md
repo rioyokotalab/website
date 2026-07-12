@@ -19,15 +19,15 @@ output-file-first handoffs, non-overlapping write scopes, root review, and
 proportional verification; benchmark representative solo versus delegated tasks
 before replacing the current work-solo rule.
 
-### T-22 — audit website/CV/researchmap/ORCID field mirroring
-Build a field-level reconciliation matrix across the EN/JP website,
-`cv/cv.tex`, researchmap exporter/live public data, and ORCID exporter output.
-Classify every field as mirrored, intentionally source-specific, unsupported, or
-missing; resolve safe local discrepancies and produce separately reviewable
-researchmap/ORCID updates. External account reads/writes remain governed by
-`skills/exporters.md` and require their normal authorization gates.
-
 ## Blocked / awaiting user
+
+### T-22 — audit website/CV/researchmap/ORCID field mirroring
+Audit and safe local fixes are complete; review
+`tools/out/t22-field-reconciliation.md`, the 29-line
+`tools/out/researchmap-import.jsonl`, and the nine-work
+`tools/out/orcid-works-selection.bib`. Owner decisions remain for manual
+external imports, the authoritative postal code, and whether the Keio RA role
+should be website-visible. Never automate either account login.
 
 ### T-18 — confirm GA Admin privacy settings
 In the GA4 property, set event-data retention to 2 months and confirm Google
