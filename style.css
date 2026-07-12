@@ -491,6 +491,29 @@ section#gallery {
 	height: 500px;
 	border: 1px solid #999;
 }
+.wn td {
+	padding: 4px 0;
+}
+.home-en .wn td:first-child {
+	padding-right: 1.5em;
+}
+.home-ja .wn td:first-child {
+	margin-right: 1.5em;
+}
+.slogan-wide {
+	width: 500px;
+}
+.news-page sup {
+	font-size: 10px;
+}
+.speaker-photo {
+	float: left;
+	margin: 0 1em 1em 0;
+}
+.oral-highlight {
+	color: #cc0000;
+	font-weight: bold;
+}
 /* Figures inside content */
 section.content p[align="center"] img {
 	border-radius: 6px;

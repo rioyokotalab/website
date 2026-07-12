@@ -37,10 +37,13 @@ class Document(HTMLParser):
         self.alternates: dict[str, list[str]] = {}
         self.current_links: list[dict[str, str]] = []
         self.iframes: list[dict[str, str]] = []
+        self.inline_styles = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
         line = self.getpos()[0]
+        if tag == "style" or "style" in values:
+            self.inline_styles += 1
         if tag == "html":
             self.html_lang = values.get("lang", "")
         if tag == "body":
@@ -181,6 +184,8 @@ def main() -> int:
             fail(findings, path, "header logo intrinsic dimensions mismatch")
         if document.inline_executable_scripts:
             fail(findings, path, "executable inline script")
+        if document.inline_styles:
+            fail(findings, path, "inline presentation style")
         if document.unsafe_semantics:
             fail(findings, path, "JavaScript URL or inline event handler")
         missing_fragments = sorted(set(document.fragments) - document.targets)

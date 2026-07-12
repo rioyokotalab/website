@@ -22,62 +22,9 @@
 <link rel="alternate" hreflang="en" href="https://www.rio.scrc.iir.isct.ac.jp/en/research/">
 <link rel="alternate" hreflang="ja" href="https://www.rio.scrc.iir.isct.ac.jp/jp/research/">
 <link rel="alternate" hreflang="x-default" href="https://www.rio.scrc.iir.isct.ac.jp/">
-<link rel="stylesheet" href="../../style.css?v=20260713f" type="text/css" media="screen">
+<link rel="stylesheet" href="../../style.css?v=20260713g" type="text/css" media="screen">
 <script type="text/javascript" src="../../js/pagetop.js"></script>
 
-<style>
-<!--
-.rlist {
-    float: left;
-    width: 23%;
-    min-height: 60px;
-    padding: 2em;
-    margin-right: 1em;
-    border-radius: 5px;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
-    margin-bottom: 1em;
-}
-.bg001 {
-    background: url( ../../jp/research/bgimages/001.jpg ) no-repeat center center;
-}
-.bg002 {
-    background: url( ../../jp/research/bgimages/002.jpg ) no-repeat center center;
-}
-.bg003 {
-    background: url( ../../jp/research/bgimages/003.jpg ) no-repeat center center;
-}
-a.rlist {
-    display: block;
-    font-size: 14px;
-    text-align: center;
-    color: #fff!important;
-    font-weight: bold;
-    -webkit-transition: all 0.6s ease;
-    -moz-transition: all 0.6s ease;
-    -o-transition: all 0.6s ease;
-    transition: all 0.6s ease;
-}
-a.rlist:hover {
-    color: #ff0!important;
-}
-a.rlist span {
-    display: block;
-    margin-top: 1em;
-    font-size: 12px;
-}
-
-@media only screen and (max-width:640px) {
-.rlist {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-}
-}
--->
-</style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet" integrity="sha384-MzHT0pgTPI8fjMvEz54yA7HmSVjLLsxl+ytGS13+EOr/L5uLaBakmchzKgDYsSQz" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js" integrity="sha384-jN3Qe7xtdnQxdyZWXD9gn2Z4oRyiFuU03xQATriSicCq2SKDikN9UEJMCx+9nsJM" crossorigin="anonymous"></script>
@@ -161,8 +108,8 @@ a.rlist span {
       <p>The Yokota Lab is developing the Japanese large language model <a href="https://swallow-llm.github.io/" target="_blank" rel="noopener noreferrer">Swallow</a> in collaboration with the Okazaki Lab and AIST. Since pretraining from scratch requires a huge amount of computing resources, we perform continual pre-training on Japanese text starting from open models such as gpt-oss and Qwen3, which were trained mainly in English. The latest <a href="https://swallow-llm.github.io/gptoss-swallow.en.html" target="_blank" rel="noopener noreferrer">gpt-oss Swallow</a> models (20B and 120B), released in February 2026, were built in three stages: continual pre-training on a 400-billion-token corpus that balances Japanese, English, mathematics, and coding (including Swallow Corpus v3.2 and the newly developed SwallowMath-v2 and SwallowCode-v2), supervised fine-tuning, and reinforcement learning with verifiable rewards (RLVR). Both models achieve top performance among open-weight LLMs of their size, with notable gains on mathematics and Japanese knowledge tasks. The model parameters are published on <a href="https://huggingface.co/tokyotech-llm" target="_blank" rel="noopener noreferrer">HuggingFace</a>, so they can be used for research and commercial purposes. In contrast, the <a href="https://llm-jp.nii.ac.jp/en/" target="_blank" rel="noopener noreferrer">LLM-jp</a> model developed at the NII <a href="https://llmc.nii.ac.jp/en/" target="_blank" rel="noopener noreferrer">LLM Research and Development Center</a> is pre-trained from scratch in Japanese and English. In addition to the model parameters, we also publish the data used for training and also the failed cases.</p>
 <p class="text-center"><a href="../../jp/research/images2026/007.png" data-lightbox="research"><img loading="lazy" decoding="async" src="../../jp/research/images2026/007.png" alt="" width="95%"/></a><br>
         ▲Click image to enlarge </p>
-      <h4>Optimal Sparsity of Mixture-of-Experts Language Models for Reasoning Tasks <span style="color:#cc0000; font-weight:bold;">— ICLR 2026 Oral</span></h4>
-      <p><strong style="color:#cc0000;">This work was accepted for Oral presentation at ICLR 2026.</strong> Empirical scaling laws have driven the  evolution of large language models (LLMs), yet their coefficients shift  whenever the model architecture or data pipeline changes. Mixture-of-Experts  (MoE) models, now standard in state-of-the-art systems, introduce a new  sparsity dimension that current dense-model frontiers overlook. We investigate  how MoE sparsity influences two distinct capability regimes: memorization  skills and reasoning skills. By training MoE families that vary total  parameters, active parameters, and top-k&nbsp;routing under fixed compute  budgets, we disentangle pre-training loss from downstream accuracy. Our results  reveal two principles. First, Active FLOPs: models with identical training loss  but greater active compute achieve higher reasoning accuracy. Second, Total  tokens per parameter (TPP): memorization tasks improve with more parameters,  while reasoning tasks benefit from optimal TPP, indicating that reasoning is  data-hungry. Neither reinforcement learning post-training (GRPO) nor increased  test-time compute alters these trends. We therefore argue that optimal MoE  sparsity must be determined jointly by active FLOPs and TPP, revising the  classical picture of compute-optimal scaling. Our model checkpoints, code and  logs are open-source at&nbsp;https://github.com/rioyokotalab/optimal-sparsity.</p>
+      <h4>Optimal Sparsity of Mixture-of-Experts Language Models for Reasoning Tasks <span class="oral-highlight">— ICLR 2026 Oral</span></h4>
+      <p><strong class="oral-highlight">This work was accepted for Oral presentation at ICLR 2026.</strong> Empirical scaling laws have driven the  evolution of large language models (LLMs), yet their coefficients shift  whenever the model architecture or data pipeline changes. Mixture-of-Experts  (MoE) models, now standard in state-of-the-art systems, introduce a new  sparsity dimension that current dense-model frontiers overlook. We investigate  how MoE sparsity influences two distinct capability regimes: memorization  skills and reasoning skills. By training MoE families that vary total  parameters, active parameters, and top-k&nbsp;routing under fixed compute  budgets, we disentangle pre-training loss from downstream accuracy. Our results  reveal two principles. First, Active FLOPs: models with identical training loss  but greater active compute achieve higher reasoning accuracy. Second, Total  tokens per parameter (TPP): memorization tasks improve with more parameters,  while reasoning tasks benefit from optimal TPP, indicating that reasoning is  data-hungry. Neither reinforcement learning post-training (GRPO) nor increased  test-time compute alters these trends. We therefore argue that optimal MoE  sparsity must be determined jointly by active FLOPs and TPP, revising the  classical picture of compute-optimal scaling. Our model checkpoints, code and  logs are open-source at&nbsp;https://github.com/rioyokotalab/optimal-sparsity.</p>
 <p class="text-center"><a href="../../jp/research/images2025/002.jpg"  data-lightbox="research"><img loading="lazy" decoding="async" src="../../jp/research/images2025/002.jpg" alt="" width="95%"/></a><br>
         ▲Click image to enlarge </p>
       <h4>PowerCLIP: Powerset Alignment for Fine-Grained Contrastive Pre-Training (CVPR 2026)</h4>

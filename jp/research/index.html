@@ -22,63 +22,10 @@
 <link rel="alternate" hreflang="en" href="https://www.rio.scrc.iir.isct.ac.jp/en/research/">
 <link rel="alternate" hreflang="ja" href="https://www.rio.scrc.iir.isct.ac.jp/jp/research/">
 <link rel="alternate" hreflang="x-default" href="https://www.rio.scrc.iir.isct.ac.jp/">
-<link rel="stylesheet" href="../../style.css?v=20260713f" type="text/css" media="screen">
+<link rel="stylesheet" href="../../style.css?v=20260713g" type="text/css" media="screen">
 <script type="text/javascript" src="../../js/pagetop.js"></script>
 
 
-<style>
-<!--
-.rlist {
-    float: left;
-    width: 23%;
-    min-height: 60px;
-    padding: 2em;
-    margin-right: 1em;
-    border-radius: 5px;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
-    margin-bottom: 1em;
-}
-.bg001 {
-    background: url( bgimages/001.jpg ) no-repeat center center;
-}
-.bg002 {
-    background: url( bgimages/002.jpg ) no-repeat center center;
-}
-.bg003 {
-    background: url( bgimages/003.jpg ) no-repeat center center;
-}
-a.rlist {
-    display: block;
-    font-size: 14px;
-    text-align: center;
-    color: #fff!important;
-    font-weight: bold;
-    -webkit-transition: all 0.6s ease;
-    -moz-transition: all 0.6s ease;
-    -o-transition: all 0.6s ease;
-    transition: all 0.6s ease;
-}
-a.rlist:hover {
-    color: #ff0!important;
-}
-a.rlist span {
-    display: block;
-    margin-top: 1em;
-    font-size: 12px;
-}
-
-@media only screen and (max-width:640px) {
-.rlist {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-}
-}
--->
-</style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet" integrity="sha384-MzHT0pgTPI8fjMvEz54yA7HmSVjLLsxl+ytGS13+EOr/L5uLaBakmchzKgDYsSQz" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js" integrity="sha384-jN3Qe7xtdnQxdyZWXD9gn2Z4oRyiFuU03xQATriSicCq2SKDikN9UEJMCx+9nsJM" crossorigin="anonymous"></script>
@@ -173,8 +120,8 @@ a.rlist span {
       <p>横田研では、岡崎研と産総研と共同で大規模言語モデル<a href="https://swallow-llm.github.io/" target="_blank" rel="noopener noreferrer">Swallow</a>を開発しています。一から事前学習すると膨大な計算資源が必要になるので、英語メインで学習されたgpt-ossやQwen3などのオープンなモデルから日本語メインの継続学習を行う方針を採用しています。2026年2月に公開した最新の<a href="https://swallow-llm.github.io/gptoss-swallow.ja.html" target="_blank" rel="noopener noreferrer">gpt-oss Swallow</a>（20B・120B）は、日本語・英語・数学・コードのバランスを取った4,000億トークンのコーパス（Swallow Corpus v3.2や新たに開発したSwallowMath-v2・SwallowCode-v2などを含む）による継続事前学習、教師ありファインチューニング（SFT）、検証可能な報酬による強化学習（RLVR）の3段階で構築されており、同規模のオープンなLLMの中で最高水準の性能を達成しています（特に数学や日本語知識のタスクで大きく向上）。モデルのパラメータは<a href="https://huggingface.co/tokyotech-llm" target="_blank" rel="noopener noreferrer">HuggingFace</a>上で公開されていますのでApache2.0ライセンスに従う限り、研究や商業目的などで利用できます。NIIの<a href="https://llmc.nii.ac.jp/en/" target="_blank" rel="noopener noreferrer">LLM研究開発センター</a>で開発している<a href="https://llm-jp.nii.ac.jp/en/" target="_blank" rel="noopener noreferrer">LLM-jp</a>モデルは、これとは対照的に一から日本語と英語で事前学習を行っています。また、モデルのパラメータだけでなく、学習に用いたデータや失敗したケースなども公開する方針です。</p>
 <p class="text-center"><a href="images2026/007.png" data-lightbox="research"><img loading="lazy" decoding="async" src="images2026/007.png" alt="" width="95%"/></a><br>
         ▲クリックすると拡大されます </p>
-      <h4>MoEの論理推論能力の向上 <span style="color:#cc0000; font-weight:bold;">— ICLR 2026 Oral採択</span></h4>
-      <p><strong style="color:#cc0000;">本研究はICLR 2026にOral（口頭発表）として採択されました。</strong>経験的スケーリング法則は大規模言語モデル（LLM）の進化を牽引してきたが、モデルアーキテクチャやデータパイプラインが変更されるたびにその係数は変動する。最先端システムで標準となった専門家混合モデル（MoE）は、現在の高密度モデル研究が見落としている新たな疎性次元を導入する。本研究では、MoEのスパーシティが二つの異なる能力領域―記憶能力と推論能力―にどのように影響するかを調査する。固定された計算リソース予算下で、総パラメータ数、アクティブパラメータ数、トップkルーティングを変化させたMoEファミリーを訓練し、事前学習損失と下流タスク精度を分離して分析した。結果から二つの原則が明らかになった。第一に「有効FLOPs」：同一の学習損失でも有効計算量が多いモデルほど推論精度が高い。第二に「パラメータ当たり総トークン数（TPP）」：記憶課題はパラメータ数増加で改善するが、推論課題は最適TPPで効果を発揮し、推論がデータ集約的であることを示唆する。強化学習によるポストトレーニング（GRPO）も、テスト時計算量の増加も、これらの傾向を変えない。したがって我々は、最適MoEスパース性はアクティブFLOPsとTPPによって共同決定されなければならないと主張し、計算量最適スケーリングの古典的観念を修正する。モデルチェックポイント、コード、ログはhttps://github.com/rioyokotalab/optimal-sparsityでオープンソース化されている。 </p>
+      <h4>MoEの論理推論能力の向上 <span class="oral-highlight">— ICLR 2026 Oral採択</span></h4>
+      <p><strong class="oral-highlight">本研究はICLR 2026にOral（口頭発表）として採択されました。</strong>経験的スケーリング法則は大規模言語モデル（LLM）の進化を牽引してきたが、モデルアーキテクチャやデータパイプラインが変更されるたびにその係数は変動する。最先端システムで標準となった専門家混合モデル（MoE）は、現在の高密度モデル研究が見落としている新たな疎性次元を導入する。本研究では、MoEのスパーシティが二つの異なる能力領域―記憶能力と推論能力―にどのように影響するかを調査する。固定された計算リソース予算下で、総パラメータ数、アクティブパラメータ数、トップkルーティングを変化させたMoEファミリーを訓練し、事前学習損失と下流タスク精度を分離して分析した。結果から二つの原則が明らかになった。第一に「有効FLOPs」：同一の学習損失でも有効計算量が多いモデルほど推論精度が高い。第二に「パラメータ当たり総トークン数（TPP）」：記憶課題はパラメータ数増加で改善するが、推論課題は最適TPPで効果を発揮し、推論がデータ集約的であることを示唆する。強化学習によるポストトレーニング（GRPO）も、テスト時計算量の増加も、これらの傾向を変えない。したがって我々は、最適MoEスパース性はアクティブFLOPsとTPPによって共同決定されなければならないと主張し、計算量最適スケーリングの古典的観念を修正する。モデルチェックポイント、コード、ログはhttps://github.com/rioyokotalab/optimal-sparsityでオープンソース化されている。 </p>
 <p class="text-center"><a href="images2025/002.jpg"  data-lightbox="research"><img loading="lazy" decoding="async" src="images2025/002.jpg" alt="" width="638"/></a><br>
         ▲クリックすると拡大されます </p>
 <h4>PowerCLIP: 冪集合アラインメントによる細粒度な対照事前学習 (CVPR 2026) </h4>
