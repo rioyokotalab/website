@@ -376,3 +376,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | coordinator | revert round-2 winner merge; archive deliverables | tools/out/r2-revert.md, tools/out/r2-deliverables/ | 1783853518 | outcome: PASS (pending owner preference)
 2026-07-12 | coordinator | revert round-2 winner merge; archive deliverables | tools/out/r2-revert.md, tools/out/r2-deliverables/ | 1783853520 | outcome: PASS (pending owner preference)
 2026-07-12 | codex-driver (gpt-5) | T-10 T-11 T-12 selective Sol apply; T-13 declined | tools/out/driver-report-20260712-2003.md | n/a | done; no publish/push/config apply
+2026-07-12 | codex-driver (gpt-5) | T-11 applied verification and cold-restart handoff | tools/out/driver-report-20260712-2024.md | n/a | done; restart ready

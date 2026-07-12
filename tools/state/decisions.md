@@ -1,5 +1,9 @@
 # Durable decisions (newest first; one-line rationale each)
 
+- 2026-07-12 T-11 zero-interaction configuration applied owner-side: routine
+  in-scope work uses Claude bypass and Codex never/full-access after a cold
+  restart; explicit publish, push, credential, destructive, and scope-expansion
+  authorization remains a workflow requirement.
 - 2026-07-12 Round-2 redesign proposals declined: keep the current public
   design and apply only Sol's non-design work; no T-13 prototype or redesign
   plan is an active implementation target.

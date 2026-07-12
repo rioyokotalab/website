@@ -6,9 +6,9 @@ Maps `task_type` to the default codex worker the orchestrator chooses before dis
 
 Five logical workers in `tools/codex-workers.json`, the single source of truth: `codex-spark-low` and `codex-spark-medium` (pool spark, model `gpt-5.3-codex-spark`, effort low/medium); `codex-medium` (standard, `gpt-5.6-terra`, medium); `codex-high` (standard, `gpt-5.6-sol`, high); `codex-low` (legacy, `gpt-5.6-terra`, low).
 
-Mandatory dispatch contract: startup model/effort pins in .mcp.json are a safety net only; every codex call passes per-call `model=<worker.model>` and `config={"model_reasoning_effort":<worker.effort>}` from the registry, plus `sandbox:"workspace-write"` for writes. Server names are routing labels only.
+Mandatory dispatch contract: startup pins in .mcp.json are a safety net only; every codex call passes per-call `model=<worker.model>`, `config={"model_reasoning_effort":<worker.effort>}`, `sandbox:"danger-full-access"`, and approval policy `never`. Server names are routing labels only.
 
-Network: all generated MCP servers pass `-c sandbox_workspace_write.network_access=true` (verified codex-cli 0.144.1). Web/metadata lookups run INSIDE codex per `skills/web-lookup.md`; Claude Bash curl is fallback and independent verification. The former "keep network retrieval out of codex" guardrail is retired as of 2026-07-11.
+Network: generated MCP servers use `sandbox_mode="danger-full-access"`; web/metadata lookups run inside codex per `skills/web-lookup.md`, with Claude Bash curl as fallback and independent verification.
 
 ## Pool preference + status
 

@@ -6,9 +6,9 @@ Shared standing policy for YOKOTA Lab website agents with codex MCP access. `too
 
 - **OFFLOAD FIRST and MAXIMIZE offload.** Site-coordinator and every codex-enabled agent should offload bounded repository reading, parsing, counting, drafting, translation, analysis, lookup, citation/exporter reasoning, figure/script generation, and CRLF-safe edit-script drafting before consuming Claude context.
 - Offload by default when work spans more than 2 files, about 100 lines, multiple pages, substantial HTML, or non-trivial drafting or reasoning. This applies to retries: narrow or fan out the work instead of repeating it in Claude context.
-- Codex workers have outbound network (`sandbox_workspace_write.network_access=true`, verified codex-cli 0.144.1). Web/metadata lookups run inside codex following `skills/web-lookup.md`; Claude Bash curl remains the fallback and an independent-verification route.
+- Codex workers use `sandbox_mode="danger-full-access"` with `approval_policy="never"`; web/metadata lookups run inside codex following `skills/web-lookup.md`, with Claude Bash curl as fallback and independent verification.
 - Pass file/URL pointers and skill paths, not copied payloads. Claude reads the resulting `tools/out/` file plus minimal spot checks and keeps its response short.
-- Continuously identify work that can move from Claude to codex and propose corresponding config/skill improvements. Changes to hand-edit-only config always go through a `tools/out/` proposal and exact apply command.
+- Continuously identify work that can move from Claude to codex. Project config may be edited directly only when the current task explicitly scopes it; owner-scope config remains proposal-only unless the user authorizes the exact write.
 
 ## Codex-enabled agents
 
@@ -35,8 +35,10 @@ There are two capacity pools: **spark** and **standard**. `codex-low` is a legac
 > **CRITICAL:** Verified 2026-07-11: codex mcp-server startup model/effort pins are a safety net only. Every codex call MUST explicitly pass the chosen registry entry's `model=<worker.model>` and `config={"model_reasoning_effort":<worker.effort>}`.
 
 - A call to `mcp__codex-<name>__codex` without both per-call values silently uses the account-default model (`gpt-5.5`). Never rely on the server name to set a model. Server names are routing labels used for tool-granting only.
-- Every call that writes a deliverable, script, log, or repository file MUST also pass `sandbox: "workspace-write"`; the per-call sandbox overrides startup config and defaults to read-only when omitted. Read-only inspection may explicitly use `sandbox: "read-only"`.
-- `cwd` should be `/home/rioyokota/website`. Normal config supplies `approval_policy="never"`; no per-call approval argument is normally required.
+- Every call MUST pass `sandbox: "danger-full-access"` and approval policy
+  `never`; per-call values override startup config. This avoids interactive
+  approvals and workspace-sandbox failures, including git metadata writes.
+- `cwd` should be `/home/rioyokota/website`.
 - Before dispatch, resolve the logical worker in `tools/codex-workers.json`; do not copy a stale model/effort mapping from prose.
 
 ## Task classes and worker selection
@@ -97,7 +99,7 @@ Classify every failure **before** rerouting as `capacity`, `task`, or `environme
 
 ### Environment failure
 
-- Examples: missing binary, wrong `cwd`, missing `sandbox: "workspace-write"`, bad path, or MCP transport failure.
+- Examples: missing binary, wrong `cwd`, missing `sandbox: "danger-full-access"`, bad path, or MCP transport failure.
 - Fix the environmental cause and retry the **same worker once**. Do not treat an environment failure as model weakness or advance the task-failure ladder.
 
 A failed same-worker environment retry is terminal: record the error and report a blocker. After the final available escalation-ladder endpoint fails, report a blocker; do not restart the ladder. These limits are per task for the run and may not be reset by reclassifying or redispatching the same failure.
@@ -191,13 +193,13 @@ date | calling agent | task | output file | conversationId | outcome
 
 - Codex generates, analyzes, parses, looks up, drafts content/translations/citations, reasons about exporter logic, produces figures or proposed scripts, and records evidence.
 - Claude reviews, decides, executes scripts, reconciles partial edits, verifies, publishes, and reports.
-- Codex never edits website pages directly unless a task explicitly authorizes that exact scope; proposal-only config tasks never edit live config.
+- Codex never edits website pages directly unless a task explicitly authorizes that exact scope. Project config edits likewise require exact current-task scope; owner-scope config stays proposal-only unless explicitly authorized.
 - Codex never publishes and never runs `publish.sh`, `deploy.sh`, `lftp`, `ssh`, or `git push`.
-- Codex never touches credentials, `~/.ssh`, `.git`, `.claude`, `.mcp.json`, or `.dont-remove-me`.
+- Codex never touches credentials, `~/.ssh`, or `.dont-remove-me`; normal git metadata and explicitly scoped project config are allowed.
 
 ## Codex approval prompts (no per-prompt "don't ask again")
 
 Codex shell-command approval requests ("MCP server codex-<tier> requests your input … Allow Codex to run …") are codex elicitations, NOT Claude Code's allow/deny system, so they offer only Accept/Decline with no persistence. Silence them via codex config, not by clicking:
 
-- Global default: `~/.codex/config.toml` with `approval_policy = "never"` (or `"on-failure"`) and `sandbox_mode = "workspace-write"`. Out-of-sandbox actions then fail instead of asking. Generated MCP servers already pass `-c sandbox_workspace_write.network_access=true`; workers remain confined to the workspace-write filesystem sandbox passed per call.
-- Per call: dispatchers SHOULD pass `approval-policy: "never"` alongside `sandbox: "workspace-write"` on write-capable codex calls. Per-call `sandbox`/`approval-policy` override the config.toml defaults; model/effort still come only from per-call `model`/`config`.
+- Global default: `~/.codex/config.toml` with `approval_policy = "never"` and `sandbox_mode = "danger-full-access"`.
+- Per call: dispatchers MUST pass approval policy `never` with `sandbox: "danger-full-access"`. Per-call values override config.toml; model/effort still come from per-call `model`/`config`.

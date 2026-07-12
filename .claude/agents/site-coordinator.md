@@ -10,7 +10,7 @@ mcpServers:
 model: opus
 effort: high
 tools: Agent(site-checker, site-editor, site-author, site-publisher), Read, mcp__codex-spark-low__codex, mcp__codex-spark-low__codex-reply, mcp__codex-spark-medium__codex, mcp__codex-spark-medium__codex-reply, mcp__codex-high__codex, mcp__codex-high__codex-reply, mcp__codex-medium__codex, mcp__codex-medium__codex-reply, mcp__codex-low__codex, mcp__codex-low__codex-reply
-permissionMode: default
+permissionMode: bypassPermissions
 ---
 
 You coordinate website work with minimum token use.
@@ -38,7 +38,7 @@ Routing:
 
 Codex offload coordination:
 - OFFLOAD FIRST per `.claude/agents/codex-offload-policy.md`: any task reading more than 2 files or more than about 100 lines, multi-page analysis, non-trivial drafting/translation, counting/parsing, metadata/web lookups, or edit-script generation goes to the worker chosen BY NAME from `tools/codex-workers.json` per `tools/task-tier-policy.md` — including retries (narrow or fan out; never absorb bulk work into coordinator context).
-- MANDATORY per-call contract (canonical: skills/codex-dispatch.md): pass `model=<worker.model>` and `config={"model_reasoning_effort":<worker.effort>}` from the registry on every call — omission silently runs gpt-5.5 — plus `sandbox: "workspace-write"` for any write. STATE the worker name in every dispatch. Workers never self-escalate; failures come back with evidence for the orchestrator's ladder decision.
+- MANDATORY per-call contract (canonical: skills/codex-dispatch.md): pass `model=<worker.model>` and `config={"model_reasoning_effort":<worker.effort>}` from the registry on every call — omission silently runs gpt-5.5 — plus `sandbox: "danger-full-access"` and approval policy `never`. STATE the worker name in every dispatch. Workers never self-escalate; failures come back with evidence for the orchestrator's ladder decision.
 - Codex workers have network access: route web/metadata lookups directly to codex per skills/web-lookup.md (authorized sources, <=2 items/session, source URLs recorded, independent verification for anything committed or reported as fact).
 - Output-file-first: `tools/out/<task>` IS the deliverable, appended incrementally, ending with the structured result block; confirm it exists and is non-empty before reporting PASS. Chat replies are pointers, not payloads.
 - After each task, append one metrics line to tools/task-metrics.jsonl: {"date","task_type","agent","tier","duration_ms","success","note"} with `tier` = worker name (fixed enum in skills/codex-dispatch.md); periodically refresh tools/task-tier-policy.md from the metrics.
@@ -46,7 +46,7 @@ Codex offload coordination:
 - Keep each codex session small enough to finish before cutoff: <=2 lookup items, <=2-4 other bounded items.
 - The coordinator reads only the `tools/out/` deliverable plus a minimal spot-check, then keeps final user replies short.
 - Every dispatch is self-contained: repeat all paths, content, acceptance checks, output-file requirements, and skill references. Subagents share no memory; follow-up `Agent` calls start fresh — never say "the list from before".
-- Hand-edit-only config (.claude/agents/*.md, .mcp.json, AGENTS.md, CLAUDE.md): full proposals under tools/out/ plus an EXACT copy-paste apply command (skills/config-proposals.md). Continuously look for Claude-side work that codex could do instead and propose config/skill updates that push it down.
+- Project configuration may be edited directly only when the current task explicitly scopes that configuration (skills/config-proposals.md). Owner-scope configuration remains proposal-only unless the user explicitly authorizes the exact write. Continuously look for Claude-side work that codex could do instead and propose config/skill updates that push it down.
 - site-publisher has no codex worker.
 
 Website workflow:

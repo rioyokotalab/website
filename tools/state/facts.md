@@ -28,9 +28,12 @@ Update in place when reality changes; date entries. No procedures here
   {FirstAuthorLastName}{Year}.pdf (grant-ID extraction source set).
 
 ## Tooling / environment
-- codex-cli 0.144.1: outbound network in workspace-write sandbox via
-  -c sandbox_workspace_write.network_access=true (verified).
-- codex sandbox: workspace-write keeps .git/ read-only by design (commits fail with index.lock "Read-only file system"); a FRESH session with sandbox danger-full-access CAN write .git. Sandbox mode is fixed at session start — per-call overrides on codex-reply are silently ignored.
+- 2026-07-12 T-11 applied and verified: project Claude uses
+  `bypassPermissions`, all six site agents use bypass mode, and all five Codex
+  MCP servers use `approval_policy="never"` plus
+  `sandbox_mode="danger-full-access"`; owner Claude/Codex defaults match.
+  Start a fresh session to load these defaults. Product-managed sandboxing may
+  still override local configuration.
 - Git pre-commit hook (.git/hooks/pre-commit) is UNTRACKED: after a fresh
   clone, reinstall it (tools/out proposal apply.sh did this once; content
   calls check-claude-size.py + check-md-size.py).

@@ -11,16 +11,18 @@ step; served as-is).
 - NEVER run publish.sh, deploy.sh, lftp, or ssh (either role): publishing
   is executed only by the user or Claude's site-publisher. git push:
   workers never; a driver only with explicit user approval in the current
-  conversation. Never touch credentials, ~/.ssh, .claude/, .mcp.json, or
-  .dont-remove-me; never edit .git internals. Drivers may run normal git
-  commands; workers only when the task says so.
+  conversation. Never touch credentials, ~/.ssh, or .dont-remove-me; never
+  edit .git internals. Project .claude/ and .mcp.json changes require explicit
+  task scope. Drivers may run normal git commands; workers only when the task
+  says so.
 - Workers: do not edit website files unless the task explicitly says so —
   default mode is read, analyze, and produce output under tools/out/ for
   Claude to review. Drivers: edit per skills/ conventions (EN/JP parity,
   html-editing) and checkpoint the ledger.
-- Hand-edit-only config (.claude/agents/*.md, .mcp.json, AGENTS.md,
-  CLAUDE.md): write full proposed copies under tools/out/ and provide an
-  EXACT copy-paste apply command; never edit these in place.
+- Project configuration, including .claude/agents/*.md, .mcp.json, AGENTS.md,
+  and CLAUDE.md, may be edited directly only when the current task explicitly
+  authorizes that exact scope. Owner-scope configuration stays proposal-only
+  unless the user explicitly authorizes the exact external write.
 - Never enter credentials anywhere; never automate login UIs (researchmap and
   OpenReview block non-browser clients).
 
@@ -44,9 +46,9 @@ checkpoints it). Drivers: own session.md.
    ledger + tools/out/ + commits, never chat.
 4. Same gates as Claude: publish only on explicit user approval in the
    CURRENT conversation (skills/publish-and-verify.md), executed by the
-   user or Claude's site-publisher — never by codex. Hand-edit-only files
-   stay proposal-only (skills/config-proposals.md); Claude-side hooks do
-   not bind you, so self-enforce. `git pull --rebase` before any push.
+   user or Claude's site-publisher — never by codex. Project config follows
+   the task-scoped direct-edit rule in skills/config-proposals.md; Claude-side
+   hooks do not bind you, so self-enforce. `git pull --rebase` before any push.
 5. Session-end bookkeeping (commits silently with other work): update
    session.md + todo.md; write the driver session report to
    tools/out/driver-report-<YYYYMMDD-HHMM>.md per skills/context-ledger.md
@@ -72,13 +74,13 @@ touches its domain, READ IT FIRST:
   claude<->codex handoff (BOTH roles read this)
 - skills/publish-and-verify.md — publish pipeline and deploy facts (context
   only: codex never publishes)
-- skills/config-proposals.md — hand-edit-only proposals, tools/out lifecycle
+- skills/config-proposals.md — task-scoped project config edits, owner-scope proposals, tools/out lifecycle
 - skills/exporters.md — researchmap/ORCID/cv.tex operations
 - skills/figures.md — figure production recipes
 
 ## Network access
-Sessions run with `sandbox_workspace_write.network_access=true` (verified
-codex-cli 0.144.1): you CAN fetch sources directly. Follow
+Sessions run with `sandbox_mode="danger-full-access"` and approval policy
+`never`: you CAN fetch sources directly without sandbox escalation. Follow
 skills/web-lookup.md — preferred structured sources (Crossref, DBLP,
 Semantic Scholar, arXiv, J-STAGE, publisher DOI resolvers, researchmap
 public read API), record a source URL per resolved fact, <=2 lookup items
@@ -112,8 +114,9 @@ codex-low); `tools/task-tier-policy.md` maps task types to workers. VERIFIED
 on codex-cli 0.144.1: per-call `model=<worker.model>` plus
 `config={"model_reasoning_effort":<worker.effort>}` are MANDATORY on every
 call (server names are routing labels only; omission runs the account
-default); writes also require `sandbox: "workspace-write"` and
-`cwd: "/home/rioyokota/website"`. Use exactly the dispatched worker; report
+default); every call uses `sandbox: "danger-full-access"` and approval
+policy `never`, with `cwd: "/home/rioyokota/website"`. Use exactly the
+dispatched worker; report
 hard failures with evidence instead of changing model or effort yourself.
 
 ## Output-file-first, logging, and handoff (canonical: skills/codex-dispatch.md)

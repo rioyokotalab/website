@@ -35,7 +35,7 @@ reviewed JSONL retained at `tools/out/researchmap-import.jsonl`.)
 ## Recently completed (history lives in git)
 
 - 2026-07-12 T-13 closed without adoption: owner reviewed and declined all Round-2 redesign proposals; no public design/style/template change was applied and temporary review links were removed.
-- 2026-07-12 T-11 audited all project/owner approval sources and delivered a validated zero-interaction full-copy overlay plus exact owner-run external commands; no live config applied; evidence: tools/out/t11-permissions.md.
+- 2026-07-12 T-11 zero-interaction configuration applied owner-side and verified: project Claude + six agents use bypass; five Codex MCP servers and owner Codex defaults use never/full-access; 11 nonblocking owner hooks retained; cold restart required. Archived evidence: tools/out/r2-deliverables/sol/t11-permissions.md.
 - 2026-07-12 T-10 rewrote root README for the current static EN/JP structure, ledger/playbooks/exporters/metrics, agent delegation, and approval-gated publish workflow; deploy.sh exact exclusion and parity verified; evidence: tools/out/t10-readme.md.
 - 2026-07-12 Round-1 4-way eval judged: terra > sol > fable > opus; terra merged (4a15349); tips tagged eval/r1-*; board cleared for round 2.
 - 2026-07-12 T-8 confirmed rtx6000-ada is still DOWN+NOT_RESPONDING with 8 configured GPUs; facts.md refreshed, no page edit or job submission; raw Slurm evidence: tools/out/t8-cluster-status.md.

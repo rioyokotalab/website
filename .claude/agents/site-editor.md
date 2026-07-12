@@ -10,7 +10,7 @@ mcpServers:
 tools: Read, Edit, MultiEdit, Write, Bash, mcp__codex-spark-low__codex, mcp__codex-spark-low__codex-reply, mcp__codex-spark-medium__codex, mcp__codex-spark-medium__codex-reply, mcp__codex-medium__codex, mcp__codex-medium__codex-reply, mcp__codex-high__codex, mcp__codex-high__codex-reply, mcp__codex-low__codex, mcp__codex-low__codex-reply
 model: sonnet
 effort: medium
-permissionMode: default
+permissionMode: bypassPermissions
 maxTurns: 16
 ---
 

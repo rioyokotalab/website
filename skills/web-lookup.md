@@ -1,7 +1,8 @@
 # Skill: Web lookup (codex has network access)
 
-Codex workers run with `sandbox_workspace_write.network_access=true`
-(verified codex-cli 0.144.1): fetch sources DIRECTLY from the codex session.
+Codex workers run with `sandbox_mode="danger-full-access"` and
+`approval_policy="never"`; outbound network is available directly from the
+codex session (configuration reference checked 2026-07-12).
 Claude Bash curl is the fallback and one independent-verification route.
 
 - Preferred structured sources first: Crossref `api.crossref.org`, DBLP,

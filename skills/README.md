@@ -20,7 +20,7 @@ changes, update the matching skill in the same change set.
 | context-ledger.md | session start/end checkpoints, cross-session state, claude<->codex handoff |
 | model-eval.md | recurring four-model rounds, judge protocol, timing, scoring, and branch reset lifecycle |
 | publish-and-verify.md | preview, publish approval, live verify, deploy auth |
-| config-proposals.md | hand-edit-only config changes, tools/out lifecycle |
+| config-proposals.md | task-scoped project config edits, owner-scope proposals, tools/out lifecycle |
 | settings-scope.md | placing Claude Code settings across user/project/local scopes |
 | exporters.md | researchmap / ORCID / cv.tex sync and exports |
 | figures.md | figure production for research pages |

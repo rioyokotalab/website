@@ -68,9 +68,9 @@ history.
 
 Recurring worker routing and task metrics live in
 `tools/task-tier-policy.md`, `tools/task-metrics.jsonl`, and
-`tools/codex-log.md`. Hand-edit-only agent/config changes are prepared as full
-proposals under `tools/out/`; see `skills/config-proposals.md` for the review
-and apply contract.
+`tools/codex-log.md`. Project configuration changes require explicit task scope; owner-scope
+configuration remains proposal-only unless the user authorizes the exact write.
+See `skills/config-proposals.md` for the review contract.
 
 ## Exporters and derived records
 

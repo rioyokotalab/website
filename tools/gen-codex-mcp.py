@@ -68,11 +68,9 @@ def server_object(worker: dict[str, Any]) -> dict[str, Any]:
         "command": "codex",
         "args": [
             "-c",
-            'sandbox_mode="workspace-write"',
+            'sandbox_mode="danger-full-access"',
             "-c",
             'approval_policy="never"',
-            "-c",
-            "sandbox_workspace_write.network_access=true",
             "-c",
             f'model="{worker["model"]}"',
             "-c",

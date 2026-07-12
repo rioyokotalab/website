@@ -8,8 +8,9 @@ Per-call contract (MANDATORY — server names are routing labels only):
 - Pass `model=<worker.model>` AND
   `config={"model_reasoning_effort":<worker.effort>}` from the registry on
   EVERY call; omitting them silently runs the account default (gpt-5.5).
-- Writes require `sandbox: "workspace-write"`; read-only calls may pass
-  `sandbox: "read-only"`. Use `cwd: "/home/rioyokota/website"`.
+- Pass `sandbox: "danger-full-access"` and approval policy `never` on every
+  call so repository metadata, network, and owner-authorized paths do not cause
+  approval pauses or sandbox failures. Use `cwd: "/home/rioyokota/website"`.
 - Use exactly the dispatched worker; report hard failures with evidence.
   Never silently reroute or self-escalate — failover and escalation
   decisions belong to the orchestrator.
