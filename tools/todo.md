@@ -1,14 +1,14 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-93.
+`tools/state/session.md`. Next free id: T-95.
 
 ## Active
 
-### T-93 — add machine-readable home-news dates
-Wrap the exact visible dates in both home-page news tables with native time
-semantics and ISO values; preserve displayed text and table geometry, enforce
-date validity/order/parity, and leave ambiguous ranges untouched.
+### T-94 — add machine-readable archive dates
+Wrap every single-day date in both full news archives with native time semantics
+and a valid ISO value while preserving the displayed punctuation and zero
+padding; leave multi-day ranges and seminar field labels unchanged.
 
 ## Blocked / awaiting user
 
@@ -34,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-93 added valid ISO/native time semantics to all 32 rendered English and 14 rendered Japanese home-news dates, deliberately excluded 18 commented Japanese historical rows, and passed exact static, five browser/layout, fast, and staging checks (pending commit).
 - 2026-07-13 T-92 identified the two mirrored CV downloads as `application/pdf`, retained their explicit labels/new-tab behavior, and passed exact static, two route-wide browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-91 wrapped the unchanged EN/JP postal, telephone, and email text in native address semantics, kept maps outside, neutralized default italics, and passed exact static, five browser/layout, fast, and staging checks (pending commit).
 - 2026-07-13 T-90 added exact destination-language metadata to all 26 visible EN↔JP switches, enforces mirrored href/text/hreflang triples statically, and passed two route-wide browser contracts plus fast and staging checks (pending commit).

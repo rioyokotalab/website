@@ -6,6 +6,7 @@ from __future__ import annotations
 import re
 import sys
 from collections import Counter
+from datetime import date
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -344,6 +345,21 @@ def main() -> int:
             fail(findings, path, "local PDF link media type mismatch")
         if document.html_lang.lower() != expected_lang:
             fail(findings, path, f"lang must be {expected_lang}")
+        visible_text = re.sub(r'<!--.*?-->', '', text, flags=re.S)
+        date_pairs = re.findall(r'<time datetime="(\d{4}-\d{2}-\d{2})">(\d{4}\.\d{2}\.\d{2})</time>', visible_text)
+        if relative == "index.html":
+            expected_dates = 32 if expected_lang == "en" else 14
+            if len(date_pairs) != expected_dates or any(iso.replace("-", ".") != visible for iso, visible in date_pairs):
+                fail(findings, path, "home-news time semantics mismatch")
+            try:
+                parsed_dates = [date.fromisoformat(iso) for iso, _ in date_pairs]
+            except ValueError:
+                fail(findings, path, "invalid home-news calendar date")
+                parsed_dates = []
+            if parsed_dates and parsed_dates != sorted(parsed_dates, reverse=True):
+                fail(findings, path, "home-news dates must be newest first")
+        elif date_pairs or re.search(r'</?time\b', text, flags=re.I):
+            fail(findings, path, "unexpected time element")
         heading_name = "YOKOTA Laboratory" if expected_lang == "en" else "横田研究室"
         hidden_h1 = rf'<h1 class="visually-hidden">{re.escape(heading_name)}</h1>'
         institution = r'<p class="institution-name">'
