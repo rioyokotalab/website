@@ -161,6 +161,26 @@ def staging_checks() -> list[Finding]:
     return [Finding("deploy-manifest-mismatch", path) for path in sorted(expected ^ staged)]
 
 
+def header_policy_source_checks() -> list[Finding]:
+    text = (ROOT / ".htaccess").read_text(encoding="utf-8")
+    findings: list[Finding] = []
+    required = (
+        "Content-Security-Policy",
+        "frame-ancestors 'none'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "Permissions-Policy",
+        'Strict-Transport-Security "max-age=86400"',
+    )
+    for value in required:
+        if value not in text:
+            findings.append(Finding("security-header-source-missing", ".htaccess"))
+    hsts_lines = [line.lower() for line in text.splitlines() if "strict-transport-security" in line.lower()]
+    if any("includesubdomains" in line or "preload" in line for line in hsts_lines):
+        findings.append(Finding("unsafe-hsts-scope", ".htaccess"))
+    return findings
+
+
 def fetch(path: str) -> tuple[int, dict[str, str]]:
     request = urllib.request.Request(urljoin(BASE_URL, path), method="GET", headers={"User-Agent": "website-security-check/1"})
     try:
@@ -189,6 +209,8 @@ def http_redirect_check() -> list[Finding]:
 
 def live_checks() -> list[Finding]:
     findings: list[Finding] = http_redirect_check()
+    source_headers = (ROOT / ".htaccess").read_text(encoding="utf-8").lower()
+    csp_header = "content-security-policy-report-only" if "content-security-policy-report-only" in source_headers else "content-security-policy"
     for path in ("", "en/index.html", "jp/index.html", "cv/cv.pdf"):
         status, headers = fetch(path)
         label = "/" + path
@@ -198,6 +220,9 @@ def live_checks() -> list[Finding]:
             "x-content-type-options": "nosniff",
             "x-frame-options": "sameorigin",
             "referrer-policy": None,
+            "permissions-policy": None,
+            "strict-transport-security": "max-age=86400",
+            csp_header: None,
         }
         for header, expected in required.items():
             value = headers.get(header, "")
@@ -214,7 +239,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--live", action="store_true", help="also perform read-only checks against the live site")
     args = parser.parse_args()
-    findings = html_checks() + tracked_secret_checks() + public_placeholder_checks() + staging_checks()
+    findings = html_checks() + tracked_secret_checks() + public_placeholder_checks() + staging_checks() + header_policy_source_checks()
     if args.live:
         findings.extend(live_checks())
     if findings:
