@@ -5,10 +5,10 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-100 — name cluster hardware tables
-Give the mirrored Hinadori hardware-specification tables concise localized
-native captions available to assistive technology but visually hidden; preserve
-all specifications, headers, and geometry.
+### T-101 — name active-student data tables
+Associate the two active-student tables with their existing localized section
+headings while retaining faculty/secretary/alumni layout tables as
+presentational; preserve all names, rows, and geometry.
 
 ## Blocked / awaiting user
 
@@ -34,6 +34,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-100 added localized native visually-hidden captions to both Hinadori hardware tables, preserved their four column headers/specifications and 1×1 clipped caption geometry, and passed exact static, five layout/name browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-99 associated 22 yearly archive tables with their existing localized year headings, named two nested seminar-details tables, and passed exact static, five layout/name browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-98 added localized native visually-hidden captions to the two home-news tables, preserved 1×1 clipped geometry and all 48 rendered row headers, and passed exact static, five layout/name browser, fast, and staging checks (pending commit).
 - 2026-07-13 T-97 proved the mirrored empty `#gallery` hooks had no runtime/navigation consumers, removed both hooks and five dead selector families while preserving live frame rules, synchronized root/route cache versions, and passed CSS-source, six layout/no-JS, fast, and staging checks (pending commit).
