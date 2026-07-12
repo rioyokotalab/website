@@ -161,6 +161,7 @@ a:hover {
 	text-underline-offset: 3px;
 }
 #main a {
+	overflow-wrap: anywhere;
 	text-decoration: underline;
 	text-decoration-thickness: 0.08em;
 	text-underline-offset: 0.15em;
@@ -497,6 +498,7 @@ section#gallery {
 	border: 1px solid #999;
 }
 .wn :is(td, th) {
+	overflow-wrap: anywhere;
 	padding: 4px 0;
 }
 .home-en .wn :is(td, th):first-child {

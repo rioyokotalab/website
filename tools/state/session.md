@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T03:46+0900
-task: T-85 audit user text-spacing resilience
+updated: 2026-07-13T03:59+0900
+task: T-86 give the header home link an accessible name
 status: in-progress
 
 ## Now
-- Goal: ensure users can expand text spacing without clipped content, overlap, page-level horizontal scrolling, or unusable controls.
-- Last done: T-84 reproduced EN headings landing 2.5px and JP headings 27px under sticky navigation; `scroll-margin-top` is now 24px, all heading-target links land below the bar at four boundaries, and all 18 browser tests pass.
-- Next: inject line-height 1.5, paragraph spacing 2em, letter spacing 0.12em and word spacing 0.16em across all 26 pages at 320/1200px; measure overflow, element text clipping/overlap, mobile menus, consent and galleries; fix only demonstrated hard constraints and retain the audit.
+- Goal: ensure the prominent header logo/home link has a concise localized accessible name on every route without visual changes.
+- Last done: T-85 found expanded long URLs clipped by content clear-fixes, added wrapping to main links/home-news cells, and uncovered missing JP Computers containment/helper parity; all 52 spaced route states and EN/JP consent pass, as do fast and six affected browser contracts.
+- Next: query accessible names for `.htitle > a` across all routes, confirm the empty logo alt plus CSS-hidden descendants leave it unnamed, add localized EN/JP alternatives only where required, enforce exact parity, and retain a browser test.
 
 ## Working set
-- all public text-bearing elements and component controls under user spacing overrides at mobile/desktop; page/element geometry; Playwright and any narrowly implicated CSS; ledger/test bookkeeping.
+- the 26 `.htitle > a` logo links and their EN/JP logo images; accessibility tree/name computation; mirrored HTML, standards and Playwright bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

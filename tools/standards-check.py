@@ -200,7 +200,7 @@ def main() -> int:
     focus_selector = "a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible"
     if style_text.count(focus_selector) != 2 or "outline: 2px solid #fff;" not in style_text or "box-shadow: 0 0 0 4px var(--accent-hover) !important;" not in style_text:
         findings.append("two-tone keyboard focus indicator mismatch")
-    if style_text.count("#main a {") != 2 or "text-decoration-thickness: 0.08em;" not in style_text or "text-underline-offset: 0.15em;" not in style_text:
+    if style_text.count("#main a {") != 2 or style_text.count("overflow-wrap: anywhere;") != 2 or "text-decoration-thickness: 0.08em;" not in style_text or "text-underline-offset: 0.15em;" not in style_text:
         findings.append("non-color content-link indicator mismatch")
     if style_text.count("@media (forced-colors: active)") != 1 or 'ul.topnav a[aria-current="page"]' not in style_text or style_text.count("outline: 3px solid Highlight !important;") != 2:
         findings.append("forced-colors state/focus treatment mismatch")
@@ -336,7 +336,7 @@ def main() -> int:
         if document.landmarks != Counter({"header": 1, "main": 1, "footer": 1}):
             fail(findings, path, "requires one header, main, and footer")
         containment_pages = {
-            "en/computers/index.html", "en/member/yokota.html", "jp/member/yokota.html",
+            "en/computers/index.html", "jp/computers/index.html", "en/member/yokota.html", "jp/member/yokota.html",
             "en/news/index.html", "jp/news/index.html",
         }
         expected_containment = path.relative_to(ROOT).as_posix() in containment_pages
