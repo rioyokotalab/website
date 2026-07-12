@@ -1,9 +1,16 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-25.
+`tools/state/session.md`. Next free id: T-26.
 
 ## Active
+
+### T-25 — purge archived PDF blobs from Git history
+Rewrite all branches and eight preserved evaluation tags to remove every
+historical `tools/papers/` path, then force-update GitHub with explicit leases,
+expire rewritten refs, garbage-collect locally, and verify no reachable PDF
+archive object remains. Owner explicitly authorized the destructive rewrite;
+existing clones must rebase/reset only with care or preferably reclone.
 
 ## Blocked / awaiting user
 
