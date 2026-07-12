@@ -4,6 +4,12 @@ Update in place when reality changes; date entries. No procedures here
 (-> skills/), no tasks (-> tools/todo.md).
 
 ## Site / pages
+- 2026-07-13 production delivery audit: representative HTML, CSS, JS, and JPEG
+  responses provide `ETag` and `Last-Modified`, but no `Cache-Control`,
+  `Expires`, `Vary`, or `Content-Encoding` even when requested with curl's
+  compressed mode. Recheck with `tools/check-delivery-headers.sh`; do not add
+  unverified Apache directives because the host has already produced a global
+  HTTP 500 from an incompatible `.htaccess` hardening combination.
 - 2026-07-13 T-26 deployed an enforced same-origin-first CSP after a clean
   report-only/browser phase. Exceptions are cdnjs gallery assets, consent-gated
   GTM/GA, and Google Maps frames. Permissions Policy disables unused powerful

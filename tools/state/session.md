@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T02:18+0900
-task: T-63 audit document and asset compression hints
+updated: 2026-07-13T02:28+0900
+task: T-64 audit keyboard focus visibility
 status: in-progress
 
 ## Now
-- Goal: verify live compression and caching behavior for representative HTML, CSS, JS, and image assets; change server policy only if compatibility and update semantics are safe.
-- Last done: T-62 scoped mobile table containment to five affected pages, adds keyboard focus only while a table actually overflows, preserves exact 1200px geometry, and passes full plus 320/390px scroll checks.
-- Next: commit/push T-62 after a deployment dry run, then fetch representative live response headers with compressed requests and record the server's actual behavior before deciding whether any safe repository change exists.
+- Goal: ensure every keyboard-reachable control has a visible, unobscured focus indicator using the existing palette and no geometry-changing restyle.
+- Last done: T-63 sampled production delivery with compressed GET and HEAD requests, confirmed validators but no explicit caching/compression, added a repeatable read-only audit tool, and declined risky unverified Apache changes.
+- Next: render representative EN/JP pages at desktop/mobile, tab through all reachable controls and measure focus outline/box-shadow plus viewport occlusion; inventory confirmed failures before editing CSS.
 
 ## Working set
-- Representative live HTML/CSS/JS/image response headers; current .htaccess and known server compatibility constraints; ledger/bookkeeping.
+- Representative EN/JP home/news/research/contact/picture/profile pages; computed focus styles and viewport geometry; any shared focus-visible CSS/cache bump/checker; ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

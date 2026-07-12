@@ -1,14 +1,30 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-64.
+`tools/state/session.md`. Next free id: T-68.
 
 ## Active
 
-### T-63 — audit document and asset compression hints
-Verify server compression/cache headers for HTML/CSS/JS/images, add only
-server-compatible safe directives or filename cache policies, and preserve the
-short-update behavior of HTML while avoiding another production 500 risk.
+### T-64 — audit keyboard focus visibility
+Render and traverse every interactive control in representative EN/JP page
+families at desktop and mobile widths, identify controls whose focus indicator
+is absent or obscured, and add the smallest shared `:focus-visible` treatment
+that preserves the current color palette and geometry.
+
+### T-65 — audit text and control color contrast
+Measure computed foreground/background contrast for persistent text, links,
+buttons, navigation, and the analytics consent UI; correct only confirmed WCAG
+failures with nearby palette colors and no layout or content changes.
+
+### T-66 — make local-link integrity a permanent gate
+Audit every public relative URL and fragment across the mirrored tree, account
+for directory-index resolution and shared JP assets, and add a deterministic
+regression check so new broken internal links cannot be committed unnoticed.
+
+### T-67 — normalize page titles and descriptions
+Inventory bilingual title and description metadata for missing, duplicated, or
+overlong values; make restrained page-local corrections only where search and
+sharing context is ambiguous while preserving current wording wherever sound.
 
 ## Blocked / awaiting user
 
@@ -34,7 +50,8 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
-- 2026-07-13 T-62 contained only the five narrow-screen page families with clipped legacy tables, made only live overflow regions keyboard-scrollable, preserved exact desktop table geometry, and passed 320/390px containment checks (pending commit).
+- 2026-07-13 T-63 verified production HTML/CSS/JS/image responses have validators but no explicit caching or compression, added a repeatable read-only header audit, and avoided unverified Apache directives after the known 500 incident (pending commit).
+- 2026-07-13 T-62 contained only the five narrow-screen page families with clipped legacy tables, made only live overflow regions keyboard-scrollable, preserved exact desktop table geometry, and passed 320/390px containment checks (`9771abb`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-61 gave all 143 Lightbox links unique localized page-local ordinal names, enforced exact order/count, and passed keyboard/pointer gallery checks (`803b27c`; live publish reserved for user/Claude site-publisher).
 - 2026-07-13 T-60 removed 26 empty keywords elements and 53 redundant HTML5 MIME type attributes, retained/parsed JSON-LD, enforced clean heads, and verified resources/scripts/layout (`f57c653`).
 - 2026-07-13 T-59 deferred all 64 remaining external script references, permanently enforced defer, and passed consent/menu/pagetop/jQuery-Lightbox/CSP tests with no page errors (`c9b1e03`).
