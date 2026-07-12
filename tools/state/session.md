@@ -1,21 +1,20 @@
 driver: codex
-updated: 2026-07-12T21:12+0900
+updated: 2026-07-12T21:32+0900
 task: idle
 status: idle
 
 ## Now
-- Goal: clean handoff with a current, forward-looking task board.
-- Last done: T-12 is live/pushed at `5199bbd`; stale Round-2/T-9/completion notes were removed, T-15 through T-18 were seeded, and all finished `tools/out/` scratch was audited and deleted.
-- Next: start T-15 unless the owner chooses another active task.
+- Goal: idle after restoring the README cluster quickstart.
+- Last done: T-19 added and validated exact commands for pinned Claude/Codex setup, authentication, clone, direct Codex config/trust, generated Claude MCP registration, pre-commit checks, health checks, and driver/preview launch.
+- Next: start T-15 unless the owner chooses another active task; T-20 tracks the discovered account-specific Claude preview hook.
 
 ## Working set
-- Task board: `tools/todo.md` (T-15 through T-18).
-- Current facts/choices: `tools/state/facts.md`, `tools/state/decisions.md`.
-- Scratch policy: `tools/out/` is empty; new task outputs are created only while needed and deleted after verification/application.
-- Verify this cleanup with `python3 tools/check-md-size.py`, `git diff --check`, empty-directory check, and full staged diff review.
+- T-19 files: `README.md`, `tools/todo.md`, `tools/state/session.md`.
+- Sources: official Codex CLI/config docs, official Claude Code setup/auth/settings docs, NVM v0.40.4 docs, and current local CLI help/settings.
+- Verification passed: 12 shell blocks parse with `bash -n`; Codex TOML command parses and writes mode 600; MCP generator drift, markdown budgets, diff check, unique task IDs, secret-pattern diff scan, and empty `tools/out/` pass.
 
 ## Open questions
-- Priority among T-15, T-16, and T-17; default is board order.
+- The committed Claude preview hook is account-specific; tracked as T-20 because changing `.claude/settings.json` needs explicit project-config scope.
 
 ## Awaiting user
 - T-18 requires owner access to GA Admin; no credentials should be shared.

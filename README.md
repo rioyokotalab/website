@@ -8,6 +8,115 @@ The public URL tree is intentionally frozen. Improvements should restyle or
 edit pages in place, not move them. The `en/` and `jp/` HTML trees mirror one
 another so the language switch can replace one prefix with the other.
 
+## Quickstart: new lab-cluster account
+
+These commands reproduce the verified CLI versions and repository settings
+without copying credentials or account-private model defaults. GitHub write
+access and web-server credentials are provisioned separately by the owner.
+The install commands follow the current [Codex CLI](https://developers.openai.com/codex/cli/),
+[Codex configuration](https://developers.openai.com/codex/config-basic), and
+[Claude Code setup](https://docs.anthropic.com/en/docs/claude-code/setup)
+documentation.
+
+### 1. Install Node.js and Codex CLI
+
+```sh
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+nvm install 24.16.0
+nvm alias default 24.16.0
+npm install --global @openai/codex@0.144.1
+```
+
+### 2. Install Claude Code
+
+```sh
+curl -fsSL https://claude.ai/install.sh | bash
+touch "$HOME/.bashrc"
+grep -qxF 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc" || printf '%s\n' 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+export PATH="$HOME/.local/bin:$PATH"
+claude install 2.1.207
+```
+
+### 3. Authenticate both CLIs
+
+```sh
+codex login --device-auth
+claude auth login
+```
+
+### 4. Clone the repository
+
+```sh
+cd "$HOME"
+git clone https://github.com/rioyokotalab/website.git
+cd "$HOME/website"
+```
+
+### 5. Configure the direct Codex DRIVER
+
+```sh
+mkdir -p "$HOME/.codex"
+printf '%s\n' 'approval_policy = "never"' 'sandbox_mode = "danger-full-access"' 'model_reasoning_effort = "medium"' '' "[projects.\"$PWD\"]" 'trust_level = "trusted"' > "$HOME/.codex/config.toml"
+chmod 600 "$HOME/.codex/config.toml"
+```
+
+### 6. Register Claude's Codex workers for this account
+
+```sh
+python3 tools/gen-codex-mcp.py
+sed -n '/^claude mcp add-json/p' tools/out/spark-apply-commands.sh | sh
+rm -f tools/out/.mcp.json tools/out/spark-apply-commands.sh
+python3 tools/gen-codex-mcp.py --check
+```
+
+### 7. Install the repository pre-commit checks
+
+```sh
+mkdir -p .git/hooks
+printf '%s\n' '#!/bin/sh' 'if git diff --cached --name-only | grep -Fx "CLAUDE.md" >/dev/null; then' '    python3 tools/check-claude-size.py || exit 1' 'fi' '' 'python3 tools/check-md-size.py || exit 1' '' 'exit 0' > .git/hooks/pre-commit
+chmod 755 .git/hooks/pre-commit
+```
+
+### 8. Verify the setup
+
+```sh
+claude --version
+codex --version
+claude auth status
+codex login status
+codex doctor --summary
+claude mcp list
+python3 tools/gen-codex-mcp.py --check
+python3 tools/check-claude-size.py
+python3 tools/check-md-size.py
+git status --short
+```
+
+### 9. Start a driver
+
+Claude DRIVER:
+
+```sh
+cd "$HOME/website"
+claude
+```
+
+Codex DRIVER:
+
+```sh
+cd "$HOME/website"
+codex
+```
+
+Local preview:
+
+```sh
+cd "$HOME/website"
+python3 -m http.server 8000
+```
+
 ## Repository map
 
 | Path | Purpose |

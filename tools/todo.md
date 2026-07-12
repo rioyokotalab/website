@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-19.
+`tools/state/session.md`. Next free id: T-21.
 
 ## Active
 
@@ -23,6 +23,12 @@ keyboard/mobile behavior, accept/reject persistence and revocation, and zero
 Google requests before consent. Keep it repo-only and runnable without account
 credentials.
 
+### T-20 — make the Claude preview hook account-portable
+Replace the absolute `/home/rioyokota/website` path in the committed Claude
+SessionStart/SessionEnd hook with a project-root-aware form, under explicit
+project-config scope, then verify concurrent clones do not control each other's
+preview process.
+
 ## Blocked / awaiting user
 
 ### T-18 — confirm GA Admin privacy settings
@@ -32,4 +38,4 @@ request or automate credentials. Record only the confirmed settings afterward.
 
 ## Recently completed
 
-(none; completed-task history lives in Git and the metrics/log files.)
+- 2026-07-12 T-19 restored the README cluster quickstart with exact verified install/auth/clone/config/MCP/hook/check/launch commands; account-portability of the Claude preview hook remains T-20.
