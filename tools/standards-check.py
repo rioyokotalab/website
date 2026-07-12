@@ -185,6 +185,8 @@ def main() -> int:
         table_width_classes += len(re.findall(r'\bwidth-\d+pct\b', text))
         if re.search(r'<(?:table|td|th)\b[^>]*\s(?:width|align)=', text, flags=re.I):
             fail(findings, path, "legacy table width or alignment attribute")
+        if re.search(r'<meta\s+name="keywords"\s+content=""|\stype="text/(?:javascript|css)"', text, flags=re.I):
+            fail(findings, path, "empty keywords or redundant MIME type")
         if re.search(r'/\s+class="content-width-', text):
             fail(findings, path, "class placed after self-closing slash")
         named_anchors = len(re.findall(r'<a\s+name=', text, flags=re.I))

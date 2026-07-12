@@ -1,15 +1,15 @@
 driver: codex
 updated: 2026-07-13T00:46+0900
-task: T-59 defer remaining external scripts
+task: T-60 remove obsolete and empty head metadata
 status: in-progress
 
 ## Now
-- Goal: prevent external scripts from blocking HTML parsing while preserving dependency order and runtime behavior.
-- Last done: T-59 defers all 64 remaining external script references and permanently rejects non-deferred external scripts. Full suite and all four privacy-first consent tests pass; EN/JP menu/pagetop, jQuery-before-Lightbox behavior on Picture/Research, CSP, and page-error checks pass.
-- Next: rebase, inspect the changed-HTML-only deployment preview, publish T-59, verify representative live defer attributes/runtime, then close T-59 and start T-60.
+- Goal: remove empty/obsolete head markup while retaining all meaningful resource and structured-data semantics.
+- Last done: T-60 removes exactly 26 empty keywords elements, 26 text/javascript attributes, and 27 text/css attributes while retaining JSON-LD types. Permanent checks reject regressions. Full suite passes; styles/scripts load without request failures, structured data parses, representative layout is intact, and pagetop behavior passes deterministically in reduced-motion mode (the initial smooth-scroll assertion sampled mid-animation).
+- Next: rebase, inspect the 27-HTML head-only deployment preview, publish T-60, verify representative live heads/resources, then close T-60 and start T-61.
 
 ## Working set
-- All 27 HTML documents' external scripts, exact defer standards enforcement, consent/menu/pagetop/Lightbox/CSP browser tests, ledger/bookkeeping.
+- All 27 HTML heads, empty-keywords and redundant MIME-type standards checks, resource/JSON-LD/browser geometry verification, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.
