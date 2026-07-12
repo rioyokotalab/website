@@ -172,6 +172,7 @@ def header_policy_source_checks() -> list[Finding]:
         "frame-ancestors 'none'",
         "object-src 'none'",
         "base-uri 'self'",
+        "style-src 'self' https://cdnjs.cloudflare.com",
         "Permissions-Policy",
         'Strict-Transport-Security "max-age=86400"',
     )
@@ -181,6 +182,8 @@ def header_policy_source_checks() -> list[Finding]:
     hsts_lines = [line.lower() for line in text.splitlines() if "strict-transport-security" in line.lower()]
     if any("includesubdomains" in line or "preload" in line for line in hsts_lines):
         findings.append(Finding("unsafe-hsts-scope", ".htaccess"))
+    if "'unsafe-inline'" in text or "Content-Security-Policy-Report-Only" in text:
+        findings.append(Finding("non-enforced-or-inline-style-csp", ".htaccess"))
     return findings
 
 

@@ -5,8 +5,8 @@ status: in-progress
 
 ## Now
 - Goal: migrate the remaining five inline style blocks and eleven style attributes to scoped shared classes with computed-style parity, then safely remove style `'unsafe-inline'` through a report-only gate.
-- Last done: T-48 markup/CSS migration was published as `4fa5652` and live pages have no inline presentation. Runtime menu/pagetop inline mutations are now class-driven with cache-busted JS and permanent enforcement; normal/reduced-motion behavior passes. A strict no-unsafe-inline style policy is prepared as report-only alongside the existing enforced policy.
-- Next: rebase, dry-run, publish the runtime-class/report-only checkpoint; verify both headers and collect browser `securitypolicyviolation` events across representative EN/JP, consent, gallery, map, menu, and scroll interactions before enforcing.
+- Last done: T-48 runtime-class/report-only checkpoint was published as `c8bccd3`. Live dual headers are exact, and the strict policy produced zero violations across EN/JP loads, consent accept/reject/settings, mobile menu, scroll/back-to-top, Lightbox, and map behavior. The strict policy is now prepared for enforcement with permanent source checks rejecting unsafe-inline/report-only fallback.
+- Next: run the full suite, rebase, inspect the `.htaccess`-only dry-run, enforce the strict style CSP, then repeat live header and representative interaction checks before closing T-48.
 
 ## Working set
 - EN/JP home/research/news markup, shared CSS/cache bump, inline-style standards enforcement, computed-style/geometry browser comparisons, then `.htaccess` report-only/enforcement gates.
