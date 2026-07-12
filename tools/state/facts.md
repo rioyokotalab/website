@@ -4,6 +4,7 @@ Update in place when reality changes; date entries. No procedures here
 (-> skills/), no tasks (-> tools/todo.md).
 
 ## Site / pages
+- 2026-07-13 T-108 live publication: approved public tree `bd662c7` deployed 29 modified and 16 new files; all 45 transferred paths matched production byte-for-byte, representative root/EN/JP/contact/news/picture/assets returned HTTP 200, and CSP/Permissions-Policy/HSTS/nosniff/referrer headers remained present. Live security audit's sole finding is the pre-existing blocked T-28 `/.dont-remove-me` HTTP 200 exposure.
 - 2026-07-13 production delivery audit: representative HTML, CSS, JS, and JPEG
   responses provide `ETag` and `Last-Modified`, but no `Cache-Control`,
   `Expires`, `Vary`, or `Content-Encoding` even when requested with curl's

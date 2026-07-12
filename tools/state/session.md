@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T05:09+0900
+updated: 2026-07-13T06:07+0900
 task: idle
 status: idle
 
 ## Now
-- Goal: idle; the continuous modernization window is release-ready.
-- Last done: exact pushed tip `1bf8551` passes all fast checks and 37/37 browser contracts in 3.7 minutes; T-107 keyboard reliability, T-106 semantic containment, and T-105 release sweep are complete.
-- Next: user or Claude site-publisher may live-publish and verify the pushed post–T-60 commits; Codex must not run the live publication.
+- Goal: idle; the approved modernization tree is live and verified.
+- Last done: T-108 published approved public commit `bd662c7` under the already-tracked direct Codex DRIVER exception; 29 modified plus 16 new files deployed, all 45 live bytes match, representative routes/assets return 200, and enforced headers remain present.
+- Next: no publication action remains; T-28 and T-25 retain their existing blocked/external states.
 
 ## Working set
-- Clean main branch, final driver report `tools/out/driver-report-20260713-0453.md`, live publication pending user/Claude.
+- Production matches approved `bd662c7`; deploy-excluded publication bookkeeping only; report `tools/out/driver-report-20260713-0607.md`.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

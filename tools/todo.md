@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-108.
+`tools/state/session.md`. Next free id: T-109.
 
 ## Active
 
@@ -31,6 +31,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-108 used the already-tracked direct-Codex DRIVER exception to publish approved `bd662c7`: mandatory preflight passed, 29 replacements plus 16 new assets deployed, all 45 live bytes match, representative routes/assets return 200, security headers remain enforced, and only known blocked T-28 sentinel exposure remains (pending bookkeeping commit).
 - 2026-07-13 T-107 made the exhaustive keyboard-order contract deterministic for cross-origin map internals while still requiring complete top-level order; isolated traversal and the exact-tip 37/37 full suite pass (`1bf8551`).
 - 2026-07-13 T-106 audited the browser-repaired DOM on all 26 routes and permanently enforces that every native date, data table, contact address, and embedded map remains inside the main landmark (`08982bf`).
 - 2026-07-13 T-105 passed all fast checks, browser suites, allowlisted staging dry-run, Git object verification, zero-vulnerability offline audit, public permissions/symlink review, and generated-artifact cleanup (`08982bf`).
