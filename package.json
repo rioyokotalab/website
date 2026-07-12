@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "test:consent:install": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright install --only-shell chromium",
-    "test:consent": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright test"
+    "test:consent": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright test",
+    "test:supply-chain": "python3 tools/supply-chain-check.py",
+    "test:supply-chain:online": "python3 tools/supply-chain-check.py --online"
   },
   "devDependencies": {
     "@playwright/test": "1.61.1"

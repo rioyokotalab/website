@@ -152,6 +152,33 @@ Google Maps contact-page frame. It also sends a restrictive Permissions Policy
 and one-day HSTS without `includeSubDomains` or preload. Keep the short HSTS
 scope until every relevant subdomain is independently verified.
 
+### Supply-chain checks
+
+The offline security suite also requires the three gallery assets to use the
+reviewed HTTPS cdnjs URLs, exact versions, SHA-384 values, and
+`crossorigin="anonymous"`. It verifies the exact Playwright lock and confirms
+that packages, tests, and caches cannot enter deploy staging. Recompute the
+remote hashes and run npm's advisory audit in disposable directories with:
+
+```sh
+npm run test:supply-chain:online
+```
+
+Run that online check quarterly and before every dependency change. Trusted
+sources are the [Lightbox2 releases](https://github.com/lokesh/lightbox2/releases),
+[jQuery releases](https://releases.jquery.com/),
+[cdnjs API](https://api.cdnjs.com/libraries/lightbox2),
+[Playwright releases](https://github.com/microsoft/playwright/releases), and
+the HTTPS npm registry recorded in `package-lock.json`. Review upstream release
+notes, update one dependency at a time, regenerate the lock with `npm install
+--package-lock-only`, recompute SRI from downloaded bytes, update all six
+gallery pages together, and rerun browser, offline, and online checks.
+
+The small gallery dependencies remain on cdnjs: their pinned SRI prevents
+substituted code, while self-hosting would add four Lightbox image assets plus
+license and update ownership to this repository. Reconsider self-hosting if
+availability or eliminating gallery-page CDN requests becomes the priority.
+
 ## Repository map
 
 | Path | Purpose |

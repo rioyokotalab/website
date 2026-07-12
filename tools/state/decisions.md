@@ -1,5 +1,10 @@
 # Durable decisions (newest first; one-line rationale each)
 
+- 2026-07-13 T-30 gallery dependencies remain pinned on cdnjs with verified
+  SRI/crossorigin and an enforced allowlist: substituted bytes are blocked,
+  while self-hosting would add four binary Lightbox assets plus license/update
+  ownership; reconsider if CDN availability or eliminating those requests
+  becomes more important.
 - 2026-07-13 T-27 public-data boundary: retain the lab's institutional office
   address/phone and professional email in the website/CV as intentional contact
   information; remove meeting IDs, invitation passwords, and similar ephemeral

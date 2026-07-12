@@ -1,12 +1,12 @@
 driver: codex
-updated: 2026-07-13T00:01+0900
+updated: 2026-07-13T00:06+0900
 task: idle
 status: idle
 
 ## Now
 - Goal: no task in flight.
-- Last done: T-26 report-only phase `a23a08e` and enforcement `3c9ef09` are live; representative status/header/browser tests and consent 4/4 passed. Temporary browser dependencies were removed.
-- Next: continue with T-30 supply-chain audit.
+- Last done: T-30 supply-chain verification passed offline/online, npm audit found zero vulnerabilities, all publish regressions passed, staging excludes every dependency/cache path, and the repository-only scope is ready to push.
+- Next: no active ledger items; T-25 and T-28 remain externally blocked.
 
 ## Working set
 - None.
