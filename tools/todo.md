@@ -31,6 +31,15 @@ achievable — aim for zero interactive approvals — with EXACT apply commands 
 `skills/config-proposals.md`. You MAY propose removing or loosening the
 accidental-edit blocks and hand-edit-only gates; nothing is off-limits. Note
 that publish still runs only when the user asks (workflow fact, not a block).
+External / user-scope permission files — PROPOSE ONLY, never modify (they are
+shared across the owner's other ~4 projects and require the owner's judgement):
+also inventory and propose concrete edits for `~/.claude/settings.json` (user-scope
+lifecycle hooks incl. the `PermissionRequest` HTTP endpoint at
+`127.0.0.1:23333/permission` and the `clawd-hook.js` hooks) and the per-project
+block in `~/.claude.json` (`allowedTools`, `enabledMcpjsonServers`,
+`hasTrustDialogAccepted`). Put these in a clearly separated "External (owner-run
+only)" section of `tools/out/t11-permissions.md` with exact commands the owner can
+run himself, each flagged as affecting other projects. Do NOT edit these files.
 
 ### T-12 — add Google Analytics (GA4) to the website
 Add `gtag.js` to EVERY public HTML page (`en/` AND `jp/`) and keep

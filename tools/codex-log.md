@@ -358,3 +358,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | coordinator | Round-2 T-11 owner rewrite (no hard limits) + scaffold rebuild | tools/todo.md, tools/out/r2-t11-edit.md | this session | pass
 2026-07-12 | coordinator | drop 2 stale git stashes | /home/rioyokota/website/tools/out/stash-drop.md | <this session> | PASS
 2026-07-12 | coordinator | pre-round-2 permission consolidation into committed settings.json + scaffold rebuild | tools/out/t11-settings-fix.md | session-this | pass
+2026-07-12 | codex-driver (coordinator) | round-2 T-11 external-scope extension + scaffold rebuild | tools/todo.md, tools/out/r2-t11-external.md | this-session | done
