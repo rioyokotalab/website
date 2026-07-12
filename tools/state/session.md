@@ -1,15 +1,15 @@
 driver: codex
-updated: 2026-07-13T00:51+0900
-task: T-35 complete image accessibility and loading hints
+updated: 2026-07-13T00:59+0900
+task: T-38 eliminate duplicate document identifiers
 status: in-progress
 
 ## Now
-- Goal: complete image alternatives and retain optimal eager/lazy loading without changing rendering.
-- Last done: added empty alternatives to the redundantly captioned gallery pair and localized informative alternatives to both professor portraits. Zero images lack alt; exactly 26 logos and 26 heroes remain eager while all content images stay lazy. Security/publish suites pass; profile/gallery browser tests pass 2/2.
-- Next: preview/publish the four-page T-35 scope, verify live accessibility/gallery behavior, then advance to T-36.
+- Goal: make every HTML `id` unique without changing navigation layout or historical content.
+- Last done: converted both menus on all 26 pages from duplicated IDs to shared `topnav` class, updated CSS/cache version, and aligned EN `ev190903_2/_1` anchors with JP. All page IDs are unique; security suite passes; desktop/mobile menu geometry stays within 1px and distinct fragments resolve (browser 3/3).
+- Next: remove temporary test, run full publish/size checks, preview/publish T-38, verify live IDs/fragments/layout, then implement T-37 permanent standards checks.
 
 ## Working set
-- EN/JP picture and Yokota profile pages, browser/security tests, ledger/bookkeeping.
+- All 26 EN/JP pages, EN news anchors, `style.css` and cache-bust references, browser/fragment tests, ledger/bookkeeping.
 
 ## Open questions
 - T-28 server-layer completion requires admin-compatible Apache/vhost configuration; do not experiment further on production `.htaccess`.

@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-38.
+`tools/state/session.md`. Next free id: T-39.
 
 ## Active
 
@@ -21,6 +21,12 @@ Add deterministic local checks for document language, unique IDs, landmarks,
 image alternatives, link/button semantics, and malformed local references;
 document optional browser/validator checks and integrate stable offline rules
 into pre-publish without adding deployed dependencies.
+
+### T-38 — eliminate duplicate document identifiers
+Replace the duplicated desktop/mobile `topnav` IDs on all 26 pages with a
+shared class and update selectors without changing computed layout. Resolve the
+two duplicated English 2019 event anchors to match Japanese identifiers, verify
+all fragments, and make unique IDs a permanent regression invariant in T-37.
 
 ## Blocked / awaiting user
 
@@ -46,6 +52,7 @@ recloned or carefully reset to rewritten main.
 
 ## Recently completed
 
+- 2026-07-13 T-35 completed image alternatives with localized professor portrait text and decorative alternatives for redundantly captioned gallery images; all content images remain lazy while logos/heroes remain eager (`d44f862`).
 - 2026-07-13 T-34 added semantic header/main/footer landmarks, distinct navigation labels, and localized keyboard-visible skip links to all 26 pages; desktop/mobile geometry stayed within 1px of baseline and live returning-visitor focus reaches main without altering privacy-banner focus (`d94effd`).
 - 2026-07-13 T-33 externalized all 26 repeated responsive-menu bootstraps and the root language redirect, verified EN/JP redirect/mobile/consent behavior 7/7, passed a live report-only gate, then enforced `script-src` without `'unsafe-inline'`; only inert JSON-LD remains inline (`557d795`, `f682185`).
 - 2026-07-13 T-32 found zero consumers of the packed dropdown code, removed all 26 dead loaders and `ddmenu_min.js`, validated a simultaneous report-only policy, then enforced CSP without `'unsafe-eval'`; representative live gallery/navigation/map/consent behavior remained clean (`d305d03`, `a24645c`).
