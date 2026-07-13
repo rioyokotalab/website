@@ -245,6 +245,11 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def task_definition_sha256(task: dict[str, Any]) -> str:
+    encoded = json.dumps(task, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def run_codex(task: dict[str, Any], task_id: str, workspace: Path, artifact: Path,
               *, model: str, effort: str, prompt_mode: str, reference: Path | None,
               timeout_seconds: int, handoff_mode: str, inspection_mode: str) -> dict[str, Any]:
@@ -381,6 +386,9 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
         "run_label": args.run_label,
         "task_id": args.task_id,
         "task_version": task["version"],
+        "task_definition_sha256": task_definition_sha256(task),
+        "grader_sha256": sha256_file(BENCHMARK_DIR / "task_ops.py"),
+        "runner_sha256": sha256_file(Path(__file__)),
         "date": datetime.now().astimezone().isoformat(timespec="seconds"),
         "repo_ref": args.ref,
         "repo_commit": subprocess.run(
@@ -630,6 +638,9 @@ def selftest() -> dict[str, Any]:
     tasks = load_tasks()
     assert set(tasks) == {f"WBD-{number:03d}" for number in range(1, 6)}
     assert tasks["WBD-005"].get("held_out") is True
+    task_hash = task_definition_sha256(tasks["WBD-001"])
+    assert len(task_hash) == 64
+    assert task_hash != task_definition_sha256({**tasks["WBD-001"], "version": 999})
     operations = load_task_ops()
     inline_zero = "motionPreference.matches ? { fadeDuration: 0, imageFadeDuration: 0, resizeDuration: 0 } : motionOptions"
     named_zero = "const reduced = { fadeDuration: 0, imageFadeDuration: 0, resizeDuration: 0 }; motionPreference.matches ? reduced : motionOptions"

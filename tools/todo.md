@@ -3,7 +3,7 @@
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 `tools/state/session.md`. `T-109` through `T-117` form the original three-hour
 experiment; later iterations are inserted before final T-117 closure. Next free
-id: T-128.
+id: T-129.
 
 ## Active
 
@@ -15,6 +15,7 @@ None.
 
 ## Recently completed
 
+- **T-128 — Benchmark identity fingerprints added:** future rows hash the exact task definition, grader, and runner; strict comparisons reject task/grader drift and expose runner drift.
 - **T-127 — Raw artifact integrity audit added:** benchmark results, directories, required files, metrics pointers, exclusions, and storage size can be checked without deleting evidence.
 - **T-126 — Quiet full suite verified:** 37/37 pass in 219.11 seconds; captured output fell approximately 97.2% while retaining reporter diagnostics (`tools/out/t126-post-push-quiet-full.md`).
 - **T-117 — Final regression complete:** visible 4/4 and held-out 1/1 score 100; visible effective tokens fell 69.9% and tool output 80.7% versus baseline, with a conservative same-version three-task saving of 60.5% (`tools/out/t117-final.md`).

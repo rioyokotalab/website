@@ -28,6 +28,7 @@ V2_REQUIRED = V1_REQUIRED | {
 V2_ALLOWED = V2_REQUIRED | {
     "handoff_mode", "inspection_mode", "prompt_mode", "task_version",
     "repo_ref", "repo_commit", "codex_cli", "run_p2p",
+    "task_definition_sha256", "grader_sha256", "runner_sha256",
 }
 NULLABLE_NUMBERS = {
     "capability_score", "f2p", "p2p", "scope", "completion", "input_tokens", "cached_input_tokens",
@@ -249,6 +250,9 @@ def benchmark_row(result: dict[str, Any], stdout_override: Path | None = None) -
         "repo_commit": str(result.get("repo_commit") or "unknown"),
         "codex_cli": str(result.get("codex_cli") or "unknown"),
         "run_p2p": result.get("run_p2p") if isinstance(result.get("run_p2p"), bool) else None,
+        "task_definition_sha256": str(result.get("task_definition_sha256") or "unknown"),
+        "grader_sha256": str(result.get("grader_sha256") or "unknown"),
+        "runner_sha256": str(result.get("runner_sha256") or "unknown"),
     }
     return row
 
@@ -434,7 +438,8 @@ def _metric_comparison(baseline: list[int], candidate: list[int]) -> dict[str, A
 
 def _run_dimensions(rows: list[dict[str, Any]]) -> dict[str, list[Any]]:
     keys = ("model", "effort", "handoff_mode", "inspection_mode", "prompt_mode",
-            "task_version", "repo_commit", "run_p2p")
+            "task_version", "task_definition_sha256", "grader_sha256", "runner_sha256",
+            "repo_commit", "run_p2p")
     return {key: sorted({row.get(key, "unknown") for row in rows}, key=lambda value: str(value)) for key in keys}
 
 
@@ -472,6 +477,13 @@ def compare_labels(baseline_label: str, candidate_label: str, path: Path = METRI
             errors.append(f"{task}: task_version missing from one or both labels")
         elif b_versions != c_versions or len(b_versions) != 1:
             errors.append(f"task versions differ for {task}: baseline={sorted(b_versions)} candidate={sorted(c_versions)}")
+        for key in ("task_definition_sha256", "grader_sha256"):
+            b_hashes = {row.get(key) for row in baseline_groups[task] if row.get(key) not in (None, "unknown")}
+            c_hashes = {row.get(key) for row in candidate_groups[task] if row.get(key) not in (None, "unknown")}
+            if not b_hashes or not c_hashes:
+                errors.append(f"{task}: {key} missing from one or both labels")
+            elif b_hashes != c_hashes or len(b_hashes) != 1:
+                errors.append(f"{key} differs for {task}: baseline={sorted(b_hashes)} candidate={sorted(c_hashes)}")
     all_counts = {len(group) for group in baseline_groups.values()} | {len(group) for group in candidate_groups.values()}
     if len(all_counts) > 1:
         errors.append("labels do not contain an equal repeat count for every task")
@@ -567,6 +579,7 @@ def selftest() -> dict[str, Any]:
         result = {
             "run_id": "selftest-run", "run_label": "selftest", "task_id": "WBD-999", "date": "2026-01-01T00:00:00Z",
             "model": "test-model", "effort": "low", "worker": "test-worker", "capability_pass": True,
+            "task_definition_sha256": "task-hash", "grader_sha256": "grader-hash", "runner_sha256": "runner-hash",
             "changed_files": ["x"], "execution": {"duration_ms": 5, "exit_code": 0, "timed_out": False, "prompt_bytes": 9,
             "stdout_path": "unused", "usage": {"input_tokens": 20, "cached_input_tokens": 5, "output_tokens": 3, "reasoning_output_tokens": 1}},
             "grade": {"score": 100, "critical_pass": True, "f2p": 55, "p2p": 25, "scope": 15, "completion": 5},

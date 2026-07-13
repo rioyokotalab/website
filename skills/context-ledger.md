@@ -106,7 +106,9 @@ Metrics: one schema-v2 line PER instrumented task attempted, validated by
 `tools/task-metrics.py`; unknown telemetry stays null. Legacy v1 is retained
 only for uninstrumented/history compatibility. Benchmark rows also record task
 version, repository commit, Codex CLI, prompt/handoff/inspection modes, and
-whether P2P ran; strict comparisons fail when identity evidence is insufficient.
+whether P2P ran. Task-definition, grader, and runner fingerprints expose
+unversioned drift; strict comparisons reject task/grader mismatch while showing
+runner changes as an experiment dimension.
 Driver tier is driver-codex or
 driver-claude. Codex drivers append one legacy-compatible row per uninstrumented
 driver task with `tools/task-metrics.py append-driver --task-ids ... --report ...`;

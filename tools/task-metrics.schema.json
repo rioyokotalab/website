@@ -83,7 +83,10 @@
         "repo_ref": {"type": "string"},
         "repo_commit": {"type": "string"},
         "codex_cli": {"type": "string"},
-        "run_p2p": {"type": ["boolean", "null"]}
+        "run_p2p": {"type": ["boolean", "null"]},
+        "task_definition_sha256": {"type": "string"},
+        "grader_sha256": {"type": "string"},
+        "runner_sha256": {"type": "string"}
       },
       "additionalProperties": false
     }
