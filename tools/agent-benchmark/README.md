@@ -6,7 +6,8 @@ F2P/P2P grading from SWE-bench-style evaluation, then adds deterministic local
 browser checks. It is not a general frontend leaderboard.
 
 Current capability coverage, deliberate gaps, and the threshold for adding a
-new capsule are documented in `coverage.md`.
+new capsule are documented in `coverage.md`. Failed-token causes and the stop
+rule each category should trigger are in `failure-taxonomy.md`.
 
 The runner creates a temporary repository from `git archive`, removes the
 benchmark implementation before the agent starts, commits the mutated fixture,
