@@ -65,7 +65,7 @@ def wilson_interval(successes: int, attempts: int, z: float = 1.959963984540054)
     denominator = 1 + z * z / attempts
     centre = proportion + z * z / (2 * attempts)
     margin = z * math.sqrt(proportion * (1 - proportion) / attempts + z * z / (4 * attempts * attempts))
-    return [round((centre - margin) / denominator, 4), round((centre + margin) / denominator, 4)]
+    return [(centre - margin) / denominator, (centre + margin) / denominator]
 
 
 def planned_map(plan: dict[str, Any]) -> tuple[dict[str, dict[str, Any]], dict[str, list[dict[str, Any]]]]:
@@ -138,8 +138,11 @@ def validate(
             "completed": done,
             "pending": len(cells) - done,
         })
+    plan_complete = all(stage["pending"] == 0 for stage in stage_progress)
     return {
         "status": "pass",
+        "analysis_status": "complete" if plan_complete else "partial",
+        "plan_complete": plan_complete,
         "matrix": matrix_integrity,
         "repeat_rows": len(repeat_rows),
         "unique_repeat_run_ids": len(ids),
@@ -158,17 +161,16 @@ def route_stat(
     attempts = len(rows)
     successes = len(quality)
     sampling_complete = attempts == planned_observations
-    full_quality_interval = wilson_interval(successes, attempts)
+    full_quality_interval_raw = wilson_interval(successes, attempts)
+    full_quality_interval = [round(value, 4) for value in full_quality_interval_raw]
     smoothed_probability = (successes + 1) / (attempts + 2)
     mean_total = float(statistics.mean(int(row["total_duration_ms"]) for row in rows))
     mean_tokens = float(statistics.mean(int(row["effective_tokens"]) for row in rows))
-    if not sampling_complete:
-        confidence = "incomplete"
-    elif attempts >= 6 and full_quality_interval[0] >= 0.60:
+    if attempts >= 6 and full_quality_interval_raw[0] >= 0.60:
         confidence = "high-confidence"
-    elif attempts >= 5 and full_quality_interval[0] >= 0.55:
+    elif attempts >= 5 and full_quality_interval_raw[0] >= 0.55:
         confidence = "qualified"
-    elif attempts >= 3 and full_quality_interval[0] >= 0.40:
+    elif attempts >= 3 and full_quality_interval_raw[0] >= 0.40:
         confidence = "provisional"
     else:
         confidence = "insufficient"
@@ -315,10 +317,12 @@ def analyze(
             "monetary_cost_note": "No frozen price table or billed-cost field is available; effective tokens are the cost proxy.",
         },
         "qualification_rule": (
-            "Confidence is assigned only after planned sampling completes. High-confidence requires "
-            "n>=6 and a full-quality Wilson-95 lower bound >=0.60; qualified requires n>=5 and "
-            "a lower bound >=0.55; provisional requires n>=3 and a lower bound >=0.40. The Pareto "
-            "set uses the highest available qualified tier and all-attempt retry-adjusted time/tokens."
+            "Confidence records the latest attained observation milestone even when a later adaptive "
+            "extension is pending; plan completion is reported separately. High-confidence requires "
+            "n>=6 and an unrounded full-quality Wilson-95 lower bound >=0.60; qualified requires "
+            "n>=5 and a lower bound >=0.55; provisional requires n>=3 and a lower bound >=0.40. "
+            "The Pareto set uses the highest available qualified tier and all-attempt retry-adjusted "
+            "time/tokens."
         ),
         "retry_adjustment": (
             "The smoothed success probability is (full_quality_passes+1)/(attempts+2). "
@@ -346,6 +350,8 @@ def markdown(report: dict[str, Any]) -> str:
         f"effective tokens: {totals['repeat_effective_tokens']:,}.",
         f"- {report['qualification_rule']}",
         f"- {report['retry_adjustment']}",
+        f"- Analysis status: {report['integrity']['analysis_status']}; "
+        f"current adaptive plan complete: {str(report['integrity']['plan_complete']).lower()}.",
     ]
     for stage in report["integrity"]["stage_progress"]:
         lines.append(

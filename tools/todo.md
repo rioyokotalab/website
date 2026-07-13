@@ -41,7 +41,12 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   currently justified. Stage 4 adds one sixth observation to the selected
   WBD-001 runtime route; both WBD-002/003/004 runtime and token routes; and
   WBD-005 Sol/high. A pass promotes each 6/6 route to high confidence; a
-  failure immediately changes its routing status.
+  failure immediately changes its routing status. Stage 4 is complete: all
+  seven WBD-001--004 routes passed and reached 6/6 high confidence, while
+  WBD-005 Sol/high failed `js-reduced-zero` and fell to 5/6 provisional. No
+  WBD-005 route is qualified standalone. Stage 5 screens Luna/high and
+  Luna/xhigh twice each as model-diverse fallbacks; expand only a clean,
+  cost-competitive arm.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that

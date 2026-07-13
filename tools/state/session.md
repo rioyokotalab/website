@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T02:42+0900
+updated: 2026-07-14T02:54+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -176,6 +176,22 @@ status: in-progress
   high-information. Revision-5 plan SHA-256 is
   `2ea10d37cd7dde0a3e59d3d30969591e58179d9f3e2cd7c7e328745bed2bd635`.
   Recompute before allocating Stage 5.
+- Stage 4 complete: seven selected WBD-001--004 routes passed and are 6/6
+  high-confidence. Runtime primaries are Terra/low WBD-001, Luna/low WBD-002,
+  Terra/low WBD-003, and Luna/low WBD-004; Sol/low is the high-confidence token
+  alternate for WBD-002--004. WBD-005 Sol/high repeat 6 failed
+  `js-reduced-zero`, leaving high and medium each 5/6 provisional and low 4/6
+  insufficient. No WBD-005 route qualifies standalone.
+- Analyzer review fixes complete: Wilson thresholds use unrounded values;
+  attained confidence survives later adaptive extensions; integrity now
+  distinguishes analysis completeness from row validity. Deterministic
+  regeneration passes with 68 repeat rows and 60 full-quality passes.
+- Adaptive plan revision 6 screens WBD-005 Luna/high and Luna/xhigh at repeats
+  2--3. These were the fastest and lower-token Luna higher-effort singleton
+  passes in the matrix. Expand only an arm that remains clean and competitive;
+  model-diverse fallback evidence is more valuable than further Sol sampling.
+  Revision-6 plan SHA-256 is
+  `1b84578fa89e6b0c338d02189764adcb604ab7f1f6bf65ab161d947678fbd62c`.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`

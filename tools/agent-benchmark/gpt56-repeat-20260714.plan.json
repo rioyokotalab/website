@@ -1,7 +1,7 @@
 {
   "created_at": "2026-07-14T00:44+0900",
   "freeze_sha256": "7801a61e9df34433575d05568aaaff767bc07c461825aeebdff627bcac990494",
-  "revision": 5,
+  "revision": 6,
   "run_label": "gpt56-repeat-20260714",
   "schema_version": 1,
   "source_matrix_label": "gpt56-full-20260713",
@@ -141,6 +141,17 @@
         {"effort": "low", "model": "gpt-5.6-luna", "task": "WBD-004"},
         {"effort": "low", "model": "gpt-5.6-sol", "task": "WBD-004"},
         {"effort": "high", "model": "gpt-5.6-sol", "task": "WBD-005"}
+      ]
+    },
+    "stage5-wbd005-model-diverse-screen": {
+      "purpose": "Screen the fastest and lower-token passing Luna WBD-005 higher-effort arms as model-diverse fallbacks after every sampled Sol effort failed at least once.",
+      "repeats": [
+        2,
+        3
+      ],
+      "routes": [
+        {"effort": "high", "model": "gpt-5.6-luna", "task": "WBD-005"},
+        {"effort": "xhigh", "model": "gpt-5.6-luna", "task": "WBD-005"}
       ]
     }
   }
