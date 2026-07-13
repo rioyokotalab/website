@@ -18,9 +18,10 @@ None.
 ## Recently completed
 
 - **T-152 — Install the evidence-backed dispatch policy:** installed and
-  validated policy `2026-07-14.2`, a strict selector, task-class validation and
+  validated policy `2026-07-14.3`, a strict selector, task-class validation and
   fallback chains, and a delegation-workflow lookup. All 15 task/objective
-  lookups pass and the selector verifies the source-summary SHA-256.
+  lookups pass; the selector verifies source hash/evidence/task coverage,
+  reliability ordering, objective optimality, and route-aware fallbacks.
 - **T-151 — Allocate adaptive matched repeats:** completed 83/83 adaptive rows
   in 17 checkpointed stages: 70 full-quality passes and 13 genuine capability
   failures. Final routes are Terra/low for WBD-001; Luna/low runtime and Sol/low

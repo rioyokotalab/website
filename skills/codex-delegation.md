@@ -14,10 +14,14 @@ python3 tools/agent-benchmark/select_route.py --task WBD-003 --objective runtime
 ```
 
 Objectives are `runtime`, `effective_tokens`, and `reliability`. The selector
-returns the route, confidence/evidence, required validation, and fallback
-chain from `tools/agent-benchmark/routing-policy.json`. Use `--validate` after
-policy changes. Do not extrapolate the mapping to a materially different task;
-collect comparable evidence or use driver judgment and record the new route.
+defaults to `runtime`; choose `effective_tokens` only when token use is the
+priority and `reliability` when outcome risk dominates. It returns the route,
+confidence/evidence, required validation, and fallback chain from
+`tools/agent-benchmark/routing-policy.json`. Use `--validate` after policy or
+summary changes; validation rejects a stale source hash, mismatched evidence,
+and non-optimal objective selections. Do not extrapolate the mapping to a
+materially different task; collect comparable evidence or use driver judgment
+and record the new route.
 WBD-005-class work is never accepted from the initial dispatch alone: run the
 full listed grader and follow its validation-dependent escalation chain.
 

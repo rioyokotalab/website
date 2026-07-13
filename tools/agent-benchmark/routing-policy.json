@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "policy_version": "2026-07-14.2",
-  "created_at": "2026-07-14T04:08+0900",
+  "policy_version": "2026-07-14.3",
+  "created_at": "2026-07-14T04:18+0900",
   "source": {
     "matrix_run_label": "gpt56-full-20260713",
     "repeat_run_label": "gpt56-repeat-20260714",
@@ -13,6 +13,11 @@
     "requested objective",
     "retry-adjusted expected end-to-end cost"
   ],
+  "objective_rules": {
+    "runtime": "minimize retry-adjusted expected total duration within the reliability-qualified Pareto set",
+    "effective_tokens": "minimize retry-adjusted expected effective tokens within the reliability-qualified Pareto set",
+    "reliability": "maximize the full-quality Wilson-95 lower bound, then smoothed success probability, then minimize retry-adjusted expected total duration"
+  },
   "confidence_thresholds": {
     "high-confidence": "n >= 6 and unrounded full-quality Wilson-95 lower bound >= 0.60",
     "qualified": "n >= 5 and unrounded full-quality Wilson-95 lower bound >= 0.55",
@@ -128,6 +133,7 @@
         ]
       },
       "fallback_chain": [
+        {"on": "validation-failure", "route_id": "luna-low", "max_attempts": 1},
         {"on": "validation-failure", "route_id": "sol-low", "max_attempts": 1},
         {"on": "second-failure", "action": "return-to-driver-with-grader-evidence"}
       ]
@@ -180,6 +186,7 @@
         ]
       },
       "fallback_chain": [
+        {"on": "validation-failure", "route_id": "terra-low", "max_attempts": 1},
         {"on": "validation-failure", "route_id": "sol-low", "max_attempts": 1},
         {"on": "second-failure", "action": "return-to-driver-with-grader-evidence"}
       ]
@@ -232,6 +239,7 @@
         ]
       },
       "fallback_chain": [
+        {"on": "validation-failure", "route_id": "luna-low", "max_attempts": 1},
         {"on": "validation-failure", "route_id": "sol-low", "max_attempts": 1},
         {"on": "second-failure", "action": "return-to-driver-with-grader-evidence"}
       ]
