@@ -9,3 +9,13 @@
   work.** Use progressive disclosure and task-specific source inspection for
   bounded local edits; require broad inspection for diagnosis, visual work, or
   refactors. Treat capability as a gate before optimizing tokens or routing.
+- **2026-07-14 — Route analogous website tasks from frozen evidence.** Query
+  policy `2026-07-14.3` before delegation. Gate first on full-quality
+  reliability confidence; default to minimum retry-adjusted runtime, use the
+  effective-token objective only when token use is the priority, and rank the
+  reliability objective by Wilson lower bound, smoothed success probability,
+  then runtime. Apply the returned model/effort only when the dispatch surface
+  exposes both; record any mismatch. Always run listed validation, use the
+  route-aware fallback, and never extrapolate to a materially different class
+  without new comparable evidence. WBD-005 always requires the full grader and
+  failure-informed escalation despite Sol/high reaching 8/9 qualification.

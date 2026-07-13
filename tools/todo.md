@@ -29,6 +29,8 @@ None.
   Luna/low runtime and Sol/low tokens for WBD-004; and Sol/high for every
   WBD-005 objective. WBD-001--004 routes are 6/6 high-confidence; WBD-005
   Sol/high is 8/9 qualified and still requires full validation.
+  If evidence is resumed, Sol/high is the only efficient first arm: two clean
+  repeats reach 10/11 high-confidence; recompute immediately after a failure.
 - **T-149 — Audit and summarize the complete matrix:** added deterministic
   JSON/Markdown analysis with exact cell/identity/artifact/metrics checks. Low
   was the only 15/15 full-quality effort and `ultra` was dominated on every

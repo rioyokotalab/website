@@ -144,21 +144,65 @@ def validate_policy(
         ):
             errors.append(f"{prefix}.selection references an unknown route")
         validation = item.get("validation")
-        if not isinstance(validation, dict) or not isinstance(validation.get("required"), bool):
-            errors.append(f"{prefix}.validation.required must be boolean")
-        chain = item.get("fallback_chain")
-        if not isinstance(chain, list):
-            errors.append(f"{prefix}.fallback_chain must be an array")
+        if not isinstance(validation, dict) or validation.get("required") is not True:
+            errors.append(f"{prefix}.validation.required must be true")
         else:
+            commands = validation.get("commands")
+            if (
+                not isinstance(commands, list)
+                or not commands
+                or any(
+                    not isinstance(command, list)
+                    or not command
+                    or any(not isinstance(part, str) or not part for part in command)
+                    for command in commands
+                )
+            ):
+                errors.append(f"{prefix}.validation.commands must be nonempty argv arrays")
+        chain = item.get("fallback_chain")
+        if not isinstance(chain, list) or not chain:
+            errors.append(f"{prefix}.fallback_chain must be a nonempty array")
+        else:
+            fallback_route_ids = []
             for step_index, step in enumerate(chain):
+                step_prefix = f"{prefix}.fallback_chain[{step_index}]"
                 if not isinstance(step, dict):
-                    errors.append(f"{prefix}.fallback_chain[{step_index}] must be an object")
-                elif "route_id" in step and (
-                    not isinstance(step["route_id"], str) or step["route_id"] not in route_ids
+                    errors.append(f"{step_prefix} must be an object")
+                    continue
+                if not isinstance(step.get("on"), str) or not step.get("on"):
+                    errors.append(f"{step_prefix}.on must be nonempty")
+                has_route = "route_id" in step
+                has_action = "action" in step
+                if has_route == has_action:
+                    errors.append(f"{step_prefix} must define exactly one route_id or action")
+                elif has_route and (
+                    not isinstance(step["route_id"], str)
+                    or step["route_id"] not in route_ids
                 ):
                     errors.append(
-                        f"{prefix}.fallback_chain[{step_index}] references an unknown route"
+                        f"{step_prefix} references an unknown route"
                     )
+                elif has_route:
+                    fallback_route_ids.append(step["route_id"])
+                    if not isinstance(step.get("max_attempts"), int) or isinstance(
+                        step.get("max_attempts"), bool
+                    ) or step["max_attempts"] <= 0:
+                        errors.append(f"{step_prefix}.max_attempts must be a positive integer")
+                elif not isinstance(step.get("action"), str) or not step.get("action"):
+                    errors.append(f"{step_prefix}.action must be nonempty")
+            if len(set(fallback_route_ids)) != len(fallback_route_ids):
+                errors.append(f"{prefix}.fallback_chain repeats a route")
+            if isinstance(selection, dict):
+                for selected_route_id in set(selection.values()):
+                    if not any(
+                        step.get("route_id") != selected_route_id
+                        for step in chain
+                        if isinstance(step, dict)
+                    ):
+                        errors.append(
+                            f"{prefix}.fallback_chain has no route-aware step for "
+                            f"{selected_route_id}"
+                        )
         if not isinstance(item.get("standalone_qualified"), bool):
             errors.append(f"{prefix}.standalone_qualified must be boolean")
     evidence_routes = 0
