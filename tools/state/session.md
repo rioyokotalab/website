@@ -1,18 +1,17 @@
-driver: none
-updated: 2026-07-13T18:15+0900
-task: none
+driver: codex
+updated: 2026-07-13T20:22+0900
+task: idle
 status: idle
 
 ## Now
-- T-141 through T-144 completed the incremental repository tooling
-  decommission and comparison cleanup.
-- The current checkout retains only the Codex-native driver, delegation,
-  metrics, preview, and reusable regression paths. Current metric and delegation
-  logs restart from this cleanup; older records remain available in Git history.
-- The public website was not changed or deployed.
+- T-145 completed the GPT-5.6 comparison design and populated T-146--T-149.
+- Planned screen: `gpt-5.6-luna`, `gpt-5.6-terra`, and `gpt-5.6-sol`, each at
+  low/medium/high. The existing runner supports these three effort values;
+  none/xhigh/max are deliberately outside this round.
+- No model benchmark, website change, publication, deployment, or push ran.
 
 ## Working set
-- None.
+- None. Next task is T-146.
 
 ## Open questions
 - None.
