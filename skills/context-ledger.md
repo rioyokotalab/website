@@ -108,7 +108,9 @@ only for uninstrumented/history compatibility. Benchmark rows also record task
 version, repository commit, Codex CLI, prompt/handoff/inspection modes, and
 whether P2P ran; strict comparisons fail when identity evidence is insufficient.
 Driver tier is driver-codex or
-driver-claude. codex-log line format for
+driver-claude. Codex drivers append one legacy-compatible row per uninstrumented
+driver task with `tools/task-metrics.py append-driver --task-ids ... --report ...`;
+the command is idempotent for a task/report pair. codex-log line format for
 drivers: `date | <brand>-driver (<model>) | tasks | report path | n/a |
 outcome` (brand = claude or codex; claude drivers use agent "claude",
 tier "driver-claude"). The Claude review pass grades the report against git diff (not

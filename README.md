@@ -248,7 +248,8 @@ Recurring worker routing and task metrics live in
 `tools/task-tier-policy.md`, `tools/task-metrics.jsonl`, and
 `tools/codex-log.md`. Validate and summarize the backward-compatible structured
 metrics with `python3 tools/task-metrics.py validate` and `python3
-tools/task-metrics.py summarize`. Compare matched labels with `python3
+tools/task-metrics.py summarize`; audit optimization spend and failed-run cost
+with `python3 tools/task-metrics.py labels`. Compare matched labels with `python3
 tools/task-metrics.py compare --baseline-label LABEL --candidate-label LABEL`;
 the command refuses unequal task sets/counts or missing/mismatched task versions
 and reports capability, route/mode, token, command, output, duration, and failure

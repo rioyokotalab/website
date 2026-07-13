@@ -55,7 +55,7 @@ def run_checked(command: list[str], *, cwd: Path, env: dict[str, str] | None = N
                           stderr=subprocess.PIPE, check=True)
 
 
-def archive_repository(ref: str, destination: Path) -> None:
+def archive_repository(ref: str, destination: Path, *, include_dependencies: bool = True) -> None:
     archive = subprocess.run(["git", "archive", "--format=tar", ref], cwd=ROOT,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
     with tarfile.open(fileobj=io.BytesIO(archive.stdout), mode="r:") as bundle:
@@ -65,7 +65,8 @@ def archive_repository(ref: str, destination: Path) -> None:
     # Give the worker the repository's pinned test CLI without permitting an
     # install or exposing the owner's dependency tree to writes. Browser assets
     # remain external and are selected by PLAYWRIGHT_BROWSERS_PATH.
-    shutil.copytree(ROOT / "node_modules", destination / "node_modules", symlinks=True)
+    if include_dependencies:
+        shutil.copytree(ROOT / "node_modules", destination / "node_modules", symlinks=True)
 
 
 def initialize_fixture_git(workspace: Path) -> None:
@@ -320,6 +321,48 @@ def append_result(result: dict[str, Any]) -> None:
         handle.write(json.dumps(result, ensure_ascii=False, sort_keys=True) + "\n")
 
 
+def compact_result(result: dict[str, Any]) -> dict[str, Any]:
+    execution = result.get("execution") or {}
+    grade = result.get("grade") or {}
+    tools = execution.get("tool_metrics") or {}
+    payload: dict[str, Any] = {
+        "run_id": result.get("run_id"),
+        "run_label": result.get("run_label"),
+        "task_id": result.get("task_id"),
+        "task_version": result.get("task_version"),
+        "capability_pass": result.get("capability_pass"),
+        "score": grade.get("score"),
+        "gates": {key: grade.get(key) for key in ("critical_pass", "f2p", "p2p", "scope", "completion")},
+        "route": {key: result.get(key) for key in ("worker", "model", "effort")},
+        "modes": {key: result.get(key) for key in ("prompt_mode", "handoff_mode", "inspection_mode", "run_p2p")},
+        "effective_tokens": result.get("effective_tokens"),
+        "usage": execution.get("usage"),
+        "commands": {"completed": tools.get("completed_commands"), "failed": tools.get("failed_commands"),
+                     "output_chars": tools.get("command_output_chars")},
+        "durations_ms": {"setup": result.get("setup_duration_ms"), "worker": execution.get("duration_ms"),
+                         "grader": result.get("grader_duration_ms"), "total": result.get("total_duration_ms")},
+        "changed_files": result.get("changed_files") or [],
+        "failure_phase": result.get("failure_phase"),
+        "artifact": f"tools/out/agent-benchmark/{result.get('run_id')}/result.json",
+    }
+    if not result.get("capability_pass"):
+        payload["findings"] = grade.get("findings") or []
+    return payload
+
+
+def load_result(run_id: str) -> dict[str, Any]:
+    artifact = ARTIFACTS_ROOT / run_id / "result.json"
+    if artifact.exists():
+        return json.loads(artifact.read_text(encoding="utf-8"))
+    if RESULTS_PATH.exists():
+        for line in RESULTS_PATH.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                result = json.loads(line)
+                if result.get("run_id") == run_id:
+                    return result
+    raise KeyError(f"unknown run_id: {run_id}")
+
+
 def run_one(args: argparse.Namespace) -> dict[str, Any]:
     tasks = load_tasks()
     task = tasks[args.task_id]
@@ -470,6 +513,68 @@ def summarize(label: str | None = None) -> dict[str, Any]:
     }
 
 
+def audit(ref: str = "HEAD") -> dict[str, Any]:
+    tasks = load_tasks()
+    operations = load_task_ops()
+    reports = []
+    errors: list[str] = []
+    for task_id, task in tasks.items():
+        with tempfile.TemporaryDirectory(prefix=f"yokota-audit-{task_id.lower()}-") as temporary:
+            workspace = Path(temporary)
+            archive_repository(ref, workspace, include_dependencies=False)
+            initialize_fixture_git(workspace)
+            repository_files = sorted(operations._all_files(workspace))
+            pattern_matches = {
+                pattern: sum(operations._allowed(rel, [pattern]) for rel in repository_files)
+                for pattern in task["authorized_paths"]
+            }
+            empty_patterns = [pattern for pattern, count in pattern_matches.items() if count == 0]
+            if empty_patterns:
+                errors.append(f"{task_id}: authorized patterns match no files: {empty_patterns}")
+            for pattern in task["authorized_paths"]:
+                if "/**/" not in pattern:
+                    continue
+                root = pattern.split("/**/", 1)[0] + "/"
+                direct_html = [rel for rel in repository_files if rel.startswith(root)
+                               and "/" not in rel[len(root):] and rel.endswith(".html")]
+                uncovered = [rel for rel in direct_html if not operations._allowed(rel, task["authorized_paths"])]
+                if uncovered:
+                    errors.append(f"{task_id}: recursive authorization misses direct pages: {uncovered}")
+            pristine = operations.grade(task_id, workspace, "HEAD", run_p2p=False)
+            if pristine.get("f2p") != 55 or pristine.get("scope") != 15 or not pristine.get("critical_pass"):
+                errors.append(
+                    f"{task_id}: pristine static gate invalid: f2p={pristine.get('f2p')} "
+                    f"scope={pristine.get('scope')} critical={pristine.get('critical_pass')}"
+                )
+            mutation = operations.mutate(task_id, workspace)
+            unauthorized_mutation = [
+                rel for rel in mutation["changed"]
+                if not operations._allowed(rel, task["authorized_paths"])
+            ]
+            if unauthorized_mutation:
+                errors.append(f"{task_id}: mutation is outside authorization: {unauthorized_mutation}")
+            broken = operations.grade(task_id, workspace, "HEAD", run_p2p=False)
+            if broken.get("f2p") == 55 or broken.get("critical_pass"):
+                errors.append(
+                    f"{task_id}: mutation does not trip a critical static gate: "
+                    f"f2p={broken.get('f2p')} critical={broken.get('critical_pass')}"
+                )
+            reports.append({
+                "task_id": task_id,
+                "task_version": task["version"],
+                "held_out": bool(task.get("held_out")),
+                "pattern_matches": pattern_matches,
+                "pristine": {"f2p": pristine.get("f2p"), "scope": pristine.get("scope"),
+                             "critical_pass": pristine.get("critical_pass")},
+                "mutated": {"f2p": broken.get("f2p"), "scope": broken.get("scope"),
+                            "critical_pass": broken.get("critical_pass"),
+                            "failed": [item["name"] for item in broken.get("assertions", []) if not item["passed"]]},
+                "mutation_changed": mutation["changed"],
+            })
+    return {"status": "pass" if not errors else "fail", "repo_ref": ref,
+            "tasks": reports, "errors": errors}
+
+
 def selftest() -> dict[str, Any]:
     tasks = load_tasks()
     assert set(tasks) == {f"WBD-{number:03d}" for number in range(1, 6)}
@@ -523,8 +628,14 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--run-p2p", action="store_true")
     run.add_argument("--include-held-out", action="store_true")
     run.add_argument("--keep-workspace", action="store_true")
+    run.add_argument("--verbose-result", action="store_true", help="print the full stored result instead of a compact summary")
     summary = subcommands.add_parser("summarize")
     summary.add_argument("--run-label")
+    audit_command = subcommands.add_parser("audit")
+    audit_command.add_argument("--ref", default="HEAD")
+    show = subcommands.add_parser("show")
+    show.add_argument("run_id")
+    show.add_argument("--verbose-result", action="store_true")
     subcommands.add_parser("selftest")
     return command
 
@@ -537,10 +648,19 @@ def main() -> int:
             print(f"{task['id']}: {task['title']}{held}")
         return 0
     if args.command == "run":
-        print(json.dumps(run_one(args), ensure_ascii=False, indent=2, sort_keys=True))
+        result = run_one(args)
+        print(json.dumps(result if args.verbose_result else compact_result(result), ensure_ascii=False, indent=2, sort_keys=True))
         return 0
     if args.command == "summarize":
         print(json.dumps(summarize(args.run_label), ensure_ascii=False, indent=2, sort_keys=True))
+        return 0
+    if args.command == "audit":
+        result = audit(args.ref)
+        print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
+        return 0 if result["status"] == "pass" else 1
+    if args.command == "show":
+        result = load_result(args.run_id)
+        print(json.dumps(result if args.verbose_result else compact_result(result), ensure_ascii=False, indent=2, sort_keys=True))
         return 0
     if args.command == "selftest":
         print(json.dumps(selftest(), indent=2, sort_keys=True))

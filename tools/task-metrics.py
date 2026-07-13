@@ -7,6 +7,7 @@ import argparse
 import json
 import statistics
 import tempfile
+from datetime import date
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -295,6 +296,40 @@ def import_benchmark(label: str, *, dry_run: bool, metrics_path: Path = METRICS,
     }
 
 
+def append_driver_tasks(task_ids: list[str], report: str, model: str, path: Path = METRICS) -> dict[str, Any]:
+    existing_rows, _, errors = read_jsonl(path)
+    if errors:
+        return {"status": "fail", "errors": errors}
+    existing = {
+        (row.get("task_id"), row.get("tier"), row.get("report"))
+        for _, row in existing_rows
+    }
+    rows = []
+    duplicates = []
+    for task_id in task_ids:
+        key = (task_id, "driver-codex", report)
+        if key in existing:
+            duplicates.append(task_id)
+            continue
+        if not task_id.startswith("T-") or not task_id[2:].isdigit():
+            return {"status": "fail", "errors": [f"invalid task id: {task_id}"]}
+        rows.append({
+            "date": date.today().isoformat(), "task_type": "other", "agent": "codex",
+            "tier": "driver-codex", "model": model, "duration_ms": None,
+            "success": True, "task_id": task_id, "report": report,
+            "note": f"{task_id} complete; {report}",
+        })
+    if rows:
+        needs_newline = path.exists() and path.stat().st_size and not path.read_bytes().endswith(b"\n")
+        with path.open("a", encoding="utf-8") as handle:
+            if needs_newline:
+                handle.write("\n")
+            for row in rows:
+                handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+    return {"status": "pass", "appended": len(rows), "task_ids": [row["task_id"] for row in rows],
+            "duplicates": duplicates, "report": report}
+
+
 def summarize(label: str | None, path: Path = METRICS) -> dict[str, Any]:
     rows, blanks, errors = read_jsonl(path)
     selected = [row for _, row in rows if row.get("schema_version") == 2 and (label is None or row.get("run_label") == label)]
@@ -311,6 +346,48 @@ def summarize(label: str | None, path: Path = METRICS) -> dict[str, Any]:
         "failed_commands": total("failed_commands"), "tool_output_chars": total("tool_output_chars"),
         "total_duration_ms": total("total_duration_ms"), "blank_lines_skipped": blanks, "errors": errors,
         "tasks": [{"run_id": row["run_id"], "task_id": row["task_id"], "score": row["capability_score"], "passed": row["capability_pass"]} for row in selected],
+    }
+
+
+def summarize_labels(path: Path = METRICS) -> dict[str, Any]:
+    rows, blanks, errors = read_jsonl(path)
+    selected = [row for _, row in rows if row.get("schema_version") == 2]
+    labels: dict[str, list[dict[str, Any]]] = {}
+    for row in selected:
+        labels.setdefault(str(row.get("run_label") or "unknown"), []).append(row)
+
+    def total(items: list[dict[str, Any]], key: str) -> int:
+        return sum(row.get(key) or 0 for row in items)
+
+    summaries = []
+    for label, items in sorted(labels.items()):
+        failed = [row for row in items if not row.get("capability_pass")]
+        summaries.append({
+            "run_label": label,
+            "runs": len(items),
+            "passed": len(items) - len(failed),
+            "failed": len(failed),
+            "effective_tokens": total(items, "effective_tokens"),
+            "failed_effective_tokens": total(failed, "effective_tokens"),
+            "tool_output_chars": total(items, "tool_output_chars"),
+            "total_duration_ms": total(items, "total_duration_ms"),
+            "task_ids": sorted({str(row.get("task_id")) for row in items}),
+            "task_versions": sorted({f"{row.get('task_id')}@{row.get('task_version', 'unknown')}" for row in items}),
+            "routes": sorted({f"{row.get('tier')}:{row.get('effort')}" for row in items}),
+        })
+    failed_rows = [row for row in selected if not row.get("capability_pass")]
+    return {
+        "status": "pass" if not errors else "fail",
+        "runs": len(selected),
+        "passed": len(selected) - len(failed_rows),
+        "failed": len(failed_rows),
+        "effective_tokens": total(selected, "effective_tokens"),
+        "failed_effective_tokens": total(failed_rows, "effective_tokens"),
+        "tool_output_chars": total(selected, "tool_output_chars"),
+        "total_duration_ms": total(selected, "total_duration_ms"),
+        "labels": summaries,
+        "blank_lines_skipped": blanks,
+        "errors": errors,
     }
 
 
@@ -521,7 +598,13 @@ def selftest() -> dict[str, Any]:
         comparison_path.write_text("\n".join(json.dumps(item) for item in comparison_rows[:-1]) + "\n", encoding="utf-8")
         unsafe = compare_labels("baseline", "candidate", comparison_path)
         assert unsafe["status"] == "fail" and not unsafe["safe_to_compare"]
-    return {"status": "pass", "command_event_deduplication": "pass", "dry_run": "pass", "append_and_dedupe": "pass", "legacy_and_v2_validation": "pass", "safe_comparison": "pass"}
+        label_summary = summarize_labels(comparison_path)
+        assert label_summary["runs"] == 3 and len(label_summary["labels"]) == 2
+        driver = append_driver_tasks(["T-1", "T-2"], "tools/out/report.md", "gpt-5", metrics)
+        assert driver["appended"] == 2
+        driver_duplicate = append_driver_tasks(["T-1"], "tools/out/report.md", "gpt-5", metrics)
+        assert driver_duplicate["duplicates"] == ["T-1"]
+    return {"status": "pass", "command_event_deduplication": "pass", "dry_run": "pass", "append_and_dedupe": "pass", "legacy_and_v2_validation": "pass", "safe_comparison": "pass", "label_cost_summary": "pass"}
 
 
 def parser() -> argparse.ArgumentParser:
@@ -529,7 +612,12 @@ def parser() -> argparse.ArgumentParser:
     sub = command.add_subparsers(dest="command", required=True)
     validate = sub.add_parser("validate"); validate.add_argument("--path", type=Path, default=METRICS)
     importer = sub.add_parser("import-benchmark"); importer.add_argument("--run-label", required=True); importer.add_argument("--dry-run", action="store_true")
+    driver = sub.add_parser("append-driver")
+    driver.add_argument("--task-ids", nargs="+", required=True)
+    driver.add_argument("--report", required=True)
+    driver.add_argument("--model", default="gpt-5")
     summary = sub.add_parser("summarize"); summary.add_argument("--run-label")
+    labels = sub.add_parser("labels"); labels.add_argument("--path", type=Path, default=METRICS)
     comparison = sub.add_parser("compare")
     comparison.add_argument("--baseline-label", required=True)
     comparison.add_argument("--candidate-label", required=True)
@@ -542,7 +630,9 @@ def main() -> int:
     args = parser().parse_args()
     if args.command == "validate": result = validate_file(args.path)
     elif args.command == "import-benchmark": result = import_benchmark(args.run_label, dry_run=args.dry_run)
+    elif args.command == "append-driver": result = append_driver_tasks(args.task_ids, args.report, args.model)
     elif args.command == "summarize": result = summarize(args.run_label)
+    elif args.command == "labels": result = summarize_labels(args.path)
     elif args.command == "compare": result = compare_labels(args.baseline_label, args.candidate_label, args.path)
     else: result = selftest()
     print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))

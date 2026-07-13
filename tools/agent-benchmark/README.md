@@ -11,6 +11,10 @@ and grades only the resulting candidate diff. Raw Codex JSONL, stderr, prompt,
 patch, and result live under ignored `tools/out/agent-benchmark/`; compact
 per-run rows are appended to `results.jsonl`.
 
+`run` prints a compact decision summary by default; the complete result remains
+in its artifact directory. Use `--verbose-result` only when a downstream caller
+needs the full inline grader tails rather than following the artifact pointer.
+
 Use `--handoff-mode runner-lite` for short instrumented trials: the runner
 captures the trajectory, patch, grade, metrics, and final message while the
 worker skips its durable report and log append. `runner-structured` additionally
@@ -28,6 +32,8 @@ Use default inspection for reference-driven visual work and diagnosis.
 ```bash
 python3 tools/agent-benchmark/benchmark.py list
 python3 tools/agent-benchmark/benchmark.py selftest
+python3 tools/agent-benchmark/benchmark.py audit
+python3 tools/agent-benchmark/benchmark.py show RUN_ID
 python3 tools/agent-benchmark/benchmark.py run WBD-001 --run-label baseline --run-p2p
 python3 tools/agent-benchmark/benchmark.py summarize --run-label baseline
 ```
