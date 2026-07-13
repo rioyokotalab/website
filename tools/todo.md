@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-151.
+`tools/state/session.md`. Next free id: T-154.
 
 ## Active
 
@@ -23,6 +23,19 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   Pareto routes, and break-even. Treat single-run cells as estimates rather
   than medians, and clean obsolete raw artifacts/results together after the
   decision is durable.
+- **T-151 — Allocate adaptive matched repeats:** after T-149, identify each
+  task's passing cost/latency/quality Pareto frontier and use the remaining
+  campaign time for matched repeats of plausible dispatch winners. Target at
+  least three observations per contender, eliminate dominated routes only from
+  comparable evidence, and checkpoint every allocation decision and result.
+- **T-152 — Install the evidence-backed dispatch policy:** write a versioned
+  per-task/capability model-effort routing policy with fallback and confidence
+  fields, reference it from the Codex delegation workflow, and validate that
+  future dispatch can select a route without relying on chat history.
+- **T-153 — Close the eight-hour campaign:** stop new runs by
+  2026-07-14T05:08+0900, finish in-flight evidence safely, audit artifacts and
+  metrics, report spend/runtime/failures/uncertainty, checkpoint the ledger,
+  commit and push tools-only results, and do not publish the website.
 
 ## Blocked / awaiting user
 

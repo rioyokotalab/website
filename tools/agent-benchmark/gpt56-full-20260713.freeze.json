@@ -54,6 +54,7 @@
   },
   "identities": {
     "codex_cli": "codex-cli 0.144.3",
+    "orchestrator_sha256": "7a0f1d89c59cd38c86215dc159e2af3c014e336a710825a4197d77c9f6ed88d2",
     "probe_runner_sha256": "a800623a529dd6bc4b5c49e50efaa4375b67b4588282f9fcc720bbbda377ef60",
     "matrix_runner_sha256": "f78a8f72637b8e180201ac5efc031d9913d89fc862d2881efc75b6dc0a62f166",
     "grader_sha256": "287d7dbf5c9e35425a2a0b14ebfe68011166d1703f3011683e10f5b4d269a351",
