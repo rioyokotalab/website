@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T03:45+0900
+updated: 2026-07-14T03:48+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -229,6 +229,11 @@ status: in-progress
   provisional. Run repeat 7 for both, recompute, and continue one repeat at a
   time only while an arm remains capable of reaching 8/9 (Wilson lower 0.565)
   qualification before the closeout reserve.
+- Adaptive plan revision 9 adds exactly repeat 7 for Sol/medium and Sol/high.
+  Run both, checkpoint, and add repeat 8 only for arms that pass. The complete
+  policy remains pinned to the 168-row summary until new results are analyzed.
+  Revision-9 plan SHA-256 is
+  `444b9ee23727ba4cf0979c7ec4d10fa35dfde38536f7b385c95f2df2378e681d`.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
