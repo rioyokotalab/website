@@ -12,11 +12,13 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   round, not an unseen selection gate. Never reroute a failed cell to a
   different model or effort. Record score, critical assertions, effective and
   reasoning tokens, duration, scope, cost, and failure class for every attempt.
-  Progress: WBD-003, WBD-001, and WBD-005 complete (45/45); 45/75
+  Progress: WBD-003, WBD-001, WBD-005, and WBD-002 complete (60/60); 60/75
   documented cells complete. WBD-005 passed 10/15: its provisional frontier
   is Luna/low for latency (110,069 ms, 29,551 effective tokens), Terra/low for
   balance (123,509 ms, 24,022 tokens), and Sol/low for tokens (140,525 ms,
   18,826 tokens). Five higher-effort cells failed genuine capability gates.
+  WBD-002 passed 15/15; its frontier is Luna/low for latency (76,818 ms,
+  12,141 tokens) versus Sol/low for tokens (93,096 ms, 11,174 tokens).
 - **T-148 — Complete the `ultra` rows:** T-146 proved Luna, Terra, and Sol all
   accept `ultra` and recorded their passing WBD-001 cells. Run WBD-002 through
   WBD-005 once for all three models at `ultra` (12 remaining cells), using the

@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-13T22:40+0900
+updated: 2026-07-13T23:13+0900
 task: T-147 Run all documented model/effort/task cells
 status: in-progress
 
@@ -26,9 +26,13 @@ status: in-progress
   and Luna/medium failed `js-reduced-zero`; Terra/xhigh passed all static
   assertions but failed the lightbox focus-return P2P assertion. These are
   genuine capability results, not infrastructure failures, and remain recorded.
-- Integrity checkpoint: 48 runs, artifact directories, and metric pointers,
-  no errors; metrics contain 48 v2 rows and all five benchmark self-audits
-  pass. T-147 is 45/75. Next frozen block: WBD-002 documented.
+- WBD-002 documented block complete: 15/15 capability passes at score 100.
+  Luna/low leads latency at 76,818 ms total and 12,141 effective tokens;
+  Sol/low is the only other Pareto arm at 93,096 ms and 11,174 tokens. Every
+  higher-effort arm is dominated. Repeat both low-effort contenders.
+- Integrity checkpoint: 63 runs, artifact directories, and metric pointers,
+  no errors; metrics contain 63 v2 rows. T-147 is 60/75. Next frozen block:
+  WBD-004 documented.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
