@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-13T23:56+0900
+updated: 2026-07-14T00:19+0900
 task: T-148 Complete the ultra rows
 status: in-progress
 
@@ -51,6 +51,14 @@ status: in-progress
   result-less partial artifact was inspected and removed. Local artifact and
   metrics audits pass 81/81. Retry the identical cell once from the local clone;
   continue committing and pushing canonical tools-only state from there.
+- WBD-005 ultra complete: Terra, Luna, and Sol all passed score 100 with full
+  P2P and exact scope, but all are dominated by the documented low-effort
+  frontier. The first local Sol grade failed all P2P tests in 3,723 ms because
+  the ignored Chromium cache had not transferred; that uncommitted result,
+  metric, and artifact were transactionally removed, Chromium was restored,
+  and the identical stable id reran successfully with a 64,557 ms grade.
+  Ultra progress is 6/12 new rows; 84 runs/artifacts/metric pointers reconcile
+  with 84 v2 rows. Next frozen block: WBD-002 ultra.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
