@@ -2,3 +2,4 @@
 One line per delegation: date | agent | task | output file | conversationId | outcome
 2026-07-13 | codex-driver (GPT-5 Codex) | T-141–T-144 tooling decommission and comparison cleanup | tools/out/driver-report-20260713-1815.md | n/a | complete; current tree normalized, temporary artifacts and stale comparison state removed
 2026-07-13 | codex-driver (GPT-5 Codex) | T-145 GPT-5.6 benchmark matrix planning | tools/out/driver-report-20260713-2022.md | n/a | complete; T-146–T-149 populated, no benchmark calls started
+2026-07-13 | codex-driver (GPT-5 Codex) | T-150 exhaustive GPT-5.6 matrix revision | tools/out/driver-report-20260713-2031.md | n/a | complete; all five WBD tasks planned for 75 documented cells plus capability-gated ultra rows

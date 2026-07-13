@@ -1,14 +1,16 @@
 driver: codex
-updated: 2026-07-13T20:22+0900
+updated: 2026-07-13T20:31+0900
 task: idle
 status: idle
 
 ## Now
-- T-145 completed the GPT-5.6 comparison design and populated T-146--T-149.
-- Planned screen: `gpt-5.6-luna`, `gpt-5.6-terra`, and `gpt-5.6-sol`, each at
-  low/medium/high. The existing runner supports these three effort values;
-  none/xhigh/max are deliberately outside this round.
-- No model benchmark, website change, publication, deployment, or push ran.
+- T-150 revised T-146--T-149 into a complete five-task GPT-5.6 factorial.
+- The guaranteed matrix is 3 models × 5 documented requested efforts × 5 WBD
+  tasks = 75 scored cells. Three WBD-001 `ultra` probes expand it to 90 scored
+  cells only if accepted; rejected rows retain explicit unsupported evidence.
+- Official catalog confirms low/medium/high/xhigh/max for Luna/Terra/Sol but no
+  `ultra`; the current runner needs extension beyond low/medium/high in T-146.
+- No benchmark model call, website change, publication, or deployment ran.
 
 ## Working set
 - None. Next task is T-146.
