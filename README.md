@@ -249,7 +249,8 @@ Recurring worker routing and task metrics live in
 `tools/codex-log.md`. Validate and summarize the backward-compatible structured
 metrics with `python3 tools/task-metrics.py validate` and `python3
 tools/task-metrics.py summarize`; audit optimization spend and failed-run cost
-with `python3 tools/task-metrics.py labels`. Compare matched labels with `python3
+with `python3 tools/task-metrics.py labels`. Summaries aggregate per task by
+default; add `--details` only when every run is needed inline. Compare matched labels with `python3
 tools/task-metrics.py compare --baseline-label LABEL --candidate-label LABEL`;
 the command refuses unequal task sets/counts or missing/mismatched task versions
 and reports capability, route/mode, token, command, output, duration, and failure

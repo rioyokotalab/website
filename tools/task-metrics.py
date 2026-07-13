@@ -334,13 +334,20 @@ def append_driver_tasks(task_ids: list[str], report: str, model: str, path: Path
             "duplicates": duplicates, "report": report}
 
 
-def summarize(label: str | None, path: Path = METRICS) -> dict[str, Any]:
+def summarize(label: str | None, path: Path = METRICS, *, details: bool = False) -> dict[str, Any]:
     rows, blanks, errors = read_jsonl(path)
     selected = [row for _, row in rows if row.get("schema_version") == 2 and (label is None or row.get("run_label") == label)]
     passed = [row for row in selected if row.get("capability_pass")]
     def total(key: str) -> int:
         return sum(row.get(key) or 0 for row in selected)
-    return {
+    task_counts: dict[str, dict[str, int]] = {}
+    for row in selected:
+        task = str(row.get("task_id") or "unknown")
+        counts = task_counts.setdefault(task, {"runs": 0, "passed": 0, "failed": 0, "effective_tokens": 0})
+        counts["runs"] += 1
+        counts["passed" if row.get("capability_pass") else "failed"] += 1
+        counts["effective_tokens"] += row.get("effective_tokens") or 0
+    result = {
         "status": "pass" if not errors else "fail", "run_label": label, "runs": len(selected),
         "passed": len(passed), "failed": len(selected) - len(passed),
         "mean_score": round(sum(row.get("capability_score") or 0 for row in selected) / len(selected), 2) if selected else None,
@@ -349,8 +356,16 @@ def summarize(label: str | None, path: Path = METRICS) -> dict[str, Any]:
         "effective_tokens": total("effective_tokens"), "completed_commands": total("completed_commands"),
         "failed_commands": total("failed_commands"), "tool_output_chars": total("tool_output_chars"),
         "total_duration_ms": total("total_duration_ms"), "blank_lines_skipped": blanks, "errors": errors,
-        "tasks": [{"run_id": row["run_id"], "task_id": row["task_id"], "score": row["capability_score"], "passed": row["capability_pass"]} for row in selected],
+        "task_counts": task_counts,
+        "failure_run_ids": [row["run_id"] for row in selected if not row.get("capability_pass")],
     }
+    if details:
+        result["run_details"] = [
+            {"run_id": row["run_id"], "task_id": row["task_id"],
+             "score": row["capability_score"], "passed": row["capability_pass"]}
+            for row in selected
+        ]
+    return result
 
 
 def summarize_labels(path: Path = METRICS) -> dict[str, Any]:
@@ -613,6 +628,9 @@ def selftest() -> dict[str, Any]:
         assert unsafe["status"] == "fail" and not unsafe["safe_to_compare"]
         label_summary = summarize_labels(comparison_path)
         assert label_summary["runs"] == 3 and len(label_summary["labels"]) == 2
+        compact_summary = summarize(None, comparison_path)
+        detailed_summary = summarize(None, comparison_path, details=True)
+        assert "run_details" not in compact_summary and len(detailed_summary["run_details"]) == 3
         driver = append_driver_tasks(["T-1", "T-2"], "tools/out/report.md", "gpt-5", metrics)
         assert driver["appended"] == 2
         driver_duplicate = append_driver_tasks(["T-1"], "tools/out/report.md", "gpt-5", metrics)
@@ -629,7 +647,7 @@ def parser() -> argparse.ArgumentParser:
     driver.add_argument("--task-ids", nargs="+", required=True)
     driver.add_argument("--report", required=True)
     driver.add_argument("--model", default="gpt-5")
-    summary = sub.add_parser("summarize"); summary.add_argument("--run-label")
+    summary = sub.add_parser("summarize"); summary.add_argument("--run-label"); summary.add_argument("--details", action="store_true")
     labels = sub.add_parser("labels"); labels.add_argument("--path", type=Path, default=METRICS)
     comparison = sub.add_parser("compare")
     comparison.add_argument("--baseline-label", required=True)
@@ -644,7 +662,7 @@ def main() -> int:
     if args.command == "validate": result = validate_file(args.path)
     elif args.command == "import-benchmark": result = import_benchmark(args.run_label, dry_run=args.dry_run)
     elif args.command == "append-driver": result = append_driver_tasks(args.task_ids, args.report, args.model)
-    elif args.command == "summarize": result = summarize(args.run_label)
+    elif args.command == "summarize": result = summarize(args.run_label, details=args.details)
     elif args.command == "labels": result = summarize_labels(args.path)
     elif args.command == "compare": result = compare_labels(args.baseline_label, args.candidate_label, args.path)
     else: result = selftest()

@@ -1,11 +1,11 @@
 driver: codex
-updated: 2026-07-13T09:31+0900
+updated: 2026-07-13T09:34+0900
 task: none
 status: idle
 
 ## Now
 - Goal: complete, including post-change full-suite output verification.
-- Last done: T-129 deduplicates compact failure responses by retaining finding count and diagnostic failures while omitting repeated `changed:` entries already listed in changed_files.
+- Last done: T-130 makes unfiltered metrics summaries aggregate per task and list failure IDs; full per-run output is opt-in with `--details`.
 - Next: none.
 
 ## Working set

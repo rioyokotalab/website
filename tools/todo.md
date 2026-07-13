@@ -3,7 +3,7 @@
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 `tools/state/session.md`. `T-109` through `T-117` form the original three-hour
 experiment; later iterations are inserted before final T-117 closure. Next free
-id: T-130.
+id: T-131.
 
 ## Active
 
@@ -15,6 +15,7 @@ None.
 
 ## Recently completed
 
+- **T-130 — Metrics summary compacted:** default summaries aggregate per task and list failure IDs; `--details` explicitly restores every run.
 - **T-129 — Failure decisions deduplicated:** compact failure views keep finding counts and diagnostic failures but omit repeated `changed:` entries already present in `changed_files`.
 - **T-128 — Benchmark identity fingerprints added:** future rows hash the exact task definition, grader, and runner; strict comparisons reject task/grader drift and expose runner drift.
 - **T-127 — Raw artifact integrity audit added:** benchmark results, directories, required files, metrics pointers, exclusions, and storage size can be checked without deleting evidence.
