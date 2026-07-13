@@ -5,15 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-- **T-148 — Complete the `ultra` rows:** T-146 proved Luna, Terra, and Sol all
-  accept `ultra` and recorded their passing WBD-001 cells. Run WBD-002 through
-  WBD-005 once for all three models at `ultra` (12 remaining cells), using the
-  same frozen settings and P2P gates, to complete the requested 90-cell matrix.
-  Progress: WBD-003, WBD-005, and WBD-002 ultra complete; all nine arms passed
-  but were dominated. The first local Sol/WBD-005 grade lacked Chromium, so its
-  uncommitted infrastructure-contaminated row was rolled back and rerun under
-  the same stable id with a valid 64,557 ms P2P grade. 9/12 new rows complete,
-  3 remaining.
 - **T-149 — Audit and summarize the complete matrix:** require exactly 75
   documented scored cells plus 15 scored `ultra` cells. Check run identity,
   task version, settings, artifacts, scope, P2P, and metrics integrity; report
@@ -41,6 +32,10 @@ None.
 
 ## Recently completed
 
+- **T-148 — Complete the `ultra` rows:** completed all 15 ultra cells (the
+  three WBD-001 probes plus 12 new rows). All ultra cells passed score 100 with
+  exact scope and P2P, but every ultra route is dominated by a documented-effort
+  route on its task. The exact 90-cell dry runs report zero pending cells.
 - **T-147 — Run all documented model/effort/task cells:** completed the frozen
   75-cell grid with automatic routing and fixed task-specific timeouts. All 75
   rows, artifacts, and v2 metrics reconcile: 70 capability passes and five

@@ -1,6 +1,6 @@
 driver: codex
-updated: 2026-07-14T00:27+0900
-task: T-148 Complete the ultra rows
+updated: 2026-07-14T00:36+0900
+task: T-149 Audit and summarize the complete matrix
 status: in-progress
 
 ## Now
@@ -64,13 +64,21 @@ status: in-progress
   tokens versus Luna/low at 76,818 ms and 12,141 tokens. Ultra progress is
   9/12 new rows; 87 runs/artifacts/metric pointers reconcile with 87 v2 rows.
   Next frozen block: WBD-004 ultra.
+- WBD-004 ultra complete: all three models passed score 100 and are dominated
+  by Luna/low. T-148 is complete with all 15 ultra cells passing.
+- Exact matrix audit passes: 90 unique cells = 75 documented + 15 ultra, 30 per
+  model, 15 per effort, and 18 per task; 85 capability passes and five genuine
+  WBD-005 failures. There are no duplicate cells. All rows share baseline
+  `c4b0720`, frozen modes, worker, and task versions. Ninety artifacts and 90
+  v2 metric pointers reconcile; both matrix dry runs have zero pending cells,
+  and all five task mutation/pristine audits pass. T-149 is now in progress.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
 - `tools/agent-benchmark/results.jsonl`
 - `tools/out/agent-benchmark/` (three complete ignored probe artifacts)
 - `tools/agent-benchmark/` matrix orchestrator and routing evidence
-- Deadline: 2026-07-14T05:08+0900; T-148 in progress.
+- Deadline: 2026-07-14T05:08+0900; T-149 in progress.
 
 ## Open questions
 - None.
