@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T01:37+0900
+updated: 2026-07-14T01:57+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -106,6 +106,28 @@ status: in-progress
   `c563b025a508d26f3a6ff2eb1d300d25b410e3240aa755e7b901a7bf98de3b6a`.
   Reserve final campaign time for the durable routing policy and closeout
   before 2026-07-14T05:08+0900.
+- Adaptive stage 2 complete: all nine planned rows, artifacts, and v2 metrics
+  reconcile. WBD-005 Sol/low failed repeats 4 and 5 on `css-zero-motion`, then
+  passed repeat 6, for 4/6 full-quality capability. Sol/medium passed both
+  repeats and is 3/3 overall; its reliability-first median is 153,655 ms and
+  42,681 effective tokens versus Sol/low's passing-only medians of 147,208.5 ms
+  and 20,229 tokens. Prefer medium provisionally; low requires validation and
+  escalation. The Wilson intervals still overlap, so add confidence evidence.
+- WBD-003 tie-break complete: both Terra/low and Sol/low passed 5/5. Sol/low
+  now dominates with medians of 33,493 ms and 10,664 effective tokens versus
+  Terra/low at 34,685 ms and 11,875 tokens. Select Sol/low unless later evidence
+  changes the result.
+- Cumulative audit at 01:52 passes with 131 result/artifact/metric pointers and
+  131 v2 benchmark metrics. The repeat set has 41 runs, 35 capability passes,
+  3,500,446 ms summed end-to-end time, and 878,601 effective tokens. Repeat
+  summary regeneration remains byte-identical.
+- Adaptive plan revision 3 allocates 17 next observations: WBD-005 Sol/medium
+  repeats 4--6, WBD-005 Sol/high repeats 2--3, WBD-004 Luna/Terra/Sol low
+  repeats 4--5, WBD-002 Luna/Sol low repeats 4--5, and WBD-001 Terra/low
+  repeats 4--5. Run as separate resumable substages and recompute between
+  them; WBD-003 is resolved and receives no further allocation. Revision-3
+  plan SHA-256 is
+  `dc5fe7a451405e9c5d05894762676f6a3285814f03bfaa41d5bf22968f6846b0`.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`

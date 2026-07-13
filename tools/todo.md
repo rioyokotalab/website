@@ -18,8 +18,15 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   Luna/low and Terra/low each passed only 1/3. Stage 2 replaces the original
   anomaly study with nine higher-information runs: three more WBD-005 Sol/low,
   two WBD-005 Sol/medium fallback observations, and two more observations each
-  for the WBD-003 Terra/low and Sol/low near-tie. Recompute before allocating
-  the next batch.
+  for the WBD-003 Terra/low and Sol/low near-tie. Stage 2 is complete: Sol/low
+  WBD-005 fell to 4/6 after two repeatable `css-zero-motion` omissions, while
+  Sol/medium passed 3/3 and becomes the reliability-first primary pending more
+  confidence runs. WBD-003 Sol/low passed 5/5 and now dominates Terra/low on
+  both median runtime and effective tokens. Stage 3 adds 17 observations:
+  three more WBD-005 Sol/medium, two WBD-005 Sol/high fallback screens, two
+  repeats for each WBD-004 low route and both WBD-002 Pareto routes, and two
+  more WBD-001 Terra/low confirmations. Recompute after each substage and stop
+  allocating to a route once its routing value is resolved.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that

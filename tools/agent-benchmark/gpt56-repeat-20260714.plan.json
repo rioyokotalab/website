@@ -1,7 +1,7 @@
 {
   "created_at": "2026-07-14T00:44+0900",
   "freeze_sha256": "7801a61e9df34433575d05568aaaff767bc07c461825aeebdff627bcac990494",
-  "revision": 2,
+  "revision": 3,
   "run_label": "gpt56-repeat-20260714",
   "schema_version": 1,
   "source_matrix_label": "gpt56-full-20260713",
@@ -61,6 +61,60 @@
       "routes": [
         {"effort": "low", "model": "gpt-5.6-terra", "task": "WBD-003"},
         {"effort": "low", "model": "gpt-5.6-sol", "task": "WBD-003"}
+      ]
+    },
+    "stage3-wbd005-medium-confidence": {
+      "purpose": "Raise the reliability-first WBD-005 Sol/medium route from three to six observations.",
+      "repeats": [
+        4,
+        5,
+        6
+      ],
+      "routes": [
+        {"effort": "medium", "model": "gpt-5.6-sol", "task": "WBD-005"}
+      ]
+    },
+    "stage3-wbd005-high-screen": {
+      "purpose": "Bring Sol/high to three observations as an independent WBD-005 reliability fallback.",
+      "repeats": [
+        2,
+        3
+      ],
+      "routes": [
+        {"effort": "high", "model": "gpt-5.6-sol", "task": "WBD-005"}
+      ]
+    },
+    "stage3-wbd004-frontier": {
+      "purpose": "Raise all three WBD-004 low-effort runtime/token frontier routes from three to five observations.",
+      "repeats": [
+        4,
+        5
+      ],
+      "routes": [
+        {"effort": "low", "model": "gpt-5.6-luna", "task": "WBD-004"},
+        {"effort": "low", "model": "gpt-5.6-terra", "task": "WBD-004"},
+        {"effort": "low", "model": "gpt-5.6-sol", "task": "WBD-004"}
+      ]
+    },
+    "stage3-wbd002-frontier": {
+      "purpose": "Raise the WBD-002 Luna/low speed and Sol/low token routes from three to five observations.",
+      "repeats": [
+        4,
+        5
+      ],
+      "routes": [
+        {"effort": "low", "model": "gpt-5.6-luna", "task": "WBD-002"},
+        {"effort": "low", "model": "gpt-5.6-sol", "task": "WBD-002"}
+      ]
+    },
+    "stage3-wbd001-confirm": {
+      "purpose": "Raise the dominant WBD-001 Terra/low route from three to five observations.",
+      "repeats": [
+        4,
+        5
+      ],
+      "routes": [
+        {"effort": "low", "model": "gpt-5.6-terra", "task": "WBD-001"}
       ]
     }
   }
