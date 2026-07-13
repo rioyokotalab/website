@@ -5,20 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-- **T-147 — Run all documented model/effort/task cells:** run WBD-001 through
-  WBD-005 once for every `gpt-5.6-{luna,terra,sol}` ×
-  `{low,medium,high,xhigh,max}` arm (75 scored runs), using
-  `--include-held-out` for WBD-005. WBD-005 is a fifth measured task in this
-  round, not an unseen selection gate. Never reroute a failed cell to a
-  different model or effort. Record score, critical assertions, effective and
-  reasoning tokens, duration, scope, cost, and failure class for every attempt.
-  Progress: WBD-003, WBD-001, WBD-005, and WBD-002 complete (60/60); 60/75
-  documented cells complete. WBD-005 passed 10/15: its provisional frontier
-  is Luna/low for latency (110,069 ms, 29,551 effective tokens), Terra/low for
-  balance (123,509 ms, 24,022 tokens), and Sol/low for tokens (140,525 ms,
-  18,826 tokens). Five higher-effort cells failed genuine capability gates.
-  WBD-002 passed 15/15; its frontier is Luna/low for latency (76,818 ms,
-  12,141 tokens) versus Sol/low for tokens (93,096 ms, 11,174 tokens).
 - **T-148 — Complete the `ultra` rows:** T-146 proved Luna, Terra, and Sol all
   accept `ultra` and recorded their passing WBD-001 cells. Run WBD-002 through
   WBD-005 once for all three models at `ultra` (12 remaining cells), using the
@@ -50,6 +36,11 @@ None.
 
 ## Recently completed
 
+- **T-147 — Run all documented model/effort/task cells:** completed the frozen
+  75-cell grid with automatic routing and fixed task-specific timeouts. All 75
+  rows, artifacts, and v2 metrics reconcile: 70 capability passes and five
+  genuine WBD-005 failures. WBD-004 passed 15/15, with Luna/low jointly best
+  for latency and tokens at 46,892 ms and 9,669 effective tokens.
 - **T-146 — Freeze, extend, and preflight the GPT-5.6 round:** extended and
   selftested xhigh/max, froze baseline/settings/task/runner/grader identities,
   restored ignored lockfile/browser dependencies, and passed the five-capsule

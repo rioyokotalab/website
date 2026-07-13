@@ -1,6 +1,6 @@
 driver: codex
-updated: 2026-07-13T23:13+0900
-task: T-147 Run all documented model/effort/task cells
+updated: 2026-07-13T23:36+0900
+task: T-148 Complete the ultra rows
 status: in-progress
 
 ## Now
@@ -30,16 +30,22 @@ status: in-progress
   Luna/low leads latency at 76,818 ms total and 12,141 effective tokens;
   Sol/low is the only other Pareto arm at 93,096 ms and 11,174 tokens. Every
   higher-effort arm is dominated. Repeat both low-effort contenders.
-- Integrity checkpoint: 63 runs, artifact directories, and metric pointers,
-  no errors; metrics contain 63 v2 rows. T-147 is 60/75. Next frozen block:
-  WBD-004 documented.
+- WBD-004 documented block complete: 15/15 capability passes at score 100.
+  Luna/low is jointly best for latency and tokens at 46,892 ms total and 9,669
+  effective tokens; every other documented arm is dominated.
+- T-147 complete: all 75 documented cells are present (70 capability passes,
+  five genuine WBD-005 failures). Including the three completed WBD-001 ultra
+  probes, 78 runs, artifact directories, and metric pointers reconcile with
+  78 v2 metrics. The documented dry-run reports zero pending cells.
+- T-148 in progress: run the 12 remaining ultra cells in task blocks, then
+  audit the exact 90-cell matrix. Next frozen block: WBD-003 ultra.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
 - `tools/agent-benchmark/results.jsonl`
 - `tools/out/agent-benchmark/` (three complete ignored probe artifacts)
 - `tools/agent-benchmark/` matrix orchestrator and routing evidence
-- Deadline: 2026-07-14T05:08+0900; T-147 in progress.
+- Deadline: 2026-07-14T05:08+0900; T-148 in progress.
 
 ## Open questions
 - None.
