@@ -1,6 +1,6 @@
 driver: codex
-updated: 2026-07-14T00:36+0900
-task: T-149 Audit and summarize the complete matrix
+updated: 2026-07-14T00:44+0900
+task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
 ## Now
@@ -72,13 +72,24 @@ status: in-progress
   `c4b0720`, frozen modes, worker, and task versions. Ninety artifacts and 90
   v2 metric pointers reconcile; both matrix dry runs have zero pending cells,
   and all five task mutation/pristine audits pass. T-149 is now in progress.
+- T-149 complete: deterministic JSON/Markdown summaries validate both frozen
+  runner identity groups (87 matrix + three WBD-001 probe cells), aggregate
+  by task-normalized model/effort metrics, and report 11 full-quality Pareto
+  arms with break-even slopes. The summaries reproduce byte-for-byte. Low is
+  the only 15/15 full-quality effort and is best in aggregate; ultra is never
+  Pareto. Monetary cost is unknown because no price table was frozen.
+- T-151 stage 1 allocation: run two additional interleaved observations for
+  every low-effort task/model route plus WBD-001 Terra/medium (16 routes × two
+  repeats = 32 runs). This brings all low controls and the only non-low matrix
+  frontier arm to `n=3` before elimination. Next, repeat the five WBD-005
+  failures and WBD-003 Sol/xhigh twice each if the stage-1 audit remains clean.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
 - `tools/agent-benchmark/results.jsonl`
 - `tools/out/agent-benchmark/` (three complete ignored probe artifacts)
 - `tools/agent-benchmark/` matrix orchestrator and routing evidence
-- Deadline: 2026-07-14T05:08+0900; T-149 in progress.
+- Deadline: 2026-07-14T05:08+0900; T-151 in progress.
 
 ## Open questions
 - None.

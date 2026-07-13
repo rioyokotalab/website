@@ -1,0 +1,359 @@
+{
+  "by_effort": [
+    {
+      "capability_passes": 14,
+      "effort": "high",
+      "full_quality_passes": 14,
+      "mean_score": 99.4,
+      "median_effective_tokens_full_quality": 23545,
+      "median_task_normalized_latency": 1.76,
+      "median_task_normalized_tokens": 2.13,
+      "median_total_duration_ms_full_quality": 101965,
+      "runs": 15
+    },
+    {
+      "capability_passes": 15,
+      "effort": "low",
+      "full_quality_passes": 15,
+      "mean_score": 100,
+      "median_effective_tokens_full_quality": 12141,
+      "median_task_normalized_latency": 1.21,
+      "median_task_normalized_tokens": 1.31,
+      "median_total_duration_ms_full_quality": 69360,
+      "runs": 15
+    },
+    {
+      "capability_passes": 14,
+      "effort": "max",
+      "full_quality_passes": 14,
+      "mean_score": 99.4,
+      "median_effective_tokens_full_quality": 25991.5,
+      "median_task_normalized_latency": 2.86,
+      "median_task_normalized_tokens": 2.69,
+      "median_total_duration_ms_full_quality": 134343,
+      "runs": 15
+    },
+    {
+      "capability_passes": 13,
+      "effort": "medium",
+      "full_quality_passes": 13,
+      "mean_score": 98.8,
+      "median_effective_tokens_full_quality": 18867,
+      "median_task_normalized_latency": 1.6,
+      "median_task_normalized_tokens": 1.69,
+      "median_total_duration_ms_full_quality": 77197,
+      "runs": 15
+    },
+    {
+      "capability_passes": 15,
+      "effort": "ultra",
+      "full_quality_passes": 15,
+      "mean_score": 100,
+      "median_effective_tokens_full_quality": 32103,
+      "median_task_normalized_latency": 2.53,
+      "median_task_normalized_tokens": 3.32,
+      "median_total_duration_ms_full_quality": 131848,
+      "runs": 15
+    },
+    {
+      "capability_passes": 14,
+      "effort": "xhigh",
+      "full_quality_passes": 13,
+      "mean_score": 98.4,
+      "median_effective_tokens_full_quality": 22199,
+      "median_task_normalized_latency": 1.86,
+      "median_task_normalized_tokens": 2.61,
+      "median_total_duration_ms_full_quality": 127625,
+      "runs": 15
+    }
+  ],
+  "by_model": [
+    {
+      "capability_passes": 29,
+      "full_quality_passes": 29,
+      "mean_score": 99.7,
+      "median_effective_tokens_full_quality": 24322,
+      "median_task_normalized_latency": 1.86,
+      "median_task_normalized_tokens": 2.49,
+      "median_total_duration_ms_full_quality": 110069,
+      "model": "gpt-5.6-luna",
+      "runs": 30
+    },
+    {
+      "capability_passes": 30,
+      "full_quality_passes": 29,
+      "mean_score": 99.63,
+      "median_effective_tokens_full_quality": 19823,
+      "median_task_normalized_latency": 1.92,
+      "median_task_normalized_tokens": 2.04,
+      "median_total_duration_ms_full_quality": 118699,
+      "model": "gpt-5.6-sol",
+      "runs": 30
+    },
+    {
+      "capability_passes": 26,
+      "full_quality_passes": 26,
+      "mean_score": 98.67,
+      "median_effective_tokens_full_quality": 22691.5,
+      "median_task_normalized_latency": 1.69,
+      "median_task_normalized_tokens": 2.43,
+      "median_total_duration_ms_full_quality": 101074.5,
+      "model": "gpt-5.6-terra",
+      "runs": 30
+    }
+  ],
+  "integrity": {
+    "documented_cells": 75,
+    "expected_cells": 90,
+    "observed_cells": 90,
+    "runner_identity_counts": {
+      "matrix": 87,
+      "probe": 3
+    },
+    "status": "pass",
+    "ultra_cells": 15
+  },
+  "run_label": "gpt56-full-20260713",
+  "schema_version": 1,
+  "selection_caution": "Each matrix cell has one observation. Pareto routes are repeat candidates, not final medians. The three dominated WBD-001 ultra probes used the frozen probe runner; the other 87 cells used the frozen matrix runner.",
+  "settings": {
+    "baseline_commit": "c4b07208d6ed8547ae7a67ed2feeba72515c8314",
+    "handoff_mode": "runner-lite",
+    "inspection_mode": "default",
+    "prompt_mode": "full",
+    "run_p2p": true,
+    "timeout": "task-default",
+    "wbd_005_include_held_out": true,
+    "worker_override": "gpt56-matrix"
+  },
+  "tasks": [
+    {
+      "best_passing_score": 100,
+      "capability_passes": 18,
+      "failures": [],
+      "pareto_frontier": [
+        {
+          "effective_tokens": 10671,
+          "effort": "medium",
+          "model": "gpt-5.6-terra",
+          "run_id": "gpt56-full-20260713-medium-terra-wbd001",
+          "score": 100,
+          "total_duration_ms": 39270
+        },
+        {
+          "break_even_from_faster_route": {
+            "effective_tokens_saved": 2554,
+            "seconds_added": 4.671,
+            "tokens_saved_per_second_added": 546.78
+          },
+          "effective_tokens": 8117,
+          "effort": "low",
+          "model": "gpt-5.6-luna",
+          "run_id": "gpt56-full-20260713-low-luna-wbd001",
+          "score": 100,
+          "total_duration_ms": 43941
+        }
+      ],
+      "runs": 18,
+      "task_id": "WBD-001"
+    },
+    {
+      "best_passing_score": 100,
+      "capability_passes": 18,
+      "failures": [],
+      "pareto_frontier": [
+        {
+          "effective_tokens": 12141,
+          "effort": "low",
+          "model": "gpt-5.6-luna",
+          "run_id": "gpt56-full-20260713-low-luna-wbd002",
+          "score": 100,
+          "total_duration_ms": 76818
+        },
+        {
+          "break_even_from_faster_route": {
+            "effective_tokens_saved": 967,
+            "seconds_added": 16.278,
+            "tokens_saved_per_second_added": 59.41
+          },
+          "effective_tokens": 11174,
+          "effort": "low",
+          "model": "gpt-5.6-sol",
+          "run_id": "gpt56-full-20260713-low-sol-wbd002",
+          "score": 100,
+          "total_duration_ms": 93096
+        }
+      ],
+      "runs": 18,
+      "task_id": "WBD-002"
+    },
+    {
+      "best_passing_score": 100,
+      "capability_passes": 18,
+      "failures": [],
+      "pareto_frontier": [
+        {
+          "effective_tokens": 11875,
+          "effort": "low",
+          "model": "gpt-5.6-terra",
+          "run_id": "gpt56-full-20260713-low-terra-wbd003",
+          "score": 100,
+          "total_duration_ms": 25045
+        },
+        {
+          "break_even_from_faster_route": {
+            "effective_tokens_saved": 535,
+            "seconds_added": 9.66,
+            "tokens_saved_per_second_added": 55.38
+          },
+          "effective_tokens": 11340,
+          "effort": "low",
+          "model": "gpt-5.6-luna",
+          "run_id": "gpt56-full-20260713-low-luna-wbd003",
+          "score": 100,
+          "total_duration_ms": 34705
+        },
+        {
+          "break_even_from_faster_route": {
+            "effective_tokens_saved": 3042,
+            "seconds_added": 0.429,
+            "tokens_saved_per_second_added": 7090.91
+          },
+          "effective_tokens": 8298,
+          "effort": "low",
+          "model": "gpt-5.6-sol",
+          "run_id": "gpt56-full-20260713-low-sol-wbd003",
+          "score": 100,
+          "total_duration_ms": 35134
+        }
+      ],
+      "runs": 18,
+      "task_id": "WBD-003"
+    },
+    {
+      "best_passing_score": 100,
+      "capability_passes": 18,
+      "failures": [],
+      "pareto_frontier": [
+        {
+          "effective_tokens": 9669,
+          "effort": "low",
+          "model": "gpt-5.6-luna",
+          "run_id": "gpt56-full-20260713-low-luna-wbd004",
+          "score": 100,
+          "total_duration_ms": 46892
+        }
+      ],
+      "runs": 18,
+      "task_id": "WBD-004"
+    },
+    {
+      "best_passing_score": 100,
+      "capability_passes": 13,
+      "failures": [
+        {
+          "effort": "high",
+          "failure_phase": "f2p-or-visual",
+          "findings": [
+            "failed:js-reduced-zero"
+          ],
+          "model": "gpt-5.6-terra",
+          "run_id": "gpt56-full-20260713-high-terra-wbd005",
+          "score": 91
+        },
+        {
+          "effort": "medium",
+          "failure_phase": "f2p-or-visual",
+          "findings": [
+            "failed:js-reduced-zero"
+          ],
+          "model": "gpt-5.6-terra",
+          "run_id": "gpt56-full-20260713-medium-terra-wbd005",
+          "score": 91
+        },
+        {
+          "effort": "medium",
+          "failure_phase": "f2p-or-visual",
+          "findings": [
+            "failed:js-reduced-zero"
+          ],
+          "model": "gpt-5.6-luna",
+          "run_id": "gpt56-full-20260713-medium-luna-wbd005",
+          "score": 91
+        },
+        {
+          "effort": "xhigh",
+          "failure_phase": "p2p",
+          "findings": [
+            "p2p-failed:npx playwright test tests/reduced-motion.spec.js tests/lightbox-accessibility.spec.js tests/runtime-health.spec.js"
+          ],
+          "model": "gpt-5.6-terra",
+          "run_id": "gpt56-full-20260713-xhigh-terra-wbd005",
+          "score": 87
+        },
+        {
+          "effort": "max",
+          "failure_phase": "f2p-or-visual",
+          "findings": [
+            "failed:js-reduced-zero"
+          ],
+          "model": "gpt-5.6-terra",
+          "run_id": "gpt56-full-20260713-max-terra-wbd005",
+          "score": 91
+        }
+      ],
+      "pareto_frontier": [
+        {
+          "effective_tokens": 29551,
+          "effort": "low",
+          "model": "gpt-5.6-luna",
+          "run_id": "gpt56-full-20260713-low-luna-wbd005",
+          "score": 100,
+          "total_duration_ms": 110069
+        },
+        {
+          "break_even_from_faster_route": {
+            "effective_tokens_saved": 5529,
+            "seconds_added": 13.44,
+            "tokens_saved_per_second_added": 411.38
+          },
+          "effective_tokens": 24022,
+          "effort": "low",
+          "model": "gpt-5.6-terra",
+          "run_id": "gpt56-full-20260713-low-terra-wbd005",
+          "score": 100,
+          "total_duration_ms": 123509
+        },
+        {
+          "break_even_from_faster_route": {
+            "effective_tokens_saved": 5196,
+            "seconds_added": 17.016,
+            "tokens_saved_per_second_added": 305.36
+          },
+          "effective_tokens": 18826,
+          "effort": "low",
+          "model": "gpt-5.6-sol",
+          "run_id": "gpt56-full-20260713-low-sol-wbd005",
+          "score": 100,
+          "total_duration_ms": 140525
+        }
+      ],
+      "runs": 18,
+      "task_id": "WBD-005"
+    }
+  ],
+  "totals": {
+    "cached_input_tokens": 10193408,
+    "capability_passes": 85,
+    "effective_tokens": 2564798,
+    "input_tokens": 12417139,
+    "mean_score": 99.33,
+    "monetary_cost_note": "No model price table or billed-cost field was frozen for this round.",
+    "monetary_cost_usd": null,
+    "output_tokens": 341067,
+    "reasoning_output_tokens": 195762,
+    "runs": 90,
+    "total_duration_ms": 10787184,
+    "worker_duration_ms": 7825721
+  }
+}

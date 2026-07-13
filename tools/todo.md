@@ -5,18 +5,16 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-- **T-149 — Audit and summarize the complete matrix:** require exactly 75
-  documented scored cells plus 15 scored `ultra` cells. Check run identity,
-  task version, settings, artifacts, scope, P2P, and metrics integrity; report
-  per-task and aggregate model/effort quality, token cost, latency, failures,
-  Pareto routes, and break-even. Treat single-run cells as estimates rather
-  than medians, and clean obsolete raw artifacts/results together after the
-  decision is durable.
 - **T-151 — Allocate adaptive matched repeats:** after T-149, identify each
   task's passing cost/latency/quality Pareto frontier and use the remaining
   campaign time for matched repeats of plausible dispatch winners. Target at
   least three observations per contender, eliminate dominated routes only from
   comparable evidence, and checkpoint every allocation decision and result.
+  Stage 1 allocation: add two interleaved observations for all 15 low-effort
+  task/model routes plus WBD-001 Terra/medium (32 runs), bringing every low arm
+  and the only non-low frontier arm to `n=3`. Stage 2 candidate allocation:
+  repeat the five WBD-005 failures and WBD-003 Sol/xhigh twice each, then
+  recompute quality, latency, token, and reliability frontiers.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that
@@ -32,6 +30,12 @@ None.
 
 ## Recently completed
 
+- **T-149 — Audit and summarize the complete matrix:** added a deterministic
+  analyzer plus JSON/Markdown summaries. Exact cell/identity/artifact/metrics
+  checks pass. The quality-first matrix has 11 frontier arms; low effort is
+  15/15 full quality with 1.21× normalized latency and 1.31× normalized tokens,
+  while ultra is dominated on every task. Monetary cost remains null because
+  the round did not freeze model prices; effective tokens are the cost proxy.
 - **T-148 — Complete the `ultra` rows:** completed all 15 ultra cells (the
   three WBD-001 probes plus 12 new rows). All ultra cells passed score 100 with
   exact scope and P2P, but every ultra route is dominated by a documented-effort
