@@ -1,11 +1,11 @@
 driver: codex
-updated: 2026-07-13T09:34+0900
+updated: 2026-07-13T09:31+0900
 task: none
 status: idle
 
 ## Now
 - Goal: complete, including post-change full-suite output verification.
-- Last done: T-130 makes unfiltered metrics summaries aggregate per task and list failure IDs; full per-run output is opt-in with `--details`.
+- Last done: T-131 passed Python/Node syntax, both CLI surfaces, formal draft-2020-12 validation of all 515 metrics rows, and idempotent driver bookkeeping.
 - Next: none.
 
 ## Working set
