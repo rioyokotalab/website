@@ -69,6 +69,29 @@ DATA_EVENT = re.compile(r'\bdata-event\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_LOCATION = re.compile(r'\bdata-location\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_INVITED = re.compile(r'\bdata-invited\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_PUBLISHER = re.compile(r'\bdata-publisher\s*=\s*["\']([^"\']*)["\']', re.I)
+ACHIEVEMENT_LINKS = re.compile(
+    r'<span\b[^>]*\bclass\s*=\s*["\'][^"\']*\bachievement-links\b[^"\']*["\'][^>]*>'
+    r'.*?</span\s*>', re.I | re.S)
+
+def section_block(content, anchor):
+    """Return the first ordered-list body after an id/name section marker."""
+    marker = re.search(
+        r'<[^>]+\b(?:id|name)\s*=\s*(["\'])%s\1[^>]*>' % re.escape(anchor),
+        content, re.I)
+    if not marker:
+        raise ValueError('section marker not found: %s' % anchor)
+    opening = re.search(r'<ol\b[^>]*>', content[marker.end():], re.I)
+    if not opening:
+        raise ValueError('ordered list not found after section: %s' % anchor)
+    start = marker.end() + opening.end()
+    closing = re.search(r'</ol\s*>', content[start:], re.I)
+    if not closing:
+        raise ValueError('ordered list not closed for section: %s' % anchor)
+    return content[start:start + closing.start()]
+
+def strip_achievement_links(fragment):
+    """Remove the visible source-link row before citation-text parsing."""
+    return ACHIEVEMENT_LINKS.sub('', fragment)
 
 def split_authors(s):
     return [a.strip() for a in s.split(';') if a.strip()]
@@ -92,10 +115,9 @@ def entries(anchor):
     data_number, data_pages, data_authors, data_authors_ja, data_authors_en,
     data_event, data_location, data_invited, data_publisher) for each <li>;
     data_* is None if the opening <li> tag carries no valid attribute."""
-    c = open(PAGE, newline='', encoding='utf-8').read()
-    a = c.index('name="%s"' % anchor)
-    s = c.index('<ol>', a); e = c.index('</ol>', s)
-    block = c[s:e]
+    with open(PAGE, newline='', encoding='utf-8') as source:
+        c = source.read()
+    block = section_block(c, anchor)
     # keep the opening <li ...> tags (re.split drops them) so we can read
     # data-date; tags[i] is the tag that precedes parts[i].
     tags = re.findall(r'<li[^>]*>', block, flags=re.I)
@@ -143,6 +165,7 @@ def entries(anchor):
         publisher_m = DATA_PUBLISHER.search(tag)
         data_publisher = publisher_m.group(1).strip() if publisher_m else None
         data_publisher = data_publisher or None
+        p = strip_achievement_links(p)
         t = re.sub(r'</li>', '', re.sub(r'<[^>]+>', '', p), flags=re.I)
         t = unicodedata.normalize('NFKC', t).replace('&amp;', '&').replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"')
         out.append((re.sub(r'\s+', ' ', t).strip(), data_date, data_doi, data_isbn, data_url,

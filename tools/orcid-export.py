@@ -84,10 +84,9 @@ def raw_items(anchor):
     for each <li> in a section,
     keeping DOI/link attributes and the opening <li>'s data-date attribute
     (which overrides the parsed date)."""
-    c = open(PAGE, newline='', encoding='utf-8').read()
-    a = c.index('name="%s"' % anchor)
-    s = c.index('<ol>', a); e = c.index('</ol>', s)
-    block = c[s:e]
+    with open(PAGE, newline='', encoding='utf-8') as source:
+        c = source.read()
+    block = rm.section_block(c, anchor)
     tags = re.findall(r'<li[^>]*>', block, flags=re.I)
     parts = re.split(r'<li[^>]*>', block, flags=re.I)[1:]
     for tag, p in zip(tags, parts):
@@ -130,6 +129,7 @@ def raw_items(anchor):
         m = re.search(r'href=["\'](https?://(?:dx\.)?doi\.org/[^"\']+)["\']', p, re.I)
         if not doi and m:
             doi = re.sub(r'^https?://(?:dx\.)?doi\.org/', '', m.group(1)).strip()
+        p = rm.strip_achievement_links(p)
         t = re.sub(r'</li>', '', re.sub(r'<[^>]+>', '', p), flags=re.I)
         t = (unicodedata.normalize('NFKC', t).replace('&amp;', '&')
              .replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"'))

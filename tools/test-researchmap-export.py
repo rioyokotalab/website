@@ -3,6 +3,7 @@
 import importlib.util
 import json
 import os
+import re
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -146,6 +147,29 @@ class SyncFixtures(unittest.TestCase):
             'Rio Yokota. Offline paper, Journal, 2026.',
             'published_papers', {'referee': True}, data_date='2026-07')
         self.assertEqual(generated['similar_merge']['publication_date'], '2026-07')
+
+
+class AchievementSourceFixtures(unittest.TestCase):
+    def test_current_id_heading_sections_parse(self):
+        anchors = ['sub00%d' % n for n in range(1, 8)]
+        counts = {anchor: len(RM.entries(anchor)) for anchor in anchors}
+        self.assertTrue(all(counts.values()), counts)
+        self.assertGreater(sum(counts.values()), 250)
+
+    def test_legacy_name_anchor_is_still_supported(self):
+        source = '<a name="sub001"></a><h3>Journals</h3><ol><li>One</li></ol>'
+        self.assertEqual(RM.section_block(source, 'sub001'), '<li>One</li>')
+
+    def test_visible_link_row_is_not_citation_text(self):
+        fragment = (
+            'Citation.<br><span class="achievement-links">'
+            '<a href="https://arxiv.org/abs/1234.5678">[arxiv]</a> '
+            '<a href="https://arxiv.org/bibtex/1234.5678">[bibtex]</a>'
+            '</span></li>')
+        cleaned = RM.strip_achievement_links(fragment)
+        self.assertNotIn('[arxiv]', cleaned)
+        self.assertNotIn('[bibtex]', cleaned)
+        self.assertEqual(re.sub(r'</?br\s*/?>|</li>', '', cleaned), 'Citation.')
 
 
 if __name__ == '__main__':

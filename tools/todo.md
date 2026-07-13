@@ -1,11 +1,34 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-157.
+`tools/state/session.md`. Next free id: T-166.
 
 ## Active
 
-None.
+- **T-159 — Align complete ResearchMap field schemas:** correct Books ISBN/DOI
+  identifiers, Presentation location, and profile field names; expand safe
+  update ownership to volume/number/pages, identifiers, languages, review/type,
+  invited/international, ISBN, and location with fixture coverage.
+- **T-160 — Complete journal and book metadata:** resolve every applicable gap
+  in sub001--sub003 (42 journals, two book-series items, two books), preserving
+  verified identifiers and explicitly distinguishing unavailable/inapplicable
+  fields from omissions.
+- **T-161 — Complete international peer-reviewed metadata:** process all 115
+  sub004 entries in bounded year batches, filling locally evidenced pages,
+  locations, identifiers, and other supported fields without guessing.
+- **T-162 — Complete domestic and non-reviewed metadata:** process 31 sub005,
+  48 sub006, and 69 sub007 entries, preserving bilingual author metadata and
+  filling applicable event/location/page/identifier fields.
+- **T-163 — Normalize Achievements and add source links:** conform all seven
+  sections to the majority no-leading-space/terminal-period/no-inline-anchor
+  structure on both pages; add a separate `[arxiv] [bibtex]` row to the 30
+  entries with verified arXiv records and keep exporter/CV text clean.
+- **T-164 — Generate and audit ResearchMap import:** run the corrected live
+  diff after metadata completion, review every insert/update/delete, emit the
+  bulk-import JSONL without `user_id`, and retain exact source/audit evidence.
+- **T-165 — Validate, publish, and verify:** run EN/JP/CRLF/CV/exporter/schema,
+  standards, browser, security, deploy-preview, Git, live-page, and remote-
+  commit gates; publish only the reviewed public changes and close the ledger.
 
 ## Blocked / awaiting user
 
@@ -13,6 +36,14 @@ None.
 
 ## Recently completed
 
+- **T-158 — Repair Achievements exporter parsing:** installed a shared
+  id/legacy-name section parser for ResearchMap and ORCID, added link-row
+  stripping and current/legacy-heading fixtures, and restored both 292-entry
+  dry runs plus the sanctioned live comparison.
+- **T-157 — Inventory ResearchMap and Achievements metadata:** exhaustively
+  indexed 309 entries (292 export-eligible), every per-entry missing field and
+  citation candidate, 283 live matches/five ambiguous/four unmatched records,
+  EN/JP tag parity, sync omissions, and nine ordered work batches in JSON/MD.
 - **T-156 — Move benchmark results to README bottom:** moved the complete
   GPT-5.6 benchmark section from near the top of `README.md` to the final
   section, with byte count and normalized section hash unchanged. Verified

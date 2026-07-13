@@ -1,18 +1,24 @@
 driver: codex
-updated: 2026-07-14T05:43+0900
-task: T-156 Move benchmark results to README bottom | idle
-status: idle
+updated: 2026-07-14T06:30+0900
+task: T-159 Align complete ResearchMap field schemas | in-progress
+status: in-progress
 
 ## Now
-- T-156 is complete. The GPT-5.6 benchmark results are the final root-README
-  section; their normalized source/moved hashes and total README byte counts
-  match exactly.
-- Heading order, linked evidence, routing-policy validation, Markdown budgets,
-  diff checks, and the full offline security suite pass. No deploy-included
-  file changed and no website deployment ran.
+- T-157 is complete. Exhaustive evidence is in
+  `tools/out/researchmap-missing-fields-20260714.{json,md}`; the ordered ledger
+  now covers T-158--T-165.
+- T-158 is complete: five fixtures, the 292-entry ResearchMap/ORCID dry runs,
+  and the live comparison pass with current `id` headings.
+- T-159 will correct schema mismatches confirmed against the public API (book
+  ISBN under identifiers, presentation `location`, and profile field names),
+  then expand safe sync ownership for every emitted complete field.
+- Checkpoint/push the exporter repair, then implement fixture-first schema
+  changes. Campaign window ends around 08:45 JST.
 
 ## Working set
-- None; repository is ready for T-157.
+- `tools/researchmap-export.py`, `tools/orcid-export.py`
+- `tools/test-researchmap-export.py`, `tools/researchmap-state.json`
+- `tools/todo.md`, `tools/state/session.md`, `tools/out/`
 
 ## Open questions
 - None.
