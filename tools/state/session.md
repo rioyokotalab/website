@@ -1,28 +1,26 @@
 driver: codex
-updated: 2026-07-13T09:43+0900
-task: none
+updated: 2026-07-13T10:59+0900
+task: idle
 status: idle
 
 ## Now
-- Goal: complete, including post-change full-suite output verification.
-- Last done: T-135 documents the canonical audit → one probe → matched evidence → visible freeze → held-out → spend/review decision workflow.
-- Next: none.
+- Goal: T-136 complete; repository is prepared for a fresh benchmark round.
+- Last done: promoted a compact round record, removed integrated scratch and
+  redundant optional images, retained all pointer-backed raw trajectories, and
+  verified the benchmark/metrics integrity gates.
+- Next: open T-137 only for a concrete model/runtime/process change or a real
+  task exposing a documented coverage gap. Read the latest `rounds/` record,
+  run zero-token preflight, and preregister the candidate/budget/stop condition.
 
 ## Working set
-- `tools/todo.md`
-- `tools/state/session.md`
-- `tools/out/t109-benchmark-comparison.md`
-- `tools/out/t109-coding-benchmarks.md`
-- `tools/out/t110-suite-spec.md`
-- `tools/out/t110-task-capsules.md`
-- `tools/agent-benchmark/`
-- `tools/out/agent-benchmark/` (raw run artifacts)
-- `tools/out/t112-baseline.md`
-- `tools/task-metrics.py`
-- `tools/task-metrics.schema.json`
+- `tools/agent-benchmark/README.md`
+- `tools/agent-benchmark/rounds/2026-07-13.md`
+- `tools/agent-benchmark/coverage.md`
+- `tools/task-metrics.jsonl`
+- Ignored raw evidence: `tools/out/agent-benchmark/`
 
 ## Open questions
-- Root manual review duration remains unavailable to the runtime; benchmark/grader/runner time is captured.
+- None.
 
 ## Awaiting user
 - None.

@@ -404,3 +404,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-13 | codex-driver | T-111 implement benchmark task manifest and operations | tools/out/t111-task-ops-report.md | /root/t21_benchmark | complete
 2026-07-13 | codex-driver | T-113 implement v2 task metrics schema and utility | tools/out/t113-metrics-report.md | /root/t21_benchmark | complete
 2026-07-13 | codex-driver (gpt-5) | T-109–T-135 web-development benchmark and token optimization | tools/out/driver-report-20260713-0910.md | n/a | complete; final 5/5 at 100, pushed and remote-verified
+2026-07-13 | codex-driver (gpt-5) | T-136 benchmark-round cleanup and next-round handoff | tools/out/driver-report-20260713-1059.md | n/a | complete; canonical round retained, transient scratch pruned, artifact audit 61/61

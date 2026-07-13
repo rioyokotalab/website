@@ -15,6 +15,23 @@ and grades only the resulting candidate diff. Raw Codex JSONL, stderr, prompt,
 patch, and result live under ignored `tools/out/agent-benchmark/`; compact
 per-run rows are appended to `results.jsonl`.
 
+## Artifact retention
+
+Keep every run directory referenced by `results.jsonl` or schema-v2 metrics
+through at least the next completed benchmark round. The required durable set
+is `prompt.txt`, `stdout.jsonl`, `stderr.log`, `candidate.patch`, and
+`result.json`; `benchmark.py artifacts` verifies it. Screenshots are optional
+diagnostic material: retain decision anchors (the accepted baseline, a
+decision-changing failure, and the promoted result) and delete redundant
+intermediate copies after their grades and patches are recorded. Per-task and
+driver Markdown under `tools/out/` is transient and should be removed once its
+decisions are tracked and its reviewer has finished.
+
+Do not delete a referenced run directory merely to reduce disk use. A future
+archive/prune operation must first provide a manifest or tombstone mechanism so
+metrics pointers remain auditable. Compact completed-round records belong in
+`rounds/`; raw trajectories never enter Git.
+
 `run` prints a compact decision summary by default; the complete result remains
 in its artifact directory. Use `--verbose-result` only when a downstream caller
 needs the full inline grader tails rather than following the artifact pointer.
@@ -80,3 +97,20 @@ subset/detail of output accounting; it is not added twice.
 
 Do not down-route an exposed held-out task or edit a task/grader merely to turn
 an ordinary capability failure into a pass.
+
+## Starting the next round
+
+Start only for a concrete model/runtime/process change or a real task that
+exposes a documented coverage gap. Read the latest `rounds/` record, then run:
+
+```bash
+python3 tools/agent-benchmark/benchmark.py selftest
+python3 tools/agent-benchmark/benchmark.py audit
+python3 tools/agent-benchmark/benchmark.py artifacts
+python3 tools/task-metrics.py validate
+```
+
+Pre-register the candidate, matched task versions/routes, token budget, and
+stop condition in the ledger before spending model tokens. Give it one visible
+probe; continue to matched portfolios only if capability passes and the probe
+improves effective tokens by at least 10%.
