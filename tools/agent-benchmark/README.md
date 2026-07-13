@@ -6,10 +6,18 @@ mutated fixtures, static F2P checks, deterministic browser/visual P2P checks,
 and strict changed-file scope. It is not a general frontend leaderboard.
 
 The tracked suite contains task definitions, mutations, grader logic, and the
-runner. Completed comparison results are intentionally not retained. New runs
-create ignored raw artifacts under `tools/out/agent-benchmark/` and append
-compact rows to `results.jsonl`; both are disposable once their decision is no
-longer needed and pointer records are removed with them.
+runner. Compact results and deterministic summaries may be retained while a
+routing decision depends on them; the current 173-run comparison supports
+`routing-policy.json`. New runs create ignored raw artifacts under
+`tools/out/agent-benchmark/` and append compact rows to `results.jsonl`. Raw
+artifacts remain disposable once their decision is durable and metric pointers
+are removed with them.
+
+Current retained evidence:
+
+- [90-cell matrix summary](gpt56-full-20260713.summary.md)
+- [83-repeat adaptive summary](gpt56-repeat-20260714.summary.md)
+- [validated dispatch policy](routing-policy.json)
 
 Coverage and deliberate gaps are documented in `coverage.md`. Failure classes
 and their stop rules are in `failure-taxonomy.md`.

@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-154.
+`tools/state/session.md`. Next free id: T-155.
 
 ## Active
 
@@ -13,6 +13,11 @@ None.
 
 ## Recently completed
 
+- **T-154 — Publish benchmark comparison tables in README:** added a prominent
+  root-README section with confidence-backed per-task dispatch routes and
+  frozen singleton model/effort tables; linked the deterministic evidence and
+  policy, corrected the benchmark README retention note, and verified every
+  displayed figure against source JSON. Push-only; no website deploy ran.
 - **T-153 — Close the eight-hour campaign:** completed the scheduled window
   with 173 reconciled results/artifacts/v2 metrics, deterministic summaries,
   policy/mutation/capsule audits, six driver metrics rows, durable facts and
