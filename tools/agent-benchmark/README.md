@@ -5,6 +5,9 @@ YOKOTA Lab website maintenance tasks. It borrows frozen repository tasks and
 F2P/P2P grading from SWE-bench-style evaluation, then adds deterministic local
 browser checks. It is not a general frontend leaderboard.
 
+Current capability coverage, deliberate gaps, and the threshold for adding a
+new capsule are documented in `coverage.md`.
+
 The runner creates a temporary repository from `git archive`, removes the
 benchmark implementation before the agent starts, commits the mutated fixture,
 and grades only the resulting candidate diff. Raw Codex JSONL, stderr, prompt,

@@ -1,11 +1,11 @@
 driver: codex
-updated: 2026-07-13T09:34+0900
+updated: 2026-07-13T09:38+0900
 task: none
 status: idle
 
 ## Now
 - Goal: complete, including post-change full-suite output verification.
-- Last done: T-132 passed final local/remote parity, zero public-tree diff, ignored report/artifact presence, range whitespace, and commit-history handoff checks.
+- Last done: T-133 maps current suite coverage, six material gaps, five candidate capsules, and a demand/offline/audit/break-even threshold for any future expansion.
 - Next: none.
 
 ## Working set
