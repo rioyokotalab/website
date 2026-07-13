@@ -10,11 +10,16 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   campaign time for matched repeats of plausible dispatch winners. Target at
   least three observations per contender, eliminate dominated routes only from
   comparable evidence, and checkpoint every allocation decision and result.
-  Stage 1 allocation: add two interleaved observations for all 15 low-effort
-  task/model routes plus WBD-001 Terra/medium (32 runs), bringing every low arm
-  and the only non-low frontier arm to `n=3`. Stage 2 candidate allocation:
-  repeat the five WBD-005 failures and WBD-003 Sol/xhigh twice each, then
-  recompute quality, latency, token, and reliability frontiers.
+  Stage 1 is complete: 32/32 repeat rows and artifacts reconcile, with 28
+  capability passes and four substantive WBD-005 failures. Reliability-adjusted
+  leaders are WBD-001 Terra/low; WBD-002 Luna/low (speed) or Sol/low (tokens);
+  WBD-003 Terra/low (speed) or Sol/low (tokens); all three WBD-004 low routes
+  on a runtime/token frontier; and WBD-005 Sol/low, which passed 3/3 while
+  Luna/low and Terra/low each passed only 1/3. Stage 2 replaces the original
+  anomaly study with nine higher-information runs: three more WBD-005 Sol/low,
+  two WBD-005 Sol/medium fallback observations, and two more observations each
+  for the WBD-003 Terra/low and Sol/low near-tie. Recompute before allocating
+  the next batch.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that

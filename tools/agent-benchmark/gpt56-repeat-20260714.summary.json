@@ -1,0 +1,921 @@
+{
+  "integrity": {
+    "matrix": {
+      "documented_cells": 75,
+      "expected_cells": 90,
+      "observed_cells": 90,
+      "runner_identity_counts": {
+        "matrix": 87,
+        "probe": 3
+      },
+      "status": "pass",
+      "ultra_cells": 15
+    },
+    "plan_sha256": "c563b025a508d26f3a6ff2eb1d300d25b410e3240aa755e7b901a7bf98de3b6a",
+    "planned_repeat_rows": 41,
+    "repeat_rows": 32,
+    "stage_progress": [
+      {
+        "completed": 32,
+        "pending": 0,
+        "planned": 32,
+        "purpose": "Bring every passing low-effort control and the only non-low matrix frontier arm to three observations.",
+        "stage": "stage1-low-screen"
+      },
+      {
+        "completed": 0,
+        "pending": 3,
+        "planned": 3,
+        "purpose": "Raise the only reliable WBD-005 low-effort route from three to six observations.",
+        "stage": "stage2-wbd005-primary"
+      },
+      {
+        "completed": 0,
+        "pending": 2,
+        "planned": 2,
+        "purpose": "Bring the fastest higher-effort Sol WBD-005 route to three observations as a fallback candidate.",
+        "stage": "stage2-wbd005-fallback"
+      },
+      {
+        "completed": 0,
+        "pending": 4,
+        "planned": 4,
+        "purpose": "Raise the near-tied WBD-003 latency and token leaders from three to five observations.",
+        "stage": "stage2-wbd003-tiebreak"
+      }
+    ],
+    "status": "pass",
+    "unique_repeat_run_ids": 32
+  },
+  "qualification_rule": "A route enters the reliability-qualified Pareto set only after at least three observations and 100% full-quality passes; medians use full-quality observations only.",
+  "run_label": "gpt56-repeat-20260714",
+  "schema_version": 1,
+  "source_matrix_label": "gpt56-full-20260713",
+  "tasks": [
+    {
+      "reliability_qualified_pareto": [
+        {
+          "attempts": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens": 7493,
+          "median_total_duration_ms": 41703,
+          "model": "gpt-5.6-terra"
+        }
+      ],
+      "route_stats": [
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 11469,
+          "median_total_duration_ms_full_quality": 61562,
+          "median_worker_duration_ms_full_quality": 45843,
+          "model": "gpt-5.6-luna",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 8117,
+              "run_id": "gpt56-full-20260713-low-luna-wbd001",
+              "score": 100,
+              "total_duration_ms": 43941
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 12326,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-luna-wbd001",
+              "score": 100,
+              "total_duration_ms": 61562
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 11469,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-luna-wbd001",
+              "score": 100,
+              "total_duration_ms": 65378
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-001"
+        },
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 13139,
+          "median_total_duration_ms_full_quality": 69360,
+          "median_worker_duration_ms_full_quality": 52974,
+          "model": "gpt-5.6-sol",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 10624,
+              "run_id": "gpt56-full-20260713-low-sol-wbd001",
+              "score": 100,
+              "total_duration_ms": 69360
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 15712,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-sol-wbd001",
+              "score": 100,
+              "total_duration_ms": 82832
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 13139,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-sol-wbd001",
+              "score": 100,
+              "total_duration_ms": 58560
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-001"
+        },
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 7493,
+          "median_total_duration_ms_full_quality": 41703,
+          "median_worker_duration_ms_full_quality": 25770,
+          "model": "gpt-5.6-terra",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 13468,
+              "run_id": "gpt56-full-20260713-low-terra-wbd001",
+              "score": 100,
+              "total_duration_ms": 66094
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 6653,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-terra-wbd001",
+              "score": 100,
+              "total_duration_ms": 41703
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 7493,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-terra-wbd001",
+              "score": 100,
+              "total_duration_ms": 38104
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-001"
+        },
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "medium",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 10671,
+          "median_total_duration_ms_full_quality": 62353,
+          "median_worker_duration_ms_full_quality": 46545,
+          "model": "gpt-5.6-terra",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 10671,
+              "run_id": "gpt56-full-20260713-medium-terra-wbd001",
+              "score": 100,
+              "total_duration_ms": 39270
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 10479,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-medium-terra-wbd001",
+              "score": 100,
+              "total_duration_ms": 62353
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 23109,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-medium-terra-wbd001",
+              "score": 100,
+              "total_duration_ms": 82304
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-001"
+        }
+      ],
+      "task_id": "WBD-001"
+    },
+    {
+      "reliability_qualified_pareto": [
+        {
+          "attempts": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens": 13159,
+          "median_total_duration_ms": 84682,
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "attempts": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens": 12368,
+          "median_total_duration_ms": 93096,
+          "model": "gpt-5.6-sol"
+        }
+      ],
+      "route_stats": [
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 13159,
+          "median_total_duration_ms_full_quality": 84682,
+          "median_worker_duration_ms_full_quality": 33423,
+          "model": "gpt-5.6-luna",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 12141,
+              "run_id": "gpt56-full-20260713-low-luna-wbd002",
+              "score": 100,
+              "total_duration_ms": 76818
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 13159,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-luna-wbd002",
+              "score": 100,
+              "total_duration_ms": 84682
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 13197,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-luna-wbd002",
+              "score": 100,
+              "total_duration_ms": 98475
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-002"
+        },
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 12368,
+          "median_total_duration_ms_full_quality": 93096,
+          "median_worker_duration_ms_full_quality": 45326,
+          "model": "gpt-5.6-sol",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 11174,
+              "run_id": "gpt56-full-20260713-low-sol-wbd002",
+              "score": 100,
+              "total_duration_ms": 93096
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 13139,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-sol-wbd002",
+              "score": 100,
+              "total_duration_ms": 99412
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 12368,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-sol-wbd002",
+              "score": 100,
+              "total_duration_ms": 90421
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-002"
+        },
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 22994,
+          "median_total_duration_ms_full_quality": 89690,
+          "median_worker_duration_ms_full_quality": 40838,
+          "model": "gpt-5.6-terra",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 21027,
+              "run_id": "gpt56-full-20260713-low-terra-wbd002",
+              "score": 100,
+              "total_duration_ms": 83225
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 35722,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-terra-wbd002",
+              "score": 100,
+              "total_duration_ms": 89690
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 22994,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-terra-wbd002",
+              "score": 100,
+              "total_duration_ms": 105588
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-002"
+        }
+      ],
+      "task_id": "WBD-002"
+    },
+    {
+      "reliability_qualified_pareto": [
+        {
+          "attempts": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens": 11875,
+          "median_total_duration_ms": 34685,
+          "model": "gpt-5.6-terra"
+        },
+        {
+          "attempts": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens": 10664,
+          "median_total_duration_ms": 35134,
+          "model": "gpt-5.6-sol"
+        }
+      ],
+      "route_stats": [
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 12572,
+          "median_total_duration_ms_full_quality": 49177,
+          "median_worker_duration_ms_full_quality": 43353,
+          "model": "gpt-5.6-luna",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 11340,
+              "run_id": "gpt56-full-20260713-low-luna-wbd003",
+              "score": 100,
+              "total_duration_ms": 34705
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 12572,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-luna-wbd003",
+              "score": 100,
+              "total_duration_ms": 61686
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 21293,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-luna-wbd003",
+              "score": 100,
+              "total_duration_ms": 49177
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-003"
+        },
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 10664,
+          "median_total_duration_ms_full_quality": 35134,
+          "median_worker_duration_ms_full_quality": 29127,
+          "model": "gpt-5.6-sol",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 8298,
+              "run_id": "gpt56-full-20260713-low-sol-wbd003",
+              "score": 100,
+              "total_duration_ms": 35134
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 10664,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-sol-wbd003",
+              "score": 100,
+              "total_duration_ms": 33493
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 11681,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-sol-wbd003",
+              "score": 100,
+              "total_duration_ms": 39768
+            }
+          ],
+          "planned_observations": 5,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-003"
+        },
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 11875,
+          "median_total_duration_ms_full_quality": 34685,
+          "median_worker_duration_ms_full_quality": 29070,
+          "model": "gpt-5.6-terra",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 11875,
+              "run_id": "gpt56-full-20260713-low-terra-wbd003",
+              "score": 100,
+              "total_duration_ms": 25045
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 11015,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-terra-wbd003",
+              "score": 100,
+              "total_duration_ms": 35801
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 17220,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-terra-wbd003",
+              "score": 100,
+              "total_duration_ms": 34685
+            }
+          ],
+          "planned_observations": 5,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-003"
+        }
+      ],
+      "task_id": "WBD-003"
+    },
+    {
+      "reliability_qualified_pareto": [
+        {
+          "attempts": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens": 31686,
+          "median_total_duration_ms": 55257,
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "attempts": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens": 23336,
+          "median_total_duration_ms": 61400,
+          "model": "gpt-5.6-terra"
+        },
+        {
+          "attempts": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens": 12832,
+          "median_total_duration_ms": 68144,
+          "model": "gpt-5.6-sol"
+        }
+      ],
+      "route_stats": [
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 31686,
+          "median_total_duration_ms_full_quality": 55257,
+          "median_worker_duration_ms_full_quality": 28924,
+          "model": "gpt-5.6-luna",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 9669,
+              "run_id": "gpt56-full-20260713-low-luna-wbd004",
+              "score": 100,
+              "total_duration_ms": 46892
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 31686,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-luna-wbd004",
+              "score": 100,
+              "total_duration_ms": 55257
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 37918,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-luna-wbd004",
+              "score": 100,
+              "total_duration_ms": 55609
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-004"
+        },
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 12832,
+          "median_total_duration_ms_full_quality": 68144,
+          "median_worker_duration_ms_full_quality": 42093,
+          "model": "gpt-5.6-sol",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 12832,
+              "run_id": "gpt56-full-20260713-low-sol-wbd004",
+              "score": 100,
+              "total_duration_ms": 69747
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 35878,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-sol-wbd004",
+              "score": 100,
+              "total_duration_ms": 68144
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 11595,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-sol-wbd004",
+              "score": 100,
+              "total_duration_ms": 52481
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-004"
+        },
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 23336,
+          "median_total_duration_ms_full_quality": 61400,
+          "median_worker_duration_ms_full_quality": 34174,
+          "model": "gpt-5.6-terra",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 23336,
+              "run_id": "gpt56-full-20260713-low-terra-wbd004",
+              "score": 100,
+              "total_duration_ms": 57123
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 23665,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-terra-wbd004",
+              "score": 100,
+              "total_duration_ms": 66032
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 20222,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-terra-wbd004",
+              "score": 100,
+              "total_duration_ms": 61400
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-004"
+        }
+      ],
+      "task_id": "WBD-004"
+    },
+    {
+      "reliability_qualified_pareto": [
+        {
+          "attempts": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens": 18936,
+          "median_total_duration_ms": 140525,
+          "model": "gpt-5.6-sol"
+        }
+      ],
+      "route_stats": [
+        {
+          "attempts": 3,
+          "capability_pass_rate": 0.3333,
+          "capability_pass_wilson_95": [
+            0.0615,
+            0.7923
+          ],
+          "capability_passes": 1,
+          "effort": "low",
+          "full_quality_passes": 1,
+          "median_effective_tokens_full_quality": 29551,
+          "median_total_duration_ms_full_quality": 110069,
+          "median_worker_duration_ms_full_quality": 43253,
+          "model": "gpt-5.6-luna",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 29551,
+              "run_id": "gpt56-full-20260713-low-luna-wbd005",
+              "score": 100,
+              "total_duration_ms": 110069
+            },
+            {
+              "capability_pass": false,
+              "effective_tokens": 23211,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-luna-wbd005",
+              "score": 82,
+              "total_duration_ms": 137135
+            },
+            {
+              "capability_pass": false,
+              "effective_tokens": 37947,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-luna-wbd005",
+              "score": 91,
+              "total_duration_ms": 115483
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            82,
+            91
+          ],
+          "task_id": "WBD-005"
+        },
+        {
+          "attempts": 3,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.4385,
+            1.0
+          ],
+          "capability_passes": 3,
+          "effort": "low",
+          "full_quality_passes": 3,
+          "median_effective_tokens_full_quality": 18936,
+          "median_total_duration_ms_full_quality": 140525,
+          "median_worker_duration_ms_full_quality": 73219,
+          "model": "gpt-5.6-sol",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 18826,
+              "run_id": "gpt56-full-20260713-low-sol-wbd005",
+              "score": 100,
+              "total_duration_ms": 140525
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 18936,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-sol-wbd005",
+              "score": 100,
+              "total_duration_ms": 171420
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 27403,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-sol-wbd005",
+              "score": 100,
+              "total_duration_ms": 126649
+            }
+          ],
+          "planned_observations": 6,
+          "scores": [
+            100,
+            100,
+            100
+          ],
+          "task_id": "WBD-005"
+        },
+        {
+          "attempts": 1,
+          "capability_pass_rate": 1.0,
+          "capability_pass_wilson_95": [
+            0.2065,
+            1.0
+          ],
+          "capability_passes": 1,
+          "effort": "medium",
+          "full_quality_passes": 1,
+          "median_effective_tokens_full_quality": 42703,
+          "median_total_duration_ms_full_quality": 153047,
+          "median_worker_duration_ms_full_quality": 85920,
+          "model": "gpt-5.6-sol",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 42703,
+              "run_id": "gpt56-full-20260713-medium-sol-wbd005",
+              "score": 100,
+              "total_duration_ms": 153047
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100
+          ],
+          "task_id": "WBD-005"
+        },
+        {
+          "attempts": 3,
+          "capability_pass_rate": 0.3333,
+          "capability_pass_wilson_95": [
+            0.0615,
+            0.7923
+          ],
+          "capability_passes": 1,
+          "effort": "low",
+          "full_quality_passes": 1,
+          "median_effective_tokens_full_quality": 24022,
+          "median_total_duration_ms_full_quality": 123509,
+          "median_worker_duration_ms_full_quality": 56738,
+          "model": "gpt-5.6-terra",
+          "observations": [
+            {
+              "capability_pass": true,
+              "effective_tokens": 24022,
+              "run_id": "gpt56-full-20260713-low-terra-wbd005",
+              "score": 100,
+              "total_duration_ms": 123509
+            },
+            {
+              "capability_pass": false,
+              "effective_tokens": 49302,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r02-low-terra-wbd005",
+              "score": 91,
+              "total_duration_ms": 124274
+            },
+            {
+              "capability_pass": false,
+              "effective_tokens": 41299,
+              "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-terra-wbd005",
+              "score": 76,
+              "total_duration_ms": 248959
+            }
+          ],
+          "planned_observations": 3,
+          "scores": [
+            100,
+            91,
+            76
+          ],
+          "task_id": "WBD-005"
+        }
+      ],
+      "task_id": "WBD-005"
+    }
+  ],
+  "totals": {
+    "monetary_cost_note": "No frozen price table or billed-cost field is available; effective tokens are the cost proxy.",
+    "monetary_cost_usd": null,
+    "repeat_capability_passes": 28,
+    "repeat_effective_tokens": 654466,
+    "repeat_runs": 32,
+    "repeat_total_duration_ms": 2598517,
+    "repeat_worker_duration_ms": 1577749
+  }
+}

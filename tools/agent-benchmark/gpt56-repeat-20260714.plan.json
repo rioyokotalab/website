@@ -1,6 +1,7 @@
 {
   "created_at": "2026-07-14T00:44+0900",
   "freeze_sha256": "7801a61e9df34433575d05568aaaff767bc07c461825aeebdff627bcac990494",
+  "revision": 2,
   "run_label": "gpt56-repeat-20260714",
   "schema_version": 1,
   "source_matrix_label": "gpt56-full-20260713",
@@ -30,19 +31,36 @@
         {"effort": "low", "model": "gpt-5.6-sol", "task": "WBD-005"}
       ]
     },
-    "stage2-anomalies": {
-      "purpose": "Measure whether matrix quality failures are repeatable before excluding routes for reliability.",
+    "stage2-wbd005-primary": {
+      "purpose": "Raise the only reliable WBD-005 low-effort route from three to six observations.",
+      "repeats": [
+        4,
+        5,
+        6
+      ],
+      "routes": [
+        {"effort": "low", "model": "gpt-5.6-sol", "task": "WBD-005"}
+      ]
+    },
+    "stage2-wbd005-fallback": {
+      "purpose": "Bring the fastest higher-effort Sol WBD-005 route to three observations as a fallback candidate.",
       "repeats": [
         2,
         3
       ],
       "routes": [
-        {"effort": "xhigh", "model": "gpt-5.6-sol", "task": "WBD-003"},
-        {"effort": "medium", "model": "gpt-5.6-luna", "task": "WBD-005"},
-        {"effort": "medium", "model": "gpt-5.6-terra", "task": "WBD-005"},
-        {"effort": "high", "model": "gpt-5.6-terra", "task": "WBD-005"},
-        {"effort": "xhigh", "model": "gpt-5.6-terra", "task": "WBD-005"},
-        {"effort": "max", "model": "gpt-5.6-terra", "task": "WBD-005"}
+        {"effort": "medium", "model": "gpt-5.6-sol", "task": "WBD-005"}
+      ]
+    },
+    "stage2-wbd003-tiebreak": {
+      "purpose": "Raise the near-tied WBD-003 latency and token leaders from three to five observations.",
+      "repeats": [
+        4,
+        5
+      ],
+      "routes": [
+        {"effort": "low", "model": "gpt-5.6-terra", "task": "WBD-003"},
+        {"effort": "low", "model": "gpt-5.6-sol", "task": "WBD-003"}
       ]
     }
   }

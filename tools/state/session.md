@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T00:52+0900
+updated: 2026-07-14T01:37+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -84,11 +84,28 @@ status: in-progress
   frontier arm to `n=3` before elimination. Next, repeat the five WBD-005
   failures and WBD-003 Sol/xhigh twice each if the stage-1 audit remains clean.
 - The resumable repeat orchestrator and plan dry-run at exactly 32 stage-1 and
-  12 stage-2 cells with unique stable ids. Repeat-runner SHA-256 is
+  12 original stage-2 cells with unique stable ids. Repeat-runner SHA-256 is
   `0c33d1161a87fd980f23f68479e8556a39d360b5ee84409f53a4a617560a7691`;
-  plan SHA-256 is
+  the original plan SHA-256 was
   `9414ff807edb91648b0d538b1a6f4fbce043e6633140b273067212064644bf61`.
-  Commit these inputs before the long stage-1 run.
+- T-151 stage 1 complete: 32/32 planned repeats, 28 capability passes, and
+  four genuine WBD-005 quality failures. The 122 result rows, artifacts, and
+  metric pointers reconcile; all metric and artifact audits pass. The repeat
+  summary reproduces byte-for-byte and gates on reliability before medians.
+- Stage-1 medians select WBD-001 Terra/low at 41,703 ms and 7,493 effective
+  tokens. WBD-002 retains Luna/low for speed (84,682 ms) versus Sol/low for
+  tokens (12,368). WBD-003 is a near-tie: Terra/low 34,685 ms versus Sol/low
+  10,664 tokens. WBD-004 retains a three-route runtime/token frontier. WBD-005
+  Sol/low passed 3/3 at 140,525 ms and 18,936 tokens; Luna/low and Terra/low
+  each passed only 1/3 and are excluded from default routing.
+- Adaptive allocation revision 2 supersedes the unrun anomaly stage. Next run
+  three additional WBD-005 Sol/low observations (`n=6`), two WBD-005
+  Sol/medium observations (`n=3`) as a fallback screen, and two more WBD-003
+  Terra/low and Sol/low observations each (`n=5`). Recompute before any further
+  allocation. Revision-2 plan SHA-256 is
+  `c563b025a508d26f3a6ff2eb1d300d25b410e3240aa755e7b901a7bf98de3b6a`.
+  Reserve final campaign time for the durable routing policy and closeout
+  before 2026-07-14T05:08+0900.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
