@@ -5,13 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-143 — Remove Claude benchmark machinery and retained data
-
-After T-142, remove Claude-only runners, profiles, results, exclusions, round
-records, metrics/log rows, and retained artifacts. Preserve only provider-neutral
-benchmark assets that still serve Codex, and document any shared-file rewrite
-needed to keep schemas and validators coherent.
-
 ### T-144 — Remove residual references and prove a zero-trace current tree
 
 After T-143, clean Claude/Anthropic/model-specific wording from skills,
@@ -25,6 +18,13 @@ None.
 
 ## Recently completed
 
+- **T-143 — Remove Claude benchmark machinery and retained data:** removed the
+  provider-specific runner/results/round plus the completed comparison result
+  set, 11 exclusions, 106 benchmark/driver metric rows, 27 comparison log lines,
+  547 raw artifact files (12,705,133 bytes), and eight local evaluation tags.
+  Retained Codex task/grader/runner assets now start with empty history;
+  selftest, five-capsule audit, zero-artifact audit, metrics/schema validation,
+  compile, Markdown budgets, and diff checks pass.
 - **T-142 — Remove Claude project and runtime configuration:** removed 20
   tracked runtime/config/registry/dispatch paths (74,489 bytes) plus the
   untracked project-local settings file; replaced root setup, AGENTS, delegation,

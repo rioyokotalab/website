@@ -15,7 +15,6 @@ ROOT = Path(__file__).resolve().parent.parent
 METRICS = ROOT / "tools/task-metrics.jsonl"
 RESULTS = ROOT / "tools/agent-benchmark/results.jsonl"
 EXCLUSIONS = ROOT / "tools/agent-benchmark/exclusions.json"
-CLAUDE_RESULTS = ROOT / "tools/agent-benchmark/claude-results.jsonl"
 
 V1_REQUIRED = {"date", "task_type", "agent", "tier", "duration_ms", "success", "note"}
 V2_REQUIRED = V1_REQUIRED | {
@@ -104,7 +103,7 @@ def validate_row(row: dict[str, Any]) -> list[str]:
         allowed_modes = {
             "handoff_mode": {"durable", "runner-lite", "runner-structured", "runner", "runner-captured", "unknown"},
             "inspection_mode": {"default", "bounded", "focused", "agent-judgment", "unknown"},
-            "prompt_mode": {"full", "compact", "claude-neutral-v1", "unknown"},
+            "prompt_mode": {"full", "compact", "unknown"},
         }
         for key, choices in allowed_modes.items():
             if key in row and row[key] not in choices:
@@ -115,8 +114,8 @@ def validate_row(row: dict[str, Any]) -> list[str]:
             errors.append("changed_files must be unique")
         if not isinstance(row.get("note"), str) or len(row.get("note", "")) > 500:
             errors.append("note must be a string of at most 500 characters")
-        if row.get("provider") not in (None, "codex", "claude"):
-            errors.append("provider must be codex or claude")
+        if row.get("provider") not in (None, "codex"):
+            errors.append("provider must be codex")
         if row.get("total_token_telemetry_complete") is not None and not isinstance(row.get("total_token_telemetry_complete"), bool):
             errors.append("total_token_telemetry_complete must be boolean")
         if row.get("total_cost_usd") is not None and (
@@ -206,18 +205,9 @@ def benchmark_row(result: dict[str, Any], stdout_override: Path | None = None) -
     execution = result.get("execution") or {}
     usage = result.get("aggregate_usage") or execution.get("usage") or {}
     grade = result.get("grade") or {}
-    provider = str(result.get("provider") or "codex")
     run_id = str(result["run_id"])
     stdout_path = stdout_override or ROOT / str(execution.get("stdout_path", ""))
-    execution_tools = execution.get("tool_metrics") or {}
-    if provider == "claude":
-        commands = {
-            "completed_commands": int(execution_tools.get("completed_commands") or 0),
-            "failed_commands": int(execution_tools.get("failed_commands") or 0),
-            "tool_output_chars": int(execution_tools.get("tool_output_chars") or 0),
-        }
-    else:
-        commands = command_metrics(stdout_path)
+    commands = command_metrics(stdout_path)
     input_tokens = usage.get("input_tokens")
     cached_tokens = usage.get("cached_input_tokens")
     output_tokens = usage.get("output_tokens")
@@ -228,20 +218,15 @@ def benchmark_row(result: dict[str, Any], stdout_override: Path | None = None) -
         effective = input_tokens - cached_tokens + output_tokens
     failure_phase, failure_category, outcome = _failure(result)
     worker_duration = execution.get("duration_ms") if isinstance(execution.get("duration_ms"), int) else None
-    generation_duration = result.get("generation_duration_ms") if isinstance(result.get("generation_duration_ms"), int) else None
-    if worker_duration is not None and generation_duration is not None:
-        worker_duration += generation_duration
     total_duration = result.get("total_duration_ms") if isinstance(result.get("total_duration_ms"), int) else (worker_duration or 0)
     score = grade.get("score") if isinstance(grade.get("score"), (int, float)) else None
     prompt_bytes = execution.get("prompt_bytes") if isinstance(execution.get("prompt_bytes"), int) else None
-    if provider == "claude" and isinstance((result.get("generation") or {}).get("prompt_bytes"), int):
-        prompt_bytes = (prompt_bytes or 0) + result["generation"]["prompt_bytes"]
     note = f"benchmark {result.get('task_id')} {outcome}; score={score}; critical={grade.get('critical_pass')}"
     row = {
         "schema_version": 2,
         "date": str(result.get("date") or "unknown"),
         "task_type": "other",
-        "agent": provider,
+        "agent": "codex",
         "tier": str(result.get("worker") or "unknown"),
         "duration_ms": total_duration,
         "success": bool(result.get("capability_pass")),
@@ -290,24 +275,7 @@ def benchmark_row(result: dict[str, Any], stdout_override: Path | None = None) -
         "grader_sha256": str(result.get("grader_sha256") or "unknown"),
         "runner_sha256": str(result.get("runner_sha256") or "unknown"),
     }
-    if provider == "claude":
-        generation = result.get("generation") or {}
-        generation_usage = generation.get("usage") or {}
-        row.update({
-            "provider": "claude",
-            "provider_cli": str(result.get("claude_cli") or "unknown"),
-            "config_variant": str(result.get("config_variant") or "unknown"),
-            "config_sha256": str(result.get("config_sha256") or "unknown"),
-            "cache_creation_input_tokens": usage.get("cache_creation_input_tokens") if isinstance(usage.get("cache_creation_input_tokens"), int) else None,
-            "generation_effective_tokens": generation_usage.get("effective_tokens") if isinstance(generation_usage.get("effective_tokens"), int) else None,
-            "generation_duration_ms": generation_duration,
-            "agent_calls": int(execution_tools.get("agent_calls") or 0),
-            "codex_mcp_calls": int(execution_tools.get("codex_mcp_calls") or 0),
-            "total_cost_usd": result.get("total_cost_usd") if isinstance(result.get("total_cost_usd"), (int, float)) else None,
-            "total_token_telemetry_complete": bool(result.get("total_token_telemetry_complete")),
-        })
-    else:
-        row["provider"] = "codex"
+    row["provider"] = "codex"
     return row
 
 
@@ -671,28 +639,6 @@ def selftest() -> dict[str, Any]:
         }
         row = benchmark_row(result, stdout)
         assert row["effective_tokens"] == 18 and row["completed_commands"] == 1 and not validate_row(row)
-        claude_result = {
-            **result,
-            "run_id": "selftest-claude", "run_label": "selftest-claude", "provider": "claude",
-            "effort": "max",
-            "worker": "claude-autonomous", "claude_cli": "test-claude",
-            "config_variant": "autonomous", "config_sha256": "config-hash",
-            "artifact": "tools/out/claude-benchmark/selftest-claude/result.json",
-            "handoff_mode": "runner-captured", "inspection_mode": "agent-judgment",
-            "prompt_mode": "claude-neutral-v1", "effective_tokens": 23,
-            "aggregate_usage": {"input_tokens": 30, "cached_input_tokens": 10,
-                                "cache_creation_input_tokens": 5, "output_tokens": 3,
-                                "reasoning_output_tokens": 0, "effective_tokens": 23},
-            "generation": None, "generation_duration_ms": None,
-            "total_cost_usd": 0.1, "total_token_telemetry_complete": True,
-            "execution": {**result["execution"], "tool_metrics": {
-                "completed_commands": 2, "failed_commands": 0,
-                "tool_output_chars": 7, "agent_calls": 1, "codex_mcp_calls": 0,
-            }},
-        }
-        claude_row = benchmark_row(claude_result, stdout)
-        assert claude_row["agent"] == "claude" and claude_row["effective_tokens"] == 23
-        assert claude_row["agent_calls"] == 1 and not validate_row(claude_row)
         results = root / "results.jsonl"; results.write_text(json.dumps(result) + "\n", encoding="utf-8")
         exclusions = root / "exclusions.json"; exclusions.write_text("{}\n", encoding="utf-8")
         dry = import_benchmark("selftest", dry_run=True, metrics_path=metrics, results_path=results, exclusions_path=exclusions)
@@ -700,13 +646,6 @@ def selftest() -> dict[str, Any]:
         actual = import_benchmark("selftest", dry_run=False, metrics_path=metrics, results_path=results, exclusions_path=exclusions)
         duplicate = import_benchmark("selftest", dry_run=False, metrics_path=metrics, results_path=results, exclusions_path=exclusions)
         assert actual["appended"] == 1 and duplicate["duplicates"] == ["selftest-run"]
-        claude_results = root / "claude-results.jsonl"
-        claude_results.write_text(json.dumps(claude_result) + "\n", encoding="utf-8")
-        claude_import = import_benchmark(
-            "selftest-claude", dry_run=False, metrics_path=metrics,
-            results_path=claude_results, exclusions_path=exclusions,
-        )
-        assert claude_import["appended"] == 1
         validation = validate_file(metrics)
         assert validation["status"] == "pass" and validation["blank_lines_skipped"] == 1
         comparison_path = root / "comparison.jsonl"
@@ -742,7 +681,6 @@ def parser() -> argparse.ArgumentParser:
     sub = command.add_subparsers(dest="command", required=True)
     validate = sub.add_parser("validate"); validate.add_argument("--path", type=Path, default=METRICS)
     importer = sub.add_parser("import-benchmark"); importer.add_argument("--run-label", required=True); importer.add_argument("--dry-run", action="store_true")
-    importer.add_argument("--provider", choices=("codex", "claude"), default="codex")
     driver = sub.add_parser("append-driver")
     driver.add_argument("--task-ids", nargs="+", required=True)
     driver.add_argument("--report", required=True)
@@ -761,11 +699,7 @@ def main() -> int:
     args = parser().parse_args()
     if args.command == "validate": result = validate_file(args.path)
     elif args.command == "import-benchmark":
-        result = import_benchmark(
-            args.run_label, dry_run=args.dry_run,
-            results_path=CLAUDE_RESULTS if args.provider == "claude" else RESULTS,
-            exclusions_path=EXCLUSIONS,
-        )
+        result = import_benchmark(args.run_label, dry_run=args.dry_run)
     elif args.command == "append-driver": result = append_driver_tasks(args.task_ids, args.report, args.model)
     elif args.command == "summarize": result = summarize(args.run_label, details=args.details)
     elif args.command == "labels": result = summarize_labels(args.path)

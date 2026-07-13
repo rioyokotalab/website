@@ -1,63 +1,20 @@
 # Agent web-development regression benchmark
 
-This local benchmark measures capability and token cost on representative
-YOKOTA Lab website maintenance tasks. It borrows frozen repository tasks and
-F2P/P2P grading from SWE-bench-style evaluation, then adds deterministic local
-browser checks. It is not a general frontend leaderboard.
+This optional local suite measures Codex capability and token cost on
+representative YOKOTA Lab website maintenance tasks. It combines isolated
+mutated fixtures, static F2P checks, deterministic browser/visual P2P checks,
+and strict changed-file scope. It is not a general frontend leaderboard.
 
-`benchmark.py` is the Codex runner. `claude_benchmark.py` reuses the same frozen
-tasks, mutations, static/browser/visual graders, and capability gates for the
-three Claude configuration arms defined in `.claude/benchmark-profiles/`.
-Claude's exact experiment protocol is `skills/claude-benchmark.md`; its results
-and ignored raw artifacts are separate (`claude-results.jsonl` and
-`tools/out/claude-benchmark/`) so provider telemetry cannot be mixed silently.
+The tracked suite contains task definitions, mutations, grader logic, and the
+runner. Completed comparison results are intentionally not retained. New runs
+create ignored raw artifacts under `tools/out/agent-benchmark/` and append
+compact rows to `results.jsonl`; both are disposable once their decision is no
+longer needed and pointer records are removed with them.
 
-Current capability coverage, deliberate gaps, and the threshold for adding a
-new capsule are documented in `coverage.md`. Failed-token causes and the stop
-rule each category should trigger are in `failure-taxonomy.md`.
+Coverage and deliberate gaps are documented in `coverage.md`. Failure classes
+and their stop rules are in `failure-taxonomy.md`.
 
-The runner creates a temporary repository from `git archive`, removes the
-benchmark implementation before the agent starts, commits the mutated fixture,
-and grades only the resulting candidate diff. Raw Codex JSONL, stderr, prompt,
-patch, and result live under ignored `tools/out/agent-benchmark/`; compact
-per-run rows are appended to `results.jsonl`.
-
-## Artifact retention
-
-Keep every run directory referenced by `results.jsonl` or schema-v2 metrics
-through at least the next completed benchmark round. The required durable set
-is `prompt.txt`, `stdout.jsonl`, `stderr.log`, `candidate.patch`, and
-`result.json`; `benchmark.py artifacts` verifies it. Screenshots are optional
-diagnostic material: retain decision anchors (the accepted baseline, a
-decision-changing failure, and the promoted result) and delete redundant
-intermediate copies after their grades and patches are recorded. Per-task and
-driver Markdown under `tools/out/` is transient and should be removed once its
-decisions are tracked and its reviewer has finished.
-
-Do not delete a referenced run directory merely to reduce disk use. A future
-archive/prune operation must first provide a manifest or tombstone mechanism so
-metrics pointers remain auditable. Compact completed-round records belong in
-`rounds/`; raw trajectories never enter Git.
-
-`run` prints a compact decision summary by default; the complete result remains
-in its artifact directory. Use `--verbose-result` only when a downstream caller
-needs the full inline grader tails rather than following the artifact pointer.
-Failure summaries deduplicate `changed:` findings already represented by
-`changed_files` while preserving their count and all diagnostic findings.
-
-Use `--handoff-mode runner-lite` for short instrumented trials: the runner
-captures the trajectory, patch, grade, metrics, and final message while the
-worker skips its durable report and log append. `runner-structured` additionally
-enforces `final.schema.json`; it is retained for measuring structured-output
-overhead rather than used by default. `runner` is its legacy alias.
-
-Use `--inspection-mode focused` when target files are large but an explicit
-textual edit is local. It tells the worker to search for a task-specific literal, inspect no
-more than 40 surrounding lines, and follow the named playbook's preservation
-method. The earlier `bounded` wording remains available for reproducing an
-experiment that reduced output but allowed a CRLF regression. Each result
-records the mode so comparisons do not silently mix inspection strategies.
-Use default inspection for reference-driven visual work and diagnosis.
+## Commands
 
 ```bash
 python3 tools/agent-benchmark/benchmark.py list
@@ -69,55 +26,37 @@ python3 tools/agent-benchmark/benchmark.py run WBD-001 --run-label baseline --ru
 python3 tools/agent-benchmark/benchmark.py summarize --run-label baseline
 ```
 
-WBD-005 is held out and requires `--include-held-out`; use it only after an
-optimization candidate is frozen. A passing optimization needs every critical
-assertion, at least 85/100 on every matched task, no lower aggregate score, no
-P2P or scope regression, and lower measured worker plus review/repair cost.
+The runner builds a temporary repository with `git archive`, removes benchmark
+implementation before the worker starts, commits the mutated fixture, and
+grades only the candidate diff. Never run a capsule directly in the root
+repository. Publish/deploy scripts and remotes are removed from fixtures.
 
-For a process-wide optimization, use at least two representative tasks and
-three baseline/candidate portfolio samples. Compare portfolio medians and full
-ranges, not isolated task minima. Promotion requires all capability gates,
-candidate median effective tokens at least 5% below baseline, and no unexplained
-regression in failures, tool output, or total duration. Non-overlapping ranges
-are strong evidence; overlapping ranges make the cost claim inconclusive. After
-freezing the candidate, run every visible task and the held-out task once.
+Use `--handoff-mode runner-lite` for short instrumented trials where the runner
+captures the trajectory, patch, grade, metrics, and final message.
+`runner-structured` additionally enforces `final.schema.json`; `runner` is its
+legacy alias.
 
-`effective_tokens` is `input_tokens - cached_input_tokens + output_tokens`.
-Reasoning output is retained separately because runner usage reports it as a
-subset/detail of output accounting; it is not added twice.
+Use `--inspection-mode focused` only for an explicit local textual edit in a
+large file. Default inspection remains required for diagnosis, refactors, and
+reference-driven visual work.
+
+WBD-005 is held out and requires `--include-held-out`. Use it only after a
+candidate is frozen. A passing candidate needs every critical assertion, at
+least 85/100 per task, no aggregate/P2P/scope regression, and lower measured
+worker plus review/repair cost.
+
+`effective_tokens` is input minus cached input plus output. Reasoning output is
+retained separately and is not added twice.
 
 ## Decision workflow
 
-1. Run `benchmark.py selftest`, `benchmark.py audit`, and `benchmark.py
-   artifacts` before any model call.
-2. Give a new variant one visible-task probe. Stop on capability failure unless
-   raw evidence proves a capsule defect; require at least 10% preliminary cost
-   improvement before repeats.
-3. For a process-wide candidate, collect at most three matched portfolios over
-   two representative tasks. Import them into metrics and use strict `compare`.
-4. Freeze task versions, routes, prompt/handoff/inspection modes, grader, and
-   runner identities. Run every visible task once with P2P.
-5. Only after the visible suite passes, run the held-out task once. A rerun
-   requires a documented, versioned capsule invariant defect.
-6. Record per-label spend, failed-token taxonomy, break-even, raw artifact audit,
-   repository regression, and driver review before promotion.
-
-Do not down-route an exposed held-out task or edit a task/grader merely to turn
-an ordinary capability failure into a pass.
-
-## Starting the next round
-
-Start only for a concrete model/runtime/process change or a real task that
-exposes a documented coverage gap. Read the latest `rounds/` record, then run:
-
-```bash
-python3 tools/agent-benchmark/benchmark.py selftest
-python3 tools/agent-benchmark/benchmark.py audit
-python3 tools/agent-benchmark/benchmark.py artifacts
-python3 tools/task-metrics.py validate
-```
-
-Pre-register the candidate, matched task versions/routes, token budget, and
-stop condition in the ledger before spending model tokens. Give it one visible
-probe; continue to matched portfolios only if capability passes and the probe
-improves effective tokens by at least 10%.
+1. Run selftest and capsule audit before any model call.
+2. Probe one visible task and stop on capability failure unless raw evidence
+   proves a versioned capsule defect.
+3. For a broad process change, use matched tasks/repeats and compare medians and
+   ranges rather than isolated minima.
+4. Freeze task versions, model/effort, prompt/handoff/inspection modes, grader,
+   and runner identities before the visible suite.
+5. Run the held-out task only after the visible suite passes.
+6. Record spend, failure taxonomy, break-even, regression checks, and review
+   before promotion; delete obsolete raw/results records together.

@@ -1,33 +1,33 @@
 driver: codex
-updated: 2026-07-13T17:59+0900
-task: T-143 Remove Claude benchmark machinery and retained data
+updated: 2026-07-13T18:04+0900
+task: T-144 Remove residual references and prove a zero-trace current tree
 status: in-progress
 
 ## Now
-- T-142 complete: removed 20 tracked active integration/config/MCP/registry
-  paths (74,489 bytes) and one untracked project-local settings file. Replaced
-  AGENTS, README, delegation, ledger, config, lookup, publish, and skill-index
-  text with Codex-only contracts.
-- `benchmark.py` now reads model/effort from each task instead of the deleted
-  registry. Selftest, all five capsule audits, compile, metrics validation,
-  Markdown budgets, reference checks, and diff checks pass.
-- Next: remove provider-specific benchmark implementation/results and the
-  completed comparison record set, clear associated metrics/pointers, delete
-  both raw artifact trees and local evaluation branches, then rerun the
-  provider-neutral suite checks.
+- T-143 complete: removed provider-specific benchmark code/data and the
+  completed comparison record set, 106 metrics rows, 27 log lines, 547 raw
+  artifact files (12,705,133 bytes), and eight local evaluation tags.
+- Retained Codex task definitions, grader, runner, coverage, and failure
+  taxonomy have empty result/artifact history. Runner selftest, five-capsule
+  audit, zero-artifact audit, metrics selftest/validation (440 legacy rows),
+  schema parse, compile, Markdown budgets, and diff checks pass.
+- Ten tracked files still contain decommissioned provider/model wording. Next:
+  neutralize shared benchmark/preview code, filter remaining ledger/log/metrics
+  traces, remove temporary inventories, compact the task board to an idle
+  zero-trace state, scan tracked and ignored trees, then run full regressions.
 
 ## Working set
-- `skills/claude-benchmark.md`, `tools/state/ab-round4.md`
-- `tools/agent-benchmark/` provider-specific and completed result/round files
+- `tools/agent-benchmark/benchmark.py`, `coverage.md`, `task_ops.py`
+- `tools/preview-server.sh`, `tools/test-preview-server.sh`
 - `tools/task-metrics.jsonl`, `tools/codex-log.md`
-- `tools/out/agent-benchmark/`, `tools/out/claude-benchmark/`
-- Local `eval/r1-*` and `eval/r2-*` branches; remote remains main-only
-- Verify: runner selftest/audit with empty history, metrics validation, zero
-  stale artifact pointers, branch inventory, exact file/byte removal counts.
+- `tools/todo.md`, `tools/state/session.md`, `tools/state/decisions.md`
+- Current `tools/out/t141-*` inventories (delete after facts move to report)
+- Verify: case-insensitive path/content scans excluding `.git`, ignored-tree
+  scan, preview/benchmark/metrics/security tests, Markdown budgets, Git refs,
+  status/diff, required rebase, push, and remote verification.
 
 ## Open questions
-- None blocking. Provider-neutral task definitions, grader, runner, and failure
-  taxonomy are retained for future Codex regression use.
+- None. Git history and owner-scope settings remain explicitly outside scope.
 
 ## Awaiting user
 - None.

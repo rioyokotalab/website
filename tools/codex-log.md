@@ -351,15 +351,7 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | site-coordinator | AGENTS.md driver-report proposal | tools/out/agents-driver-report/README.md | - | completed; MATCH_COUNT=1 BYTES=8423
 2026-07-12 | site-coordinator | seed round-3 tasks T-6..T-9 | tools/todo.md | - | success
 2026-07-12 | codex-driver (gpt-5) | T-6,T-7,T-8,T-9 | tools/out/driver-report-20260712-1109.md | n/a | T-6/T-7/T-8 complete; T-9 awaiting user review of 29-record researchmap JSONL
-2026-07-12 | site-coordinator | round-4 A/B prep (fable/opus branches) | (git branches) | - | success after one cutoff-recovery
-2026-07-12 | site-coordinator | round-4 rubric persisted for cold restart | tools/state/ab-round4.md | - | success
-2026-07-12 | coordinator | 4-branch model-eval comparison (sol/terra/fable/opus) | tools/out/eval-{sol,terra,fable,opus}.md + tools/out/eval-verdict.md | sol-extract 019f54d4-0943-77e2-bf8b-364b68cd02f5; terra-extract 019f54d4-b85b-70d3-89f4-c3858c7daba6; fable-extract 019f54d5-27f8-78c1-b44d-05b4f64818f3; opus-extract 019f54d5-8caa-7692-820c-fc34b8fec153; verdict <this session> | PASS; winner terra; ranking terra,sol,fable,opus
-2026-07-12 | coordinator | Round-2 4-way eval setup | tools/judge/{log,todo}.md + tools/todo.md + skills/model-eval.md + tools/out/r2-setup.md | drafting 019f54f6-8174-7200-9233-ecc6ea7741b9; surgery-1 019f54fa-3005-7b22-b2a3-1420434e827a; surgery-2 <this session> | Note: .git is read-only under workspace-write sandbox; surgery requires full access
-2026-07-12 | coordinator | Round-2 T-11 owner rewrite (no hard limits) + scaffold rebuild | tools/todo.md, tools/out/r2-t11-edit.md | this session | pass
 2026-07-12 | coordinator | drop 2 stale git stashes | /home/rioyokota/website/tools/out/stash-drop.md | <this session> | PASS
-2026-07-12 | coordinator | pre-round-2 permission consolidation into committed settings.json + scaffold rebuild | tools/out/t11-settings-fix.md | session-this | pass
-2026-07-12 | codex-driver (coordinator) | round-2 T-11 external-scope extension + scaffold rebuild | tools/todo.md, tools/out/r2-t11-external.md | this-session | done
-2026-07-12 | agent coordinator | round-2 T-11 codex-config-toml note + scaffold rebuild | tools/todo.md, tools/out/r2-t11-codextoml.md | <this session> | 
 2026-07-12 | coordinator (codex) | mid-run contestant peek (read-only) | tools/out/contestant-peek.md | <this session> | outcome
 2026-07-12 | coordinator | 2nd mid-run contestant peek (read-only) | tools/out/contestant-peek2.md | this-session | PASS
 2026-07-12 | codex-driver () | 3rd contestant peek | /home/rioyokota/website/tools/out/contestant-peek3.md | conversation-unknown | PASS
@@ -368,13 +360,8 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | coordinator | 5th contestant peek | tools/out/contestant-peek5.md | n/a | PASS
 2026-07-12 | coordinator | 6th contestant peek | tools/out/contestant-peek6.md | n/a | pass
 2026-07-12 | coordinator | record terra approval-wait timing credit | tools/judge/todo.md | <this session> | pass
-2026-07-12 | coordinator | timing protocol: approval-wait exclusion | tools/model-eval.md + tools/judge/todo.md | this session | PASS
 2026-07-12 | coordinator | 7th contestant peek | /home/rioyokota/website/tools/out/contestant-peek7.md | n/a | PASS
 2026-07-12 19:31:09 +0900 | codex-driver (codex-spark-low) | r2-fetch | /home/rioyokota/website/tools/out/r2-fetch.md | n/a | PASS
-2026-07-12 | codex-driver (gpt-5) | T-10 T-11 T-12 T-13 round-2 comparison | tools/out/driver-report-20260712-1934.md | n/a | awaiting-user
-2026-07-12 | coordinator | Round-2 judging + close | /home/rioyokota/website/tools/out/eval2-sol.md,/home/rioyokota/website/tools/out/eval2-terra.md,/home/rioyokota/website/tools/out/eval2-fable.md,/home/rioyokota/website/tools/out/eval2-opus.md,/home/rioyokota/website/tools/out/eval2-verdict.md,/home/rioyokota/website/tools/out/r2-external-forensics.md,/home/rioyokota/website/tools/out/r2-close.md | fetch:019f55e0-ee4a-7513-9b0f-de2b8b957e95; extract_sol:019f55e2-67b3-7780-8741-5d2865f329a9; extract_terra:019f55e2-de0f-7603-91f6-b4382ad0f6b5; extract_fable:019f55e3-7358-7110-b248-73ff8037664d; extract_opus:019f55e3-f75b-73b0-9969-e41bf3b7c159; forensics:019f55e4-8dbb-70d0-83ec-ed52b158f91a; verdict:019f55e6-0b82-7621-82b9-0ed29c81e2bc; close:this session | PASS
-2026-07-12 | coordinator | revert round-2 winner merge; archive deliverables | tools/out/r2-revert.md, tools/out/r2-deliverables/ | 1783853518 | outcome: PASS (pending owner preference)
-2026-07-12 | coordinator | revert round-2 winner merge; archive deliverables | tools/out/r2-revert.md, tools/out/r2-deliverables/ | 1783853520 | outcome: PASS (pending owner preference)
 2026-07-12 | codex-driver (gpt-5) | T-10 T-11 T-12 selective Sol apply; T-13 declined | tools/out/driver-report-20260712-2003.md | n/a | done; no publish/push/config apply
 2026-07-12 | codex-driver (gpt-5) | T-11 applied verification and cold-restart handoff | tools/out/driver-report-20260712-2024.md | n/a | done; restart ready
 2026-07-12 | codex-driver (GPT-5) | no task; cold-start resume verification | tools/out/driver-report-20260712-2032.md | n/a | idle-ready
@@ -386,7 +373,6 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-12 | codex-driver (gpt-5) | T-16 harden publish pipeline | tools/out/driver-report-20260712-2202.md | n/a | done; repository-only push pending; no deploy
 2026-07-12 | codex-driver (gpt-5) | T-17 real-browser consent regression coverage | tools/out/driver-report-20260712-2219.md | n/a | done; repository-only push pending; no deploy
 2026-07-12 | codex-driver (gpt-5) | T-22 field reconciliation | tools/out/driver-report-20260712-2241.md | n/a | awaiting owner review; safe local fixes ready to push
-2026-07-12 | codex-driver (gpt-5) | T-20 preview portability; T-21 native delegation policy and benchmark | tools/out/driver-report-20260712-2324.md | n/a | done; repository-only push pending
 2026-07-12 | codex-driver (gpt-5) | T-18 record owner-confirmed GA4 privacy settings | tools/out/driver-report-20260712-2331.md | n/a | done; ledger clear
 2026-07-12 | codex-driver (gpt-5) | T-23 remove legacy Dreamweaver templates and markers | tools/out/driver-report-20260712-2348.md | n/a | done; published and live-verified 9636ff7
 2026-07-13 | codex-driver (gpt-5) | T-24 remove stale evaluation, archive, report, and cache artifacts | tools/out/driver-report-20260713-0012.md | n/a | done; repository-only push pending
@@ -399,16 +385,3 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-13 | codex-driver (gpt-5) | T-30 third-party and test-tool supply chain | tools/out/driver-report-20260713-0006.md | n/a | done; hashes/lock/audit/staging verified, push pending
 2026-07-13 | codex-driver (gpt-5) | T-31–T-107 continuous conservative modernization | tools/out/driver-report-20260713-0453.md | n/a | done; pushed and release-ready, post-T-60 live publication pending user/Claude
 2026-07-13 | codex-driver (gpt-5) | T-108 approved live publication and verification | tools/out/driver-report-20260713-0607.md | n/a | done; bd662c7 live, 45/45 bytes match, known T-28 sentinel only
-2026-07-13 | codex-driver | T-109 compare SWE-bench Multimodal and WebDev Arena | tools/out/t109-coding-benchmarks.md | /root/t21_benchmark | complete
-2026-07-13 | codex-driver | T-110 design five repository benchmark capsules | tools/out/t110-task-capsules.md | /root/t21_benchmark | complete
-2026-07-13 | codex-driver | T-111 implement benchmark task manifest and operations | tools/out/t111-task-ops-report.md | /root/t21_benchmark | complete
-2026-07-13 | codex-driver | T-113 implement v2 task metrics schema and utility | tools/out/t113-metrics-report.md | /root/t21_benchmark | complete
-2026-07-13 | codex-driver (gpt-5) | T-109–T-135 web-development benchmark and token optimization | tools/out/driver-report-20260713-0910.md | n/a | complete; final 5/5 at 100, pushed and remote-verified
-2026-07-13 | codex-driver (gpt-5) | T-136 benchmark-round cleanup and next-round handoff | tools/out/driver-report-20260713-1059.md | n/a | complete; canonical round retained, transient scratch pruned, artifact audit 61/61
-2026-07-13 | codex-driver (gpt-5) | T-137 Claude agentic-harness benchmark preparation | tools/out/driver-report-20260713-1139.md | n/a | handoff-ready; three frozen arms, no-model preflight pass, Claude execution pending
-2026-07-13 | codex-driver | T-138 benchmark logging and completeness audit | tools/out/t138-log-audit.md | /root/t138_log_audit | complete; validators pass, four confirmed logging/reporting defects
-2026-07-13 | codex-driver (GPT-5 Codex) | T-138 benchmark logging and Claude/Codex comparison | tools/out/driver-report-20260713-1431.md | n/a | complete; held-out ranking invalid, clean visible comparison delivered
-2026-07-13 | codex-driver (GPT-5 Codex) | T-139 corrected Claude dynamic Fable/max rerun preparation | tools/out/driver-report-20260713-1454.md | n/a | handoff-ready; zero-token preflight pass, five-run plan frozen, Claude execution pending
-2026-07-13 | claude-driver (fable/max) | T-139 corrected Claude dynamic Fable/max rerun execution | tools/out/driver-report-20260713-1526.md | n/a | complete; 1/5 pass (WBD-001 100), 4/5 generator error_max_budget_usd, held-out never exposed, standalone cohort, settings restored
-2026-07-13 | codex-driver | T-140 independent Fable artifact audit | tools/out/t140-independent-artifact-audit.md | /root/t140_artifact_audit | complete; cohort reconciled, held-out wording and failure-phase mismatch flagged, closeout row redundant
-2026-07-13 | codex-driver (GPT-5 Codex) | T-140 Fable evaluation handoff verification | tools/out/driver-report-20260713-1714.md | n/a | complete; 7140f44 verified on origin/main, 1/5 Fable cohort reconciled, two reporting defects isolated
