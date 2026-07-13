@@ -8,62 +8,6 @@ The public URL tree is intentionally stable. Edit pages in place rather than
 moving them. The `en/` and `jp/` trees mirror one another so the language switch
 can replace one prefix with the other.
 
-## GPT-5.6 benchmark results (July 2026)
-
-The repository benchmark ran 90 frozen singleton cells (five tasks × three
-models × six efforts) followed by 83 adaptive matched repeats. The final 173
-runs produced 154 full-quality results. This is a YOKOTA Lab website-maintenance
-benchmark, not a general model leaderboard; `effective_tokens` excludes cached
-input and is a planning proxy, not monetary cost.
-
-### Recommended dispatch routes
-
-Reliability confidence gates route selection before runtime or token use. The
-runtime objective is the default; every implementation still requires the
-linked policy's independent validation.
-
-| Measured task class | Runtime / reliability route (expected time) | Effective-token route (expected tokens) | Evidence |
-| --- | --- | --- | --- |
-| WBD-001 — bilingual legacy-HTML semantics | `gpt-5.6-terra` / low (57.0 s) | `gpt-5.6-terra` / low (11,444) | 6/6, high-confidence |
-| WBD-002 — mirrored secure accessible links | `gpt-5.6-luna` / low (94.0 s) | `gpt-5.6-sol` / low (14,867) | both 6/6, high-confidence |
-| WBD-003 — security/privacy JavaScript | `gpt-5.6-terra` / low (35.6 s) | `gpt-5.6-sol` / low (12,355) | both 6/6, high-confidence |
-| WBD-004 — responsive CSS visual contracts | `gpt-5.6-luna` / low (59.0 s) | `gpt-5.6-sol` / low (21,394) | both 6/6, high-confidence |
-| WBD-005 — cross-cutting shared assets | `gpt-5.6-sol` / high (249.1 s) | `gpt-5.6-sol` / high (45,053) | 8/9, qualified; full grader mandatory |
-
-### Frozen singleton comparison
-
-These descriptive aggregates use the 90-cell matrix only. Medians include
-full-quality cells and are not substitutes for the confidence-backed routes
-above.
-
-| Model | Full-quality cells | Median total time | Median effective tokens |
-| --- | ---: | ---: | ---: |
-| `gpt-5.6-luna` | 29/30 | 110.1 s | 24,322 |
-| `gpt-5.6-terra` | 26/30 | 101.1 s | 22,692 |
-| `gpt-5.6-sol` | 29/30 | 118.7 s | 19,823 |
-
-| Effort | Full-quality cells | Median total time | Median effective tokens |
-| --- | ---: | ---: | ---: |
-| low | 15/15 | 69.4 s | 12,141 |
-| medium | 13/15 | 77.2 s | 18,867 |
-| high | 14/15 | 102.0 s | 23,545 |
-| xhigh | 13/15 | 127.6 s | 22,199 |
-| max | 14/15 | 134.3 s | 25,992 |
-| ultra | 15/15 | 131.8 s | 32,103 |
-
-Low was the only documented effort to pass all 15 singleton cells and was best
-in aggregate. All 15 capability-gated `ultra` cells passed, but every ultra
-route was dominated by another effort on its task. See the
-[full matrix summary](tools/agent-benchmark/gpt56-full-20260713.summary.md),
-[adaptive repeat summary](tools/agent-benchmark/gpt56-repeat-20260714.summary.md),
-and [versioned routing policy](tools/agent-benchmark/routing-policy.json) for
-methods, intervals, failures, fallback chains, and exact values. Query the
-policy with, for example:
-
-```sh
-python3 tools/agent-benchmark/select_route.py --task WBD-003 --objective runtime
-```
-
 ## Quickstart
 
 GitHub write access and web-server credentials are provisioned separately by
@@ -240,3 +184,59 @@ SFTP web root with deletion. Only `.htaccess`, `index.html`, `style.css`,
 - Add `rel="noopener noreferrer"` to new `target="_blank"` links.
 - Publish or push only after role, scope, verification, rebase, and applicable
   dry-run gates pass.
+
+## GPT-5.6 benchmark results (July 2026)
+
+The repository benchmark ran 90 frozen singleton cells (five tasks × three
+models × six efforts) followed by 83 adaptive matched repeats. The final 173
+runs produced 154 full-quality results. This is a YOKOTA Lab website-maintenance
+benchmark, not a general model leaderboard; `effective_tokens` excludes cached
+input and is a planning proxy, not monetary cost.
+
+### Recommended dispatch routes
+
+Reliability confidence gates route selection before runtime or token use. The
+runtime objective is the default; every implementation still requires the
+linked policy's independent validation.
+
+| Measured task class | Runtime / reliability route (expected time) | Effective-token route (expected tokens) | Evidence |
+| --- | --- | --- | --- |
+| WBD-001 — bilingual legacy-HTML semantics | `gpt-5.6-terra` / low (57.0 s) | `gpt-5.6-terra` / low (11,444) | 6/6, high-confidence |
+| WBD-002 — mirrored secure accessible links | `gpt-5.6-luna` / low (94.0 s) | `gpt-5.6-sol` / low (14,867) | both 6/6, high-confidence |
+| WBD-003 — security/privacy JavaScript | `gpt-5.6-terra` / low (35.6 s) | `gpt-5.6-sol` / low (12,355) | both 6/6, high-confidence |
+| WBD-004 — responsive CSS visual contracts | `gpt-5.6-luna` / low (59.0 s) | `gpt-5.6-sol` / low (21,394) | both 6/6, high-confidence |
+| WBD-005 — cross-cutting shared assets | `gpt-5.6-sol` / high (249.1 s) | `gpt-5.6-sol` / high (45,053) | 8/9, qualified; full grader mandatory |
+
+### Frozen singleton comparison
+
+These descriptive aggregates use the 90-cell matrix only. Medians include
+full-quality cells and are not substitutes for the confidence-backed routes
+above.
+
+| Model | Full-quality cells | Median total time | Median effective tokens |
+| --- | ---: | ---: | ---: |
+| `gpt-5.6-luna` | 29/30 | 110.1 s | 24,322 |
+| `gpt-5.6-terra` | 26/30 | 101.1 s | 22,692 |
+| `gpt-5.6-sol` | 29/30 | 118.7 s | 19,823 |
+
+| Effort | Full-quality cells | Median total time | Median effective tokens |
+| --- | ---: | ---: | ---: |
+| low | 15/15 | 69.4 s | 12,141 |
+| medium | 13/15 | 77.2 s | 18,867 |
+| high | 14/15 | 102.0 s | 23,545 |
+| xhigh | 13/15 | 127.6 s | 22,199 |
+| max | 14/15 | 134.3 s | 25,992 |
+| ultra | 15/15 | 131.8 s | 32,103 |
+
+Low was the only documented effort to pass all 15 singleton cells and was best
+in aggregate. All 15 capability-gated `ultra` cells passed, but every ultra
+route was dominated by another effort on its task. See the
+[full matrix summary](tools/agent-benchmark/gpt56-full-20260713.summary.md),
+[adaptive repeat summary](tools/agent-benchmark/gpt56-repeat-20260714.summary.md),
+and [versioned routing policy](tools/agent-benchmark/routing-policy.json) for
+methods, intervals, failures, fallback chains, and exact values. Query the
+policy with, for example:
+
+```sh
+python3 tools/agent-benchmark/select_route.py --task WBD-003 --objective runtime
+```

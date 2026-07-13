@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-156.
+`tools/state/session.md`. Next free id: T-157.
 
 ## Active
 
@@ -13,6 +13,10 @@ None.
 
 ## Recently completed
 
+- **T-156 — Move benchmark results to README bottom:** moved the complete
+  GPT-5.6 benchmark section from near the top of `README.md` to the final
+  section, with byte count and normalized section hash unchanged. Verified
+  headings, links, policy, Markdown budgets, and security; push-only.
 - **T-155 — Housekeeping and fresh-task reset:** fast-forwarded the declared
   workspace by 24 commits, passed repository/ledger/security/benchmark checks,
   restored four exact historical reports needed by log and metric pointers,
