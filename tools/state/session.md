@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-13T23:36+0900
+updated: 2026-07-13T23:42+0900
 task: T-148 Complete the ultra rows
 status: in-progress
 
@@ -38,7 +38,11 @@ status: in-progress
   probes, 78 runs, artifact directories, and metric pointers reconcile with
   78 v2 metrics. The documented dry-run reports zero pending cells.
 - T-148 in progress: run the 12 remaining ultra cells in task blocks, then
-  audit the exact 90-cell matrix. Next frozen block: WBD-003 ultra.
+  audit the exact 90-cell matrix. WBD-003 ultra is complete: all three models
+  passed score 100, but Terra/ultra at 68,045 ms and Sol/ultra at 12,251 tokens
+  are still dominated by the documented low-effort leaders. Ultra progress is
+  3/12 new rows; 81 runs/artifacts/metric pointers reconcile with 81 v2 rows.
+  Next frozen block: WBD-005 ultra.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
