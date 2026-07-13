@@ -1,11 +1,11 @@
 driver: codex
-updated: 2026-07-13T09:31+0900
+updated: 2026-07-13T09:34+0900
 task: none
 status: idle
 
 ## Now
 - Goal: complete, including post-change full-suite output verification.
-- Last done: T-131 passed Python/Node syntax, both CLI surfaces, formal draft-2020-12 validation of all 515 metrics rows, and idempotent driver bookkeeping.
+- Last done: T-132 passed final local/remote parity, zero public-tree diff, ignored report/artifact presence, range whitespace, and commit-history handoff checks.
 - Next: none.
 
 ## Working set

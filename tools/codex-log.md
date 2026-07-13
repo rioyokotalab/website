@@ -403,4 +403,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-13 | codex-driver | T-110 design five repository benchmark capsules | tools/out/t110-task-capsules.md | /root/t21_benchmark | complete
 2026-07-13 | codex-driver | T-111 implement benchmark task manifest and operations | tools/out/t111-task-ops-report.md | /root/t21_benchmark | complete
 2026-07-13 | codex-driver | T-113 implement v2 task metrics schema and utility | tools/out/t113-metrics-report.md | /root/t21_benchmark | complete
-2026-07-13 | codex-driver (gpt-5) | T-109–T-131 web-development benchmark and token optimization | tools/out/driver-report-20260713-0910.md | n/a | complete; final 5/5 at 100, repository-only push pending
+2026-07-13 | codex-driver (gpt-5) | T-109–T-132 web-development benchmark and token optimization | tools/out/driver-report-20260713-0910.md | n/a | complete; final 5/5 at 100, pushed and remote-verified
