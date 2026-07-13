@@ -5,13 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-### T-142 — Remove Claude project and runtime configuration
-
-After T-141, remove current-tree Claude entry points and project configuration
-(`CLAUDE.md`, `.claude/`, Claude-only MCP wiring and generators), then repair
-Codex-only instructions and configuration checks without touching owner-scope
-settings or Git history.
-
 ### T-143 — Remove Claude benchmark machinery and retained data
 
 After T-142, remove Claude-only runners, profiles, results, exclusions, round
@@ -32,6 +25,12 @@ None.
 
 ## Recently completed
 
+- **T-142 — Remove Claude project and runtime configuration:** removed 20
+  tracked runtime/config/registry/dispatch paths (74,489 bytes) plus the
+  untracked project-local settings file; replaced root setup, AGENTS, delegation,
+  ledger, config, lookup, and publish contracts with Codex-only versions; made
+  the retained benchmark route self-contained. Selftest, five-capsule audit,
+  Python compile, metrics validation, Markdown budgets, and diff checks pass.
 - **T-141 — Decommission inventory and immediate cleanup:** mapped 47 tracked
   keyword-hit files (820,326 bytes) plus `.mcp.json`, classified T-142–T-144
   dependencies, removed 17 completed top-level scratch files (133,343 bytes),

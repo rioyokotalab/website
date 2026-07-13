@@ -1,32 +1,33 @@
 driver: codex
-updated: 2026-07-13T17:39+0900
-task: T-142 Remove Claude project and runtime configuration
+updated: 2026-07-13T17:59+0900
+task: T-143 Remove Claude benchmark machinery and retained data
 status: in-progress
 
 ## Now
-- T-141 complete: current-tree inventory found 47 tracked keyword-hit files
-  (820,326 bytes) plus `.mcp.json`; exact T-142--T-144 groups recorded. The
-  delegated classifier stalled after discovery and was interrupted; root
-  reproduced and completed the classification.
-- Immediate cleanup removed 17 completed top-level benchmark reports/plans
-  (133,343 bytes). Todo/facts/decisions were compacted from roughly 16 KB to
-  roughly 3 KB. Pointer-backed raw artifact trees remain until T-143.
-- Next: delete active project/runtime integration and obsolete MCP/dispatch
-  machinery, then rewrite the Codex-facing config/driver instructions so the
-  intermediate tree remains operable.
+- T-142 complete: removed 20 tracked active integration/config/MCP/registry
+  paths (74,489 bytes) and one untracked project-local settings file. Replaced
+  AGENTS, README, delegation, ledger, config, lookup, publish, and skill-index
+  text with Codex-only contracts.
+- `benchmark.py` now reads model/effort from each task instead of the deleted
+  registry. Selftest, all five capsule audits, compile, metrics validation,
+  Markdown budgets, reference checks, and diff checks pass.
+- Next: remove provider-specific benchmark implementation/results and the
+  completed comparison record set, clear associated metrics/pointers, delete
+  both raw artifact trees and local evaluation branches, then rerun the
+  provider-neutral suite checks.
 
 ## Working set
-- `tools/out/t141-claude-removal-inventory.md`
-- `tools/out/t141-benchmark-cleanup-inventory.md`
-- `.claude/`, `CLAUDE.md`, `.mcp.json`
-- `AGENTS.md`, `.gitignore`, root/shared configuration playbooks
-- MCP/worker-registry generation and dispatch files named in the inventory
-- Verify: current-tree path/reference scan, Git diff/status, Markdown budgets,
-  Codex delegation/config documentation consistency.
+- `skills/claude-benchmark.md`, `tools/state/ab-round4.md`
+- `tools/agent-benchmark/` provider-specific and completed result/round files
+- `tools/task-metrics.jsonl`, `tools/codex-log.md`
+- `tools/out/agent-benchmark/`, `tools/out/claude-benchmark/`
+- Local `eval/r1-*` and `eval/r2-*` branches; remote remains main-only
+- Verify: runner selftest/audit with empty history, metrics validation, zero
+  stale artifact pointers, branch inventory, exact file/byte removal counts.
 
 ## Open questions
-- None blocking. Owner-scope settings and `.git` internals remain excluded;
-  Git history remains intact.
+- None blocking. Provider-neutral task definitions, grader, runner, and failure
+  taxonomy are retained for future Codex regression use.
 
 ## Awaiting user
 - None.

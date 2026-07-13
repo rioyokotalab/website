@@ -311,13 +311,12 @@ def run_codex(task: dict[str, Any], task_id: str, workspace: Path, artifact: Pat
 
 def task_route(task: dict[str, Any], model: str | None, effort: str | None,
                worker_override: str | None = None) -> tuple[str, str, str]:
-    registry = json.loads((ROOT / "tools" / "codex-workers.json").read_text(encoding="utf-8"))
-    workers = registry["workers"] if "workers" in registry else registry
     worker_name = worker_override or task.get("default_worker") or task["worker"]
-    if worker_name not in workers:
-        raise ValueError(f"unknown worker: {worker_name}")
-    worker = workers[worker_name]
-    return model or worker["model"], effort or worker["effort"], worker_name
+    task_model = task.get("model")
+    task_effort = task.get("effort")
+    if not isinstance(task_model, str) or not isinstance(task_effort, str):
+        raise ValueError("task must define model and effort")
+    return model or task_model, effort or task_effort, str(worker_name)
 
 
 def append_result(result: dict[str, Any]) -> None:

@@ -1,9 +1,3 @@
-# Claude Code local settings (except the agent definitions, which are shared)
-.claude/*
-!.claude/agents/
-!.claude/benchmark-profiles/
-!.claude/benchmark-profiles/**
-
 # Editor and OS junk
 .DS_Store
 Thumbs.db

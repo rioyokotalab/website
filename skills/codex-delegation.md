@@ -1,69 +1,74 @@
 # Skill: native Codex delegation
 
-Use this skill only for a directly started Codex DRIVER. Claude-dispatched MCP
-workers continue to follow `skills/codex-dispatch.md` and do not gain DRIVER
-authority.
+Use this skill for a directly started Codex DRIVER and its bounded native
+subagents.
 
 ## Delegate only when it saves context
 
 Stay solo when a task is small, depends on the root's recent reasoning, changes
 security/configuration, is inherently serial, or would take less effort than a
-prompt plus review. Delegate a bounded subtask when it can be described with
-repository paths and an exact deliverable, runs independently, and would
-otherwise load substantial source or noisy command output into the root
-context.
+prompt plus review. Delegate when the subtask can be described with repository
+paths and an exact deliverable, runs independently, and would otherwise load
+substantial source or noisy output into root context.
 
-Default to one subagent. Use at most two concurrently, and only for independent
+Default to one subagent. Use at most two concurrently, only for independent
 subtasks with separate output files and non-overlapping write scopes. Use the
-smallest useful context fork (`none` for fully on-disk tasks; a short recent
-fork only when necessary). Prompts cite `AGENTS.md`, relevant `skills/`, ledger
-task IDs, source paths, and the exact delta rather than copying file contents.
-For a local textual change with explicit acceptance in a large file, give the worker a task-specific search
-literal and cap source inspection at 40 surrounding lines; explicitly require
-the named playbook's preservation/edit method. Avoid generic syntax searches,
-which can emit most of the file while appearing bounded. Do not apply this cap
-to reference-driven visual work or diagnosis; both need broader context.
+smallest useful context fork. Prompts cite `AGENTS.md`, relevant `skills/`,
+ledger task IDs, source paths, and the exact delta rather than copying payloads.
+
+For a local textual change with explicit acceptance in a large file, give the
+worker a task-specific search literal and cap inspection at 40 surrounding
+lines. Diagnosis, reference-driven visual work, and broad refactors are exempt.
 
 ## Authority boundary
 
 Subagents may read, analyze, test, and write their assigned `tools/out/`
 deliverable or explicitly assigned non-overlapping implementation files. They
-never edit `tools/state/session.md`, project or owner configuration, credentials,
+never edit `tools/state/session.md`, project/owner configuration, credentials,
 `.git` internals, or unrelated files. They never publish, deploy, push, make
 external account writes, or decide ambiguous conflicts. The root DRIVER owns
-all user communication, ledger checkpoints, integration, commits, publishing,
-and final judgment.
+user communication, ledger, integration, commits, publishing, and judgment.
 
-## Handoff and review
+## Output contract
 
-For analysis, prefer output-file-first: the deliverable ends with a populated
-`## Structured result` block as defined in `skills/codex-dispatch.md`. For a
-code edit, require changed-file and verification summaries. The root confirms
-the deliverable exists, inspects the actual diff or evidence, spot-checks at
-least one material claim independently, runs proportional integration tests,
-and rejects or corrects incomplete work. Never accept a subagent's assertion as
-verification of its own work.
+For analysis, prefer output-file-first. Append long or interruption-prone work
+incrementally. End the deliverable with a final `## Structured result` block
+containing these populated fields in order:
 
-Record delegated work with schema v2 (`tools/task-metrics.schema.json`) when the
-runtime reports it. Include worker and root-review cost: actual token categories,
-prompt/instruction bytes, completed/failed commands and output size, setup/
-worker/grader/review durations, retries, score/gates, and failure phase. Raw
-trajectories stay under `tools/out/`; the metrics line stores only their pointer.
-Do not claim token savings without matched measured telemetry. When telemetry is
-unavailable, use `null` and record only observable proxies; never silently treat
-unknown tokens or review time as zero.
+- `status`
+- `summary`
+- `changed_files`
+- `commands`
+- `verification`
+- `evidence` (confirmed facts separate from hypotheses)
+- `remaining`
 
-Use `tools/task-metrics.py compare` for promotion decisions. Its default strict
-mode requires the same tasks, repeat counts, and task versions; inspect its
-route/mode dimensions, capability failures, token ranges, output/command cost,
-durations, warnings, and raw artifact pointers before accepting its recommendation.
+The last delegated action appends exactly one newline-safe line to
+`tools/codex-log.md`:
+`date | calling agent | task | output file | conversationId | outcome`.
 
-## Decision checklist
+Short instrumented edits may use runner-captured mode when the runner durably
+retains raw JSONL, stderr, patch, independent grade, metrics, and final response.
+Use schema-free worker output when the independent grader is authoritative.
+Never use this mode for lookup batches, long/incremental work, or tasks whose
+recovery depends on an output file.
 
-Delegate only if every answer is yes:
+## Root review
+
+The root confirms the deliverable exists, inspects the actual diff/evidence,
+spot-checks at least one material claim independently, and runs proportional
+integration tests. Never accept a subagent's assertion as verification of its
+own work.
+
+Record delegated work with schema v2 when runtime telemetry exists. Include
+actual token categories, commands/output, durations, retries, gates, and raw
+artifact pointers. Unknown values are null, never zero. Do not claim savings
+without matched telemetry.
+
+Delegate only when all answers are yes:
 
 1. Is the subtask independent and bounded?
 2. Can on-disk pointers supply nearly all context?
 3. Is its write scope absent or disjoint?
-4. Is root review cheaper than doing the whole subtask in root context?
+4. Is root review cheaper than doing the work locally?
 5. Can the root independently verify the material result?

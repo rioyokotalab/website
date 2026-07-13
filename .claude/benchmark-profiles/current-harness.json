@@ -1,9 +1,0 @@
-{
-  "variant": "current-harness",
-  "mode": "project",
-  "fixture_ref": "3364e2c3617b1fa0d0d044a8d5a5d1af3faa548d",
-  "config_ref": "3364e2c3617b1fa0d0d044a8d5a5d1af3faa548d",
-  "entry_agent": "site-coordinator",
-  "disable_operational_hooks": true,
-  "description": "Frozen pre-experiment CLAUDE.md, project agents, routing policy, and Codex MCP offload harness. Paths are rebound to the isolated fixture; publish/deploy entry points and lifecycle hooks are disabled."
-}

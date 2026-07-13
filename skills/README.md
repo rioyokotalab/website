@@ -1,32 +1,24 @@
-# Skills — shared playbooks for Claude agents and codex workers
+# Skills — repository playbooks
 
-One canonical copy of every recurring procedure. Claude agents `Read` the
-skill files matching the task before acting; codex workers read the same
-files when the task or AGENTS.md points to them. Dispatches cite skill paths
-(e.g. "apply skills/html-editing.md") instead of restating rules.
+Keep one canonical copy of each recurring procedure. Codex reads only the
+playbooks matching the task; dispatches cite paths instead of restating rules.
 
-Repo-only: `skills/` is absent from the positive deployment allowlist.
-Skills are normal git-tracked files, NOT hand-edit-only: when a convention
-changes, update the matching skill in the same change set.
+Skills are tracked and deploy-excluded. Update the matching skill whenever a
+convention changes.
 
 | Skill | Use when |
 | --- | --- |
-| html-editing.md | any edit to page HTML, CSS, or templates |
-| en-jp-parity.md | any content change, translation, or parity check |
-| achievements.md | achievements entries, data-* attributes, citations |
-| news-and-members.md | news items, member add/remove, alumni |
-| web-lookup.md | any network lookup (Crossref, DBLP, arXiv, J-STAGE, ...) |
-| codex-dispatch.md | every codex delegation (contract, output, logging) |
-| context-ledger.md | session start/end checkpoints, cross-session state, claude<->codex handoff |
-| publish-and-verify.md | preview, publish approval, live verify, deploy auth |
-| config-proposals.md | task-scoped project config edits, owner-scope proposals, tools/out lifecycle |
-| settings-scope.md | placing Claude Code settings across user/project/local scopes |
-| exporters.md | researchmap / ORCID / cv.tex sync and exports |
-| figures.md | figure production for research pages |
+| `html-editing.md` | page HTML, CSS, or template edits |
+| `en-jp-parity.md` | bilingual content or parity checks |
+| `achievements.md` | achievement entries and citations |
+| `news-and-members.md` | news, members, and alumni |
+| `web-lookup.md` | external factual lookup |
+| `codex-delegation.md` | native subagent dispatch and handoff |
+| `context-ledger.md` | session checkpoints and durable state |
+| `publish-and-verify.md` | preview, push, publish, and live verification |
+| `config-proposals.md` | project config, owner proposals, output lifecycle |
+| `exporters.md` | researchmap, ORCID, and CV operations |
+| `figures.md` | research-page figure production |
 
-Default skills per agent (read the ones the task touches):
-- site-editor: html-editing, en-jp-parity, achievements, news-and-members, codex-dispatch
-- site-checker: en-jp-parity, web-lookup, publish-and-verify, codex-dispatch
-- site-author: achievements, news-and-members, en-jp-parity, web-lookup, exporters, figures, codex-dispatch
-- site-publisher: publish-and-verify
-- site-coordinator / site-rescue: codex-dispatch, config-proposals, context-ledger, plus whatever the task touches
+For normal site edits, start with `html-editing.md` and `en-jp-parity.md`, then
+load only the content-specific procedures needed by the task.

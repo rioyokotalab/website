@@ -1,124 +1,74 @@
 # Skill: context ledger — cross-session working memory
 
-Goal: NO task may depend on chat context to survive. A fresh session —
-Claude (CLAUDE.md) or codex (AGENTS.md) — reconstructs all in-flight work
-from these files alone. Restarts and claude<->codex handoffs are the
-normal case, not the exception.
+No task may depend on chat context to survive. A fresh Codex session
+reconstructs all in-flight work from the ledger.
 
 ## File map and routing
 
 | File | Holds | Budget (bytes) |
 | --- | --- | --- |
-| tools/todo.md | task board: Active / Blocked-awaiting-user / Recently completed; stable ids T-<n> | 8000 |
-| tools/state/session.md | THE handoff file: current task, last/next step, working set, open questions, pending asks; overwrite in place — it means "now" | 4000 |
-| tools/state/facts.md | current facts: site quirks, cluster numbers, exporter/service behavior, environment | 10000 |
-| tools/state/decisions.md | durable decisions + one-line rationale, dated, newest first | 10000 |
-| tools/codex-log.md | dispatch/driver session log (existing format) | — |
-| tools/out/ | transient deliverables/scratch (gitignored) | — |
+| `tools/todo.md` | Active / blocked / recently completed tasks | 8000 |
+| `tools/state/session.md` | Current task, last/next step, working set, asks | 4000 |
+| `tools/state/facts.md` | Current verified facts | 10000 |
+| `tools/state/decisions.md` | Durable choices and rationale | 10000 |
+| `tools/codex-log.md` | Delegation/driver log | — |
+| `tools/out/` | Transient deliverables and scratch | — |
 
-Routing rule: procedures -> skills/*; tasks -> todo.md; "now" ->
-session.md; facts -> facts.md; choices+why -> decisions.md. Never grow
-one file with another's content. Over budget -> prune oldest or least
-relevant lines (git keeps history; never create archive copies). Budgets
-enforced by tools/check-md-size.py in the pre-commit hook (hook is
-untracked — reinstall after a fresh clone).
+Procedures belong in `skills/`; tasks in `todo.md`; current state in
+`session.md`; facts and decisions in their named files. Prune stale material
+when a budget is approached; Git keeps history.
 
-## Session start (both drivers)
-1. Read tools/todo.md + tools/state/session.md (always; they are tiny).
-2. If session.md holds an in-flight task: continue from its `Next:` after
-   verifying `Files:` against git status. One driver at a time: if the
-   OTHER driver updated session.md within ~1 hour, ask the user before
-   taking over.
-3. Read facts.md / decisions.md sections only as the task needs them.
+## Session start
 
-## Checkpoint triggers (update session.md in place)
-- Task start: task id, goal, plan sketch, working set.
-- After each completed step, significant discovery, or failure.
-- Before anything long or risky (publish, deploy, mass edit, big
-  dispatch).
-- At every turn end where state changed; at session end. Task finished ->
-  set `task: idle`, move one completion line to todo.md.
-- On user decisions: durable choice -> decisions.md; pending request ->
-  session.md "Awaiting user". Standing direct-DRIVER publish/push authority is
-  durable in decisions.md and the role playbook. Exceptional task-specific
-  permission outside standing scope (config apply, credentials, destructive or
-  material scope expansion) is conversation-scoped: record the ASK, never a
-  carried approval.
+1. Read `tools/todo.md` and `tools/state/session.md`.
+2. If another driver owns a recently updated in-flight task, ask before
+   takeover. Otherwise continue from `Next` after checking the working set
+   against Git status.
+3. Read facts/decisions only as the task needs them.
 
-## session.md schema (keep these headings exactly)
-    driver: claude | codex
-    updated: <ISO local time>
-    task: T-<n> <title> | idle
-    status: in-progress | blocked | awaiting-user | idle
-    ## Now            (goal / last done / next)
-    ## Working set    (files, tools/out paths, verify commands)
-    ## Open questions
-    ## Awaiting user
+## Checkpoints
 
-## todo.md schema
-`### T-<n> — <title>` under Active or Blocked / awaiting user; body:
-outcome definition + pointers (ledger paths, tools/out deliverable).
-Header line records the next free id. Completions: one line each under
-Recently completed, newest first, commit hash when known; prune past
-budget.
+Update `session.md` at task start, after each completed step/discovery/failure,
+before risky or long work, and at session end. When finished, set task/status
+to `idle` and move one compact completion entry to `todo.md`.
 
-## Commit rule
-Ledger files (tools/todo.md, tools/state/**) commit silently alongside
-whatever else is being committed, exactly like the bookkeeping trio;
-NEVER a dedicated commit, never prompt the user. Uncommitted ledger still
-survives restarts (disk persistence); commits are for history, not
-persistence.
+Keep these headings exactly:
 
-## Dispatch interface (drivers -> codex workers)
-- Prompts point at canonical on-disk state: skill paths, tools/state/*,
-  the todo.md task id, the task's prior tools/out/ file — plus the exact
-  task delta. Never restate file contents in prompts.
-- Workers read the cited paths before starting, append progress to their
-  own tools/out/<task> deliverable, and NEVER edit session.md — the
-  driver checkpoints. (A codex DRIVER is not a worker: it owns
-  session.md.)
+```text
+driver: codex
+updated: <ISO local time>
+task: T-<n> <title> | idle
+status: in-progress | blocked | awaiting-user | idle
+## Now
+## Working set
+## Open questions
+## Awaiting user
+```
 
-## Driver symmetry and handoff
-- Claude driver: CLAUDE.md. codex driver: AGENTS.md "Driving this repo".
-  Handoff = checkpoint session.md + stop; the next driver (either brand)
-  resumes at Session start step 2. Nothing else needs to transfer.
-- Codex drivers may use native subagents under `skills/codex-delegation.md`;
-  the root DRIVER alone owns `session.md`, checkpoints before delegation, and
-  verifies every result. Subagent handoffs live under `tools/out/`, not chat.
-- Driver bookkeeping in tools/task-metrics.jsonl uses agent claude|codex
-  and tier driver-claude|driver-codex; workers keep tier = worker name.
+`todo.md` uses stable `T-<n>` IDs and records the next free ID. Ledger files
+commit with the task; never create a ledger-only commit merely for persistence.
 
-## Driver session report (reviewer telemetry)
-Every driver session (claude or codex) ends by writing
-tools/out/driver-report-<YYYYMMDD-HHMM>.md (transient; the reviewer
-deletes it after grading) containing:
-- model + reasoning effort actually used; session start/end times.
-- Per task attempted: id, outcome (done | blocked | awaiting-user |
-  failed), files touched, verification commands run and their results; when
-  available include run id, capability/P2P/scope result, actual token categories,
-  prompt/instruction bytes, completed/failed commands and output size, and
-  setup/worker/grader/review durations.
-- Escalations: every sandbox/approval escalation requested (and whether
-  the user approved), every network fetch (URLs), every rule the session
-  could not follow and why.
-- Self-noted gaps: anything a reviewer should double-check.
-Metrics: one schema-v2 line PER instrumented task attempted, validated by
-`tools/task-metrics.py`; unknown telemetry stays null. Legacy v1 is retained
-only for uninstrumented/history compatibility. Benchmark rows record provider
-and CLI, task version, repository commit, prompt/handoff/inspection modes, and
-whether P2P ran. Claude configuration experiments additionally retain variant
-and config fingerprints, cache-creation and generation usage, native-agent and
-Codex-MCP calls, cost, and whether total-token telemetry is complete.
-Task-definition, grader, and runner fingerprints expose unversioned drift;
-strict comparisons reject task/grader mismatch while showing runner/config
-changes as experiment dimensions.
-Driver tier is driver-codex or
-driver-claude. Codex drivers append one legacy-compatible row per uninstrumented
-driver task with `tools/task-metrics.py append-driver --task-ids ... --report ...`;
-the command is idempotent for a task/report pair. codex-log line format for
-drivers: `date | <brand>-driver (<model>) | tasks | report path | n/a |
-outcome` (brand = claude or codex; claude drivers use agent "claude",
-tier "driver-claude"). The Claude review pass grades the report against git diff (not
-against session.md claims), records the verdict as a metrics line
-(task_type "other", note "driver-review: ..."), then deletes the report
-scratch.
+## Delegation and handoff
+
+The root DRIVER owns `session.md`. Workers receive on-disk pointers and never
+edit it. Worker deliverables live under `tools/out/`; prompts cite paths rather
+than copying file payloads. Native delegation follows
+`skills/codex-delegation.md`.
+
+## Driver report and metrics
+
+Every driver session ends with
+`tools/out/driver-report-<YYYYMMDD-HHMM>.md`, containing model/effort when
+exposed, start/end times, per-task outcome/files/checks, available runtime
+telemetry, escalations, network operations, rule exceptions, and self-noted
+gaps.
+
+Instrumented work uses schema v2 and validates with
+`python3 tools/task-metrics.py validate`; unknown telemetry is null. Codex
+drivers append one legacy-compatible row per uninstrumented task with
+`tools/task-metrics.py append-driver --task-ids ... --report ...`. The driver
+log line is:
+
+```text
+date | codex-driver (<model>) | tasks | report path | n/a | outcome
+```

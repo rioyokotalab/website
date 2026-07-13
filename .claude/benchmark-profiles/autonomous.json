@@ -1,7 +1,0 @@
-{
-  "variant": "autonomous",
-  "mode": "safe",
-  "fixture_ref": "3364e2c3617b1fa0d0d044a8d5a5d1af3faa548d",
-  "strip_project_configuration": true,
-  "description": "Claude Code safe mode with project CLAUDE.md, agents, hooks, MCP, plugins, and AGENTS.md removed from the fixture. Claude retains built-in tools and decides whether to use native agents."
-}
