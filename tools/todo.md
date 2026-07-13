@@ -5,11 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-- **T-153 — Close the eight-hour campaign:** benchmark execution ended after
-  all 83 adaptive rows completed. Before 2026-07-14T05:08+0900, finish the
-  independent audit, report aggregate runtime/tokens/failures/uncertainty,
-  checkpoint the ledger, commit and push tools-only results, and do not publish
-  the website.
+None.
 
 ## Blocked / awaiting user
 
@@ -17,6 +13,10 @@ None.
 
 ## Recently completed
 
+- **T-153 — Close the eight-hour campaign:** completed the scheduled window
+  with 173 reconciled results/artifacts/v2 metrics, deterministic summaries,
+  policy/mutation/capsule audits, six driver metrics rows, durable facts and
+  decisions, a final report, and tools-only pushes. No website publish ran.
 - **T-152 — Install the evidence-backed dispatch policy:** installed and
   validated policy `2026-07-14.3`, a strict selector, task-class validation and
   fallback chains, and a delegation-workflow lookup. All 15 task/objective
