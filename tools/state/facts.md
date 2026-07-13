@@ -12,3 +12,8 @@
   `denied-default`. Terra/low was fastest (25,045 ms total); Sol/low used the
   fewest effective tokens (8,298). These are provisional until ultra and
   matched-repeat evidence are available.
+- **WBD-001 complete matrix (single observations):** all 18 model/effort arms
+  passed at 100. Terra/medium was fastest (39,270 ms total, 10,671 effective
+  tokens); Luna/low used the fewest tokens (43,941 ms, 8,117 tokens). Those two
+  are the only initial score/runtime/token Pareto routes and need matched
+  repeats before selection.

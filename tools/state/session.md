@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-13T21:23+0900
+updated: 2026-07-13T21:49+0900
 task: T-147 Run all documented model/effort/task cells
 status: in-progress
 
@@ -15,8 +15,12 @@ status: in-progress
   Sol/xhigh scored 89 from failed `denied-default`. Provisional Pareto routes:
   Terra/low fastest at 25,045 ms total; Sol/low lowest effective tokens at
   8,298. Do not select until ultra and matched repeats are available.
-- Integrity checkpoint: 18 total runs/artifacts/metric pointers, no errors;
-  metrics contain 18 v2 rows. Next frozen block: WBD-001 documented (15 cells).
+- WBD-001 is complete across all 18 arms: 18/18 scored 100. Initial Pareto
+  frontier is Terra/medium fastest at 39,270 ms total and 10,671 effective
+  tokens versus Luna/low lowest-token at 43,941 ms and 8,117 tokens. All other
+  arms are dominated on score/runtime/tokens; both leaders require repeats.
+- Integrity checkpoint: 33 runs/artifacts/metric pointers, no errors; metrics
+  contain 33 v2 rows. T-147 is 30/75. Next frozen block: WBD-005 documented.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
