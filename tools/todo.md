@@ -7,9 +7,7 @@ id: T-126.
 
 ## Active
 
-- **T-117 — Final regression and recommendations**
-  - Run the final suite, summarize retained/rejected experiments, document remaining uncertainty, and update the canonical process files.
-  - Produce a driver report with reproducible evidence and recommendations for the next benchmark expansion.
+None.
 
 ## Blocked / awaiting user
 
@@ -17,6 +15,7 @@ None.
 
 ## Recently completed
 
+- **T-117 — Final regression complete:** visible 4/4 and held-out 1/1 score 100; visible effective tokens fell 69.9% and tool output 80.7% versus baseline, with a conservative same-version three-task saving of 60.5% (`tools/out/t117-final.md`).
 - **T-125 — Browser-test access logs suppressed:** Playwright uses a quiet local handler so routine asset requests do not consume driver context; fatal server errors, test failures, traces, and reporter summaries remain visible.
 - **T-124 — Compact artifact query added:** `benchmark.py show RUN_ID` returns the decision view from raw artifacts/results without injecting full grader tails; `--verbose-result` remains available.
 - **T-123 — Compact run responses retained:** decision stdout is 82–86% smaller on final artifacts while complete browser/grader evidence remains available by pointer and `--verbose-result` (`tools/out/t123-compact-run-output.md`).

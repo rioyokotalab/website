@@ -1,12 +1,12 @@
 driver: codex
-updated: 2026-07-13T09:30+0900
-task: T-117
-status: in_progress
+updated: 2026-07-13T09:15+0900
+task: none
+status: idle
 
 ## Now
-- Goal: spend the three-hour window ending about 2026-07-13T09:44+0900 establishing a defensible web-development regression suite, then iteratively reduce Codex token use without degrading capability and improve logging so future routing decisions are evidence-based.
-- Last done: completed T-125. Quiet-server analytics/runtime-health smoke passed 5/5 in 39.3 seconds with about 200 output tokens and no access lines; the prior full suite passed 37/37.
-- Next: write final benchmark/recommendation and driver reports, close the ledger/metrics, commit, pull/rebase, and push deploy-excluded changes.
+- Goal: complete. The repository now has a capability-gated, cost-instrumented web-development benchmark plus retained token/logging optimizations.
+- Last done: T-117 final visible 4/4 and held-out 1/1 scored 100; reports are `tools/out/t117-final.md` and `tools/out/driver-report-20260713-0910.md`. Full 37-test and quiet 5-test browser runs plus all static/audit checks pass.
+- Next: none.
 
 ## Working set
 - `tools/todo.md`
@@ -22,7 +22,7 @@ status: in_progress
 - `tools/task-metrics.schema.json`
 
 ## Open questions
-- Whether any repository-wide check exposes an integration regression in the benchmark, logging, or standards tooling before push.
+- Root manual review duration remains unavailable to the runtime; benchmark/grader/runner time is captured.
 
 ## Awaiting user
 - None.
