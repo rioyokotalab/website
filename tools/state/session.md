@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T00:19+0900
+updated: 2026-07-14T00:27+0900
 task: T-148 Complete the ultra rows
 status: in-progress
 
@@ -59,6 +59,11 @@ status: in-progress
   and the identical stable id reran successfully with a 64,557 ms grade.
   Ultra progress is 6/12 new rows; 84 runs/artifacts/metric pointers reconcile
   with 84 v2 rows. Next frozen block: WBD-002 ultra.
+- WBD-002 ultra complete: all three models passed score 100, but all are
+  dominated. Luna/ultra was best among them at 132,830 ms and 27,819 effective
+  tokens versus Luna/low at 76,818 ms and 12,141 tokens. Ultra progress is
+  9/12 new rows; 87 runs/artifacts/metric pointers reconcile with 87 v2 rows.
+  Next frozen block: WBD-004 ultra.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`

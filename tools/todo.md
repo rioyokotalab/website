@@ -9,11 +9,11 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   accept `ultra` and recorded their passing WBD-001 cells. Run WBD-002 through
   WBD-005 once for all three models at `ultra` (12 remaining cells), using the
   same frozen settings and P2P gates, to complete the requested 90-cell matrix.
-  Progress: WBD-003 and WBD-005 ultra complete; all six arms passed but were
-  dominated. The first local Sol/WBD-005 grade lacked Chromium, so its
+  Progress: WBD-003, WBD-005, and WBD-002 ultra complete; all nine arms passed
+  but were dominated. The first local Sol/WBD-005 grade lacked Chromium, so its
   uncommitted infrastructure-contaminated row was rolled back and rerun under
-  the same stable id with a valid 64,557 ms P2P grade. 6/12 new rows complete,
-  6 remaining.
+  the same stable id with a valid 64,557 ms P2P grade. 9/12 new rows complete,
+  3 remaining.
 - **T-149 — Audit and summarize the complete matrix:** require exactly 75
   documented scored cells plus 15 scored `ultra` cells. Check run identity,
   task version, settings, artifacts, scope, P2P, and metrics integrity; report
