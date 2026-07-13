@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T07:45+0900
+updated: 2026-07-14T07:50+0900
 task: T-165 Validate, publish, and verify | in-progress
 status: in-progress
 
@@ -30,6 +30,11 @@ status: in-progress
   rebase changed no files. Offline hash/shape checks still confirm 318 lines,
   19 inserts, 299 unique updates, zero deletes, and SHA-256 `ed567339…5228`.
 - Campaign window ends around 08:45 JST.
+- Commit `fcf9d97` is pushed/deployed; both live Achievement pages are exact
+  local-byte matches and `origin/main` equals HEAD. The live security gate then
+  exposed the preserved server sentinel at HTTP 200. Root added an exact-file
+  Apache deny rule and static regression check without reading/changing the
+  sentinel; this follow-up must pass preview, publish, and live verification.
 
 ## Working set
 - `en/achievements/index.html`, `jp/achievements/index.html`

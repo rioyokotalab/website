@@ -168,6 +168,8 @@ def header_policy_source_checks() -> list[Finding]:
     text = (ROOT / ".htaccess").read_text(encoding="utf-8")
     findings: list[Finding] = []
     required = (
+        '<Files ".dont-remove-me">',
+        "Require all denied",
         "Content-Security-Policy",
         "frame-ancestors 'none'",
         "object-src 'none'",

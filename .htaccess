@@ -1,4 +1,10 @@
 # Security headers (server honors .htaccess with mod_headers; verified 2026-07-05)
+<IfModule mod_authz_core.c>
+<Files ".dont-remove-me">
+Require all denied
+</Files>
+</IfModule>
+
 <IfModule mod_headers.c>
 Header set X-Content-Type-Options "nosniff"
 Header set X-Frame-Options "SAMEORIGIN"
