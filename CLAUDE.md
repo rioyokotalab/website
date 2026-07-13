@@ -10,6 +10,14 @@ Repo-root `skills/` holds the single canonical copy of every recurring procedure
 
 All cross-session context lives on disk, never only in chat: `tools/todo.md` (task board), `tools/state/session.md` (in-flight handoff state), `tools/state/facts.md` (current site/cluster/tooling facts), `tools/state/decisions.md` (durable decisions). Protocol, routing, budgets, checkpoint triggers: `skills/context-ledger.md`. Session start: read todo.md + session.md before acting; checkpoint session.md at task start, after each completed step, and at turn end. Standing direct-DRIVER publish/push authority is durable; exceptional task-specific asks are conversation-scoped and never carried. codex can DRIVE this repo directly (charter: `AGENTS.md` "Driving this repo", same ledger and skills); Claude↔codex handoff in either direction happens only through these files. Ledger files commit silently like the bookkeeping trio; budgets enforced by `tools/check-md-size.py` (pre-commit).
 
+## Active Claude benchmark handoff
+
+When `tools/state/session.md` names T-137, the user has authorized Claude to
+take over and run the isolated three-arm configuration experiment. Use
+`claude-benchmark-driver` and read `skills/claude-benchmark.md`; measured tasks
+run only through `tools/agent-benchmark/claude_benchmark.py`. Do not solve them
+in the root session, inspect held-out content early, publish, or deploy.
+
 ## Standing directive: codex offload and config edits
 
 Codex-enabled agents follow `.claude/agents/codex-offload-policy.md` (mechanics condensed in `skills/codex-dispatch.md`), resolving workers from `tools/codex-workers.json` and routing from `tools/task-tier-policy.md`. Codex workers have outbound network access (verified codex-cli 0.144.1): web/metadata lookups run inside codex per `skills/web-lookup.md`, with Claude Bash curl as fallback and independent verification. Project config changes may be edited directly only when the current task explicitly scopes them; owner-scope config remains proposal-only unless the user authorizes the exact external write (`skills/config-proposals.md`).

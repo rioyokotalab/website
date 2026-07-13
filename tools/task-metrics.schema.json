@@ -76,9 +76,9 @@
         "failure_phase": {"type": ["string", "null"]},
         "failure_category": {"type": ["string", "null"]},
         "artifact": {"type": ["string", "null"]},
-        "handoff_mode": {"enum": ["durable", "runner-lite", "runner-structured", "runner", "unknown"]},
-        "inspection_mode": {"enum": ["default", "bounded", "focused", "unknown"]},
-        "prompt_mode": {"enum": ["full", "compact", "unknown"]},
+        "handoff_mode": {"enum": ["durable", "runner-lite", "runner-structured", "runner", "runner-captured", "unknown"]},
+        "inspection_mode": {"enum": ["default", "bounded", "focused", "agent-judgment", "unknown"]},
+        "prompt_mode": {"enum": ["full", "compact", "claude-neutral-v1", "unknown"]},
         "task_version": {"type": ["integer", "null"], "minimum": 1},
         "repo_ref": {"type": "string"},
         "repo_commit": {"type": "string"},
@@ -86,7 +86,18 @@
         "run_p2p": {"type": ["boolean", "null"]},
         "task_definition_sha256": {"type": "string"},
         "grader_sha256": {"type": "string"},
-        "runner_sha256": {"type": "string"}
+        "runner_sha256": {"type": "string"},
+        "provider": {"enum": ["codex", "claude"]},
+        "provider_cli": {"type": "string"},
+        "config_variant": {"type": "string"},
+        "config_sha256": {"type": "string"},
+        "cache_creation_input_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "generation_effective_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "generation_duration_ms": {"type": ["integer", "null"], "minimum": 0},
+        "agent_calls": {"type": "integer", "minimum": 0},
+        "codex_mcp_calls": {"type": "integer", "minimum": 0},
+        "total_cost_usd": {"type": ["number", "null"], "minimum": 0},
+        "total_token_telemetry_complete": {"type": "boolean"}
       },
       "additionalProperties": false
     }

@@ -104,11 +104,14 @@ deletes it after grading) containing:
 - Self-noted gaps: anything a reviewer should double-check.
 Metrics: one schema-v2 line PER instrumented task attempted, validated by
 `tools/task-metrics.py`; unknown telemetry stays null. Legacy v1 is retained
-only for uninstrumented/history compatibility. Benchmark rows also record task
-version, repository commit, Codex CLI, prompt/handoff/inspection modes, and
-whether P2P ran. Task-definition, grader, and runner fingerprints expose
-unversioned drift; strict comparisons reject task/grader mismatch while showing
-runner changes as an experiment dimension.
+only for uninstrumented/history compatibility. Benchmark rows record provider
+and CLI, task version, repository commit, prompt/handoff/inspection modes, and
+whether P2P ran. Claude configuration experiments additionally retain variant
+and config fingerprints, cache-creation and generation usage, native-agent and
+Codex-MCP calls, cost, and whether total-token telemetry is complete.
+Task-definition, grader, and runner fingerprints expose unversioned drift;
+strict comparisons reject task/grader mismatch while showing runner/config
+changes as experiment dimensions.
 Driver tier is driver-codex or
 driver-claude. Codex drivers append one legacy-compatible row per uninstrumented
 driver task with `tools/task-metrics.py append-driver --task-ids ... --report ...`;

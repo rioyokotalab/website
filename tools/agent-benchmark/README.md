@@ -5,6 +5,13 @@ YOKOTA Lab website maintenance tasks. It borrows frozen repository tasks and
 F2P/P2P grading from SWE-bench-style evaluation, then adds deterministic local
 browser checks. It is not a general frontend leaderboard.
 
+`benchmark.py` is the Codex runner. `claude_benchmark.py` reuses the same frozen
+tasks, mutations, static/browser/visual graders, and capability gates for the
+three Claude configuration arms defined in `.claude/benchmark-profiles/`.
+Claude's exact experiment protocol is `skills/claude-benchmark.md`; its results
+and ignored raw artifacts are separate (`claude-results.jsonl` and
+`tools/out/claude-benchmark/`) so provider telemetry cannot be mixed silently.
+
 Current capability coverage, deliberate gaps, and the threshold for adding a
 new capsule are documented in `coverage.md`. Failed-token causes and the stop
 rule each category should trigger are in `failure-taxonomy.md`.

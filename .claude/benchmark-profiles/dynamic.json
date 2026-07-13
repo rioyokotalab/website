@@ -1,0 +1,9 @@
+{
+  "variant": "dynamic",
+  "mode": "generated-project",
+  "fixture_ref": "3364e2c3617b1fa0d0d044a8d5a5d1af3faa548d",
+  "strip_project_configuration": true,
+  "entry_agent": "benchmark-generated-coordinator",
+  "max_generated_agents": 3,
+  "description": "A safe-mode, tool-free Claude planning call generates a task-specific coordinator and zero to three native worker-agent definitions. The runner validates and installs them before a fresh execution session."
+}
