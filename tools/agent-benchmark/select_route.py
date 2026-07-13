@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -32,9 +33,29 @@ def validate_policy(policy: dict[str, Any]) -> dict[str, Any]:
     source = policy.get("source")
     if not isinstance(source, dict) or not all(
         isinstance(source.get(key), str) and source.get(key)
-        for key in ("matrix_run_label", "repeat_run_label", "repeat_summary_sha256")
+        for key in (
+            "matrix_run_label",
+            "repeat_run_label",
+            "repeat_summary_path",
+            "repeat_summary_sha256",
+        )
     ):
-        errors.append("source must identify both run labels and the repeat summary SHA-256")
+        errors.append("source must identify both run labels, the repeat summary, and its SHA-256")
+    else:
+        summary_path = Path(source["repeat_summary_path"])
+        if summary_path.name != source["repeat_summary_path"]:
+            errors.append("source.repeat_summary_path must be a filename beside the policy")
+        else:
+            summary_file = HERE / summary_path
+            if not summary_file.is_file():
+                errors.append(f"source repeat summary is missing: {summary_file}")
+            else:
+                actual_sha256 = hashlib.sha256(summary_file.read_bytes()).hexdigest()
+                if actual_sha256 != source["repeat_summary_sha256"]:
+                    errors.append(
+                        "source repeat summary SHA-256 mismatch: "
+                        f"expected {source['repeat_summary_sha256']}, got {actual_sha256}"
+                    )
     classes = policy.get("task_classes")
     if not isinstance(classes, list) or not classes:
         errors.append("task_classes must be a nonempty array")

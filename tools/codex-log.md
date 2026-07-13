@@ -4,3 +4,4 @@ One line per delegation: date | agent | task | output file | conversationId | ou
 2026-07-13 | codex-driver (GPT-5 Codex) | T-145 GPT-5.6 benchmark matrix planning | tools/out/driver-report-20260713-2022.md | n/a | complete; T-146–T-149 populated, no benchmark calls started
 2026-07-13 | codex-driver (GPT-5 Codex) | T-150 exhaustive GPT-5.6 matrix revision | tools/out/driver-report-20260713-2031.md | n/a | complete; all five WBD tasks planned for 75 documented cells plus capability-gated ultra rows
 2026-07-13 | codex-driver (GPT-5 Codex) | T-146 GPT-5.6 round freeze and ultra preflight | tools/out/driver-report-20260713-2053.md | n/a | complete; 3/3 WBD-001 ultra probes passed 100/100, paused before T-147
+2026-07-14 | codex-driver | independent final GPT-5.6 campaign audit | tools/out/benchmark-final-audit-20260714.md | /root/final_audit | complete; 173 results and policy v2026-07-14.2 verified with no remaining mismatch

@@ -13,9 +13,9 @@
       "ultra_cells": 15
     },
     "plan_complete": true,
-    "plan_sha256": "4c55f5ade6c930833e80c17ac25e1bc2bb25e2114015e488d4948ec87bf4f215",
-    "planned_repeat_rows": 78,
-    "repeat_rows": 78,
+    "plan_sha256": "266d2d782a422f43e76056b6d69eea0b3d57623fb8fbfce12fe85ce2632f0137",
+    "planned_repeat_rows": 83,
+    "repeat_rows": 83,
     "stage_progress": [
       {
         "completed": 32,
@@ -114,10 +114,31 @@
         "planned": 4,
         "purpose": "Use the remaining experimental window to screen the Luna/max speed and Sol/max token singleton passes after lower-effort WBD-005 arms failed qualification.",
         "stage": "stage6-wbd005-max-screen"
+      },
+      {
+        "completed": 2,
+        "pending": 0,
+        "planned": 2,
+        "purpose": "Use the residual campaign window for one step toward qualifying the two fastest provisional WBD-005 routes.",
+        "stage": "stage7-wbd005-qualification-r07"
+      },
+      {
+        "completed": 2,
+        "pending": 0,
+        "planned": 2,
+        "purpose": "Continue only the WBD-005 Sol routes that passed repeat 7 toward the 8/9 qualification threshold.",
+        "stage": "stage7-wbd005-qualification-r08"
+      },
+      {
+        "completed": 1,
+        "pending": 0,
+        "planned": 1,
+        "purpose": "Run the single final observation that can qualify Sol/high at 8/9; medium stopped after its repeat-8 failure.",
+        "stage": "stage7-wbd005-qualification-r09"
       }
     ],
     "status": "pass",
-    "unique_repeat_run_ids": 78
+    "unique_repeat_run_ids": 83
   },
   "qualification_rule": "Confidence records the latest attained observation milestone even when a later adaptive extension is pending; plan completion is reported separately. High-confidence requires n>=6 and an unrounded full-quality Wilson-95 lower bound >=0.60; qualified requires n>=5 and a lower bound >=0.55; provisional requires n>=3 and a lower bound >=0.40. The Pareto set uses the highest available qualified tier and all-attempt retry-adjusted time/tokens.",
   "retry_adjustment": "The smoothed success probability is (full_quality_passes+1)/(attempts+2). Expected time or tokens per full-quality success is the all-attempt mean divided by that probability. This is a planning estimate, not a monetary price or guarantee.",
@@ -1227,7 +1248,21 @@
       "task_id": "WBD-004"
     },
     {
-      "reliability_qualified_pareto": [],
+      "reliability_qualified_pareto": [
+        {
+          "attempts": 9,
+          "confidence": "qualified",
+          "effort": "high",
+          "full_quality_pass_wilson_95": [
+            0.565,
+            0.9801
+          ],
+          "full_quality_passes": 8,
+          "model": "gpt-5.6-sol",
+          "retry_adjusted_expected_effective_tokens": 45053,
+          "retry_adjusted_expected_total_duration_ms": 249071
+        }
+      ],
       "route_stats": [
         {
           "attempts": 3,
@@ -1490,26 +1525,26 @@
           ]
         },
         {
-          "attempts": 6,
-          "capability_pass_rate": 0.8333,
-          "capability_passes": 5,
-          "confidence": "provisional",
+          "attempts": 9,
+          "capability_pass_rate": 0.8889,
+          "capability_passes": 8,
+          "confidence": "qualified",
           "effective_tokens_all_attempts_range": [
             27618,
             48853
           ],
           "effort": "high",
-          "full_quality_pass_rate": 0.8333,
+          "full_quality_pass_rate": 0.8889,
           "full_quality_pass_wilson_95": [
-            0.4365,
-            0.9699
+            0.565,
+            0.9801
           ],
-          "full_quality_passes": 5,
-          "mean_effective_tokens_all_attempts": 35990.83,
-          "mean_total_duration_ms_all_attempts": 204326,
-          "median_effective_tokens_full_quality": 34402,
-          "median_total_duration_ms_full_quality": 195608,
-          "median_worker_duration_ms_full_quality": 128809,
+          "full_quality_passes": 8,
+          "mean_effective_tokens_all_attempts": 36861.89,
+          "mean_total_duration_ms_all_attempts": 203785.33,
+          "median_effective_tokens_full_quality": 34921.5,
+          "median_total_duration_ms_full_quality": 199528.5,
+          "median_worker_duration_ms_full_quality": 132788.5,
           "model": "gpt-5.6-sol",
           "observations": [
             {
@@ -1553,11 +1588,32 @@
               "run_id": "gpt56-repeat-20260714-stage4-selected-confidence-r06-high-sol-wbd005",
               "score": 91,
               "total_duration_ms": 179810
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 32521,
+              "run_id": "gpt56-repeat-20260714-stage7-wbd005-qualification-r07-r07-high-sol-wbd005",
+              "score": 100,
+              "total_duration_ms": 203449
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 40007,
+              "run_id": "gpt56-repeat-20260714-stage7-wbd005-qualification-r08-r08-high-sol-wbd005",
+              "score": 100,
+              "total_duration_ms": 218487
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 43284,
+              "run_id": "gpt56-repeat-20260714-stage7-wbd005-qualification-r09-r09-high-sol-wbd005",
+              "score": 100,
+              "total_duration_ms": 186176
             }
           ],
-          "planned_observations": 6,
-          "retry_adjusted_expected_effective_tokens": 47988,
-          "retry_adjusted_expected_total_duration_ms": 272435,
+          "planned_observations": 9,
+          "retry_adjusted_expected_effective_tokens": 45053,
+          "retry_adjusted_expected_total_duration_ms": 249071,
           "sampling_complete": true,
           "scores": [
             100,
@@ -1565,9 +1621,12 @@
             100,
             100,
             100,
-            91
+            91,
+            100,
+            100,
+            100
           ],
-          "smoothed_full_quality_probability": 0.75,
+          "smoothed_full_quality_probability": 0.8182,
           "task_id": "WBD-005",
           "total_duration_ms_all_attempts_range": [
             179810,
@@ -1721,26 +1780,26 @@
           ]
         },
         {
-          "attempts": 6,
-          "capability_pass_rate": 0.8333,
-          "capability_passes": 5,
+          "attempts": 8,
+          "capability_pass_rate": 0.75,
+          "capability_passes": 6,
           "confidence": "provisional",
           "effective_tokens_all_attempts_range": [
-            31473,
+            22321,
             42703
           ],
           "effort": "medium",
-          "full_quality_pass_rate": 0.8333,
+          "full_quality_pass_rate": 0.75,
           "full_quality_pass_wilson_95": [
-            0.4365,
-            0.9699
+            0.4093,
+            0.9285
           ],
-          "full_quality_passes": 5,
-          "mean_effective_tokens_all_attempts": 37316.17,
-          "mean_total_duration_ms_all_attempts": 171664.67,
-          "median_effective_tokens_full_quality": 36794,
-          "median_total_duration_ms_full_quality": 164036,
-          "median_worker_duration_ms_full_quality": 97160,
+          "full_quality_passes": 6,
+          "mean_effective_tokens_all_attempts": 34670.75,
+          "mean_total_duration_ms_all_attempts": 167723.88,
+          "median_effective_tokens_full_quality": 35361,
+          "median_total_duration_ms_full_quality": 163755.5,
+          "median_worker_duration_ms_full_quality": 97024,
           "model": "gpt-5.6-sol",
           "observations": [
             {
@@ -1784,11 +1843,25 @@
               "run_id": "gpt56-repeat-20260714-stage3-wbd005-medium-confidence-r06-medium-sol-wbd005",
               "score": 87,
               "total_duration_ms": 172912
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 31148,
+              "run_id": "gpt56-repeat-20260714-stage7-wbd005-qualification-r07-r07-medium-sol-wbd005",
+              "score": 100,
+              "total_duration_ms": 163475
+            },
+            {
+              "capability_pass": false,
+              "effective_tokens": 22321,
+              "run_id": "gpt56-repeat-20260714-stage7-wbd005-qualification-r08-r08-medium-sol-wbd005",
+              "score": 91,
+              "total_duration_ms": 148328
             }
           ],
-          "planned_observations": 6,
-          "retry_adjusted_expected_effective_tokens": 49755,
-          "retry_adjusted_expected_total_duration_ms": 228886,
+          "planned_observations": 8,
+          "retry_adjusted_expected_effective_tokens": 49530,
+          "retry_adjusted_expected_total_duration_ms": 239606,
           "sampling_complete": true,
           "scores": [
             100,
@@ -1796,12 +1869,14 @@
             100,
             100,
             100,
-            87
+            87,
+            100,
+            91
           ],
-          "smoothed_full_quality_probability": 0.75,
+          "smoothed_full_quality_probability": 0.7,
           "task_id": "WBD-005",
           "total_duration_ms_all_attempts_range": [
-            153047,
+            148328,
             210730
           ]
         },
@@ -1873,11 +1948,11 @@
   "totals": {
     "monetary_cost_note": "No frozen price table or billed-cost field is available; effective tokens are the cost proxy.",
     "monetary_cost_usd": null,
-    "repeat_capability_passes": 66,
-    "repeat_effective_tokens": 2089997,
-    "repeat_full_quality_passes": 66,
-    "repeat_runs": 78,
-    "repeat_total_duration_ms": 8938438,
-    "repeat_worker_duration_ms": 5775052
+    "repeat_capability_passes": 70,
+    "repeat_effective_tokens": 2259278,
+    "repeat_full_quality_passes": 70,
+    "repeat_runs": 83,
+    "repeat_total_duration_ms": 9858353,
+    "repeat_worker_duration_ms": 6359651
   }
 }

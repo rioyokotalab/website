@@ -1,11 +1,12 @@
 {
   "schema_version": 1,
-  "policy_version": "2026-07-14.1",
-  "created_at": "2026-07-14T03:42+0900",
+  "policy_version": "2026-07-14.2",
+  "created_at": "2026-07-14T04:08+0900",
   "source": {
     "matrix_run_label": "gpt56-full-20260713",
     "repeat_run_label": "gpt56-repeat-20260714",
-    "repeat_summary_sha256": "b4a9ce871014c5db596bf5393d002b61e697a42e34788b4afa9930ef0a0f3e24"
+    "repeat_summary_path": "gpt56-repeat-20260714.summary.json",
+    "repeat_summary_sha256": "0ecc265620f3c77ab7f2ce410722d3a49213b71a1a0b2628a307a192e835c170"
   },
   "decision_order": [
     "full-quality reliability confidence",
@@ -23,7 +24,7 @@
     "Run the listed validation after every delegated implementation; a route is not a substitute for independent verification.",
     "Do not increase effort merely because a task is larger: effort was not monotonic in quality, runtime, or effective tokens.",
     "Effective tokens exclude cached input and are not monetary cost; no frozen price table was available.",
-    "WBD-005-class work is validation-dependent: no sampled route qualified standalone, so failure feedback and escalation are mandatory."
+    "WBD-005-class work remains validation-dependent: Sol/high qualified at 8/9, but the observed failure means full grader feedback and escalation remain mandatory."
   ],
   "task_classes": [
     {
@@ -239,34 +240,34 @@
       "task_id": "WBD-005",
       "capability_class": "held-out-cross-cutting-shared-asset-multifile-repair",
       "scope_note": "Broad shared CSS/JavaScript plus synchronized cache-query HTML edits with held-out static, scope, CRLF, parity, and browser contracts.",
-      "standalone_qualified": false,
+      "standalone_qualified": true,
       "routes": [
+        {
+          "route_id": "sol-high",
+          "model": "gpt-5.6-sol",
+          "effort": "high",
+          "confidence": "qualified",
+          "evidence": {
+            "attempts": 9,
+            "full_quality_passes": 8,
+            "wilson_95": [0.565, 0.9801],
+            "smoothed_success_probability": 0.8182,
+            "expected_total_ms_per_success": 249071,
+            "expected_effective_tokens_per_success": 45053
+          }
+        },
         {
           "route_id": "sol-medium",
           "model": "gpt-5.6-sol",
           "effort": "medium",
           "confidence": "provisional",
           "evidence": {
-            "attempts": 6,
-            "full_quality_passes": 5,
-            "wilson_95": [0.4365, 0.9699],
-            "smoothed_success_probability": 0.75,
-            "expected_total_ms_per_success": 228886,
-            "expected_effective_tokens_per_success": 49755
-          }
-        },
-        {
-          "route_id": "sol-high",
-          "model": "gpt-5.6-sol",
-          "effort": "high",
-          "confidence": "provisional",
-          "evidence": {
-            "attempts": 6,
-            "full_quality_passes": 5,
-            "wilson_95": [0.4365, 0.9699],
-            "smoothed_success_probability": 0.75,
-            "expected_total_ms_per_success": 272435,
-            "expected_effective_tokens_per_success": 47988
+            "attempts": 8,
+            "full_quality_passes": 6,
+            "wilson_95": [0.4093, 0.9285],
+            "smoothed_success_probability": 0.7,
+            "expected_total_ms_per_success": 239606,
+            "expected_effective_tokens_per_success": 49530
           }
         },
         {
@@ -299,9 +300,9 @@
         }
       ],
       "selection": {
-        "runtime": "sol-medium",
+        "runtime": "sol-high",
         "effective_tokens": "sol-high",
-        "reliability": "sol-medium"
+        "reliability": "sol-high"
       },
       "validation": {
         "required": true,
@@ -320,7 +321,7 @@
       "fallback_chain": [
         {
           "on": "any-validation-failure",
-          "route_id": "sol-high",
+          "route_id": "sol-medium",
           "max_attempts": 1,
           "instruction": "Provide the original task, exact grader findings, and failed diff; require a targeted repair and rerun the full grader."
         },
