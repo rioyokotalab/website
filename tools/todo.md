@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-140.
+`tools/state/session.md`. Next free id: T-141.
 
 ## Active
 
@@ -13,10 +13,20 @@ None.
 
 ## Recently completed
 
+- **T-140 — Verify Fable evaluation handoff:** `7140f44` confirmed on
+  `origin/main`; five unique Fable/max artifacts and rows reconcile at 1/5,
+  108,013 effective tokens, $4.10524, and 937,726 ms; all validators pass.
+  Clarified that WBD-005 reached the task-specific generator but no executor or
+  grader, identified four derived metrics rows with wrong worker-vs-generator
+  phase labels (totals unaffected), and removed one redundant/noncompliant
+  post-commit closeout row after preserving it verbatim in the audit. Evidence:
+  `tools/out/t140-independent-artifact-audit.md`; driver report:
+  `tools/out/driver-report-20260713-1714.md`.
 - **T-139 — Corrected Claude dynamic rerun:** COMPLETE. All five frozen
   Fable/max dynamic commands ran once each at corrected ref `b23416b` under
   label `claude-dynamic-b23416b-fable-max-v1`: **1/5 pass** (WBD-001 100;
-  WBD-002–005 generator `error_max_budget_usd`, held-out never exposed).
+  WBD-002–005 generator `error_max_budget_usd`; WBD-005's request reached the
+  task-specific generator, but no executor or grader ran).
   $4.1052 of $18; 108,013 effective tokens; telemetry complete; 5 rows
   imported + validated; artifact audit pass. Standalone cohort — old-arm
   comparisons remain unmatched; current-harness stays canonical; dynamic needs
