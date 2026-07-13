@@ -22,6 +22,10 @@ summary changes; validation rejects a stale source hash, mismatched evidence,
 and non-optimal objective selections. Do not extrapolate the mapping to a
 materially different task; collect comparable evidence or use driver judgment
 and record the new route.
+Apply the returned `model` and `effort` in the dispatch surface. The benchmark
+orchestrators switch both automatically; the selector itself is read-only. If
+a native delegation surface does not expose both controls, record that the
+recommended route could not be applied rather than claiming an exact match.
 WBD-005-class work is never accepted from the initial dispatch alone: run the
 full listed grader and follow its validation-dependent escalation chain.
 
