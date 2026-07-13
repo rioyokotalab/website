@@ -115,6 +115,7 @@ class SyncFixtures(unittest.TestCase):
                 'paper_title': {'en': 'Website title'},
                 'authors': self.paper_doc['authors'],
                 'publication_name': {'en': 'Current Journal'},
+                'languages': ['eng'],
             },
         })
         self.assertNotIn('identifiers', paper_update['doc'])
@@ -148,6 +149,51 @@ class SyncFixtures(unittest.TestCase):
             'published_papers', {'referee': True}, data_date='2026-07')
         self.assertEqual(generated['similar_merge']['publication_date'], '2026-07')
 
+    def test_complete_fields_merge_without_degrading_live_metadata(self):
+        desired = {
+            'paper_title': {'ja': 'English title', 'en': 'English title'},
+            'authors': {
+                'ja': [{'name': 'Rio Yokota'}],
+                'en': [{'name': 'Rio Yokota'}],
+            },
+            'publication_date': '2025',
+            'identifiers': {
+                'doi': ['10.1000/right'],
+                'isbn': ['978-1-2345-6789-0'],
+            },
+            'see_also': [
+                {'label': 'url', '@id': 'https://arxiv.org/abs/1234.5678'},
+            ],
+            'languages': ['eng'],
+        }
+        live = {
+            'paper_title': {'ja': '日本語訳', 'en': 'English title'},
+            'authors': {
+                'ja': [{'name': '横田理央'}],
+                'en': [{'name': 'Rio Yokota'}],
+            },
+            'publication_date': '2025-04-01',
+            'identifiers': {
+                'doi': ['https://doi.org/10.1000/RIGHT'],
+                'arxiv': ['1234.5678'],
+            },
+            'see_also': [
+                {'label': 'project', '@id': 'https://example.org/project'},
+            ],
+            'languages': ['jpn'],
+        }
+        changed = RM.changed_doc('published_papers', desired, live)
+        self.assertNotIn('paper_title', changed)
+        self.assertNotIn('authors', changed)
+        self.assertNotIn('publication_date', changed)
+        self.assertEqual(changed['identifiers']['doi'],
+                         ['https://doi.org/10.1000/RIGHT'])
+        self.assertEqual(changed['identifiers']['isbn'],
+                         ['978-1-2345-6789-0'])
+        self.assertEqual(changed['identifiers']['arxiv'], ['1234.5678'])
+        self.assertEqual(len(changed['see_also']), 2)
+        self.assertEqual(changed['languages'], ['jpn', 'eng'])
+
 
 class AchievementSourceFixtures(unittest.TestCase):
     def test_current_id_heading_sections_parse(self):
@@ -170,6 +216,66 @@ class AchievementSourceFixtures(unittest.TestCase):
         self.assertNotIn('[arxiv]', cleaned)
         self.assertNotIn('[bibtex]', cleaned)
         self.assertEqual(re.sub(r'</?br\s*/?>|</li>', '', cleaned), 'Citation.')
+
+    def test_correct_identifier_location_and_profile_schemas(self):
+        book = RM.to_record(
+            'Rio Yokota, Sample Chapter, GPU Computing Gems, 2024.',
+            'books_etc', {}, data_date='2024-01',
+            data_doi='10.1000/example', data_isbn='978-1-2345-6789-0')
+        self.assertEqual(book['similar_merge']['identifiers'], {
+            'doi': ['10.1000/example'],
+            'isbn': ['978-1-2345-6789-0'],
+        })
+        self.assertNotIn('isbn', book['similar_merge'])
+
+        talk = RM.to_record(
+            'Rio Yokota. Sample Talk, SIAM Conference, Mar. 2025.',
+            'talk_or_misc', {'is_international_presentation': True},
+            data_date='2025-03', data_event='SIAM Conference',
+            data_location='Denver', data_invited=True)
+        self.assertEqual(talk['insert']['type'], 'presentations')
+        self.assertEqual(talk['similar_merge']['location'],
+                         {'ja': 'Denver', 'en': 'Denver'})
+        self.assertEqual(talk['similar_merge']['presentation_type'],
+                         'invited_oral_presentation')
+
+        job = RM.parse_research_experience_line(
+            '2025年4月― 理化学研究所 計算科学研究センター チームプリンシパル')
+        self.assertIn('job', job)
+        self.assertIn('section', job)
+        self.assertNotIn('job_title', job)
+        society = RM.parse_association_memberships(['情報処理学会'])[0]
+        self.assertIn('academic_society_name', society)
+
+        profiles = {(text, kind): doc
+                    for text, kind, doc in RM.profile_records()}
+        current_committee = next(doc for (text, kind), doc in profiles.items()
+                                 if kind == 'committee_memberships' and
+                                 text.startswith('2025 publicity chair'))
+        self.assertEqual(current_committee['committee_name'],
+                         {'en': 'publicity chair'})
+        self.assertIn('association', current_committee)
+        legacy_committee = next(doc for (text, kind), doc in profiles.items()
+                                if kind == 'committee_memberships' and
+                                text.startswith('2024 The IEEE / CVF'))
+        self.assertEqual(
+            legacy_committee['committee_name'],
+            {'en': ('The IEEE / CVF Computer Vision and Pattern Recognition '
+                    'Conference (CVPR 2024), reviewer')})
+        self.assertNotIn('association', legacy_committee)
+
+        project = next(doc for (text, kind), doc in profiles.items()
+                       if kind == 'research_projects' and
+                       '厚生労働科学研究費' in text)
+        self.assertIn('（LLM:Large Language Model）',
+                      project['research_project_title']['ja'])
+        self.assertEqual(project['system_name'], {'ja': '厚生労働科学研究費'})
+        self.assertEqual(project['category'], {'ja': '応用研究'})
+        nested = next(doc for (text, kind), doc in profiles.items()
+                      if kind == 'research_projects' and
+                      '国際共同研究加速基金' in text)
+        self.assertEqual(nested['system_name'], {'ja': '国際共同研究加速基金'})
+        self.assertEqual(nested['category'], {'ja': '海外連携研究'})
 
 
 if __name__ == '__main__':

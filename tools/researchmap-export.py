@@ -96,6 +96,12 @@ def strip_achievement_links(fragment):
 def split_authors(s):
     return [a.strip() for a in s.split(';') if a.strip()]
 
+def localized(value, lang):
+    """Use both ResearchMap language slots when verified text is English."""
+    if lang == 'en':
+        return {'ja': value, 'en': value}
+    return {'ja': value}
+
 def norm_date(s):
     """Normalize a data-date value to YYYY / YYYY-MM / YYYY-MM-DD, else None."""
     if not s:
@@ -306,8 +312,8 @@ def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_isbn=Non
         people = {lang: [{'name': a} for a in authors]}
     doc = {}
     if rm_type in ('published_papers', 'misc'):
-        doc['paper_title'] = {lang: title}
-        doc['publication_name'] = {lang: venue}
+        doc['paper_title'] = localized(title, lang)
+        doc['publication_name'] = localized(venue, lang)
         doc['authors'] = people
         if data_volume:
             doc['volume'] = data_volume
@@ -321,26 +327,33 @@ def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_isbn=Non
             else:
                 doc['starting_page'] = data_pages
     elif rm_type == 'books_etc':
-        doc['book_title'] = {lang: title}
-        doc['publisher'] = {lang: data_publisher or venue}
+        doc['book_title'] = localized(title, lang)
+        doc['publisher'] = localized(data_publisher or venue, lang)
         doc['authors'] = people
-        if data_isbn:
-            doc['isbn'] = data_isbn
     else:
-        doc['presentation_title'] = {lang: title}
-        doc['event'] = {lang: data_event or venue}
+        doc['presentation_title'] = localized(title, lang)
+        doc['event'] = localized(data_event or venue, lang)
         if data_location:
-            doc['event_place'] = {lang: data_location}
+            doc['location'] = localized(data_location, lang)
         if data_invited is True:
             doc['invited'] = True
+            doc['presentation_type'] = 'invited_oral_presentation'
         doc['presenters'] = people
     if date:
         doc['publication_date'] = date
+    identifiers = {}
     if data_doi:
-        doc['identifiers'] = {'doi': [data_doi]}
+        identifiers['doi'] = [data_doi]
+    if data_isbn:
+        identifiers['isbn'] = [data_isbn]
+    if identifiers:
+        doc['identifiers'] = identifiers
     elif data_url:
         doc['see_also'] = [{'label': 'url', '@id': data_url}]
     doc['languages'] = ['jpn' if japanese else 'eng']
+    if rm_type == 'misc':
+        doc['referee'] = False
+        doc['invited'] = False
     if rm_type != 'misc':   # misc gets no extras (extra is presentations-specific there)
         doc.update(extra)
     return {'insert': {'type': rm_type},
@@ -348,7 +361,8 @@ def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_isbn=Non
 
 def profile_lines(heading):
     """lines of the <p> blocks following an h3 heading on the profile page."""
-    c = open(PROFILE, newline='', encoding='utf-8').read()
+    with open(PROFILE, newline='', encoding='utf-8') as source:
+        c = source.read()
     m = re.search(r'<h3 class="heading">\s*%s.*?</h3>(.*?)(?=<h3|</article>)' % heading, c, re.S)
     if not m:
         return []
@@ -373,6 +387,38 @@ def parse_range(prefix):
     to = m.group(3) + ('-%02d' % int(m.group(4)) if m.group(4) else '') if m.group(3) else None
     return frm, to
 
+def split_trailing_parenthetical(value, opening, closing):
+    """Split the last balanced top-level parenthetical when it ends value."""
+    depth = 0
+    start = None
+    spans = []
+    for index, char in enumerate(value):
+        if char == opening:
+            if depth == 0:
+                start = index
+            depth += 1
+        elif char == closing and depth:
+            depth -= 1
+            if depth == 0:
+                spans.append((start, index))
+    if not spans or spans[-1][1] != len(value) - 1:
+        return None
+    start, end = spans[-1]
+    prefix = value[:start].strip()
+    content = value[start + 1:end].strip()
+    return (prefix, content) if prefix and content else None
+
+def split_funding_label(value):
+    """Return ResearchMap system/category fields from a funding label."""
+    value = value.strip()
+    for system in ('科学研究費助成事業', '厚生労働科学研究費'):
+        if value.startswith(system + ' '):
+            return system, value[len(system):].strip()
+    nested = split_trailing_parenthetical(value, '（', '）')
+    if nested and nested[0] == '国際共同研究加速基金':
+        return nested
+    return value, ''
+
 def split_school_department(value):
     """Split a Japanese university name from its following faculty/graduate school."""
     value = value.strip()
@@ -395,7 +441,7 @@ def parse_education_line(line):
     if not rest or not degree:
         return None
     school, department = split_school_department(rest)
-    doc = {'school_name': {'ja': school}, 'degree': {'ja': degree}}
+    doc = {'affiliation': {'ja': school}}
     if department:
         doc['department'] = {'ja': department}
     _frm, to = parse_range(date)
@@ -416,9 +462,9 @@ def parse_research_experience_line(line):
     affiliation, department = split_school_department(organization)
     if not department and ' ' in organization:
         affiliation, department = organization.split(' ', 1)
-    doc = {'affiliation': {'ja': affiliation}, 'job_title': {'ja': job_title}}
+    doc = {'affiliation': {'ja': affiliation}, 'job': {'ja': job_title}}
     if department:
-        doc['department'] = {'ja': department}
+        doc['section'] = {'ja': department}
     frm, to = parse_range(prefix)
     if frm:
         doc['from_date'] = frm
@@ -433,7 +479,8 @@ def parse_association_memberships(lines):
         for name in re.split(r'[、,]', line):
             name = name.strip()
             if name:
-                docs.append({'association_name': {'ja' if is_cjk(name) else 'en': name}})
+                docs.append({'academic_society_name':
+                             {'ja' if is_cjk(name) else 'en': name}})
     return docs
 
 
@@ -443,20 +490,27 @@ LIVE_TYPES = ['published_papers', 'books_etc', 'presentations', 'misc',
               'research_projects']
 SYNC_FIELDS = {
     'published_papers': ('paper_title', 'authors', 'publication_date',
-                         'publication_name', 'see_also'),
+                         'publication_name', 'volume', 'number',
+                         'starting_page', 'ending_page', 'identifiers',
+                         'see_also', 'languages', 'published_paper_type',
+                         'referee'),
     'books_etc': ('book_title', 'authors', 'publication_date',
-                  'publisher', 'see_also'),
+                  'publisher', 'identifiers', 'see_also', 'languages'),
     'presentations': ('presentation_title', 'presenters', 'publication_date',
-                      'event', 'see_also'),
+                      'event', 'location', 'invited', 'presentation_type',
+                      'is_international_presentation', 'identifiers',
+                      'see_also', 'languages'),
     'misc': ('paper_title', 'authors', 'publication_date',
-             'publication_name', 'see_also'),
+             'publication_name', 'volume', 'number', 'starting_page',
+             'ending_page', 'identifiers', 'see_also', 'languages',
+             'referee', 'invited'),
     'awards': ('award_name', 'award_date'),
     'media_coverage': ('media_coverage_title', 'publisher', 'event',
                        'publication_date', 'location',
                        'media_coverage_type', 'see_also'),
     'committee_memberships': ('committee_name', 'association', 'from_date', 'to_date'),
     'research_projects': ('research_project_title', 'system_name',
-                          'offer_organization', 'from_date', 'to_date'),
+                          'category', 'offer_organization', 'from_date', 'to_date'),
 }
 
 # These three profile types do not share a universal ``title`` field.  In
@@ -696,17 +750,125 @@ def match_live(record, live_items):
             return None, matches, label
     return None, [], None
 
+def normalized_identifier_values(kind, values):
+    """Normalize one identifier list for non-destructive equality checks."""
+    if isinstance(values, str):
+        values = [values]
+    out = set()
+    for value in values or []:
+        if isinstance(value, dict):
+            value = value.get('@id') or value.get('value')
+        if not isinstance(value, str):
+            continue
+        if kind == 'doi':
+            value = canonical_doi(value)
+        elif kind == 'isbn':
+            value = re.sub(r'[^0-9X]', '', value.upper())
+        else:
+            value = value.strip()
+        if value:
+            out.add(value)
+    return out
+
+def merged_identifiers(wanted, current):
+    """Return a merged identifier object only when wanted values are absent."""
+    current = dict(current) if isinstance(current, dict) else {}
+    merged = dict(current)
+    changed = False
+    for kind, values in wanted.items():
+        kind_changed = False
+        current_values = current.get(kind, [])
+        current_list = ([current_values] if isinstance(current_values, str)
+                        else list(current_values or []))
+        known = normalized_identifier_values(kind, current_list)
+        for value in ([values] if isinstance(values, str) else values or []):
+            normalized = normalized_identifier_values(kind, [value])
+            if normalized and not normalized.issubset(known):
+                current_list.append(value)
+                known.update(normalized)
+                changed = True
+                kind_changed = True
+        if kind_changed:
+            merged[kind] = current_list
+    return merged if changed else None
+
+def merged_see_also(wanted, current):
+    """Append missing source URLs without discarding other live links."""
+    current_list = ([current] if isinstance(current, dict)
+                    else list(current or []))
+    known = set()
+    for value in current_list:
+        url = value.get('@id') if isinstance(value, dict) else value
+        if canonical_url(url):
+            known.add(canonical_url(url))
+    changed = False
+    for value in ([wanted] if isinstance(wanted, dict) else wanted or []):
+        url = value.get('@id') if isinstance(value, dict) else value
+        normalized = canonical_url(url)
+        if normalized and normalized not in known:
+            current_list.append(value)
+            known.add(normalized)
+            changed = True
+    return current_list if changed else None
+
+def merged_localized(wanted, current):
+    """Merge language slots while retaining richer live translations."""
+    if not isinstance(wanted, dict) or not isinstance(current, dict):
+        return wanted if wanted != current else None
+    merged = dict(current)
+    changed = False
+    synthetic_ja = ('ja' in wanted and 'en' in wanted and
+                    wanted['ja'] == wanted['en'])
+    for lang, value in wanted.items():
+        # ``localized`` duplicates verified English into the JA fallback slot.
+        # Never replace a distinct live Japanese translation with that fallback.
+        if (lang == 'ja' and synthetic_ja and current.get('ja') is not None and
+                current.get('ja') != value):
+            continue
+        if current.get(lang) != value:
+            merged[lang] = value
+            changed = True
+    return merged if changed else None
+
+def date_is_at_least_as_precise(wanted, current):
+    """True when a live YYYY[-MM[-DD]] already refines the wanted date."""
+    return (isinstance(wanted, str) and isinstance(current, str) and
+            (current == wanted or current.startswith(wanted + '-')))
+
 def changed_doc(rm_type, desired, live):
     """Return only exporter-owned fields whose complete values differ."""
     changed = {}
     for field in SYNC_FIELDS[rm_type]:
-        if field in desired:
-            wanted = desired[field]
-        elif field == 'see_also' and field in live:
-            wanted = []
-        else:
+        if field not in desired:
             continue
-        if live.get(field) != wanted:
+        wanted = desired[field]
+        if field == 'identifiers':
+            merged = merged_identifiers(wanted, live.get(field))
+            if merged is not None:
+                changed[field] = merged
+            continue
+        if field == 'see_also':
+            merged = merged_see_also(wanted, live.get(field))
+            if merged is not None:
+                changed[field] = merged
+            continue
+        current = live.get(field)
+        if field.endswith('_date') and date_is_at_least_as_precise(wanted, current):
+            continue
+        if field == 'languages' and isinstance(wanted, list):
+            merged = list(current) if isinstance(current, list) else []
+            for language in wanted:
+                if language not in merged:
+                    merged.append(language)
+            if merged != current:
+                changed[field] = merged
+            continue
+        if isinstance(wanted, dict):
+            merged = merged_localized(wanted, current)
+            if merged is not None:
+                changed[field] = merged
+            continue
+        if current != wanted:
             changed[field] = wanted
     return changed
 
@@ -960,7 +1122,8 @@ def media_coverage_records():
     en_profile = os.path.join(ROOT, 'en', 'member', 'yokota.html')
 
     def page_rows(path, heading, japanese):
-        c = open(path, newline='', encoding='utf-8').read()
+        with open(path, newline='', encoding='utf-8') as source:
+            c = source.read()
         m = re.search(r'<h3 class="heading">\s*%s\s*</h3>(.*?)(?=<h3|</article>)'
                       % re.escape(heading), c, re.S | re.I)
         if not m:
@@ -1010,6 +1173,7 @@ def media_coverage_records():
             raise ValueError('JP/EN media coverage row mismatch: %s' % jp_text)
         doc = {
             'media_coverage_title': {'ja': jp_title, 'en': en_title},
+            'publisher': {'ja': jp_publisher, 'en': en_publisher},
             'event': {'ja': jp_publisher, 'en': en_publisher},
             'publication_date': date,
             'location': {'ja': jp_location, 'en': en_location},
@@ -1032,7 +1196,7 @@ def profile_records():
         if doc:
             recs.append((line, 'research_experience', doc))
     for doc in parse_association_memberships(profile_lines('所属学会')):
-        name = next(iter(doc['association_name'].values()))
+        name = next(iter(doc['academic_society_name'].values()))
         recs.append((name, 'association_memberships', doc))
     for line in profile_lines('受賞歴'):
         m = re.match(r'(\S+)\s+(.+)$', line)
@@ -1048,9 +1212,11 @@ def profile_records():
         m = re.match(r'(\S+)\s+(.+)$', line)
         if not m: continue
         frm, to = parse_range(m.group(1))
-        parts = [p.strip() for p in m.group(2).split(' — ', 1)]
-        name = parts[0] or (parts[1] if len(parts) > 1 else '')
-        assoc = parts[1] if len(parts) > 1 and parts[0] else ''
+        body = m.group(2).strip()
+        parts = [p.strip() for p in re.split(r'\s+—(?:\s+|$)', body,
+                                             maxsplit=1)]
+        name = parts[0]
+        assoc = parts[1] if len(parts) > 1 else ''
         if not name: continue
         lang = 'ja' if is_cjk(name + assoc) else 'en'
         doc = {'committee_name': {lang: name}}
@@ -1062,18 +1228,22 @@ def profile_records():
         # The project title itself may contain parentheses (for example LLM).
         # Prefer the full-width funding wrapper used by the JP page; an ASCII
         # fallback preserves support for records without that wrapper.
-        m = re.match(r'(\S+)\s+(.+)（(.+)）$', line)
-        if not m:
-            m = re.match(r'(\S+)\s+(.+)\((.+)\)$', line)
+        m = re.match(r'(\S+)\s+(.+)$', line)
         if not m: continue
         frm, to = parse_range(m.group(1))
-        title = m.group(2).strip()
-        fund = m.group(3)
+        split = split_trailing_parenthetical(m.group(2), '（', '）')
+        if not split:
+            split = split_trailing_parenthetical(m.group(2), '(', ')')
+        if not split: continue
+        title, fund = split
         lang = 'ja' if is_cjk(title) else 'en'
         doc = {'research_project_title': {lang: title}}
         parts = [x.strip() for x in re.split(r'[、,]', fund) if x.strip()]
         if parts:
-            doc['system_name'] = {lang: parts[0]}
+            system, category = split_funding_label(parts[0])
+            doc['system_name'] = {lang: system}
+            if category:
+                doc['category'] = {lang: category}
             if len(parts) > 1:
                 doc['offer_organization'] = {lang: parts[-1]}
         if frm: doc['from_date'] = frm

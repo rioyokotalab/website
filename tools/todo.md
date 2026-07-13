@@ -5,10 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-- **T-159 — Align complete ResearchMap field schemas:** correct Books ISBN/DOI
-  identifiers, Presentation location, and profile field names; expand safe
-  update ownership to volume/number/pages, identifiers, languages, review/type,
-  invited/international, ISBN, and location with fixture coverage.
 - **T-160 — Complete journal and book metadata:** resolve every applicable gap
   in sub001--sub003 (42 journals, two book-series items, two books), preserving
   verified identifiers and explicitly distinguishing unavailable/inapplicable
@@ -36,6 +32,12 @@ None.
 
 ## Recently completed
 
+- **T-159 — Align complete ResearchMap field schemas:** corrected Books
+  DOI/ISBN identifiers, Presentation location/type, and profile field names;
+  added balanced committee/project parsing plus category extraction; and made
+  dates, localized values, identifiers, URLs, and language updates additive
+  and non-degrading. Seven fixtures pass; the live dry-run has zero deletes and
+  holds 22 ambiguous matches out of the import plan.
 - **T-158 — Repair Achievements exporter parsing:** installed a shared
   id/legacy-name section parser for ResearchMap and ORCID, added link-row
   stripping and current/legacy-heading fixtures, and restored both 292-entry
