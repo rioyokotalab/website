@@ -49,7 +49,10 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   cost-competitive arm. Screen complete: Luna/high failed both repeats on
   `js-reduced-zero` and is 1/3 overall; stop it. Luna/xhigh passed both repeats
   and is 3/3; add repeats 4--5 to determine whether it qualifies as the
-  model-diverse WBD-005 fallback despite its higher runtime/token cost.
+  model-diverse WBD-005 fallback despite its higher runtime/token cost. Both
+  confirmations failed reduced-motion contracts, leaving Luna/xhigh 3/5 and
+  ending the arm. Stage 6 screens the remaining Luna/max speed and Sol/max
+  token singleton passes twice each; do not expand them before recomputation.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that

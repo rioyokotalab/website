@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T03:08+0900
+updated: 2026-07-14T03:18+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -201,6 +201,19 @@ status: in-progress
   crosses the qualified fallback gate; any failure stops the arm. No other
   WBD-005 route is scheduled before recomputation. Revision-7 plan SHA-256 is
   `be70923a71b9e06ce09207261918df041b2e7797cdd092cad09c9084d9cffb99`.
+- Luna/xhigh qualification stopped: repeats 4 and 5 failed reduced-motion
+  contracts (`css-zero-motion` + `js-reduced-zero`, then `js-reduced-zero`),
+  leaving the arm 3/5 and insufficient. The fifth cell was already in flight
+  when repeat 4 completed, so it finished safely; no further xhigh allocation.
+- Cumulative audit passes at 164 rows/artifacts/v2 metric pointers and 74 repeat
+  rows. No WBD-005 arm is qualified; a validation-dependent route chain is now
+  a required policy property rather than an optional fallback.
+- Adaptive plan revision 8 uses the remaining experiment window to screen the
+  two unreplicated `max` singleton passes: Luna/max for matrix speed and Sol/max
+  for matrix token cost, repeats 2--3 each. Recompute without automatic
+  expansion, leaving time for policy installation and closeout. Revision-8
+  plan SHA-256 is
+  `4c55f5ade6c930833e80c17ac25e1bc2bb25e2114015e488d4948ec87bf4f215`.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
