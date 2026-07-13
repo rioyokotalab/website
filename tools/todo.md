@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-155.
+`tools/state/session.md`. Next free id: T-156.
 
 ## Active
 
@@ -13,6 +13,11 @@ None.
 
 ## Recently completed
 
+- **T-155 — Housekeeping and fresh-task reset:** fast-forwarded the declared
+  workspace by 24 commits, passed repository/ledger/security/benchmark checks,
+  restored four exact historical reports needed by log and metric pointers,
+  removed about 1.3 GB of reproducible caches, and retained all 173 raw
+  benchmark artifacts. Push-only; no website deployment ran.
 - **T-154 — Publish benchmark comparison tables in README:** added a prominent
   root-README section with confidence-backed per-task dispatch routes and
   frozen singleton model/effort tables; linked the deterministic evidence and

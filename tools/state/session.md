@@ -1,25 +1,21 @@
 driver: codex
-updated: 2026-07-14T05:25+0900
-task: T-154 Publish benchmark comparison tables in README | idle
+updated: 2026-07-14T05:37+0900
+task: T-155 Housekeeping and fresh-task reset | idle
 status: idle
 
 ## Now
-- Root `README.md` now exposes the July 2026 GPT-5.6 comparison on the GitHub
-  repository landing page: confidence-backed WBD-001--005 routes plus frozen
-  singleton model and effort aggregates.
-- All displayed figures match the deterministic matrix summary and routing
-  policy. Policy validation, links, aggregate-row assertions, Markdown budgets,
-  placeholder scan, changed-file scope, diff check, and GitHub rebase pass.
-- `tools/agent-benchmark/README.md` now accurately describes retained compact
-  decision evidence. No deploy-included file changed; no website publish ran.
-- Driver report: `tools/out/driver-report-20260714-0524.md`. One T-154 driver
-  metric row and the driver log entry were appended.
+- T-155 is complete. The board has no active or blocked work, and the next free
+  task ID is T-156.
+- Repository, ledger, Git-object, security, Markdown, policy, benchmark,
+  artifact, and metrics checks pass. Four missing historical reports were
+  restored exactly, so every local log/metric report pointer resolves.
+- `/home/rioyokota/website` was fast-forwarded by 24 commits. About 1.3 GB of
+  reproducible caches was removed from the two checkouts; the 173 raw benchmark
+  artifacts and referenced reports remain. No deploy-included file changed and
+  no website deployment ran.
 
 ## Working set
-- `README.md`
-- `tools/agent-benchmark/README.md`
-- `tools/todo.md`, `tools/state/session.md`
-- `tools/task-metrics.jsonl`, `tools/codex-log.md`
+- None; repository is ready for T-156.
 
 ## Open questions
 - None.
