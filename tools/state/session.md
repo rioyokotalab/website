@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T03:48+0900
+updated: 2026-07-14T04:02+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -234,6 +234,12 @@ status: in-progress
   policy remains pinned to the 168-row summary until new results are analyzed.
   Revision-9 plan SHA-256 is
   `444b9ee23727ba4cf0979c7ec4d10fa35dfde38536f7b385c95f2df2378e681d`.
+- WBD-005 Sol/high repeat 7 passed at 203,449 ms/32,521 effective tokens;
+  Sol/medium repeat 7 passed at 163,475 ms/31,148. Both are 6/7 and remain
+  eligible. Adaptive plan revision 10 adds exactly repeat 8 for both; advance
+  only passing arms to repeat 9, then stop benchmark allocation. Revision-10
+  plan SHA-256 is
+  `5185d3d08f6fd0468f43d3a8c296e8786fb6e52755db0b68d4462add2f994d62`.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`

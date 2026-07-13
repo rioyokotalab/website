@@ -56,7 +56,9 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   are much slower than medium/high. The versioned selector policy is installed
   and validated across all 15 task/objective lookups. Use the residual campaign
   window for stepwise qualification attempts on Sol/medium and Sol/high; each
-  is 5/6 and needs three consecutive passes to reach 8/9 qualified evidence.
+  started 5/6 and needs three consecutive passes to reach 8/9 qualified
+  evidence. Both passed repeat 7 and are 6/7; run repeat 8 for both, advancing
+  only passing arms to the final repeat 9.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that
