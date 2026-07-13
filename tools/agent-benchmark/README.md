@@ -26,6 +26,13 @@ python3 tools/agent-benchmark/benchmark.py run WBD-001 --run-label baseline --ru
 python3 tools/agent-benchmark/benchmark.py summarize --run-label baseline
 ```
 
+Benchmark effort overrides are `low`, `medium`, `high`, `xhigh`, `max`, and
+`ultra`, kept in sync with the benchmark metrics schema. `ultra` is absent from
+the public model catalog but was promoted after T-146 runtime probes succeeded
+on WBD-001 for Luna, Terra, and Sol. The retained
+`--probe-undocumented-effort` flag identifies only those three probe runs;
+normal subsequent `ultra` cells omit it.
+
 The runner builds a temporary repository with `git archive`, removes benchmark
 implementation before the worker starts, commits the mutated fixture, and
 grades only the candidate diff. Never run a capsule directly in the root

@@ -46,7 +46,7 @@
         "run_label": {"type": "string", "minLength": 1},
         "task_id": {"type": "string", "minLength": 1},
         "model": {"type": "string", "minLength": 1},
-        "effort": {"enum": ["low", "medium", "high", "xhigh", "max"]},
+        "effort": {"enum": ["low", "medium", "high", "xhigh", "max", "ultra"]},
         "outcome": {"enum": ["passed", "failed", "partial", "timeout", "error", "excluded"]},
         "capability_score": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
         "critical_pass": {"type": ["boolean", "null"]},

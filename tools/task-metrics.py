@@ -84,8 +84,8 @@ def validate_row(row: dict[str, Any]) -> list[str]:
         extra = sorted(row.keys() - V2_ALLOWED)
         if extra:
             errors.append("unexpected: " + ", ".join(extra))
-        if row.get("effort") not in ("low", "medium", "high", "xhigh", "max"):
-            errors.append("effort must be low, medium, high, xhigh, or max")
+        if row.get("effort") not in ("low", "medium", "high", "xhigh", "max", "ultra"):
+            errors.append("effort must be low, medium, high, xhigh, max, or ultra")
         if row.get("outcome") not in ("passed", "failed", "partial", "timeout", "error", "excluded"):
             errors.append("invalid outcome")
         for key in ("success", "capability_pass"):

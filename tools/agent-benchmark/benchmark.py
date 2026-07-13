@@ -29,6 +29,10 @@ TASKS_PATH = BENCHMARK_DIR / "tasks.json"
 RESULTS_PATH = BENCHMARK_DIR / "results.jsonl"
 EXCLUSIONS_PATH = BENCHMARK_DIR / "exclusions.json"
 ARTIFACTS_ROOT = ROOT / "tools" / "out" / "agent-benchmark"
+METRICS_SCHEMA_PATH = ROOT / "tools" / "task-metrics.schema.json"
+DOCUMENTED_EFFORTS = ("low", "medium", "high", "xhigh", "max")
+RUNTIME_VERIFIED_EFFORTS = ("ultra",)
+BENCHMARK_EFFORTS = DOCUMENTED_EFFORTS + RUNTIME_VERIFIED_EFFORTS
 
 
 def load_tasks() -> dict[str, dict[str, Any]]:
@@ -319,6 +323,20 @@ def task_route(task: dict[str, Any], model: str | None, effort: str | None,
     return model or task_model, effort or task_effort, str(worker_name)
 
 
+def validate_effort(task_id: str, effort: str, probe_undocumented: bool) -> None:
+    if effort in DOCUMENTED_EFFORTS:
+        if probe_undocumented:
+            raise SystemExit("--probe-undocumented-effort requires --effort=ultra")
+        return
+    if effort in RUNTIME_VERIFIED_EFFORTS and not probe_undocumented:
+        return
+    if effort in RUNTIME_VERIFIED_EFFORTS and probe_undocumented and task_id == "WBD-001":
+        return
+    if effort in RUNTIME_VERIFIED_EFFORTS:
+        raise SystemExit("--probe-undocumented-effort is limited to the completed WBD-001 capability probes")
+    raise SystemExit(f"unsupported effort: {effort}")
+
+
 def append_result(result: dict[str, Any]) -> None:
     RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
     with RESULTS_PATH.open("a", encoding="utf-8") as handle:
@@ -375,6 +393,7 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
     if task.get("held_out") and not args.include_held_out:
         raise SystemExit(f"{args.task_id} is held out; pass --include-held-out only after candidate freeze")
     model, effort, worker_name = task_route(task, args.model, args.effort, args.worker)
+    validate_effort(args.task_id, effort, args.probe_undocumented_effort)
     run_id = args.run_id or f"{datetime.now().strftime('%Y%m%d-%H%M%S')}-{args.task_id.lower()}-{uuid.uuid4().hex[:6]}"
     artifact = ARTIFACTS_ROOT / run_id
     artifact.mkdir(parents=True, exist_ok=False)
@@ -651,6 +670,21 @@ def selftest() -> dict[str, Any]:
     assert not operations.reduced_motion_zero(inverted)
     assert operations._allowed("en/index.html", tasks["WBD-005"]["authorized_paths"])
     assert operations._allowed("index.html", tasks["WBD-005"]["authorized_paths"])
+    metrics_schema = json.loads(METRICS_SCHEMA_PATH.read_text(encoding="utf-8"))
+    schema_efforts = metrics_schema["oneOf"][1]["properties"]["effort"]["enum"]
+    assert schema_efforts == list(BENCHMARK_EFFORTS)
+    validate_effort("WBD-001", "xhigh", False)
+    validate_effort("WBD-001", "max", False)
+    validate_effort("WBD-001", "ultra", True)
+    validate_effort("WBD-001", "ultra", False)
+    validate_effort("WBD-002", "ultra", False)
+    for task_id, effort, probe in (("WBD-002", "ultra", True), ("WBD-001", "xhigh", True)):
+        try:
+            validate_effort(task_id, effort, probe)
+        except SystemExit:
+            pass
+        else:
+            raise AssertionError(f"undocumented effort unexpectedly accepted: {task_id} {effort} probe={probe}")
     with tempfile.TemporaryDirectory() as temporary:
         path = Path(temporary) / "events.jsonl"
         path.write_text(
@@ -662,7 +696,9 @@ def selftest() -> dict[str, Any]:
         assert usage and usage["input_tokens"] == 100
         assert item_types == {"agent_message": 1} and final_message == "ok" and invalid == 0
         assert tool_metrics["completed_commands"] == 0
-    return {"status": "ok", "tasks": len(tasks), "telemetry_parser": "ok"}
+    return {"status": "ok", "tasks": len(tasks), "telemetry_parser": "ok",
+            "benchmark_efforts": list(BENCHMARK_EFFORTS),
+            "runtime_verified_efforts": list(RUNTIME_VERIFIED_EFFORTS)}
 
 
 def parser() -> argparse.ArgumentParser:
@@ -676,7 +712,12 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--run-label", default="development")
     run.add_argument("--model")
     run.add_argument("--worker")
-    run.add_argument("--effort", choices=("low", "medium", "high"))
+    run.add_argument("--effort", choices=BENCHMARK_EFFORTS)
+    run.add_argument(
+        "--probe-undocumented-effort",
+        action="store_true",
+        help="identify the completed WBD-001 ultra capability-probe mode; normal ultra runs omit this flag",
+    )
     run.add_argument("--prompt-mode", choices=("full", "compact"), default="full")
     run.add_argument(
         "--handoff-mode",

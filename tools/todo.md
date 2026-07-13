@@ -5,14 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-- **T-146 — Freeze, extend, and preflight the exhaustive GPT-5.6 round:** run
-  benchmark selftest/audit, freeze task/runner/grader identities and matched
-  settings, and extend the runner for documented `xhigh`/`max` plus schema and
-  selftests. Use full prompts, default inspection, `runner-lite`, P2P, run label
-  `gpt56-full-20260713`, and a blocked/randomized execution order. After the
-  deterministic gates pass, use WBD-001 as one `ultra` capability probe per
-  model; keep a successful probe as its matrix cell. Do not add `ultra` to the
-  result schema unless the runtime actually accepts it.
 - **T-147 — Run all documented model/effort/task cells:** run WBD-001 through
   WBD-005 once for every `gpt-5.6-{luna,terra,sol}` ×
   `{low,medium,high,xhigh,max}` arm (75 scored runs), using
@@ -20,19 +12,17 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   round, not an unseen selection gate. Never reroute a failed cell to a
   different model or effort. Record score, critical assertions, effective and
   reasoning tokens, duration, scope, cost, and failure class for every attempt.
-- **T-148 — Complete or close the `ultra` rows:** for each model whose T-146
-  WBD-001 `ultra` probe succeeds, run WBD-002 through WBD-005 at `ultra`, giving
-  the requested 90-cell matrix. If a probe is rejected, record its exact
-  capability failure once and mark that model's remaining four `ultra` cells
-  unsupported/N/A; do not substitute `max` or spend calls repeating a known
-  invalid configuration.
+- **T-148 — Complete the `ultra` rows:** T-146 proved Luna, Terra, and Sol all
+  accept `ultra` and recorded their passing WBD-001 cells. Run WBD-002 through
+  WBD-005 once for all three models at `ultra` (12 remaining cells), using the
+  same frozen settings and P2P gates, to complete the requested 90-cell matrix.
 - **T-149 — Audit and summarize the complete matrix:** require exactly 75
-  documented scored cells plus either 15 scored `ultra` cells or explicit
-  unsupported evidence for every `ultra` row. Check run identity, task version,
-  settings, artifacts, scope, P2P, and metrics integrity; report per-task and
-  aggregate model/effort quality, token cost, latency, failures, Pareto routes,
-  and break-even. Treat single-run cells as estimates rather than medians, and
-  clean obsolete raw artifacts/results together after the decision is durable.
+  documented scored cells plus 15 scored `ultra` cells. Check run identity,
+  task version, settings, artifacts, scope, P2P, and metrics integrity; report
+  per-task and aggregate model/effort quality, token cost, latency, failures,
+  Pareto routes, and break-even. Treat single-run cells as estimates rather
+  than medians, and clean obsolete raw artifacts/results together after the
+  decision is durable.
 
 ## Blocked / awaiting user
 
@@ -40,6 +30,13 @@ None.
 
 ## Recently completed
 
+- **T-146 — Freeze, extend, and preflight the GPT-5.6 round:** extended and
+  selftested xhigh/max, froze baseline/settings/task/runner/grader identities,
+  restored ignored lockfile/browser dependencies, and passed the five-capsule
+  audit. Luna/Terra/Sol all accepted `ultra` and passed WBD-001 at 100/100 with
+  P2P and exact scope (3 runs, 421,864 ms total, 94,152 effective tokens), so
+  `ultra` was promoted to the benchmark and v2 metrics schemas. Paused before
+  T-147 at the user's request.
 - **T-150 — Expand the GPT-5.6 matrix:** replaced the gated finalist design
   with all five WBD tasks across the full requested model/effort grid; 75 cells
   use documented efforts and `ultra` is capability-gated because it is absent

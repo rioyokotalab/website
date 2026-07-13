@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "status": "frozen-after-ultra-capability-preflight",
+  "run_label": "gpt56-full-20260713",
+  "baseline_commit": "c4b07208d6ed8547ae7a67ed2feeba72515c8314",
+  "models": [
+    "gpt-5.6-luna",
+    "gpt-5.6-terra",
+    "gpt-5.6-sol"
+  ],
+  "documented_efforts": [
+    "low",
+    "medium",
+    "high",
+    "xhigh",
+    "max"
+  ],
+  "runtime_verified_efforts": [
+    "ultra"
+  ],
+  "tasks": {
+    "WBD-001": {"version": 1, "sha256": "1532601740164467f431cb8d01fd51d0d2d921d65961b2c9172b89f68cdcc297"},
+    "WBD-002": {"version": 2, "sha256": "db69ae369b720012ef0c650cce727d9a8470297fed45ad0624800e9adb4d556c"},
+    "WBD-003": {"version": 1, "sha256": "3d0a37078410bc2b1c595cdc52860f9c02c33b5a9c74c5e925617a0974130709"},
+    "WBD-004": {"version": 2, "sha256": "78387a7da390096374a823f6f3bcbb8f242964fb9d750650f6247510f9215c05"},
+    "WBD-005": {"version": 2, "sha256": "cc00c84308bc1b4e805f979d6b8688c13cde0398acefa55bc3656b26c60f71c5"}
+  },
+  "settings": {
+    "prompt_mode": "full",
+    "handoff_mode": "runner-lite",
+    "inspection_mode": "default",
+    "run_p2p": true,
+    "worker_override": "gpt56-matrix",
+    "timeout": "task-default",
+    "wbd_005_include_held_out": true
+  },
+  "execution_order": {
+    "method": "task-blocked deterministic pseudorandom order",
+    "task_blocks": ["WBD-003", "WBD-001", "WBD-005", "WBD-002", "WBD-004"],
+    "within_block": "ascending SHA-256 of gpt56-full-20260713|task_id|model|effort"
+  },
+  "ultra_probe": {
+    "documented": false,
+    "task_id": "WBD-001",
+    "model_order": ["gpt-5.6-luna", "gpt-5.6-terra", "gpt-5.6-sol"],
+    "required_flag": "--probe-undocumented-effort",
+    "acceptance": "execution exits zero; task score is evaluated separately",
+    "outcome": "accepted by all three models and promoted to the benchmark metrics schema",
+    "results": [
+      {"run_id": "gpt56-full-20260713-ultra-luna-wbd001", "model": "gpt-5.6-luna", "score": 100, "worker_duration_ms": 114401, "effective_tokens": 37893},
+      {"run_id": "gpt56-full-20260713-ultra-terra-wbd001", "model": "gpt-5.6-terra", "score": 100, "worker_duration_ms": 95582, "effective_tokens": 22956},
+      {"run_id": "gpt56-full-20260713-ultra-sol-wbd001", "model": "gpt-5.6-sol", "score": 100, "worker_duration_ms": 161149, "effective_tokens": 33303}
+    ]
+  },
+  "identities": {
+    "codex_cli": "codex-cli 0.144.3",
+    "probe_runner_sha256": "a800623a529dd6bc4b5c49e50efaa4375b67b4588282f9fcc720bbbda377ef60",
+    "matrix_runner_sha256": "f78a8f72637b8e180201ac5efc031d9913d89fc862d2881efc75b6dc0a62f166",
+    "grader_sha256": "287d7dbf5c9e35425a2a0b14ebfe68011166d1703f3011683e10f5b4d269a351",
+    "tasks_manifest_sha256": "f2a80ec1d9723b9fed84738f8e0d75aee75e549006aa7b3c3e62859f1a3f17aa",
+    "final_schema_sha256": "0e32d8ea7856fe0decea6e28a84e01c64e7ce491724b3676219d7aa283f66be6",
+    "metrics_schema_sha256": "39517654f58177c79e9fd413e688aab65a70eb46b7b2f2f32192e10514035fed",
+    "metrics_tool_sha256": "910cce2a3da4a16eac5cec07406a7518031e073c8ce5d98b4aa6fd080e0ddff1"
+  }
+}

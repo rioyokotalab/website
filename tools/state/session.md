@@ -1,19 +1,25 @@
 driver: codex
-updated: 2026-07-13T20:31+0900
+updated: 2026-07-13T20:53+0900
 task: idle
 status: idle
 
 ## Now
-- T-150 revised T-146--T-149 into a complete five-task GPT-5.6 factorial.
-- The guaranteed matrix is 3 models × 5 documented requested efforts × 5 WBD
-  tasks = 75 scored cells. Three WBD-001 `ultra` probes expand it to 90 scored
-  cells only if accepted; rejected rows retain explicit unsupported evidence.
-- Official catalog confirms low/medium/high/xhigh/max for Luna/Terra/Sol but no
-  `ultra`; the current runner needs extension beyond low/medium/high in T-146.
-- No benchmark model call, website change, publication, or deployment ran.
+- T-146 complete; pause before T-147 as explicitly requested.
+- Frozen round: baseline `c4b0720`, run label `gpt56-full-20260713`, full
+  prompt/default inspection/runner-lite/P2P, deterministic task-blocked order.
+- Runner and v2 metrics now support low/medium/high/xhigh/max/ultra. Luna,
+  Terra, and Sol each passed the WBD-001 ultra cell at 100/100 with full P2P and
+  exact scope. Three artifacts and three v2 metric rows validate.
+- The initial Luna fixture setup failed before any model call because ignored
+  dependencies had been cleaned; lockfile dependencies and Playwright Chromium
+  were restored, all deterministic gates reran cleanly, and the failed empty
+  artifact was removed before the successful run.
 
 ## Working set
-- None. Next task is T-146.
+- `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
+- `tools/agent-benchmark/results.jsonl`
+- `tools/out/agent-benchmark/` (three complete ignored probe artifacts)
+- Next task when resumed: T-147. Do not start it without a new user request.
 
 ## Open questions
 - None.
