@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T00:44+0900
+updated: 2026-07-14T00:52+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -83,6 +83,12 @@ status: in-progress
   repeats = 32 runs). This brings all low controls and the only non-low matrix
   frontier arm to `n=3` before elimination. Next, repeat the five WBD-005
   failures and WBD-003 Sol/xhigh twice each if the stage-1 audit remains clean.
+- The resumable repeat orchestrator and plan dry-run at exactly 32 stage-1 and
+  12 stage-2 cells with unique stable ids. Repeat-runner SHA-256 is
+  `0c33d1161a87fd980f23f68479e8556a39d360b5ee84409f53a4a617560a7691`;
+  plan SHA-256 is
+  `9414ff807edb91648b0d538b1a6f4fbce043e6633140b273067212064644bf61`.
+  Commit these inputs before the long stage-1 run.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
