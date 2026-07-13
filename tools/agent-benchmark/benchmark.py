@@ -219,7 +219,7 @@ def parse_jsonl(path: Path) -> tuple[dict[str, int] | None, dict[str, int], str 
                 command_input_chars += len(command)
                 command_output_chars += len(item.get("aggregated_output") or "")
                 context_paths.update(re.findall(
-                    r"(?:^|[\s'\"])(AGENTS\.md|CLAUDE\.md|skills/[A-Za-z0-9_.-]+\.md|tools/todo\.md|tools/state/[A-Za-z0-9_.-]+\.md)",
+                    r"(?:^|[\s'\"])(AGENTS\.md|skills/[A-Za-z0-9_.-]+\.md|tools/todo\.md|tools/state/[A-Za-z0-9_.-]+\.md)",
                     command,
                 ))
     tool_metrics = {

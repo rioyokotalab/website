@@ -19,7 +19,7 @@ HERE = Path(__file__).resolve().parent
 OWNER_ROOT = HERE.parents[1]
 MANIFEST = HERE / "tasks.json"
 PROTECTED_PREFIXES = (".git", "tests", "tools/state")
-PROTECTED_FILES = {"AGENTS.md", "CLAUDE.md", ".mcp.json", "tools/todo.md"}
+PROTECTED_FILES = {"AGENTS.md", "tools/todo.md"}
 HANDOFF_PATHS = {"tools/codex-log.md"}
 NEWS_TIME = '<time datetime="2026-02-23">2026.02.23</time>'
 

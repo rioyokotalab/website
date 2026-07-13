@@ -2,8 +2,8 @@
 set -euo pipefail
 
 action=${1:-}
-root=${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}
-state_dir="$root/.claude"
+root=${YOKOTA_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}
+state_dir="$root/.preview-state"
 pid_file="$state_dir/http-server.pid"
 port_file="$state_dir/http-server.port"
 port=${YOKOTA_PREVIEW_PORT:-8000}

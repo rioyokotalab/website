@@ -4,6 +4,7 @@ Thumbs.db
 *~
 *.swp
 /tools/out/
+.preview-state/
 __pycache__/
 node_modules/
 .playwright/

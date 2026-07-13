@@ -24,8 +24,7 @@
 6. Recovery from a dirty worktree or an interrupted partial edit.
 
 Deployment and live-account automation are intentionally outside the suite:
-they require user/Claude authority and should not become agent benchmark side
-effects.
+they require direct user authority and should not become benchmark side effects.
 
 ## Candidate capsules
 
