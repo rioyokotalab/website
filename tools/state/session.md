@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T02:54+0900
+updated: 2026-07-14T03:08+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -192,6 +192,15 @@ status: in-progress
   model-diverse fallback evidence is more valuable than further Sol sampling.
   Revision-6 plan SHA-256 is
   `1b84578fa89e6b0c338d02189764adcb604ab7f1f6bf65ab161d947678fbd62c`.
+- WBD-005 model-diverse screen complete. Luna/high repeats 2 and 3 both failed
+  `js-reduced-zero`, leaving the arm 1/3; stop it. Luna/xhigh passed both
+  repeats and is 3/3 provisional. Its observed repeats were expensive
+  (190,752--282,721 ms and 57,393--71,213 effective tokens), but it is the only
+  clean model-diverse candidate and advances under the predeclared rule.
+- Adaptive plan revision 7 adds Luna/xhigh repeats 4--5. If both pass, 5/5
+  crosses the qualified fallback gate; any failure stops the arm. No other
+  WBD-005 route is scheduled before recomputation. Revision-7 plan SHA-256 is
+  `be70923a71b9e06ce09207261918df041b2e7797cdd092cad09c9084d9cffb99`.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`

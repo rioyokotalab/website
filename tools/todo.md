@@ -46,7 +46,10 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   WBD-005 Sol/high failed `js-reduced-zero` and fell to 5/6 provisional. No
   WBD-005 route is qualified standalone. Stage 5 screens Luna/high and
   Luna/xhigh twice each as model-diverse fallbacks; expand only a clean,
-  cost-competitive arm.
+  cost-competitive arm. Screen complete: Luna/high failed both repeats on
+  `js-reduced-zero` and is 1/3 overall; stop it. Luna/xhigh passed both repeats
+  and is 3/3; add repeats 4--5 to determine whether it qualifies as the
+  model-diverse WBD-005 fallback despite its higher runtime/token cost.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that
