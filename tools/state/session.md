@@ -1,11 +1,11 @@
 driver: codex
-updated: 2026-07-13T09:20+0900
+updated: 2026-07-13T09:24+0900
 task: none
 status: idle
 
 ## Now
 - Goal: complete, including post-change full-suite output verification.
-- Last done: T-126 full quiet Playwright run passed 37/37 in 219.11 seconds with approximately 97.2% less captured output than the logged-server run.
+- Last done: T-127 added a read-only raw-artifact integrity/size audit covering result rows, required files, v2 metric pointers, exclusions, and orphan/missing directories.
 - Next: none.
 
 ## Working set

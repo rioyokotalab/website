@@ -33,6 +33,7 @@ Use default inspection for reference-driven visual work and diagnosis.
 python3 tools/agent-benchmark/benchmark.py list
 python3 tools/agent-benchmark/benchmark.py selftest
 python3 tools/agent-benchmark/benchmark.py audit
+python3 tools/agent-benchmark/benchmark.py artifacts
 python3 tools/agent-benchmark/benchmark.py show RUN_ID
 python3 tools/agent-benchmark/benchmark.py run WBD-001 --run-label baseline --run-p2p
 python3 tools/agent-benchmark/benchmark.py summarize --run-label baseline

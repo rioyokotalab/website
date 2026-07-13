@@ -575,6 +575,57 @@ def audit(ref: str = "HEAD") -> dict[str, Any]:
             "tasks": reports, "errors": errors}
 
 
+def audit_artifacts() -> dict[str, Any]:
+    result_rows = []
+    if RESULTS_PATH.exists():
+        result_rows = [json.loads(line) for line in RESULTS_PATH.read_text(encoding="utf-8").splitlines() if line.strip()]
+    result_ids = {str(row.get("run_id")) for row in result_rows}
+    directories = {path.name: path for path in ARTIFACTS_ROOT.iterdir() if path.is_dir()} if ARTIFACTS_ROOT.exists() else {}
+    missing_directories = sorted(result_ids - directories.keys())
+    orphan_directories = sorted(directories.keys() - result_ids)
+    required = ("prompt.txt", "stdout.jsonl", "stderr.log", "candidate.patch", "result.json")
+    incomplete = {
+        run_id: [name for name in required if not (directories[run_id] / name).exists()]
+        for run_id in sorted(result_ids & directories.keys())
+    }
+    incomplete = {run_id: names for run_id, names in incomplete.items() if names}
+    sizes = {
+        run_id: sum(path.stat().st_size for path in directory.rglob("*") if path.is_file())
+        for run_id, directory in directories.items()
+    }
+    metrics_path = ROOT / "tools" / "task-metrics.jsonl"
+    metric_pointers = []
+    if metrics_path.exists():
+        for line in metrics_path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            if row.get("schema_version") == 2 and row.get("artifact"):
+                metric_pointers.append((str(row.get("run_id")), ROOT / str(row["artifact"])))
+    missing_metric_artifacts = sorted(run_id for run_id, path in metric_pointers if not path.exists())
+    exclusions = json.loads(EXCLUSIONS_PATH.read_text(encoding="utf-8")) if EXCLUSIONS_PATH.exists() else {}
+    errors = []
+    if missing_directories:
+        errors.append(f"result rows missing artifact directories: {missing_directories}")
+    if orphan_directories:
+        errors.append(f"artifact directories missing result rows: {orphan_directories}")
+    if incomplete:
+        errors.append(f"incomplete artifact directories: {incomplete}")
+    if missing_metric_artifacts:
+        errors.append(f"metrics point to missing artifacts: {missing_metric_artifacts}")
+    return {
+        "status": "pass" if not errors else "fail",
+        "runs": len(result_rows),
+        "artifact_directories": len(directories),
+        "metric_artifact_pointers": len(metric_pointers),
+        "excluded_runs": len(set(exclusions) & result_ids),
+        "total_bytes": sum(sizes.values()),
+        "largest": [{"run_id": run_id, "bytes": size} for run_id, size in
+                    sorted(sizes.items(), key=lambda item: item[1], reverse=True)[:5]],
+        "errors": errors,
+    }
+
+
 def selftest() -> dict[str, Any]:
     tasks = load_tasks()
     assert set(tasks) == {f"WBD-{number:03d}" for number in range(1, 6)}
@@ -636,6 +687,7 @@ def parser() -> argparse.ArgumentParser:
     show = subcommands.add_parser("show")
     show.add_argument("run_id")
     show.add_argument("--verbose-result", action="store_true")
+    subcommands.add_parser("artifacts")
     subcommands.add_parser("selftest")
     return command
 
@@ -662,6 +714,10 @@ def main() -> int:
         result = load_result(args.run_id)
         print(json.dumps(result if args.verbose_result else compact_result(result), ensure_ascii=False, indent=2, sort_keys=True))
         return 0
+    if args.command == "artifacts":
+        result = audit_artifacts()
+        print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
+        return 0 if result["status"] == "pass" else 1
     if args.command == "selftest":
         print(json.dumps(selftest(), indent=2, sort_keys=True))
         return 0
