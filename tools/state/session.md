@@ -1,11 +1,11 @@
 driver: codex
-updated: 2026-07-13T09:15+0900
+updated: 2026-07-13T09:20+0900
 task: none
 status: idle
 
 ## Now
-- Goal: complete. The repository now has a capability-gated, cost-instrumented web-development benchmark plus retained token/logging optimizations.
-- Last done: T-117 final visible 4/4 and held-out 1/1 scored 100; reports are `tools/out/t117-final.md` and `tools/out/driver-report-20260713-0910.md`. Full 37-test and quiet 5-test browser runs plus all static/audit checks pass.
+- Goal: complete, including post-change full-suite output verification.
+- Last done: T-126 full quiet Playwright run passed 37/37 in 219.11 seconds with approximately 97.2% less captured output than the logged-server run.
 - Next: none.
 
 ## Working set
