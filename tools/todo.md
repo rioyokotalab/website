@@ -5,20 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-- **T-160 — Complete journal and book metadata:** resolve every applicable gap
-  in sub001--sub003 (42 journals, two book-series items, two books), preserving
-  verified identifiers and explicitly distinguishing unavailable/inapplicable
-  fields from omissions.
-- **T-161 — Complete international peer-reviewed metadata:** process all 115
-  sub004 entries in bounded year batches, filling locally evidenced pages,
-  locations, identifiers, and other supported fields without guessing.
-- **T-162 — Complete domestic and non-reviewed metadata:** process 31 sub005,
-  48 sub006, and 69 sub007 entries, preserving bilingual author metadata and
-  filling applicable event/location/page/identifier fields.
-- **T-163 — Normalize Achievements and add source links:** conform all seven
-  sections to the majority no-leading-space/terminal-period/no-inline-anchor
-  structure on both pages; add a separate `[arxiv] [bibtex]` row to the 30
-  entries with verified arXiv records and keep exporter/CV text clean.
 - **T-164 — Generate and audit ResearchMap import:** run the corrected live
   diff after metadata completion, review every insert/update/delete, emit the
   bulk-import JSONL without `user_id`, and retain exact source/audit evidence.
@@ -32,6 +18,26 @@ None.
 
 ## Recently completed
 
+- **T-163 — Normalize Achievements and add source links:** normalized all 309
+  mirrored citations to the majority no-leading-space/terminal-period/plain-
+  citation format and added 30 separate `[arxiv] [bibtex]` rows per language
+  from existing arXiv attributes. The updater is idempotent, CRLF is intact,
+  and exporter citation text remains semantically unchanged.
+- **T-162 — Complete domestic and non-reviewed metadata:** audited all 31
+  sub005, 48 sub006, and 69 sub007 rows; installed three explicit title guards
+  and the locally stated sub007 report volume/number. Every other nominal
+  volume/page/location/identifier gap is documented as absent or structurally
+  inapplicable rather than guessed.
+- **T-161 — Complete international peer-reviewed metadata:** audited all 115
+  sub004 rows; added the three locally stated proceeding volume/number values
+  and two explicit title guards. Unstated issue/page/identifier gaps remain
+  classified, and three citation conflicts are quarantined for a later lookup
+  session.
+- **T-160 — Complete journal and book metadata:** added 31 citation-evidenced
+  journal/series attributes, bilingualized four Japanese author rows, and
+  modeled four books with title, contributor range/role, assigned pages,
+  publisher, date, identifiers, language, and referee fields. Unavailable and
+  inapplicable gaps are explicitly recorded in the local metadata plan.
 - **T-159 — Align complete ResearchMap field schemas:** corrected Books
   DOI/ISBN identifiers, Presentation location/type, and profile field names;
   added balanced committee/project parsing plus category extraction; and made

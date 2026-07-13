@@ -39,8 +39,8 @@ SECTIONS = {   # anchor -> (rm type, extra fields)
     # sections -> Presentations if Rio Yokota is the sole author (invited
     # talks), Misc. otherwise ('talk_or_misc' is resolved per entry).
     'sub001': ('published_papers', {'published_paper_type': 'scientific_journal', 'referee': True}),
-    'sub002': ('books_etc', {}),
-    'sub003': ('books_etc', {}),
+    'sub002': ('books_etc', {'referee': False}),
+    'sub003': ('books_etc', {'referee': False}),
     'sub004': ('published_papers', {'published_paper_type': 'international_conference_proceedings', 'referee': True}),
     'sub005': ('published_papers', {'published_paper_type': 'symposium', 'referee': True}),
     'sub006': ('talk_or_misc', {'is_international_presentation': True}),
@@ -69,6 +69,10 @@ DATA_EVENT = re.compile(r'\bdata-event\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_LOCATION = re.compile(r'\bdata-location\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_INVITED = re.compile(r'\bdata-invited\s*=\s*["\']([^"\']*)["\']', re.I)
 DATA_PUBLISHER = re.compile(r'\bdata-publisher\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_BOOK_TITLE = re.compile(r'\bdata-book-title\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_BOOK_ROLE = re.compile(r'\bdata-book-role\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_TITLE = re.compile(r'\bdata-title\s*=\s*["\']([^"\']*)["\']', re.I)
+DATA_VENUE = re.compile(r'\bdata-venue\s*=\s*["\']([^"\']*)["\']', re.I)
 ACHIEVEMENT_LINKS = re.compile(
     r'<span\b[^>]*\bclass\s*=\s*["\'][^"\']*\bachievement-links\b[^"\']*["\'][^>]*>'
     r'.*?</span\s*>', re.I | re.S)
@@ -96,6 +100,10 @@ def strip_achievement_links(fragment):
 def split_authors(s):
     return [a.strip() for a in s.split(';') if a.strip()]
 
+def attr_text(match):
+    """Return a stripped, HTML-decoded data-attribute value."""
+    return html.unescape(match.group(1)).strip() if match else None
+
 def localized(value, lang):
     """Use both ResearchMap language slots when verified text is English."""
     if lang == 'en':
@@ -119,7 +127,8 @@ def norm_date(s):
 def entries(anchor):
     """Yield (clean_text, data_date, data_doi, data_isbn, data_url, data_volume,
     data_number, data_pages, data_authors, data_authors_ja, data_authors_en,
-    data_event, data_location, data_invited, data_publisher) for each <li>;
+    data_event, data_location, data_invited, data_publisher, data_book_title,
+    data_book_role, data_title, data_venue) for each <li>;
     data_* is None if the opening <li> tag carries no valid attribute."""
     with open(PAGE, newline='', encoding='utf-8') as source:
         c = source.read()
@@ -131,53 +140,67 @@ def entries(anchor):
     out = []
     for tag, p in zip(tags, parts):
         dm = DATA_DATE.search(tag)
-        data_date = norm_date(dm.group(1)) if dm else None
+        data_date = norm_date(attr_text(dm)) if dm else None
         doi_m = DATA_DOI.search(tag)
         data_doi = None
         if doi_m:
-            data_doi = re.sub(r'^https?://(?:dx\.)?doi\.org/', '', doi_m.group(1).strip(), flags=re.I) or None
+            data_doi = re.sub(r'^https?://(?:dx\.)?doi\.org/', '',
+                              attr_text(doi_m), flags=re.I) or None
         isbn_m = DATA_ISBN.search(tag)
-        data_isbn = isbn_m.group(1).strip() if isbn_m else None
+        data_isbn = attr_text(isbn_m)
         data_isbn = data_isbn or None
         url_m = DATA_URL.search(tag)
-        data_url = url_m.group(1).strip() if url_m else None
+        data_url = attr_text(url_m)
         data_url = data_url or None
         volume_m = DATA_VOLUME.search(tag)
-        data_volume = volume_m.group(1).strip() if volume_m else None
+        data_volume = attr_text(volume_m)
         data_volume = data_volume or None
         number_m = DATA_NUMBER.search(tag)
-        data_number = number_m.group(1).strip() if number_m else None
+        data_number = attr_text(number_m)
         data_number = data_number or None
         pages_m = DATA_PAGES.search(tag)
-        data_pages = pages_m.group(1).strip() if pages_m else None
+        data_pages = attr_text(pages_m)
         data_pages = data_pages or None
         authors_m = DATA_AUTHORS.search(tag)
-        data_authors = split_authors(authors_m.group(1)) if authors_m else None
+        data_authors = split_authors(attr_text(authors_m)) if authors_m else None
         data_authors = data_authors or None
         authors_ja_m = DATA_AUTHORS_JA.search(tag)
-        data_authors_ja = split_authors(authors_ja_m.group(1)) if authors_ja_m else None
+        data_authors_ja = split_authors(attr_text(authors_ja_m)) if authors_ja_m else None
         data_authors_ja = data_authors_ja or None
         authors_en_m = DATA_AUTHORS_EN.search(tag)
-        data_authors_en = split_authors(authors_en_m.group(1)) if authors_en_m else None
+        data_authors_en = split_authors(attr_text(authors_en_m)) if authors_en_m else None
         data_authors_en = data_authors_en or None
         event_m = DATA_EVENT.search(tag)
-        data_event = event_m.group(1).strip() if event_m else None
+        data_event = attr_text(event_m)
         data_event = data_event or None
         location_m = DATA_LOCATION.search(tag)
-        data_location = location_m.group(1).strip() if location_m else None
+        data_location = attr_text(location_m)
         data_location = data_location or None
         inv_m = DATA_INVITED.search(tag)
-        data_invited = (inv_m.group(1).strip().lower() == 'true') if inv_m else None
+        data_invited = (attr_text(inv_m).lower() == 'true') if inv_m else None
         publisher_m = DATA_PUBLISHER.search(tag)
-        data_publisher = publisher_m.group(1).strip() if publisher_m else None
+        data_publisher = attr_text(publisher_m)
         data_publisher = data_publisher or None
+        book_title_m = DATA_BOOK_TITLE.search(tag)
+        data_book_title = attr_text(book_title_m)
+        data_book_title = data_book_title or None
+        book_role_m = DATA_BOOK_ROLE.search(tag)
+        data_book_role = attr_text(book_role_m)
+        data_book_role = data_book_role or None
+        title_m = DATA_TITLE.search(tag)
+        data_title = attr_text(title_m)
+        data_title = data_title or None
+        venue_m = DATA_VENUE.search(tag)
+        data_venue = attr_text(venue_m)
+        data_venue = data_venue or None
         p = strip_achievement_links(p)
         t = re.sub(r'</li>', '', re.sub(r'<[^>]+>', '', p), flags=re.I)
         t = unicodedata.normalize('NFKC', t).replace('&amp;', '&').replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"')
         out.append((re.sub(r'\s+', ' ', t).strip(), data_date, data_doi, data_isbn, data_url,
                     data_volume, data_number, data_pages, data_authors,
                     data_authors_ja, data_authors_en, data_event, data_location,
-                    data_invited, data_publisher))
+                    data_invited, data_publisher, data_book_title,
+                    data_book_role, data_title, data_venue))
     return out
 
 def key(t, limit=70):
@@ -290,12 +313,18 @@ def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_isbn=Non
               data_url=None,
               data_volume=None, data_number=None, data_pages=None, data_authors=None,
               data_authors_ja=None, data_authors_en=None, data_event=None,
-              data_location=None, data_invited=None, data_publisher=None):
+              data_location=None, data_invited=None, data_publisher=None,
+              data_book_title=None, data_book_role=None, data_title=None,
+              data_venue=None):
     rm_type = resolve_type(rm_type, text)
     parsed = parse(text)
     if not parsed:
         return None
     authors, title, venue, date = parsed
+    if data_title:
+        title = data_title
+    if data_venue:
+        venue = data_venue
     if data_date:            # data-date attribute overrides the heuristic date
         date = data_date
     japanese = is_cjk(title)
@@ -327,7 +356,13 @@ def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_isbn=Non
             else:
                 doc['starting_page'] = data_pages
     elif rm_type == 'books_etc':
-        doc['book_title'] = localized(title, lang)
+        doc['book_title'] = localized(data_book_title or title, lang)
+        if data_book_title:
+            doc['book_owner_range'] = localized(title, lang)
+        if data_book_role:
+            doc['book_owner_role'] = data_book_role
+        if data_pages:
+            doc['rep_page'] = data_pages
         doc['publisher'] = localized(data_publisher or venue, lang)
         doc['authors'] = people
     else:
@@ -495,7 +530,9 @@ SYNC_FIELDS = {
                          'see_also', 'languages', 'published_paper_type',
                          'referee'),
     'books_etc': ('book_title', 'authors', 'publication_date',
-                  'publisher', 'identifiers', 'see_also', 'languages'),
+                  'book_owner_role', 'book_owner_range', 'publisher',
+                  'rep_page', 'identifiers', 'see_also', 'languages',
+                  'referee'),
     'presentations': ('presentation_title', 'presenters', 'publication_date',
                       'event', 'location', 'invited', 'presentation_type',
                       'is_international_presentation', 'identifiers',
@@ -681,6 +718,27 @@ def item_dois(item):
         values = [values]
     return {canonical_doi(v) for v in values if canonical_doi(v)}
 
+def canonical_isbn(value):
+    """Normalize ISBN-10/13 to the equivalent ISBN-13 digit string."""
+    if isinstance(value, dict):
+        value = value.get('@id') or value.get('value')
+    if not isinstance(value, str):
+        return ''
+    digits = re.sub(r'[^0-9X]', '', value.upper())
+    if len(digits) == 10:
+        body = '978' + digits[:9]
+        check = (10 - sum((1 if i % 2 == 0 else 3) * int(digit)
+                          for i, digit in enumerate(body)) % 10) % 10
+        return body + str(check)
+    return digits if len(digits) == 13 else ''
+
+def item_isbns(item):
+    identifiers = item.get('identifiers') or {}
+    values = identifiers.get('isbn', []) if isinstance(identifiers, dict) else []
+    if isinstance(values, str):
+        values = [values]
+    return {canonical_isbn(value) for value in values if canonical_isbn(value)}
+
 def canonical_url(value):
     if not isinstance(value, str) or not value.strip():
         return ''
@@ -710,7 +768,8 @@ def item_urls(item):
 def desired_title_keys(record):
     doc = record.get('similar_merge', {})
     keys = set()
-    for field in ('paper_title', 'book_title', 'presentation_title',
+    for field in ('paper_title', 'book_title', 'book_owner_range',
+                  'presentation_title',
                   'media_coverage_title'):
         value = doc.get(field)
         values = value.values() if isinstance(value, dict) else [value]
@@ -731,11 +790,14 @@ def match_live(record, live_items):
             return None, matches, 'normalized combined text'
         return None, [], None
     desired_dois = item_dois(doc)
+    desired_isbns = item_isbns(doc)
     desired_urls = item_urls(doc)
     desired_titles = desired_title_keys(record)
     criteria = []
     if desired_dois:
         criteria.append(('DOI', lambda item: bool(desired_dois & item_dois(item))))
+    if desired_isbns:
+        criteria.append(('ISBN', lambda item: bool(desired_isbns & item_isbns(item))))
     if desired_urls:
         criteria.append(('URL', lambda item: bool(desired_urls & item_urls(item))))
     if desired_titles:
@@ -763,7 +825,7 @@ def normalized_identifier_values(kind, values):
         if kind == 'doi':
             value = canonical_doi(value)
         elif kind == 'isbn':
-            value = re.sub(r'[^0-9X]', '', value.upper())
+            value = canonical_isbn(value)
         else:
             value = value.strip()
         if value:
@@ -853,6 +915,8 @@ def changed_doc(rm_type, desired, live):
                 changed[field] = merged
             continue
         current = live.get(field)
+        if field in ('book_owner_role', 'book_type') and current not in (None, ''):
+            continue
         if field.endswith('_date') and date_is_at_least_as_precise(wanted, current):
             continue
         if field == 'languages' and isinstance(wanted, list):
@@ -967,7 +1031,8 @@ def sync_live(dry_run=False):
 
 def live_title(item):
     """Extract a title string from a live researchmap item dict, any language."""
-    for field in ('paper_title', 'book_title', 'presentation_title',
+    for field in ('paper_title', 'book_title', 'book_owner_range',
+                  'presentation_title',
                   'media_coverage_title', 'title', 'misc_title'):
         v = item.get(field)
         if isinstance(v, dict):
@@ -983,7 +1048,8 @@ def live_title(item):
 
 def live_titles(item):
     """Yield ALL title strings (every language variant) from a live item."""
-    for field in ('paper_title', 'book_title', 'presentation_title',
+    for field in ('paper_title', 'book_title', 'book_owner_range',
+                  'presentation_title',
                   'media_coverage_title', 'title', 'misc_title'):
         v = item.get(field)
         if isinstance(v, dict):
@@ -1009,18 +1075,20 @@ def website_records():
     same categories used for live researchmap collections."""
     out = []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text, data_date, data_doi, data_isbn, data_url, data_volume, data_number, data_pages, data_authors, data_authors_ja, data_authors_en, data_event, data_location, data_invited, data_publisher in entries(anchor):
+        for text, data_date, data_doi, data_isbn, data_url, data_volume, data_number, data_pages, data_authors, data_authors_ja, data_authors_en, data_event, data_location, data_invited, data_publisher, data_book_title, data_book_role, data_title, data_venue in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             rec = to_record(text, rm_type, extra, data_date, data_doi, data_isbn, data_url,
                             data_volume, data_number, data_pages, data_authors,
                             data_authors_ja, data_authors_en, data_event,
-                            data_location, data_invited, data_publisher)
+                            data_location, data_invited, data_publisher,
+                            data_book_title, data_book_role, data_title,
+                            data_venue)
             if rec is None:
                 print(f'WARNING: could not parse, add manually: {text[:90]}', file=sys.stderr)
                 continue
             parsed = parse(text)
-            title = parsed[1] if parsed else text
+            title = data_title or (parsed[1] if parsed else text)
             out.append((text, key(title), rec['insert']['type'], rec))
     for text, rm_type, doc in profile_records():
         rec = {'insert': {'type': rm_type}, 'similar_merge': doc, 'priority': 'similar_data'}
@@ -1275,7 +1343,7 @@ def main():
 
     seen, new = [], []
     for anchor, (rm_type, extra) in SECTIONS.items():
-        for text, data_date, data_doi, data_isbn, data_url, data_volume, data_number, data_pages, data_authors, data_authors_ja, data_authors_en, data_event, data_location, data_invited, data_publisher in entries(anchor):
+        for text, data_date, data_doi, data_isbn, data_url, data_volume, data_number, data_pages, data_authors, data_authors_ja, data_authors_en, data_event, data_location, data_invited, data_publisher, data_book_title, data_book_role, data_title, data_venue in entries(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
             k = key(text)
@@ -1285,7 +1353,9 @@ def main():
             rec = to_record(text, rm_type, extra, data_date, data_doi, data_isbn, data_url,
                             data_volume, data_number, data_pages, data_authors,
                             data_authors_ja, data_authors_en, data_event,
-                            data_location, data_invited, data_publisher)
+                            data_location, data_invited, data_publisher,
+                            data_book_title, data_book_role, data_title,
+                            data_venue)
             if rec:
                 new.append((text, rec))
             else:

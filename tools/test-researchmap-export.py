@@ -196,6 +196,11 @@ class SyncFixtures(unittest.TestCase):
 
 
 class AchievementSourceFixtures(unittest.TestCase):
+    def record_at(self, section, one_based_index):
+        row = RM.entries(section)[one_based_index - 1]
+        rm_type, extra = RM.SECTIONS[section]
+        return RM.to_record(row[0], rm_type, extra, *row[1:])
+
     def test_current_id_heading_sections_parse(self):
         anchors = ['sub00%d' % n for n in range(1, 8)]
         counts = {anchor: len(RM.entries(anchor)) for anchor in anchors}
@@ -276,6 +281,46 @@ class AchievementSourceFixtures(unittest.TestCase):
                       '国際共同研究加速基金' in text)
         self.assertEqual(nested['system_name'], {'ja': '国際共同研究加速基金'})
         self.assertEqual(nested['category'], {'ja': '海外連携研究'})
+
+    def test_explicit_title_overrides_guard_known_parser_failures(self):
+        expected = {
+            ('sub001', 21): '大規模境界要素法解析における分散並列 FMM の通信最適化',
+            ('sub001', 33): 'FMM Tree Construction on GPUs',
+            ('sub004', 61): ('Rich Information is Affordable: A Systematic '
+                             'Performance Analysis of Second-order Optimization '
+                             'Using K-FAC'),
+            ('sub004', 62): 'Privacy Preserving Visual SLAM',
+            ('sub005', 4): '画像超解像における学習データ構築の再考',
+            ('sub005', 5): 'Scaling Backwards: Minimal Synthetic Pre-training?',
+            ('sub007', 21): ('PEZY-SC3sプロセッサを用いたFull-state'
+                             '量子回路シミュレーション'),
+        }
+        for (section, index), title in expected.items():
+            doc = self.record_at(section, index)['similar_merge']
+            title_field = ('paper_title' if 'paper_title' in doc
+                           else 'presentation_title')
+            self.assertIn(title, doc[title_field].values(),
+                          (section, index, doc[title_field]))
+            people = doc.get('authors') or doc.get('presenters') or {}
+            names = {person['name'] for group in people.values()
+                     for person in group}
+            self.assertNotIn(title, names, (section, index, title))
+
+    def test_complete_book_schema_and_isbn_equivalence(self):
+        magazine = self.record_at('sub002', 1)['similar_merge']
+        self.assertEqual(magazine['book_title'], {'ja': '数学セミナー'})
+        self.assertEqual(magazine['book_owner_range'], {'ja': '巨大行列とAI'})
+        self.assertEqual(magazine['book_owner_role'], 'contributor')
+        self.assertEqual(magazine['rep_page'], '29-33')
+        self.assertFalse(magazine['referee'])
+
+        chapter = self.record_at('sub003', 2)['similar_merge']
+        self.assertIn('GPU Computing Gems Emerald Edition',
+                      chapter['book_title'].values())
+        self.assertIn('Treecode and fast multipole method for N-body simulation with CUDA',
+                      chapter['book_owner_range'].values())
+        self.assertEqual(RM.canonical_isbn('0-12-384988-8'),
+                         RM.canonical_isbn('978-0-12-384988-5'))
 
 
 if __name__ == '__main__':

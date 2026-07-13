@@ -1,6 +1,6 @@
 driver: codex
-updated: 2026-07-14T06:49+0900
-task: T-160 Complete journal and book metadata | in-progress
+updated: 2026-07-14T07:18+0900
+task: T-164 Generate and audit ResearchMap import | in-progress
 status: in-progress
 
 ## Now
@@ -11,8 +11,16 @@ status: in-progress
   balanced legacy/current profile syntax, and non-degrading merge semantics.
   The sanctioned live sync dry-run has 35 candidate inserts, 334 additive or
   corrective updates, zero deletes, and 22 ambiguous records held back.
-- T-160 is using the exhaustive inventory to add only citation-evidenced
-  metadata for sub001--sub003 and to classify structurally inapplicable gaps.
+- T-160--T-162 are complete: 24 mirrored rows now carry every safe value found
+  in the local citations plus seven explicit title overrides. The remaining
+  nominal gaps are documented as unknown, redundant, structurally
+  inapplicable, or one of three conflicting citations held for a later lookup
+  allowance.
+- T-163 is complete: 309 citations per page now follow the majority format;
+  30 arXiv-bearing entries per page have separate `[arxiv] [bibtex]` rows.
+  Exact normalized citation semantics stayed unchanged and CRLF is intact.
+- T-164 is auditing all 30 inserts and 338 additive/corrective updates; all 23
+  ambiguous matches remain excluded and the planner emits zero deletes.
 - Campaign window ends around 08:45 JST.
 
 ## Working set
