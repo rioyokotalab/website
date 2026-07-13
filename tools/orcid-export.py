@@ -80,7 +80,7 @@ MONTH_ABBR = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
 def raw_items(anchor):
     """Yield (clean_text, doi, isbn, url, data_date, data_volume, data_number,
     data_pages, data_authors, data_authors_en, data_event, data_location,
-    data_publisher)
+    data_publisher, data_title, data_venue)
     for each <li> in a section,
     keeping DOI/link attributes and the opening <li>'s data-date attribute
     (which overrides the parsed date)."""
@@ -126,6 +126,12 @@ def raw_items(anchor):
         publisher_m = rm.DATA_PUBLISHER.search(tag)
         data_publisher = publisher_m.group(1).strip() if publisher_m else None
         data_publisher = data_publisher or None
+        title_m = rm.DATA_TITLE.search(tag)
+        data_title = rm.attr_text(title_m)
+        data_title = data_title or None
+        venue_m = rm.DATA_VENUE.search(tag)
+        data_venue = rm.attr_text(venue_m)
+        data_venue = data_venue or None
         m = re.search(r'href=["\'](https?://(?:dx\.)?doi\.org/[^"\']+)["\']', p, re.I)
         if not doi and m:
             doi = re.sub(r'^https?://(?:dx\.)?doi\.org/', '', m.group(1)).strip()
@@ -135,7 +141,19 @@ def raw_items(anchor):
              .replace('&rsquo;', "'").replace('&ldquo;', '"').replace('&rdquo;', '"'))
         yield (re.sub(r'\s+', ' ', t).strip(), doi, isbn, url, data_date,
                data_volume, data_number, data_pages, data_authors,
-               data_authors_en, data_event, data_location, data_publisher)
+               data_authors_en, data_event, data_location, data_publisher,
+               data_title, data_venue)
+
+def apply_explicit_metadata(parsed, data_title=None, data_venue=None,
+                            data_authors=None, data_authors_en=None,
+                            data_date=None):
+    """Apply the same citation parser guards used by ResearchMap exports."""
+    if not parsed:
+        return None
+    authors, title, venue, date = parsed
+    authors = data_authors_en or data_authors or authors
+    return (authors, data_title or title, data_venue or venue,
+            data_date or date)
 
 def extract_volpp(venue):
     """Pull Vol./No./pp. out of a venue string; return (clean_venue, fields)."""
@@ -293,21 +311,20 @@ def main():
         if args.section and anchor != args.section:
             per_section[anchor] = 0
             continue
-        for text, doi, isbn, url, data_date, data_volume, data_number, data_pages, data_authors, data_authors_en, data_event, data_location, data_publisher in raw_items(anchor):
+        for text, doi, isbn, url, data_date, data_volume, data_number, data_pages, data_authors, data_authors_en, data_event, data_location, data_publisher, data_title, data_venue in raw_items(anchor):
             if not re.search(r'Rio\s+Yokota|横田\s*理央', text):
                 continue
-            parsed = rm.parse(text)
+            parsed = apply_explicit_metadata(
+                rm.parse(text), data_title=data_title, data_venue=data_venue,
+                data_authors=data_authors, data_authors_en=data_authors_en,
+                data_date=data_date)
             if not parsed:
                 risky.append(('UNPARSED', anchor, text))
                 continue
             authors, title, venue, date = parsed
             if title_match and title_match not in unicodedata.normalize('NFKC', title).casefold():
                 continue
-            if data_authors_en or data_authors:
-                authors = data_authors_en or data_authors
-            if data_date:                    # data-date attribute wins
-                date = data_date
-            elif not date:
+            if not date:
                 date = fallback_year(text)  # recover year buried after vol/pages
             # flag suspicious parses for human review
             if not authors:

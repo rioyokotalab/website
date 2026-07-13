@@ -46,6 +46,27 @@ SECTIONS = {   # anchor -> (rm type, extra fields)
     'sub006': ('talk_or_misc', {'is_international_presentation': True}),
     'sub007': ('talk_or_misc', {'is_international_presentation': False}),
 }
+
+# ResearchMap exposes additional system-derived identifier/link values in GET
+# responses, but its V2 schema rejects those values when they are echoed in an
+# update. Keep only nested keys and labels that the schema permits callers to
+# write for each achievement type.
+EDITABLE_IDENTIFIER_KINDS = {
+    'published_papers': frozenset(('doi', 'issn', 'e_issn', 'isbn')),
+    'misc': frozenset(('doi', 'issn', 'e_issn', 'isbn')),
+    'books_etc': frozenset(('doi', 'isbn', 'asin', 'ean')),
+    'presentations': frozenset(),
+}
+EDITABLE_SEE_ALSO_LABELS = {
+    'published_papers': frozenset(('url', 'doi', 'rm:research_projects')),
+    'misc': frozenset(('url', 'doi', 'rm:research_projects')),
+    'books_etc': frozenset(('url', 'doi', 'rm:research_projects')),
+    'presentations': frozenset(('url', 'rm:research_projects')),
+    'awards': frozenset(('url',)),
+    'media_coverage': frozenset(('url',)),
+    'committee_memberships': frozenset(('url',)),
+    'research_projects': frozenset(('url',)),
+}
 MONTHS = {m: i+1 for i, m in enumerate(
     ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'])}
 VENUE_WORDS = re.compile(
@@ -376,10 +397,11 @@ def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_isbn=Non
         doc['presenters'] = people
     if date:
         doc['publication_date'] = date
+    identifier_kinds = EDITABLE_IDENTIFIER_KINDS.get(rm_type, frozenset())
     identifiers = {}
-    if data_doi:
+    if data_doi and 'doi' in identifier_kinds:
         identifiers['doi'] = [data_doi]
-    if data_isbn:
+    if data_isbn and 'isbn' in identifier_kinds:
         identifiers['isbn'] = [data_isbn]
     if identifiers:
         doc['identifiers'] = identifiers
@@ -535,8 +557,7 @@ SYNC_FIELDS = {
                   'referee'),
     'presentations': ('presentation_title', 'presenters', 'publication_date',
                       'event', 'location', 'invited', 'presentation_type',
-                      'is_international_presentation', 'identifiers',
-                      'see_also', 'languages'),
+                      'is_international_presentation', 'see_also', 'languages'),
     'misc': ('paper_title', 'authors', 'publication_date',
              'publication_name', 'volume', 'number', 'starting_page',
              'ending_page', 'identifiers', 'see_also', 'languages',
@@ -778,6 +799,82 @@ def desired_title_keys(record):
                 keys.add(key(unicodedata.normalize('NFKC', title), limit=10**9))
     return keys
 
+def dates_compatible(desired, live):
+    """Compare ResearchMap dates while allowing a more precise suffix."""
+    if not isinstance(desired, str) or not isinstance(live, str):
+        return False
+    return (desired == live or desired.startswith(live + '-') or
+            live.startswith(desired + '-'))
+
+def item_title_keys(item):
+    return {key(unicodedata.normalize('NFKC', title), limit=10**9)
+            for title in live_titles(item)}
+
+def fuzzy_title_match(desired_titles, doc, item):
+    """Containment fallback gated by date and independent record context."""
+    live_date = item.get('publication_date')
+    if (not dates_compatible(doc.get('publication_date'), live_date) or
+            not fuzzy_context_match(doc, item)):
+        return False
+    for desired in desired_titles:
+        for current in item_title_keys(item):
+            if min(len(desired), len(current)) >= 20 and \
+                    (desired in current or current in desired):
+                return True
+    return False
+
+def normalized_field_values(item, fields):
+    values = set()
+    for field in fields:
+        for value in text_values(item.get(field)):
+            normalized = key(unicodedata.normalize('NFKC', value), limit=10**9)
+            if normalized:
+                values.add(normalized)
+    return values
+
+def fuzzy_context_match(desired, live):
+    """Require corroborating contributor or venue context for fuzzy titles."""
+    wanted_people = normalized_field_values(desired,
+                                            ('authors', 'presenters'))
+    live_people = normalized_field_values(live, ('authors', 'presenters'))
+    if wanted_people and live_people:
+        overlap = wanted_people & live_people
+        smaller = min(len(wanted_people), len(live_people))
+        if ((len(wanted_people) == len(live_people) == len(overlap) == 1) or
+                (len(overlap) >= 2 and len(overlap) * 2 >= smaller)):
+            return True
+
+    fields = ('publication_name', 'event', 'publisher')
+    wanted_venues = normalized_field_values(desired, fields)
+    live_venues = normalized_field_values(live, fields)
+    return bool(wanted_venues and live_venues and any(
+        min(len(a), len(b)) >= 4 and (a in b or b in a)
+        for a in wanted_venues for b in live_venues))
+
+def cross_type_context_match(desired, live):
+    """Require matching date and venue before suppressing a cross-type insert."""
+    if not dates_compatible(desired.get('publication_date'),
+                            live.get('publication_date')):
+        return False
+    fields = ('publication_name', 'event', 'publisher')
+    wanted = normalized_field_values(desired, fields)
+    current = normalized_field_values(live, fields)
+    return bool(wanted and current and any(
+        min(len(a), len(b)) >= 4 and (a in b or b in a)
+        for a in wanted for b in current))
+
+def project_context_match(desired, live):
+    """Fallback for translated project titles with the same grant and years."""
+    wanted_system = normalized_field_values(desired, ('system_name',))
+    live_system = normalized_field_values(live, ('system_name',))
+    if not (wanted_system & live_system):
+        return False
+    for field in ('from_date', 'to_date'):
+        if desired.get(field) and live.get(field) and not dates_compatible(
+                desired[field], live[field]):
+            return False
+    return bool(desired.get('from_date') and live.get('from_date'))
+
 def match_live(record, live_items):
     """Return (unique item or None, ambiguity candidates, criterion)."""
     doc = record.get('similar_merge', {})
@@ -788,6 +885,13 @@ def match_live(record, live_items):
             return matches[0], [], 'normalized combined text'
         if len(matches) > 1:
             return None, matches, 'normalized combined text'
+        if rm_type == 'research_projects':
+            matches = [item for item in live_items
+                       if project_context_match(doc, item)]
+            if len(matches) == 1:
+                return matches[0], [], 'project grant/date context'
+            if len(matches) > 1:
+                return None, matches, 'project grant/date context'
         return None, [], None
     desired_dois = item_dois(doc)
     desired_isbns = item_isbns(doc)
@@ -802,8 +906,9 @@ def match_live(record, live_items):
         criteria.append(('URL', lambda item: bool(desired_urls & item_urls(item))))
     if desired_titles:
         criteria.append(('title', lambda item: bool(
-            desired_titles & {key(unicodedata.normalize('NFKC', t), limit=10**9)
-                              for t in live_titles(item)})))
+            desired_titles & item_title_keys(item))))
+        criteria.append(('title/date containment', lambda item:
+                         fuzzy_title_match(desired_titles, doc, item)))
     for label, predicate in criteria:
         matches = [item for item in live_items if predicate(item)]
         if len(matches) == 1:
@@ -832,12 +937,16 @@ def normalized_identifier_values(kind, values):
             out.add(value)
     return out
 
-def merged_identifiers(wanted, current):
-    """Return a merged identifier object only when wanted values are absent."""
+def merged_identifiers(rm_type, wanted, current):
+    """Merge caller-editable identifiers without echoing managed keys."""
     current = dict(current) if isinstance(current, dict) else {}
-    merged = dict(current)
+    allowed = EDITABLE_IDENTIFIER_KINDS.get(rm_type, frozenset())
+    merged = {kind: values for kind, values in current.items()
+              if kind in allowed}
     changed = False
     for kind, values in wanted.items():
+        if kind not in allowed:
+            continue
         kind_changed = False
         current_values = current.get(kind, [])
         current_list = ([current_values] if isinstance(current_values, str)
@@ -854,10 +963,13 @@ def merged_identifiers(wanted, current):
             merged[kind] = current_list
     return merged if changed else None
 
-def merged_see_also(wanted, current):
-    """Append missing source URLs without discarding other live links."""
-    current_list = ([current] if isinstance(current, dict)
-                    else list(current or []))
+def merged_see_also(rm_type, wanted, current):
+    """Append URLs while omitting system-managed link labels from updates."""
+    current_values = ([current] if isinstance(current, dict)
+                      else list(current or []))
+    allowed = EDITABLE_SEE_ALSO_LABELS.get(rm_type, frozenset())
+    current_list = [value for value in current_values
+                    if isinstance(value, dict) and value.get('label') in allowed]
     known = set()
     for value in current_list:
         url = value.get('@id') if isinstance(value, dict) else value
@@ -875,19 +987,23 @@ def merged_see_also(wanted, current):
 
 def merged_localized(wanted, current):
     """Merge language slots while retaining richer live translations."""
-    if not isinstance(wanted, dict) or not isinstance(current, dict):
-        return wanted if wanted != current else None
+    if not isinstance(wanted, dict):
+        return wanted if current in (None, '', []) else None
+    if not isinstance(current, dict):
+        return wanted if current in (None, '', []) else None
     merged = dict(current)
     changed = False
     synthetic_ja = ('ja' in wanted and 'en' in wanted and
                     wanted['ja'] == wanted['en'])
     for lang, value in wanted.items():
-        # ``localized`` duplicates verified English into the JA fallback slot.
-        # Never replace a distinct live Japanese translation with that fallback.
-        if (lang == 'ja' and synthetic_ja and current.get('ja') is not None and
-                current.get('ja') != value):
+        # Do not create a fallback JA value when the corresponding live EN
+        # slot disagrees; that usually signals a parser or citation variant,
+        # not a genuinely missing translation.
+        if (lang == 'ja' and synthetic_ja and
+                current.get('en') not in (None, '', []) and
+                current.get('en') != wanted.get('en')):
             continue
-        if current.get(lang) != value:
+        if current.get(lang) in (None, '', []):
             merged[lang] = value
             changed = True
     return merged if changed else None
@@ -905,19 +1021,17 @@ def changed_doc(rm_type, desired, live):
             continue
         wanted = desired[field]
         if field == 'identifiers':
-            merged = merged_identifiers(wanted, live.get(field))
+            merged = merged_identifiers(rm_type, wanted, live.get(field))
             if merged is not None:
                 changed[field] = merged
             continue
         if field == 'see_also':
-            merged = merged_see_also(wanted, live.get(field))
+            merged = merged_see_also(rm_type, wanted, live.get(field))
             if merged is not None:
                 changed[field] = merged
             continue
         current = live.get(field)
         if field in ('book_owner_role', 'book_type') and current not in (None, ''):
-            continue
-        if field.endswith('_date') and date_is_at_least_as_precise(wanted, current):
             continue
         if field == 'languages' and isinstance(wanted, list):
             merged = list(current) if isinstance(current, list) else []
@@ -932,7 +1046,7 @@ def changed_doc(rm_type, desired, live):
             if merged is not None:
                 changed[field] = merged
             continue
-        if current != wanted:
+        if current in (None, '', []):
             changed[field] = wanted
     return changed
 
@@ -944,6 +1058,23 @@ def build_sync(website, live_by_type, managed_ids):
         if rm_type not in LIVE_TYPES:
             continue
         item, candidates, criterion = match_live(record, live_by_type.get(rm_type, []))
+        if item is None and not candidates and rm_type not in COMBINED_FIELDS:
+            cross = []
+            for other_type in LIVE_TYPES:
+                if other_type == rm_type:
+                    continue
+                other_item, other_candidates, other_criterion = match_live(
+                    record, live_by_type.get(other_type, []))
+                pool = ([other_item] if other_item else other_candidates)
+                for candidate in pool:
+                    if cross_type_context_match(record['similar_merge'], candidate):
+                        cross.append((other_type, candidate, other_criterion))
+            if cross:
+                ids = sorted('%s:%s' % (kind, live_id(candidate))
+                             for kind, candidate, _criterion in cross
+                             if live_id(candidate))
+                ambiguous.append((text, rm_type, 'cross-type date/venue match', ids))
+                continue
         matches.append([text, rm_type, record, item, candidates, criterion])
 
     # Two website entries resolving to one rm:id are also ambiguous.
@@ -992,7 +1123,7 @@ def build_sync(website, live_by_type, managed_ids):
         refreshed[rm_type] = sorted(matched[rm_type] | (old & live_ids))
     return inserts, updates, deletes, refreshed, ambiguous
 
-def sync_live(dry_run=False):
+def sync_live(dry_run=False, record_managed_state=False):
     live_by_type = {}
     for rm_type in LIVE_TYPES:
         try:
@@ -1025,8 +1156,13 @@ def sync_live(dry_run=False):
         print(f'written to {OUT}; review every line before upload')
     elif os.path.exists(OUT):
         os.remove(OUT)
-    state['managed_ids'] = refreshed
-    save_state(state)
+    if record_managed_state:
+        state['managed_ids'] = refreshed
+        save_state(state)
+        print('managed-ID state updated after explicit confirmation')
+    else:
+        print('managed-ID state unchanged; use --record-managed-state only '
+              'after the reviewed import succeeds')
     return 0
 
 def live_title(item):
@@ -1327,13 +1463,18 @@ def main():
                      help='diff against live researchmap.jp data instead of the state file')
     ap.add_argument('--sync', action='store_true',
                     help='live diff with inserts, partial updates, and managed deletes')
+    ap.add_argument('--record-managed-state', action='store_true',
+                    help='with --sync, persist matched IDs only after a successful upload')
     args = ap.parse_args()
 
     if args.sync and (args.check_live or args.init):
         ap.error('--sync cannot be combined with --check-live or --init')
+    if args.record_managed_state and not args.sync:
+        ap.error('--record-managed-state requires --sync')
 
     if args.sync:
-        sys.exit(sync_live(dry_run=args.dry_run))
+        sys.exit(sync_live(dry_run=args.dry_run,
+                           record_managed_state=args.record_managed_state))
 
     if args.check_live:
         sys.exit(check_live(dry_run=args.dry_run))

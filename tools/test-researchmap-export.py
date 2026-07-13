@@ -36,7 +36,7 @@ class SyncFixtures(unittest.TestCase):
                 'book_title': {'en': 'URL book'},
                 'authors': {'en': [{'name': 'Rio Yokota'}]},
                 'publication_date': '2024-01',
-                'publisher': {'en': 'Publisher'},
+                'publisher': {'ja': 'Publisher', 'en': 'Publisher'},
                 'see_also': [{'label': 'url', '@id': 'https://books.example/x/' }],
             })),
             ('Ambiguous talk', RM.key('Ambiguous talk'), 'presentations',
@@ -106,20 +106,22 @@ class SyncFixtures(unittest.TestCase):
         self.assertEqual(len(inserts), 1)
         self.assertEqual(inserts[0][1]['similar_merge']['publication_date'],
                          '2026-08')
-        self.assertEqual(len(updates), 2)  # DOI paper and URL-matched book title.
+        self.assertEqual(len(updates), 2)  # Additive paper/book field completion.
         paper_update = next(op for _text, op in updates
                             if op['update']['id'] == 'paper-doi')
         self.assertEqual(paper_update, {
             'update': {'type': 'published_papers', 'id': 'paper-doi'},
             'doc': {
-                'paper_title': {'en': 'Website title'},
-                'authors': self.paper_doc['authors'],
-                'publication_name': {'en': 'Current Journal'},
                 'languages': ['eng'],
             },
         })
         self.assertNotIn('identifiers', paper_update['doc'])
         self.assertNotIn('publication_date', paper_update['doc'])
+        book_update = next(op for _text, op in updates
+                           if op['update']['id'] == 'book-url')
+        self.assertEqual(book_update['doc'], {
+            'publisher': {'en': 'Publisher', 'ja': 'Publisher'},
+        })
 
         self.assertEqual(deletes, [
             {'delete': {'type': 'published_papers', 'id': 'managed-stale'}}
@@ -175,10 +177,13 @@ class SyncFixtures(unittest.TestCase):
             'publication_date': '2025-04-01',
             'identifiers': {
                 'doi': ['https://doi.org/10.1000/RIGHT'],
-                'arxiv': ['1234.5678'],
+                'issn': ['1234-5679'],
+                'arxiv_id': ['1234.5678'],
+                'orcid_put_cd': ['managed-value'],
             },
             'see_also': [
-                {'label': 'project', '@id': 'https://example.org/project'},
+                {'label': 'url', '@id': 'https://example.org/project'},
+                {'label': 'DBLP', '@id': 'https://dblp.example/managed'},
             ],
             'languages': ['jpn'],
         }
@@ -190,9 +195,142 @@ class SyncFixtures(unittest.TestCase):
                          ['https://doi.org/10.1000/RIGHT'])
         self.assertEqual(changed['identifiers']['isbn'],
                          ['978-1-2345-6789-0'])
-        self.assertEqual(changed['identifiers']['arxiv'], ['1234.5678'])
+        self.assertEqual(changed['identifiers']['issn'], ['1234-5679'])
+        self.assertNotIn('arxiv_id', changed['identifiers'])
+        self.assertNotIn('orcid_put_cd', changed['identifiers'])
         self.assertEqual(len(changed['see_also']), 2)
+        self.assertEqual({item['label'] for item in changed['see_also']},
+                         {'url'})
         self.assertEqual(changed['languages'], ['jpn', 'eng'])
+
+    def test_managed_nested_values_never_reenter_updates(self):
+        desired = {
+            'identifiers': {'doi': ['10.1000/new']},
+            'see_also': [
+                {'label': 'url', '@id': 'https://arxiv.org/abs/1234.5678'},
+            ],
+        }
+        live = {
+            'identifiers': {
+                'orcid_put_cd': ['managed'],
+                'rm:research_project_id': ['managed-project'],
+                'wos_id': ['managed-wos'],
+            },
+            'see_also': [
+                {'label': 'DBLP', '@id': 'https://dblp.example/managed'},
+                {'label': 'arxiv', '@id': 'https://arxiv.org/abs/1234.5678'},
+            ],
+        }
+        changed = RM.changed_doc('published_papers', desired, live)
+        self.assertEqual(changed['identifiers'], {'doi': ['10.1000/new']})
+        self.assertEqual(changed['see_also'], desired['see_also'])
+
+    def test_research_project_link_label_uses_schema_plural(self):
+        project = {
+            'label': 'rm:research_projects',
+            '@id': 'https://researchmap.jp/research_projects/example',
+        }
+        desired = {
+            'see_also': [{'label': 'url', '@id': 'https://example.org/item'}],
+        }
+        for kind in ('published_papers', 'misc', 'books_etc', 'presentations'):
+            self.assertIn('rm:research_projects',
+                          RM.EDITABLE_SEE_ALSO_LABELS[kind])
+            self.assertNotIn('rm:research_project',
+                             RM.EDITABLE_SEE_ALSO_LABELS[kind])
+            changed = RM.changed_doc(kind, desired, {'see_also': [project]})
+            self.assertEqual(changed['see_also'], [project] + desired['see_also'])
+
+        doi_link = {'label': 'doi', '@id': 'https://doi.org/10.1000/example'}
+        self.assertIn('doi', RM.EDITABLE_SEE_ALSO_LABELS['misc'])
+        changed = RM.changed_doc('misc', desired, {'see_also': [doi_link]})
+        self.assertEqual(changed['see_also'], [doi_link] + desired['see_also'])
+
+    def test_fuzzy_cross_type_and_translated_project_matching(self):
+        website = [
+            ('long paper', RM.key('A Long Paper Title for Matching'),
+             'published_papers', insert('published_papers', {
+                 'paper_title': {'en': 'A Long Paper Title for Matching'},
+                 'publication_name': {'en': 'Example Conference'},
+                 'publication_date': '2020-01',
+             })),
+            ('same event elsewhere', RM.key('A Distinct Long Presentation Title'),
+             'misc', insert('misc', {
+                 'paper_title': {'en': 'A Distinct Long Presentation Title'},
+                 'publication_name': {'en': 'SIAM Annual Meeting'},
+                 'publication_date': '2019-07',
+             })),
+        ]
+        live = {
+            'published_papers': [{
+                'rm:id': 'fuzzy-paper',
+                'paper_title': {
+                    'en': 'A Long Paper Title for Matching (Proceedings version)'},
+                'publication_name': {'en': 'Example Conference'},
+                'publication_date': '2020-01-15',
+            }],
+            'misc': [],
+            'presentations': [{
+                'rm:id': 'cross-talk',
+                'presentation_title': {
+                    'en': 'A Distinct Long Presentation Title'},
+                'event': {'en': 'SIAM Annual Meeting'},
+                'publication_date': '2019-07-10',
+            }],
+        }
+        inserts, _updates, _deletes, _refreshed, ambiguous = RM.build_sync(
+            website, live, {})
+        self.assertEqual(inserts, [])
+        self.assertTrue(any(row[2] == 'cross-type date/venue match' and
+                            row[3] == ['presentations:cross-talk']
+                            for row in ambiguous), ambiguous)
+
+        project = insert('research_projects', {
+            'research_project_title': {'ja': 'ベイズ双対性に基づくAI'},
+            'system_name': {'ja': 'CREST'},
+            'from_date': '2021',
+            'to_date': '2027',
+        })
+        item, candidates, criterion = RM.match_live(project, [{
+            'rm:id': 'translated-project',
+            'research_project_title': {'en': 'A New Bayes Duality Principle'},
+            'system_name': {'en': 'CREST'},
+            'from_date': '2021-10',
+            'to_date': '2027-03',
+        }])
+        self.assertEqual(item['rm:id'], 'translated-project')
+        self.assertEqual(candidates, [])
+        self.assertEqual(criterion, 'project grant/date context')
+
+    def test_fuzzy_title_requires_contributor_or_venue_context(self):
+        record = insert('published_papers', {
+            'paper_title': {'en': 'A Shared Long Paper Title for Matching'},
+            'authors': {'en': [{'name': 'Rio Yokota'}, {'name': 'Alice'}]},
+            'publication_name': {'en': 'Expected Conference'},
+            'publication_date': '2024-11',
+        })
+        unrelated = {
+            'rm:id': 'unrelated',
+            'paper_title': {
+                'en': 'A Shared Long Paper Title for Matching (Extended)'},
+            'authors': {'en': [
+                {'name': 'Rio Yokota'}, {'name': 'Bob'}, {'name': 'Carol'},
+            ]},
+            'publication_name': {'en': 'Different Conference'},
+            'publication_date': '2024-11-15',
+        }
+        item, candidates, criterion = RM.match_live(record, [unrelated])
+        self.assertIsNone(item)
+        self.assertEqual(candidates, [])
+        self.assertIsNone(criterion)
+
+        corroborated = dict(unrelated)
+        corroborated['rm:id'] = 'corroborated'
+        corroborated['authors'] = record['similar_merge']['authors']
+        item, candidates, criterion = RM.match_live(record, [corroborated])
+        self.assertEqual(item['rm:id'], 'corroborated')
+        self.assertEqual(candidates, [])
+        self.assertEqual(criterion, 'title/date containment')
 
 
 class AchievementSourceFixtures(unittest.TestCase):
@@ -236,13 +374,15 @@ class AchievementSourceFixtures(unittest.TestCase):
         talk = RM.to_record(
             'Rio Yokota. Sample Talk, SIAM Conference, Mar. 2025.',
             'talk_or_misc', {'is_international_presentation': True},
-            data_date='2025-03', data_event='SIAM Conference',
+            data_date='2025-03', data_doi='10.1000/not-a-talk-field',
+            data_event='SIAM Conference',
             data_location='Denver', data_invited=True)
         self.assertEqual(talk['insert']['type'], 'presentations')
         self.assertEqual(talk['similar_merge']['location'],
                          {'ja': 'Denver', 'en': 'Denver'})
         self.assertEqual(talk['similar_merge']['presentation_type'],
                          'invited_oral_presentation')
+        self.assertNotIn('identifiers', talk['similar_merge'])
 
         job = RM.parse_research_experience_line(
             '2025年4月― 理化学研究所 計算科学研究センター チームプリンシパル')
@@ -290,6 +430,14 @@ class AchievementSourceFixtures(unittest.TestCase):
                              'Performance Analysis of Second-order Optimization '
                              'Using K-FAC'),
             ('sub004', 62): 'Privacy Preserving Visual SLAM',
+            ('sub004', 20): ('On the Interplay Between Precision, Rank, '
+                             'Admissibility, and Iterative Refinement for '
+                             'Hierarchical Low-Rank Matrix Solvers'),
+            ('sub004', 63): ('Distributed Memory Task-Based Block Low Rank '
+                             'Direct Solver'),
+            ('sub004', 102): ('(Really) Fast Macromolecular Electrostatics -- '
+                              'Fast Algorithms, Open Software and Accelerated '
+                              'Computing'),
             ('sub005', 4): '画像超解像における学習データ構築の再考',
             ('sub005', 5): 'Scaling Backwards: Minimal Synthetic Pre-training?',
             ('sub007', 21): ('PEZY-SC3sプロセッサを用いたFull-state'

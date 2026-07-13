@@ -5,9 +5,6 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-- **T-164 — Generate and audit ResearchMap import:** run the corrected live
-  diff after metadata completion, review every insert/update/delete, emit the
-  bulk-import JSONL without `user_id`, and retain exact source/audit evidence.
 - **T-165 — Validate, publish, and verify:** run EN/JP/CRLF/CV/exporter/schema,
   standards, browser, security, deploy-preview, Git, live-page, and remote-
   commit gates; publish only the reviewed public changes and close the ledger.
@@ -18,6 +15,12 @@ None.
 
 ## Recently completed
 
+- **T-164 — Generate and audit ResearchMap import:** generated the 318-line
+  `tools/out/researchmap-import.jsonl` (19 inserts, 299 additive updates, zero
+  deletes), held 29 ambiguous/cross-type matches out, and independently
+  rebuilt and schema-checked every operation against the public API. No live
+  value is replaced or removed; `user_id` and visible link labels are absent;
+  managed-ID state remains unchanged pending a confirmed manual upload.
 - **T-163 — Normalize Achievements and add source links:** normalized all 309
   mirrored citations to the majority no-leading-space/terminal-period/plain-
   citation format and added 30 separate `[arxiv] [bibtex]` rows per language

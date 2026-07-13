@@ -21,6 +21,12 @@ PAGES = [
 # present stable identifier belong here.  Unknown issue/page/location values
 # intentionally remain absent.
 UPDATES = {
+    'On the Interplay Between Precision, Rank, Admissibility': {
+        'data-title': ('On the Interplay Between Precision, Rank, Admissibility, '
+                       'and Iterative Refinement for Hierarchical Low-Rank '
+                       'Matrix Solvers'),
+        'data-venue': 'ISC High Performance',
+    },
     'Quantum turbulence coupled with externally driven normal-fluid': {
         'data-pages': '043601',
     },
@@ -97,6 +103,15 @@ UPDATES = {
                        'Analysis of Second-order Optimization Using K-FAC'),
         'data-venue': ('Proceedings of the 26th ACM SIGKDD International '
                        'Conference on Knowledge Discovery & Data Mining'),
+    },
+    'Sameer Deshmukh and Rio Yokota.': {
+        'data-title': 'Distributed Memory Task-Based Block Low Rank Direct Solver',
+        'data-venue': 'ISC High Performance 2020',
+    },
+    '(Really) Fast Macromolecular Electrostatics': {
+        'data-title': ('(Really) Fast Macromolecular Electrostatics -- Fast '
+                       'Algorithms, Open Software and Accelerated Computing'),
+        'data-venue': 'ACS Division of Physical Chemistry 240th National Meeting',
     },
     'Privacy Preserving Visual SLAM': {
         'data-title': 'Privacy Preserving Visual SLAM',
