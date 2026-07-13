@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T02:13+0900
+updated: 2026-07-14T02:37+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -138,6 +138,26 @@ status: in-progress
   arm and recompute. Revision-4 plan SHA-256 is
   `497f0bb4a742285880e66a4c66db563cd5d9d5996876ca62c6908550b724efe5`.
   Continue with WBD-001/002/004 stages afterward.
+- Adaptive Stage 3 complete. WBD-005 Sol/high passed confirmations 4--5 and is
+  5/5, making it the only qualified reliability fallback under the planned
+  `n>=5`/Wilson-lower-bound gate. Sol/medium is 5/6 and Sol/low 4/6. Stop all
+  three arms pending retry-adjusted analysis.
+- WBD-001 Terra/low passed 5/5. Updated medians are 52,465 ms and 12,146
+  effective tokens. It remains the runtime leader, but Luna/low's `n=3` token
+  median of 11,469 reopens a small tradeoff; consider Luna repeats 4--5 after
+  the current analysis checkpoint.
+- WBD-002 Luna/low and Sol/low both passed 5/5. Luna is the runtime route at
+  79,082 ms median; Sol is the token alternate at 12,368 effective tokens,
+  saving 829 tokens for 14,014 ms additional median time.
+- WBD-004 Luna/Terra/Sol low all passed 5/5. Luna is the runtime route at
+  50,092 ms median and 18,696 tokens; Sol is the token route at 68,144 ms and
+  12,832 tokens. Terra at 61,400 ms and 23,336 tokens is dominated by Luna.
+- Cumulative audit at 02:35 passes: 150 unique result/artifact/metric pointers,
+  150 v2 benchmark metrics, 60 matched repeat rows, and 53 repeat full-quality
+  passes. Correct the repeat analyzer before further route selection: gate on
+  completed planned sampling, use full-quality Wilson bounds consistently,
+  add smoothed success probability and all-attempt expected time/tokens per
+  success, and do not permanently exclude a route after one failure.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`

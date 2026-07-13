@@ -29,7 +29,14 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   allocating to a route once its routing value is resolved. WBD-005
   Sol/medium finished 5/6; its last run failed the lightbox Escape-close P2P
   assertion. Sol/high passed its two-screen stage and is 3/3, triggering two
-  predeclared confirmation repeats before the shorter frontier stages.
+  predeclared confirmation repeats before the shorter frontier stages. Stage 3
+  is now complete: Sol/high WBD-005 passed 5/5; Terra/low WBD-001 passed 5/5;
+  Luna/low and Sol/low WBD-002 each passed 5/5; and all three WBD-004 low routes
+  passed 5/5. WBD-002 retains Luna for runtime versus Sol for tokens. WBD-004
+  retains Luna for runtime versus Sol for tokens, with Terra dominated. The
+  longer WBD-001 sample reopens Luna/low as a possible token alternate, so add
+  two Luna observations after correcting the cumulative confidence and
+  retry-cost analysis.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that

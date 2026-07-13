@@ -13,7 +13,7 @@
     },
     "plan_sha256": "497f0bb4a742285880e66a4c66db563cd5d9d5996876ca62c6908550b724efe5",
     "planned_repeat_rows": 60,
-    "repeat_rows": 46,
+    "repeat_rows": 60,
     "stage_progress": [
       {
         "completed": 32,
@@ -58,36 +58,36 @@
         "stage": "stage3-wbd005-high-screen"
       },
       {
-        "completed": 0,
-        "pending": 2,
+        "completed": 2,
+        "pending": 0,
         "planned": 2,
         "purpose": "Apply the predeclared clean-screen rule and raise WBD-005 Sol/high from three to five observations.",
         "stage": "stage3-wbd005-high-confirm"
       },
       {
-        "completed": 0,
-        "pending": 6,
+        "completed": 6,
+        "pending": 0,
         "planned": 6,
         "purpose": "Raise all three WBD-004 low-effort runtime/token frontier routes from three to five observations.",
         "stage": "stage3-wbd004-frontier"
       },
       {
-        "completed": 0,
-        "pending": 4,
+        "completed": 4,
+        "pending": 0,
         "planned": 4,
         "purpose": "Raise the WBD-002 Luna/low speed and Sol/low token routes from three to five observations.",
         "stage": "stage3-wbd002-frontier"
       },
       {
-        "completed": 0,
-        "pending": 2,
+        "completed": 2,
+        "pending": 0,
         "planned": 2,
         "purpose": "Raise the dominant WBD-001 Terra/low route from three to five observations.",
         "stage": "stage3-wbd001-confirm"
       }
     ],
     "status": "pass",
-    "unique_repeat_run_ids": 46
+    "unique_repeat_run_ids": 60
   },
   "qualification_rule": "A route enters the reliability-qualified Pareto set only after at least three observations and 100% full-quality passes; medians use full-quality observations only.",
   "run_label": "gpt56-repeat-20260714",
@@ -97,11 +97,27 @@
     {
       "reliability_qualified_pareto": [
         {
+          "attempts": 5,
+          "effort": "low",
+          "full_quality_passes": 5,
+          "median_effective_tokens": 12146,
+          "median_total_duration_ms": 52465,
+          "model": "gpt-5.6-terra"
+        },
+        {
           "attempts": 3,
           "effort": "low",
           "full_quality_passes": 3,
-          "median_effective_tokens": 7493,
-          "median_total_duration_ms": 41703,
+          "median_effective_tokens": 11469,
+          "median_total_duration_ms": 61562,
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "attempts": 3,
+          "effort": "medium",
+          "full_quality_passes": 3,
+          "median_effective_tokens": 10671,
+          "median_total_duration_ms": 62353,
           "model": "gpt-5.6-terra"
         }
       ],
@@ -197,18 +213,18 @@
           "task_id": "WBD-001"
         },
         {
-          "attempts": 3,
+          "attempts": 5,
           "capability_pass_rate": 1.0,
           "capability_pass_wilson_95": [
-            0.4385,
+            0.5655,
             1.0
           ],
-          "capability_passes": 3,
+          "capability_passes": 5,
           "effort": "low",
-          "full_quality_passes": 3,
-          "median_effective_tokens_full_quality": 7493,
-          "median_total_duration_ms_full_quality": 41703,
-          "median_worker_duration_ms_full_quality": 25770,
+          "full_quality_passes": 5,
+          "median_effective_tokens_full_quality": 12146,
+          "median_total_duration_ms_full_quality": 52465,
+          "median_worker_duration_ms_full_quality": 35390,
           "model": "gpt-5.6-terra",
           "observations": [
             {
@@ -231,10 +247,26 @@
               "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-terra-wbd001",
               "score": 100,
               "total_duration_ms": 38104
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 12146,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd001-confirm-r04-low-terra-wbd001",
+              "score": 100,
+              "total_duration_ms": 52465
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 12999,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd001-confirm-r05-low-terra-wbd001",
+              "score": 100,
+              "total_duration_ms": 63750
             }
           ],
           "planned_observations": 5,
           "scores": [
+            100,
+            100,
             100,
             100,
             100
@@ -292,17 +324,17 @@
     {
       "reliability_qualified_pareto": [
         {
-          "attempts": 3,
+          "attempts": 5,
           "effort": "low",
-          "full_quality_passes": 3,
-          "median_effective_tokens": 13159,
-          "median_total_duration_ms": 84682,
+          "full_quality_passes": 5,
+          "median_effective_tokens": 13197,
+          "median_total_duration_ms": 79082,
           "model": "gpt-5.6-luna"
         },
         {
-          "attempts": 3,
+          "attempts": 5,
           "effort": "low",
-          "full_quality_passes": 3,
+          "full_quality_passes": 5,
           "median_effective_tokens": 12368,
           "median_total_duration_ms": 93096,
           "model": "gpt-5.6-sol"
@@ -310,18 +342,18 @@
       ],
       "route_stats": [
         {
-          "attempts": 3,
+          "attempts": 5,
           "capability_pass_rate": 1.0,
           "capability_pass_wilson_95": [
-            0.4385,
+            0.5655,
             1.0
           ],
-          "capability_passes": 3,
+          "capability_passes": 5,
           "effort": "low",
-          "full_quality_passes": 3,
-          "median_effective_tokens_full_quality": 13159,
-          "median_total_duration_ms_full_quality": 84682,
-          "median_worker_duration_ms_full_quality": 33423,
+          "full_quality_passes": 5,
+          "median_effective_tokens_full_quality": 13197,
+          "median_total_duration_ms_full_quality": 79082,
+          "median_worker_duration_ms_full_quality": 30892,
           "model": "gpt-5.6-luna",
           "observations": [
             {
@@ -344,10 +376,26 @@
               "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-luna-wbd002",
               "score": 100,
               "total_duration_ms": 98475
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 13854,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd002-frontier-r04-low-luna-wbd002",
+              "score": 100,
+              "total_duration_ms": 78100
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 15419,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd002-frontier-r05-low-luna-wbd002",
+              "score": 100,
+              "total_duration_ms": 79082
             }
           ],
           "planned_observations": 5,
           "scores": [
+            100,
+            100,
             100,
             100,
             100
@@ -355,15 +403,15 @@
           "task_id": "WBD-002"
         },
         {
-          "attempts": 3,
+          "attempts": 5,
           "capability_pass_rate": 1.0,
           "capability_pass_wilson_95": [
-            0.4385,
+            0.5655,
             1.0
           ],
-          "capability_passes": 3,
+          "capability_passes": 5,
           "effort": "low",
-          "full_quality_passes": 3,
+          "full_quality_passes": 5,
           "median_effective_tokens_full_quality": 12368,
           "median_total_duration_ms_full_quality": 93096,
           "median_worker_duration_ms_full_quality": 45326,
@@ -389,10 +437,26 @@
               "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-sol-wbd002",
               "score": 100,
               "total_duration_ms": 90421
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 15879,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd002-frontier-r04-low-sol-wbd002",
+              "score": 100,
+              "total_duration_ms": 113629
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 10515,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd002-frontier-r05-low-sol-wbd002",
+              "score": 100,
+              "total_duration_ms": 91077
             }
           ],
           "planned_observations": 5,
           "scores": [
+            100,
+            100,
             100,
             100,
             100
@@ -632,25 +696,17 @@
     {
       "reliability_qualified_pareto": [
         {
-          "attempts": 3,
+          "attempts": 5,
           "effort": "low",
-          "full_quality_passes": 3,
-          "median_effective_tokens": 31686,
-          "median_total_duration_ms": 55257,
+          "full_quality_passes": 5,
+          "median_effective_tokens": 18696,
+          "median_total_duration_ms": 50092,
           "model": "gpt-5.6-luna"
         },
         {
-          "attempts": 3,
+          "attempts": 5,
           "effort": "low",
-          "full_quality_passes": 3,
-          "median_effective_tokens": 23336,
-          "median_total_duration_ms": 61400,
-          "model": "gpt-5.6-terra"
-        },
-        {
-          "attempts": 3,
-          "effort": "low",
-          "full_quality_passes": 3,
+          "full_quality_passes": 5,
           "median_effective_tokens": 12832,
           "median_total_duration_ms": 68144,
           "model": "gpt-5.6-sol"
@@ -658,18 +714,18 @@
       ],
       "route_stats": [
         {
-          "attempts": 3,
+          "attempts": 5,
           "capability_pass_rate": 1.0,
           "capability_pass_wilson_95": [
-            0.4385,
+            0.5655,
             1.0
           ],
-          "capability_passes": 3,
+          "capability_passes": 5,
           "effort": "low",
-          "full_quality_passes": 3,
-          "median_effective_tokens_full_quality": 31686,
-          "median_total_duration_ms_full_quality": 55257,
-          "median_worker_duration_ms_full_quality": 28924,
+          "full_quality_passes": 5,
+          "median_effective_tokens_full_quality": 18696,
+          "median_total_duration_ms_full_quality": 50092,
+          "median_worker_duration_ms_full_quality": 23212,
           "model": "gpt-5.6-luna",
           "observations": [
             {
@@ -692,10 +748,26 @@
               "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-luna-wbd004",
               "score": 100,
               "total_duration_ms": 55609
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 10869,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd004-frontier-r04-low-luna-wbd004",
+              "score": 100,
+              "total_duration_ms": 50092
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 18696,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd004-frontier-r05-low-luna-wbd004",
+              "score": 100,
+              "total_duration_ms": 49005
             }
           ],
           "planned_observations": 5,
           "scores": [
+            100,
+            100,
             100,
             100,
             100
@@ -703,15 +775,15 @@
           "task_id": "WBD-004"
         },
         {
-          "attempts": 3,
+          "attempts": 5,
           "capability_pass_rate": 1.0,
           "capability_pass_wilson_95": [
-            0.4385,
+            0.5655,
             1.0
           ],
-          "capability_passes": 3,
+          "capability_passes": 5,
           "effort": "low",
-          "full_quality_passes": 3,
+          "full_quality_passes": 5,
           "median_effective_tokens_full_quality": 12832,
           "median_total_duration_ms_full_quality": 68144,
           "median_worker_duration_ms_full_quality": 42093,
@@ -737,10 +809,26 @@
               "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-sol-wbd004",
               "score": 100,
               "total_duration_ms": 52481
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 11963,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd004-frontier-r04-low-sol-wbd004",
+              "score": 100,
+              "total_duration_ms": 53002
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 27851,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd004-frontier-r05-low-sol-wbd004",
+              "score": 100,
+              "total_duration_ms": 84293
             }
           ],
           "planned_observations": 5,
           "scores": [
+            100,
+            100,
             100,
             100,
             100
@@ -748,15 +836,15 @@
           "task_id": "WBD-004"
         },
         {
-          "attempts": 3,
+          "attempts": 5,
           "capability_pass_rate": 1.0,
           "capability_pass_wilson_95": [
-            0.4385,
+            0.5655,
             1.0
           ],
-          "capability_passes": 3,
+          "capability_passes": 5,
           "effort": "low",
-          "full_quality_passes": 3,
+          "full_quality_passes": 5,
           "median_effective_tokens_full_quality": 23336,
           "median_total_duration_ms_full_quality": 61400,
           "median_worker_duration_ms_full_quality": 34174,
@@ -782,10 +870,26 @@
               "run_id": "gpt56-repeat-20260714-stage1-low-screen-r03-low-terra-wbd004",
               "score": 100,
               "total_duration_ms": 61400
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 15140,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd004-frontier-r04-low-terra-wbd004",
+              "score": 100,
+              "total_duration_ms": 62736
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 27942,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd004-frontier-r05-low-terra-wbd004",
+              "score": 100,
+              "total_duration_ms": 49081
             }
           ],
           "planned_observations": 5,
           "scores": [
+            100,
+            100,
             100,
             100,
             100
@@ -798,9 +902,9 @@
     {
       "reliability_qualified_pareto": [
         {
-          "attempts": 3,
+          "attempts": 5,
           "effort": "high",
-          "full_quality_passes": 3,
+          "full_quality_passes": 5,
           "median_effective_tokens": 34402,
           "median_total_duration_ms": 195608,
           "model": "gpt-5.6-sol"
@@ -853,15 +957,15 @@
           "task_id": "WBD-005"
         },
         {
-          "attempts": 3,
+          "attempts": 5,
           "capability_pass_rate": 1.0,
           "capability_pass_wilson_95": [
-            0.4385,
+            0.5655,
             1.0
           ],
-          "capability_passes": 3,
+          "capability_passes": 5,
           "effort": "high",
-          "full_quality_passes": 3,
+          "full_quality_passes": 5,
           "median_effective_tokens_full_quality": 34402,
           "median_total_duration_ms_full_quality": 195608,
           "median_worker_duration_ms_full_quality": 128809,
@@ -887,10 +991,26 @@
               "run_id": "gpt56-repeat-20260714-stage3-wbd005-high-screen-r03-high-sol-wbd005",
               "score": 100,
               "total_duration_ms": 238025
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 48853,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd005-high-confirm-r04-high-sol-wbd005",
+              "score": 100,
+              "total_duration_ms": 239242
+            },
+            {
+              "capability_pass": true,
+              "effective_tokens": 27618,
+              "run_id": "gpt56-repeat-20260714-stage3-wbd005-high-confirm-r05-high-sol-wbd005",
+              "score": 100,
+              "total_duration_ms": 181890
             }
           ],
           "planned_observations": 5,
           "scores": [
+            100,
+            100,
             100,
             100,
             100
@@ -1087,10 +1207,10 @@
   "totals": {
     "monetary_cost_note": "No frozen price table or billed-cost field is available; effective tokens are the cost proxy.",
     "monetary_cost_usd": null,
-    "repeat_capability_passes": 39,
-    "repeat_effective_tokens": 1055484,
-    "repeat_runs": 46,
-    "repeat_total_duration_ms": 4446635,
-    "repeat_worker_duration_ms": 2713413
+    "repeat_capability_passes": 53,
+    "repeat_effective_tokens": 1325228,
+    "repeat_runs": 60,
+    "repeat_total_duration_ms": 5694079,
+    "repeat_worker_duration_ms": 3437620
   }
 }
