@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T03:18+0900
+updated: 2026-07-14T03:45+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -214,6 +214,21 @@ status: in-progress
   expansion, leaving time for policy installation and closeout. Revision-8
   plan SHA-256 is
   `4c55f5ade6c930833e80c17ac25e1bc2bb25e2114015e488d4948ec87bf4f215`.
+- Stage 6 complete: Luna/max and Sol/max both passed repeats 2--3 and are 3/3
+  provisional. Luna/max expected cost is 411,730 ms/92,408 effective tokens per
+  success; Sol/max is 358,397 ms/64,677. Both are slower and more token-heavy
+  than the six-observation Sol medium/high candidates, so do not select them as
+  primaries or expand them now.
+- T-152 initial policy installed in `tools/agent-benchmark/routing-policy.json`
+  with a strict query/validation CLI, all task-class validation commands,
+  confidence/evidence, objective-specific selection, and fallback chains.
+  `skills/codex-delegation.md` now requires policy lookup for analogous tasks.
+  Policy validation and all 15 task/objective lookups pass; evidence hash is
+  pinned to the complete 168-row summary.
+- Residual campaign allocation: Sol/medium and Sol/high WBD-005 are each 5/6
+  provisional. Run repeat 7 for both, recompute, and continue one repeat at a
+  time only while an arm remains capable of reaching 8/9 (Wilson lower 0.565)
+  qualification before the closeout reserve.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`

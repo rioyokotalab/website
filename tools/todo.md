@@ -52,11 +52,17 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   model-diverse WBD-005 fallback despite its higher runtime/token cost. Both
   confirmations failed reduced-motion contracts, leaving Luna/xhigh 3/5 and
   ending the arm. Stage 6 screens the remaining Luna/max speed and Sol/max
-  token singleton passes twice each; do not expand them before recomputation.
+  token singleton passes twice each; both passed 3/3 but remain provisional and
+  are much slower than medium/high. The versioned selector policy is installed
+  and validated across all 15 task/objective lookups. Use the residual campaign
+  window for stepwise qualification attempts on Sol/medium and Sol/high; each
+  is 5/6 and needs three consecutive passes to reach 8/9 qualified evidence.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that
-  future dispatch can select a route without relying on chat history.
+  future dispatch can select a route without relying on chat history. Initial
+  policy and selector are installed; refresh their evidence hash and WBD-005
+  route after the last adaptive qualification attempts.
 - **T-153 — Close the eight-hour campaign:** stop new runs by
   2026-07-14T05:08+0900, finish in-flight evidence safely, audit artifacts and
   metrics, report spend/runtime/failures/uncertainty, checkpoint the ledger,

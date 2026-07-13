@@ -3,6 +3,24 @@
 Use this skill for a directly started Codex DRIVER and its bounded native
 subagents.
 
+## Select an evidence-backed route
+
+Before delegating a website task materially analogous to one of the measured
+WBD capability classes, query the versioned policy instead of choosing a model
+or effort from memory:
+
+```bash
+python3 tools/agent-benchmark/select_route.py --task WBD-003 --objective runtime
+```
+
+Objectives are `runtime`, `effective_tokens`, and `reliability`. The selector
+returns the route, confidence/evidence, required validation, and fallback
+chain from `tools/agent-benchmark/routing-policy.json`. Use `--validate` after
+policy changes. Do not extrapolate the mapping to a materially different task;
+collect comparable evidence or use driver judgment and record the new route.
+WBD-005-class work is never accepted from the initial dispatch alone: run the
+full listed grader and follow its validation-dependent escalation chain.
+
 ## Delegate only when it saves context
 
 Stay solo when a task is small, depends on the root's recent reasoning, changes

@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "policy_version": "2026-07-14.1",
+  "created_at": "2026-07-14T03:42+0900",
+  "source": {
+    "matrix_run_label": "gpt56-full-20260713",
+    "repeat_run_label": "gpt56-repeat-20260714",
+    "repeat_summary_sha256": "b4a9ce871014c5db596bf5393d002b61e697a42e34788b4afa9930ef0a0f3e24"
+  },
+  "decision_order": [
+    "full-quality reliability confidence",
+    "requested objective",
+    "retry-adjusted expected end-to-end cost"
+  ],
+  "confidence_thresholds": {
+    "high-confidence": "n >= 6 and unrounded full-quality Wilson-95 lower bound >= 0.60",
+    "qualified": "n >= 5 and unrounded full-quality Wilson-95 lower bound >= 0.55",
+    "provisional": "n >= 3 and unrounded full-quality Wilson-95 lower bound >= 0.40",
+    "insufficient": "below the provisional threshold"
+  },
+  "global_rules": [
+    "Use this policy only for tasks materially analogous to a listed capability class; otherwise collect evidence before generalizing.",
+    "Run the listed validation after every delegated implementation; a route is not a substitute for independent verification.",
+    "Do not increase effort merely because a task is larger: effort was not monotonic in quality, runtime, or effective tokens.",
+    "Effective tokens exclude cached input and are not monetary cost; no frozen price table was available.",
+    "WBD-005-class work is validation-dependent: no sampled route qualified standalone, so failure feedback and escalation are mandatory."
+  ],
+  "task_classes": [
+    {
+      "task_id": "WBD-001",
+      "capability_class": "bilingual-legacy-html-surgical-semantics",
+      "scope_note": "Small mirrored EN/JP legacy-HTML edits that must preserve CRLF, visible text, layout, and ordering.",
+      "standalone_qualified": true,
+      "routes": [
+        {
+          "route_id": "terra-low",
+          "model": "gpt-5.6-terra",
+          "effort": "low",
+          "confidence": "high-confidence",
+          "evidence": {
+            "attempts": 6,
+            "full_quality_passes": 6,
+            "wilson_95": [0.6097, 1.0],
+            "smoothed_success_probability": 0.875,
+            "expected_total_ms_per_success": 56996,
+            "expected_effective_tokens_per_success": 11444
+          }
+        },
+        {
+          "route_id": "luna-low",
+          "model": "gpt-5.6-luna",
+          "effort": "low",
+          "confidence": "provisional",
+          "evidence": {
+            "attempts": 3,
+            "full_quality_passes": 3,
+            "wilson_95": [0.4385, 1.0],
+            "smoothed_success_probability": 0.8,
+            "expected_total_ms_per_success": 71200,
+            "expected_effective_tokens_per_success": 13297
+          }
+        }
+      ],
+      "selection": {
+        "runtime": "terra-low",
+        "effective_tokens": "terra-low",
+        "reliability": "terra-low"
+      },
+      "validation": {
+        "required": true,
+        "commands": [
+          ["python3", "tools/standards-check.py"],
+          ["npx", "playwright", "test", "tests/home-news-dates.spec.js", "tests/home-news-table-name.spec.js", "tests/layout-contracts.spec.js"]
+        ]
+      },
+      "fallback_chain": [
+        {"on": "validation-failure", "route_id": "luna-low", "max_attempts": 1},
+        {"on": "second-failure", "action": "return-to-driver-with-grader-evidence"}
+      ]
+    },
+    {
+      "task_id": "WBD-002",
+      "capability_class": "mirrored-secure-accessible-link-repair",
+      "scope_note": "Small mirrored EN/JP link edits combining exact labels, security attributes, content type, and preserved layout.",
+      "standalone_qualified": true,
+      "routes": [
+        {
+          "route_id": "luna-low",
+          "model": "gpt-5.6-luna",
+          "effort": "low",
+          "confidence": "high-confidence",
+          "evidence": {
+            "attempts": 6,
+            "full_quality_passes": 6,
+            "wilson_95": [0.6097, 1.0],
+            "smoothed_success_probability": 0.875,
+            "expected_total_ms_per_success": 93990,
+            "expected_effective_tokens_per_success": 15105
+          }
+        },
+        {
+          "route_id": "sol-low",
+          "model": "gpt-5.6-sol",
+          "effort": "low",
+          "confidence": "high-confidence",
+          "evidence": {
+            "attempts": 6,
+            "full_quality_passes": 6,
+            "wilson_95": [0.6097, 1.0],
+            "smoothed_success_probability": 0.875,
+            "expected_total_ms_per_success": 109980,
+            "expected_effective_tokens_per_success": 14867
+          }
+        }
+      ],
+      "selection": {
+        "runtime": "luna-low",
+        "effective_tokens": "sol-low",
+        "reliability": "luna-low"
+      },
+      "validation": {
+        "required": true,
+        "commands": [
+          ["python3", "tools/security-check.py"],
+          ["python3", "tools/standards-check.py"],
+          ["npx", "playwright", "test", "tests/interactive-names.spec.js", "tests/runtime-health.spec.js"]
+        ]
+      },
+      "fallback_chain": [
+        {"on": "validation-failure", "route_id": "sol-low", "max_attempts": 1},
+        {"on": "second-failure", "action": "return-to-driver-with-grader-evidence"}
+      ]
+    },
+    {
+      "task_id": "WBD-003",
+      "capability_class": "single-file-security-privacy-javascript-repair",
+      "scope_note": "Focused JavaScript behavior repair with privacy/security invariants, storage compatibility, keyboard behavior, and browser tests.",
+      "standalone_qualified": true,
+      "routes": [
+        {
+          "route_id": "terra-low",
+          "model": "gpt-5.6-terra",
+          "effort": "low",
+          "confidence": "high-confidence",
+          "evidence": {
+            "attempts": 6,
+            "full_quality_passes": 6,
+            "wilson_95": [0.6097, 1.0],
+            "smoothed_success_probability": 0.875,
+            "expected_total_ms_per_success": 35595,
+            "expected_effective_tokens_per_success": 18246
+          }
+        },
+        {
+          "route_id": "sol-low",
+          "model": "gpt-5.6-sol",
+          "effort": "low",
+          "confidence": "high-confidence",
+          "evidence": {
+            "attempts": 6,
+            "full_quality_passes": 6,
+            "wilson_95": [0.6097, 1.0],
+            "smoothed_success_probability": 0.875,
+            "expected_total_ms_per_success": 42778,
+            "expected_effective_tokens_per_success": 12355
+          }
+        }
+      ],
+      "selection": {
+        "runtime": "terra-low",
+        "effective_tokens": "sol-low",
+        "reliability": "terra-low"
+      },
+      "validation": {
+        "required": true,
+        "commands": [
+          ["npx", "playwright", "test", "tests/analytics-consent.spec.js"],
+          ["python3", "tools/security-check.py"]
+        ]
+      },
+      "fallback_chain": [
+        {"on": "validation-failure", "route_id": "sol-low", "max_attempts": 1},
+        {"on": "second-failure", "action": "return-to-driver-with-grader-evidence"}
+      ]
+    },
+    {
+      "task_id": "WBD-004",
+      "capability_class": "single-file-responsive-css-visual-contract-repair",
+      "scope_note": "Focused responsive CSS repair with exact mobile values, preserved desktop behavior, overflow containment, and visual/browser contracts.",
+      "standalone_qualified": true,
+      "routes": [
+        {
+          "route_id": "luna-low",
+          "model": "gpt-5.6-luna",
+          "effort": "low",
+          "confidence": "high-confidence",
+          "evidence": {
+            "attempts": 6,
+            "full_quality_passes": 6,
+            "wilson_95": [0.6097, 1.0],
+            "smoothed_success_probability": 0.875,
+            "expected_total_ms_per_success": 58960,
+            "expected_effective_tokens_per_success": 23430
+          }
+        },
+        {
+          "route_id": "sol-low",
+          "model": "gpt-5.6-sol",
+          "effort": "low",
+          "confidence": "high-confidence",
+          "evidence": {
+            "attempts": 6,
+            "full_quality_passes": 6,
+            "wilson_95": [0.6097, 1.0],
+            "smoothed_success_probability": 0.875,
+            "expected_total_ms_per_success": 73358,
+            "expected_effective_tokens_per_success": 21394
+          }
+        }
+      ],
+      "selection": {
+        "runtime": "luna-low",
+        "effective_tokens": "sol-low",
+        "reliability": "luna-low"
+      },
+      "validation": {
+        "required": true,
+        "commands": [
+          ["npx", "playwright", "test", "tests/layout-contracts.spec.js", "tests/text-spacing.spec.js"],
+          ["python3", "tools/standards-check.py"]
+        ]
+      },
+      "fallback_chain": [
+        {"on": "validation-failure", "route_id": "sol-low", "max_attempts": 1},
+        {"on": "second-failure", "action": "return-to-driver-with-grader-evidence"}
+      ]
+    },
+    {
+      "task_id": "WBD-005",
+      "capability_class": "held-out-cross-cutting-shared-asset-multifile-repair",
+      "scope_note": "Broad shared CSS/JavaScript plus synchronized cache-query HTML edits with held-out static, scope, CRLF, parity, and browser contracts.",
+      "standalone_qualified": false,
+      "routes": [
+        {
+          "route_id": "sol-medium",
+          "model": "gpt-5.6-sol",
+          "effort": "medium",
+          "confidence": "provisional",
+          "evidence": {
+            "attempts": 6,
+            "full_quality_passes": 5,
+            "wilson_95": [0.4365, 0.9699],
+            "smoothed_success_probability": 0.75,
+            "expected_total_ms_per_success": 228886,
+            "expected_effective_tokens_per_success": 49755
+          }
+        },
+        {
+          "route_id": "sol-high",
+          "model": "gpt-5.6-sol",
+          "effort": "high",
+          "confidence": "provisional",
+          "evidence": {
+            "attempts": 6,
+            "full_quality_passes": 5,
+            "wilson_95": [0.4365, 0.9699],
+            "smoothed_success_probability": 0.75,
+            "expected_total_ms_per_success": 272435,
+            "expected_effective_tokens_per_success": 47988
+          }
+        },
+        {
+          "route_id": "sol-low",
+          "model": "gpt-5.6-sol",
+          "effort": "low",
+          "confidence": "insufficient",
+          "evidence": {
+            "attempts": 6,
+            "full_quality_passes": 4,
+            "wilson_95": [0.3, 0.9032],
+            "smoothed_success_probability": 0.625,
+            "expected_total_ms_per_success": 225652,
+            "expected_effective_tokens_per_success": 38938
+          }
+        },
+        {
+          "route_id": "sol-max",
+          "model": "gpt-5.6-sol",
+          "effort": "max",
+          "confidence": "provisional",
+          "evidence": {
+            "attempts": 3,
+            "full_quality_passes": 3,
+            "wilson_95": [0.4385, 1.0],
+            "smoothed_success_probability": 0.8,
+            "expected_total_ms_per_success": 358397,
+            "expected_effective_tokens_per_success": 64677
+          }
+        }
+      ],
+      "selection": {
+        "runtime": "sol-medium",
+        "effective_tokens": "sol-high",
+        "reliability": "sol-medium"
+      },
+      "validation": {
+        "required": true,
+        "mode": "mandatory-full-grader-before-acceptance",
+        "commands": [
+          ["npx", "playwright", "test", "tests/reduced-motion.spec.js", "tests/lightbox-accessibility.spec.js", "tests/runtime-health.spec.js"],
+          ["python3", "tools/standards-check.py"]
+        ],
+        "required_static_contracts": [
+          "css-zero-motion",
+          "js-reduced-zero",
+          "synchronized-cache-queries",
+          "CRLF-and-scope"
+        ]
+      },
+      "fallback_chain": [
+        {
+          "on": "any-validation-failure",
+          "route_id": "sol-high",
+          "max_attempts": 1,
+          "instruction": "Provide the original task, exact grader findings, and failed diff; require a targeted repair and rerun the full grader."
+        },
+        {
+          "on": "second-failure",
+          "route_id": "sol-max",
+          "max_attempts": 1,
+          "instruction": "Use only when the driver judges another automated attempt cheaper than direct repair; this route is provisional and slow."
+        },
+        {
+          "on": "third-failure",
+          "action": "return-to-driver-for-decomposition-or-manual-repair"
+        }
+      ],
+      "chain_caution": "Conditional repair-chain reliability was not directly measured, and route failures may be correlated; do not multiply observed pass rates as if independent."
+    }
+  ]
+}
