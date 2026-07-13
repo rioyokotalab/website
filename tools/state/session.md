@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-13T21:08+0900
+updated: 2026-07-13T21:23+0900
 task: T-147 Run all documented model/effort/task cells
 status: in-progress
 
@@ -9,12 +9,14 @@ status: in-progress
   checkpointing task blocks, selection decisions, and routing evidence.
 - Frozen round: baseline `c4b0720`, run label `gpt56-full-20260713`, full
   prompt/default inspection/runner-lite/P2P, deterministic task-blocked order.
-- Runner and v2 metrics now support low/medium/high/xhigh/max/ultra. Luna,
-  Terra, and Sol each passed the WBD-001 ultra cell at 100/100 with full P2P and
-  exact scope. Three artifacts and three v2 metric rows validate.
-- Next: add a resumable single-writer matrix orchestrator without changing the
-  frozen benchmark runner, verify its dry-run order/counts, then execute the
-  documented cells in frozen task blocks and import metrics after every run.
+- Resumable single-writer orchestrator committed as `579d66f`; dry runs prove
+  75 documented and 12 remaining ultra cells with automatic switching.
+- WBD-003 documented block complete: 15/15 capability passes; 14 scored 100,
+  Sol/xhigh scored 89 from failed `denied-default`. Provisional Pareto routes:
+  Terra/low fastest at 25,045 ms total; Sol/low lowest effective tokens at
+  8,298. Do not select until ultra and matched repeats are available.
+- Integrity checkpoint: 18 total runs/artifacts/metric pointers, no errors;
+  metrics contain 18 v2 rows. Next frozen block: WBD-001 documented (15 cells).
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`

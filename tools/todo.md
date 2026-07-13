@@ -12,6 +12,7 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   round, not an unseen selection gate. Never reroute a failed cell to a
   different model or effort. Record score, critical assertions, effective and
   reasoning tokens, duration, scope, cost, and failure class for every attempt.
+  Progress: WBD-003 complete (15/15); 15/75 documented cells complete.
 - **T-148 — Complete the `ultra` rows:** T-146 proved Luna, Terra, and Sol all
   accept `ultra` and recorded their passing WBD-001 cells. Run WBD-002 through
   WBD-005 once for all three models at `ultra` (12 remaining cells), using the
