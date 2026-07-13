@@ -85,8 +85,8 @@ def validate_row(row: dict[str, Any]) -> list[str]:
         extra = sorted(row.keys() - V2_ALLOWED)
         if extra:
             errors.append("unexpected: " + ", ".join(extra))
-        if row.get("effort") not in ("low", "medium", "high"):
-            errors.append("effort must be low, medium, or high")
+        if row.get("effort") not in ("low", "medium", "high", "xhigh", "max"):
+            errors.append("effort must be low, medium, high, xhigh, or max")
         if row.get("outcome") not in ("passed", "failed", "partial", "timeout", "error", "excluded"):
             errors.append("invalid outcome")
         for key in ("success", "capability_pass"):
@@ -674,6 +674,7 @@ def selftest() -> dict[str, Any]:
         claude_result = {
             **result,
             "run_id": "selftest-claude", "run_label": "selftest-claude", "provider": "claude",
+            "effort": "max",
             "worker": "claude-autonomous", "claude_cli": "test-claude",
             "config_variant": "autonomous", "config_sha256": "config-hash",
             "artifact": "tools/out/claude-benchmark/selftest-claude/result.json",

@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-138.
+`tools/state/session.md`. Next free id: T-140.
 
 ## Active
 
@@ -13,6 +13,24 @@ None.
 
 ## Recently completed
 
+- **T-139 — Corrected Claude dynamic rerun:** COMPLETE. All five frozen
+  Fable/max dynamic commands ran once each at corrected ref `b23416b` under
+  label `claude-dynamic-b23416b-fable-max-v1`: **1/5 pass** (WBD-001 100;
+  WBD-002–005 generator `error_max_budget_usd`, held-out never exposed).
+  $4.1052 of $18; 108,013 effective tokens; telemetry complete; 5 rows
+  imported + validated; artifact audit pass. Standalone cohort — old-arm
+  comparisons remain unmatched; current-harness stays canonical; dynamic needs
+  generator hardening. Results: `tools/out/t139-claude-dynamic-rerun.md`;
+  round addendum: `tools/agent-benchmark/rounds/2026-07-13-claude.md`.
+- **T-138 — Audit benchmark logging and compare Claude/Codex models:** all 79
+  retained results, 68 measured metrics, 11 exclusions, and artifact pointers
+  reconcile, but the T-137 held-out ranking is not decision-grade: Claude
+  WBD-005@2 used pre-fix ref `3364e2c`, so stale P2P and representation-specific
+  F2P checks created the dynamic-only win. Clean WBD-001–004 is a four-way
+  capability tie; efficiency ranks Codex, Claude autonomous, dynamic, then
+  current-harness. Dynamic's true retrying total is 304,755 effective tokens.
+  Analysis: `tools/out/t138-model-comparison.md`; audit:
+  `tools/out/t138-log-audit.md`.
 - **T-137 — Compare Claude agentic-harness strategies:** ran the frozen
   WBD-001–005 suite across current-harness / autonomous / dynamic arms
   (15 measured runs, 3 excluded stochastic generator-setup failures,

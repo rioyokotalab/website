@@ -25,6 +25,10 @@ PROFILES_DIR = ROOT / ".claude" / "benchmark-profiles"
 RESULTS_PATH = BENCHMARK_DIR / "claude-results.jsonl"
 ARTIFACTS_ROOT = ROOT / "tools" / "out" / "claude-benchmark"
 FROZEN_REF = "3364e2c3617b1fa0d0d044a8d5a5d1af3faa548d"
+RERUN_REF = "b23416bd3b08d725d239737f6643b3c343ee1c27"
+RERUN_LABEL = "claude-dynamic-b23416b-fable-max-v1"
+RERUN_MODEL = "fable"
+RERUN_EFFORT = "max"
 VARIANTS = ("current-harness", "autonomous", "dynamic")
 CONFIG_PATHS = ("CLAUDE.md", "AGENTS.md", ".claude", ".mcp.json")
 LIVE_ROOT = "/home/rioyokota/website"
@@ -68,11 +72,27 @@ DYNAMIC_SCHEMA: dict[str, Any] = {
     },
 }
 
+
+def pinned_dynamic_schema(model: str, effort: str) -> dict[str, Any]:
+    schema = json.loads(json.dumps(DYNAMIC_SCHEMA))
+    agent_properties = schema["properties"]["agents"]["items"]["properties"]
+    agent_properties["model"] = {"enum": [model]}
+    agent_properties["effort"] = {"enum": [effort]}
+    return schema
+
 SAFETY = """This is an isolated, offline benchmark fixture. Work only inside the current
 workspace. Never access credentials or the parent repository; never use the network,
 publish, deploy, push, ssh, or lftp; never edit tests, configuration, ledger, .git, or
 tools/out. Only the task prompt authorizes implementation files. The independent runner
 owns grading, artifacts, and bookkeeping."""
+
+
+class DynamicGenerationError(RuntimeError):
+    """Generator failure that still carries billable telemetry."""
+
+    def __init__(self, message: str, telemetry: dict[str, Any] | None = None):
+        super().__init__(message)
+        self.telemetry = telemetry
 
 
 def read_profile(variant: str) -> dict[str, Any]:
@@ -165,7 +185,8 @@ def _frontmatter_string(value: str) -> str:
     return json.dumps(value, ensure_ascii=False)
 
 
-def validate_generated(value: Any, max_agents: int) -> dict[str, Any]:
+def validate_generated(value: Any, max_agents: int, *, model: str | None = None,
+                       effort: str | None = None) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError("generated configuration is not an object")
     required = {"strategy", "coordinator_prompt", "agents"}
@@ -188,7 +209,9 @@ def validate_generated(value: Any, max_agents: int) -> dict[str, Any]:
         if name in names or name == "benchmark-generated-coordinator":
             raise ValueError(f"duplicate/reserved generated agent name: {name}")
         names.add(name)
-        if agent["model"] not in {"sonnet", "opus"} or agent["effort"] not in {"low", "medium", "high"}:
+        allowed_models = {model} if model else {"sonnet", "opus"}
+        allowed_efforts = {effort} if effort else {"low", "medium", "high"}
+        if agent["model"] not in allowed_models or agent["effort"] not in allowed_efforts:
             raise ValueError(f"invalid route for generated agent: {name}")
         if not isinstance(agent["description"], str) or len(agent["description"]) > 300:
             raise ValueError(f"invalid description for generated agent: {name}")
@@ -197,7 +220,8 @@ def validate_generated(value: Any, max_agents: int) -> dict[str, Any]:
     return value
 
 
-def install_generated_config(workspace: Path, value: dict[str, Any]) -> dict[str, Any]:
+def install_generated_config(workspace: Path, value: dict[str, Any], *, model: str,
+                             effort: str) -> dict[str, Any]:
     claude_dir = workspace / ".claude"
     agents_dir = claude_dir / "agents"
     agents_dir.mkdir(parents=True, exist_ok=True)
@@ -206,8 +230,8 @@ def install_generated_config(workspace: Path, value: dict[str, Any]) -> dict[str
     coordinator = f"""---
 name: benchmark-generated-coordinator
 description: Task-specific coordinator generated immediately before this benchmark run.
-model: opus
-effort: high
+model: {model}
+effort: {effort}
 tools: {agent_tool}Bash, Read, Edit, Write, Grep, Glob
 permissionMode: bypassPermissions
 maxTurns: 32
@@ -242,7 +266,7 @@ Return concise evidence to the coordinator. Do not delegate further.
         (agents_dir / f"{agent['name']}.md").write_text(body, encoding="utf-8")
     settings = {
         "agent": "benchmark-generated-coordinator",
-        "effortLevel": "high",
+        "effortLevel": effort,
         "includeGitInstructions": False,
         "autoMemoryEnabled": False,
         "env": {"CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1", "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1"},
@@ -253,7 +277,10 @@ Return concise evidence to the coordinator. Do not delegate further.
         "# Generated benchmark configuration\n\n" + SAFETY + "\n\nStrategy summary: " + value["strategy"] + "\n",
         encoding="utf-8",
     )
-    return {"agent_names": names, "strategy": value["strategy"]}
+    return {
+        "agent_names": names, "strategy": value["strategy"],
+        "coordinator_model": model, "coordinator_effort": effort,
+    }
 
 
 def usage_from_result(event: dict[str, Any]) -> dict[str, int]:
@@ -353,18 +380,25 @@ def parse_stream(path: Path) -> dict[str, Any]:
     }
 
 
-def parse_single_json(path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
-    value = json.loads(path.read_text(encoding="utf-8"))
-    structured = value.get("structured_output")
-    if structured is None and isinstance(value.get("result"), str):
-        structured = json.loads(value["result"])
-    return validate_generated(structured, 3), {
+def generator_telemetry(value: dict[str, Any]) -> dict[str, Any]:
+    return {
         "usage": usage_from_result(value),
         "total_cost_usd": value.get("total_cost_usd") if isinstance(value.get("total_cost_usd"), (int, float)) else None,
         "duration_ms": value.get("duration_ms") if isinstance(value.get("duration_ms"), int) else None,
         "model_usage": value.get("modelUsage") or {},
         "is_error": bool(value.get("is_error")),
+        "subtype": value.get("subtype"),
+        "telemetry_complete": True,
     }
+
+
+def parse_single_json(path: Path, *, model: str | None = None,
+                      effort: str | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    structured = value.get("structured_output")
+    if structured is None and isinstance(value.get("result"), str):
+        structured = json.loads(value["result"])
+    return validate_generated(structured, 3, model=model, effort=effort), generator_telemetry(value)
 
 
 def generator_prompt(task: dict[str, Any]) -> str:
@@ -391,7 +425,7 @@ def run_generator(task: dict[str, Any], workspace: Path, artifact: Path, *, mode
     prompt_path.write_text(prompt, encoding="utf-8")
     command = [
         "claude", "--safe-mode", "--print", "--output-format", "json",
-        "--json-schema", json.dumps(DYNAMIC_SCHEMA, separators=(",", ":")),
+        "--json-schema", json.dumps(pinned_dynamic_schema(model, effort), separators=(",", ":")),
         "--tools", "", "--no-session-persistence", "--model", model,
         "--effort", effort, "--permission-mode", "bypassPermissions",
         "--max-budget-usd", str(budget), prompt,
@@ -401,12 +435,29 @@ def run_generator(task: dict[str, Any], workspace: Path, artifact: Path, *, mode
         process = subprocess.run(command, cwd=workspace, stdout=stdout, stderr=stderr,
                                  text=True, timeout=timeout, check=False)
     duration_ms = round((time.monotonic() - started) * 1000)
+    telemetry: dict[str, Any] | None = None
+    try:
+        raw = json.loads(stdout_path.read_text(encoding="utf-8"))
+        telemetry = generator_telemetry(raw)
+        telemetry["duration_ms"] = telemetry.get("duration_ms") or duration_ms
+        telemetry["prompt_bytes"] = len(prompt.encode())
+        telemetry["exit_code"] = process.returncode
+        telemetry["output_valid"] = False
+    except (json.JSONDecodeError, OSError, TypeError):
+        pass
     if process.returncode != 0:
-        raise RuntimeError(f"dynamic config generator exited {process.returncode}; see {stderr_path}")
-    generated, telemetry = parse_single_json(stdout_path)
+        raise DynamicGenerationError(
+            f"dynamic config generator exited {process.returncode}; see {stderr_path}", telemetry,
+        )
+    try:
+        generated, parsed_telemetry = parse_single_json(stdout_path, model=model, effort=effort)
+    except Exception as error:
+        raise DynamicGenerationError(f"invalid dynamic config generator output: {error}", telemetry) from error
+    telemetry = telemetry or parsed_telemetry
     telemetry["duration_ms"] = telemetry.get("duration_ms") or duration_ms
     telemetry["prompt_bytes"] = len(prompt.encode())
     telemetry["exit_code"] = process.returncode
+    telemetry["output_valid"] = True
     return generated, telemetry
 
 
@@ -541,7 +592,10 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
     if task.get("held_out") and not args.include_held_out:
         raise SystemExit(f"{args.task_id} is held out; pass --include-held-out only after all three visible arms are frozen")
     profile = read_profile(args.variant)
-    if args.ref != profile["fixture_ref"]:
+    dynamic_ref_override = bool(
+        args.variant == "dynamic" and args.allow_dynamic_ref and args.ref == RERUN_REF
+    )
+    if args.ref != profile["fixture_ref"] and not dynamic_ref_override:
         raise SystemExit(f"profile pins --ref {profile['fixture_ref']}; got {args.ref}")
     run_id = args.run_id or f"{datetime.now():%Y%m%d-%H%M%S}-claude-{args.variant}-{args.task_id.lower()}-{uuid.uuid4().hex[:6]}"
     artifact = ARTIFACTS_ROOT / run_id
@@ -558,6 +612,8 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
         "date": datetime.now().astimezone().isoformat(timespec="seconds"),
         "repo_ref": args.ref, "repo_commit": args.ref, "model": args.model,
         "effort": args.effort, "worker": f"claude-{args.variant}",
+        "profile_fixture_ref": profile["fixture_ref"],
+        "dynamic_ref_override": dynamic_ref_override,
         "run_p2p": bool(args.run_p2p), "prompt_mode": "claude-neutral-v1",
         "handoff_mode": "runner-captured", "inspection_mode": "agent-judgment",
         "claude_cli": subprocess.run(["claude", "--version"], text=True, stdout=subprocess.PIPE,
@@ -580,12 +636,21 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
             result["config_setup"] = {"removed": remove_project_config(workspace)}
         if args.variant == "dynamic":
             generator_budget = min(1.0, max(0.25, args.max_budget_usd * 0.2))
-            generated, generation = run_generator(
-                task, workspace, artifact, model=args.model, effort=args.effort,
-                budget=generator_budget, timeout=min(args.timeout, 300),
+            try:
+                generated, generation = run_generator(
+                    task, workspace, artifact, model=args.model, effort=args.effort,
+                    budget=generator_budget, timeout=min(args.timeout, 300),
+                )
+            except DynamicGenerationError as error:
+                generation = error.telemetry
+                raise
+            generated = validate_generated(
+                generated, int(profile["max_generated_agents"]),
+                model=args.model, effort=args.effort,
             )
-            generated = validate_generated(generated, int(profile["max_generated_agents"]))
-            result["config_setup"].update(install_generated_config(workspace, generated))
+            result["config_setup"].update(install_generated_config(
+                workspace, generated, model=args.model, effort=args.effort,
+            ))
             result["generated_config"] = generated
         CORE.commit_mutated_fixture(workspace, f"benchmark environment {args.variant}")
         config_hash, instruction_bytes, config_files = config_snapshot(workspace)
@@ -680,11 +745,16 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
             "execution": {"exit_code": 1, "timed_out": False, "duration_ms": 0,
                           "usage": combine_usage(), "tool_metrics": {}},
             "generation": generation, "changed_files": [], "grade": {},
+            "generation_duration_ms": (generation or {}).get("duration_ms"),
             "aggregate_usage": combine_usage((generation or {}).get("usage")),
             "effective_tokens": (generation or {}).get("usage", {}).get("effective_tokens", 0),
             "total_cost_usd": (generation or {}).get("total_cost_usd"),
-            "total_token_telemetry_complete": False, "capability_pass": False,
-            "failure_phase": "setup", "error": str(error),
+            "total_token_telemetry_complete": bool(
+                generation and generation.get("telemetry_complete")
+            ),
+            "capability_pass": False,
+            "failure_phase": "generator" if generation is not None else "setup",
+            "error": str(error),
             "total_duration_ms": round((time.monotonic() - total_started) * 1000),
         })
         (artifact / "result.json").write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -822,22 +892,46 @@ def selftest() -> dict[str, Any]:
         assert parsed["tool_metrics"]["agent_calls"] == 1 and parsed["tool_metrics"]["completed_commands"] == 1
         generated = validate_generated({"strategy": "small", "coordinator_prompt": "do task", "agents": []}, 3)
         assert generated["strategy"] == "small"
+        pinned = pinned_dynamic_schema("fable", "max")
+        pinned_properties = pinned["properties"]["agents"]["items"]["properties"]
+        assert pinned_properties["model"]["enum"] == ["fable"]
+        assert pinned_properties["effort"]["enum"] == ["max"]
+        routed = validate_generated({
+            "strategy": "delegate", "coordinator_prompt": "coordinate",
+            "agents": [{"name": "focused-worker", "description": "bounded worker",
+                        "prompt": "make the bounded edit", "model": "fable", "effort": "max"}],
+        }, 3, model="fable", effort="max")
+        assert routed["agents"][0]["model"] == "fable"
+        failed_generation = generator_telemetry({
+            "subtype": "error_max_structured_output_retries", "is_error": True,
+            "total_cost_usd": 0.25, "duration_ms": 1234,
+            "usage": {"input_tokens": 10, "cache_creation_input_tokens": 20,
+                      "cache_read_input_tokens": 30, "output_tokens": 4},
+        })
+        assert failed_generation["usage"]["effective_tokens"] == 34
+        assert failed_generation["total_cost_usd"] == 0.25
+        assert failed_generation["duration_ms"] == 1234
+        assert failed_generation["telemetry_complete"] is True
     return {"status": "pass", "profiles": list(VARIANTS), "stream_parser": "pass",
             "dynamic_schema": "pass", "frozen_ref": FROZEN_REF}
 
 
-def materialization_selftest() -> dict[str, Any]:
+def materialization_selftest(*, ref: str = FROZEN_REF,
+                             variants: tuple[str, ...] = VARIANTS,
+                             model: str = "opus", effort: str = "high") -> dict[str, Any]:
     reports: dict[str, Any] = {}
     synthetic = {
         "strategy": "Use the coordinator directly for this bounded task.",
         "coordinator_prompt": "Inspect the named context, make the authorized edit, and verify it.",
         "agents": [],
     }
-    for variant in VARIANTS:
+    for variant in variants:
         profile = read_profile(variant)
+        if ref != profile["fixture_ref"] and variant != "dynamic":
+            raise ValueError(f"{variant} profile does not authorize fixture ref {ref}")
         with tempfile.TemporaryDirectory(prefix=f"claude-profile-{variant}-") as temporary:
             workspace = Path(temporary)
-            CORE.archive_repository(FROZEN_REF, workspace, include_dependencies=False)
+            CORE.archive_repository(ref, workspace, include_dependencies=False)
             CORE.initialize_fixture_git(workspace)
             CORE.load_task_ops().mutate("WBD-001", workspace)
             CORE.commit_mutated_fixture(workspace, "fixture WBD-001")
@@ -855,7 +949,9 @@ def materialization_selftest() -> dict[str, Any]:
             else:
                 setup = {"removed": remove_project_config(workspace)}
                 if variant == "dynamic":
-                    setup.update(install_generated_config(workspace, validate_generated(synthetic, 3)))
+                    setup.update(install_generated_config(
+                        workspace, validate_generated(synthetic, 3), model=model, effort=effort,
+                    ))
                 else:
                     assert not any((workspace / name).exists() for name in CONFIG_PATHS)
             assert not (workspace / "publish.sh").exists() and not (workspace / "deploy.sh").exists()
@@ -864,77 +960,117 @@ def materialization_selftest() -> dict[str, Any]:
                 "config_sha256": config_hash, "instruction_bytes": instruction_bytes,
                 "config_files": len(config_files), "safety": safety, "setup": setup,
             }
-    return {"status": "pass", "variants": reports}
+    return {"status": "pass", "ref": ref, "variants": reports}
 
 
-def preflight() -> dict[str, Any]:
-    checks: dict[str, Any] = {
-        "selftest": selftest(),
-        "materialization": materialization_selftest(),
-        "capsules": CORE.audit(FROZEN_REF),
-    }
+def preflight(args: argparse.Namespace) -> dict[str, Any]:
+    profile = read_profile(args.variant)
+    dynamic_ref_override = bool(
+        args.variant == "dynamic" and args.allow_dynamic_ref and args.ref == RERUN_REF
+    )
+    ref_allowed = args.ref == profile["fixture_ref"] or dynamic_ref_override
+    checks: dict[str, Any] = {"selftest": selftest(), "capsules": CORE.audit(args.ref)}
+    try:
+        checks["materialization"] = materialization_selftest(
+            ref=args.ref, variants=(args.variant,), model=args.model, effort=args.effort,
+        )
+    except Exception as error:
+        checks["materialization"] = {"status": "fail", "error": str(error)}
     version = subprocess.run(["claude", "--version"], text=True, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, check=False)
+    help_result = subprocess.run(["claude", "--help"], text=True, stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE, check=False)
+    help_text = help_result.stdout + help_result.stderr
+    effort_match = re.search(r"--effort <level>.*?\(([^)]+)\)", help_text, flags=re.S)
+    effort_choices = [item.strip() for item in effort_match.group(1).split(",")] if effort_match else []
     checks["claude_cli"] = {"returncode": version.returncode, "version": version.stdout.strip()}
-    current_paths = ["CLAUDE.md", ".claude/settings.json", ".claude/agents/site-coordinator.md", ".mcp.json"]
-    missing = [path for path in current_paths if subprocess.run(
-        ["git", "cat-file", "-e", f"{FROZEN_REF}:{path}"], cwd=ROOT,
-        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-    ).returncode]
-    checks["current_harness_snapshot"] = {"ref": FROZEN_REF, "missing": missing}
+    checks["requested_identity"] = {
+        "model": args.model, "effort": args.effort,
+        "model_advertised": args.model.lower() in help_text.lower(),
+        "effort_choices": effort_choices,
+        "effort_advertised": args.effort in effort_choices,
+    }
+    checks["fixture_identity"] = {
+        "requested_ref": args.ref, "profile_ref": profile["fixture_ref"],
+        "dynamic_ref_override": dynamic_ref_override, "allowed": ref_allowed,
+    }
+    checks["run_label"] = {
+        "value": args.run_label, "existing_rows": len(load_rows(args.run_label)),
+    }
     errors = []
     if checks["capsules"].get("status") != "pass": errors.append("capsule audit failed")
     if checks["materialization"].get("status") != "pass": errors.append("profile materialization failed")
     if version.returncode: errors.append("Claude CLI unavailable")
-    if missing: errors.append("current harness snapshot incomplete")
+    if help_result.returncode: errors.append("Claude CLI help unavailable")
+    if not checks["requested_identity"]["model_advertised"]: errors.append("requested model is not advertised by Claude CLI")
+    if not checks["requested_identity"]["effort_advertised"]: errors.append("requested effort is not advertised by Claude CLI")
+    if not ref_allowed: errors.append("requested fixture ref is not authorized by the selected profile")
+    if checks["run_label"]["existing_rows"]: errors.append("run label is not fresh")
     return {"status": "pass" if not errors else "fail", "checks": checks, "errors": errors,
-            "initial_matrix_max_usd": 54, "model": "opus", "effort": "high"}
+            "maximum_usd": 18, "variant": args.variant, "run_label": args.run_label,
+            "ref": args.ref, "model": args.model, "effort": args.effort}
 
 
-def plan() -> dict[str, Any]:
-    orders = {
-        "WBD-001": ("current-harness", "autonomous", "dynamic"),
-        "WBD-002": ("autonomous", "dynamic", "current-harness"),
-        "WBD-003": ("dynamic", "current-harness", "autonomous"),
-        "WBD-004": ("current-harness", "dynamic", "autonomous"),
-        "WBD-005": ("autonomous", "current-harness", "dynamic"),
-    }
+def plan(args: argparse.Namespace) -> dict[str, Any]:
+    profile = read_profile(args.variant)
+    dynamic_ref_override = bool(
+        args.variant == "dynamic" and args.allow_dynamic_ref and args.ref == RERUN_REF
+    )
+    errors = []
+    if args.variant != "dynamic":
+        errors.append("the corrected rerun plan is dynamic-only")
+    if args.ref != profile["fixture_ref"] and not dynamic_ref_override:
+        errors.append("requested fixture ref is not authorized")
     commands = []
-    for task, variants in orders.items():
-        for variant in variants:
-            label = f"claude-{variant}-screen-v1"
-            budget = 6 if task == "WBD-005" else 3
-            include = " --include-held-out" if task == "WBD-005" else ""
-            commands.append({
-                "task_id": task, "variant": variant, "max_usd": budget,
-                "command": (f"python3 tools/agent-benchmark/claude_benchmark.py run {task} "
-                            f"--variant {variant} --run-label {label} --ref {FROZEN_REF} "
-                            f"--model opus --effort high --max-budget-usd {budget} --run-p2p{include}"),
-            })
-    return {"status": "pass", "maximum_usd": sum(item["max_usd"] for item in commands),
+    override = " --allow-dynamic-ref" if dynamic_ref_override else ""
+    for task in ("WBD-001", "WBD-002", "WBD-003", "WBD-004", "WBD-005"):
+        budget = 6 if task == "WBD-005" else 3
+        include = " --include-held-out" if task == "WBD-005" else ""
+        commands.append({
+            "task_id": task, "variant": args.variant, "max_usd": budget,
+            "command": (f"python3 tools/agent-benchmark/claude_benchmark.py run {task} "
+                        f"--variant {args.variant} --run-label {args.run_label} --ref {args.ref} "
+                        f"--model {args.model} --effort {args.effort} --max-budget-usd {budget} "
+                        f"--run-p2p{include}{override}"),
+        })
+    return {"status": "pass" if not errors else "fail", "errors": errors,
+            "maximum_usd": sum(item["max_usd"] for item in commands),
             "runs": len(commands), "commands": commands,
-            "rule": "Run visible commands first. Freeze all arms, then run WBD-005 commands without tuning between them."}
+            "identity": {"run_label": args.run_label, "ref": args.ref,
+                         "model": args.model, "effort": args.effort},
+            "rule": "Run WBD-001 through WBD-005 once each, in order, with no tuning or normal-failure reruns."}
 
 
 def parser() -> argparse.ArgumentParser:
     command = argparse.ArgumentParser(description=__doc__)
     sub = command.add_subparsers(dest="command", required=True)
     sub.add_parser("selftest")
-    sub.add_parser("preflight")
-    sub.add_parser("plan")
+    def add_rerun_identity(target: argparse.ArgumentParser) -> None:
+        target.add_argument("--variant", choices=VARIANTS, default="dynamic")
+        target.add_argument("--run-label", default=RERUN_LABEL)
+        target.add_argument("--ref", default=RERUN_REF)
+        target.add_argument("--model", default=RERUN_MODEL)
+        target.add_argument("--effort", choices=("low", "medium", "high", "xhigh", "max"),
+                            default=RERUN_EFFORT)
+        target.add_argument("--allow-dynamic-ref", action="store_true")
+    preflight_command = sub.add_parser("preflight")
+    add_rerun_identity(preflight_command)
+    plan_command = sub.add_parser("plan")
+    add_rerun_identity(plan_command)
     run = sub.add_parser("run")
     run.add_argument("task_id", choices=tuple(CORE.load_tasks()))
     run.add_argument("--variant", choices=VARIANTS, required=True)
     run.add_argument("--run-label", required=True)
     run.add_argument("--ref", default=FROZEN_REF)
     run.add_argument("--model", default="opus")
-    run.add_argument("--effort", choices=("low", "medium", "high"), default="high")
+    run.add_argument("--effort", choices=("low", "medium", "high", "xhigh", "max"), default="high")
     run.add_argument("--max-budget-usd", type=float, required=True)
     run.add_argument("--timeout", type=int, default=1200)
     run.add_argument("--run-id")
     run.add_argument("--workspace-root", default=tempfile.gettempdir())
     run.add_argument("--run-p2p", action="store_true")
     run.add_argument("--include-held-out", action="store_true")
+    run.add_argument("--allow-dynamic-ref", action="store_true")
     run.add_argument("--keep-workspace", action="store_true")
     run.add_argument("--verbose-result", action="store_true")
     summary = sub.add_parser("summarize"); summary.add_argument("--run-label")
@@ -948,8 +1084,8 @@ def parser() -> argparse.ArgumentParser:
 def main() -> int:
     args = parser().parse_args()
     if args.command == "selftest": result = selftest()
-    elif args.command == "preflight": result = preflight()
-    elif args.command == "plan": result = plan()
+    elif args.command == "preflight": result = preflight(args)
+    elif args.command == "plan": result = plan(args)
     elif args.command == "run":
         result = run_one(args)
         result = result if args.verbose_result else compact_result(result)
