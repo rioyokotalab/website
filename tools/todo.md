@@ -3,7 +3,7 @@
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 `tools/state/session.md`. `T-109` through `T-117` form the original three-hour
 experiment; later iterations are inserted before final T-117 closure. Next free
-id: T-135.
+id: T-136.
 
 ## Active
 
@@ -15,6 +15,7 @@ None.
 
 ## Recently completed
 
+- **T-135 — Benchmark decision workflow documented:** cheap preflight, one-probe stop, repeat threshold/cap, strict comparison, visible freeze, held-out rule, and spend/review closeout are explicit in the benchmark README.
 - **T-134 — Failed-token taxonomy completed:** 292,490 failed tokens split into baseline, bounded probes, repeated routing, and capsule defects; final rules would avoid at least 130,007 (`tools/agent-benchmark/failure-taxonomy.md`).
 - **T-133 — Benchmark coverage gaps mapped:** current capabilities, six material gaps, five candidate capsules, and a demand/offline/audit/break-even expansion gate are documented (`tools/agent-benchmark/coverage.md`).
 - **T-132 — Final handoff integrity passed:** remote equality, zero public-tree diff, ignored report/raw evidence, whitespace-clean history, and ledger/log consistency verify (`tools/out/t132-final-handoff-integrity.md`).

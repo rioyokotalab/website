@@ -61,3 +61,22 @@ freezing the candidate, run every visible task and the held-out task once.
 `effective_tokens` is `input_tokens - cached_input_tokens + output_tokens`.
 Reasoning output is retained separately because runner usage reports it as a
 subset/detail of output accounting; it is not added twice.
+
+## Decision workflow
+
+1. Run `benchmark.py selftest`, `benchmark.py audit`, and `benchmark.py
+   artifacts` before any model call.
+2. Give a new variant one visible-task probe. Stop on capability failure unless
+   raw evidence proves a capsule defect; require at least 10% preliminary cost
+   improvement before repeats.
+3. For a process-wide candidate, collect at most three matched portfolios over
+   two representative tasks. Import them into metrics and use strict `compare`.
+4. Freeze task versions, routes, prompt/handoff/inspection modes, grader, and
+   runner identities. Run every visible task once with P2P.
+5. Only after the visible suite passes, run the held-out task once. A rerun
+   requires a documented, versioned capsule invariant defect.
+6. Record per-label spend, failed-token taxonomy, break-even, raw artifact audit,
+   repository regression, and driver review before promotion.
+
+Do not down-route an exposed held-out task or edit a task/grader merely to turn
+an ordinary capability failure into a pass.

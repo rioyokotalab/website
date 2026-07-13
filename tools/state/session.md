@@ -1,11 +1,11 @@
 driver: codex
-updated: 2026-07-13T09:41+0900
+updated: 2026-07-13T09:43+0900
 task: none
 status: idle
 
 ## Now
 - Goal: complete, including post-change full-suite output verification.
-- Last done: T-134 classifies all 292,490 failed effective tokens; the final two-miss and capsule-audit rules would avoid at least 130,007 (44.4% of failed spend).
+- Last done: T-135 documents the canonical audit → one probe → matched evidence → visible freeze → held-out → spend/review decision workflow.
 - Next: none.
 
 ## Working set
