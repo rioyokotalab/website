@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-13T23:42+0900
+updated: 2026-07-13T23:56+0900
 task: T-148 Complete the ultra rows
 status: in-progress
 
@@ -43,6 +43,14 @@ status: in-progress
   are still dominated by the documented low-effort leaders. Ultra progress is
   3/12 new rows; 81 runs/artifacts/metric pointers reconcile with 81 v2 rows.
   Next frozen block: WBD-005 ultra.
+- Infrastructure checkpoint: the first Sol/ultra WBD-005 attempt stopped before
+  grading/result creation with `ENOSPC` while opening the artifact worker log.
+  `/home` is globally full (space and inodes), while `/tmp` has 342 GB free.
+  The pushed `7a54508` repository, all 81 valid artifacts, and reproducible
+  dependencies were transferred to `/tmp/yokota-campaign-local`; the lone
+  result-less partial artifact was inspected and removed. Local artifact and
+  metrics audits pass 81/81. Retry the identical cell once from the local clone;
+  continue committing and pushing canonical tools-only state from there.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
