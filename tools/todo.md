@@ -36,7 +36,12 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   retains Luna for runtime versus Sol for tokens, with Terra dominated. The
   longer WBD-001 sample reopens Luna/low as a possible token alternate, so add
   two Luna observations after correcting the cumulative confidence and
-  retry-cost analysis.
+  retry-cost analysis. The corrected analysis instead shows Terra/low still
+  dominates WBD-001 on all-attempt expected cost, so no Luna expansion is
+  currently justified. Stage 4 adds one sixth observation to the selected
+  WBD-001 runtime route; both WBD-002/003/004 runtime and token routes; and
+  WBD-005 Sol/high. A pass promotes each 6/6 route to high confidence; a
+  failure immediately changes its routing status.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that

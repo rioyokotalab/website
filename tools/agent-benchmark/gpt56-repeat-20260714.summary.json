@@ -11,8 +11,8 @@
       "status": "pass",
       "ultra_cells": 15
     },
-    "plan_sha256": "497f0bb4a742285880e66a4c66db563cd5d9d5996876ca62c6908550b724efe5",
-    "planned_repeat_rows": 60,
+    "plan_sha256": "2ea10d37cd7dde0a3e59d3d30969591e58179d9f3e2cd7c7e328745bed2bd635",
+    "planned_repeat_rows": 68,
     "repeat_rows": 60,
     "stage_progress": [
       {
@@ -84,54 +84,50 @@
         "planned": 2,
         "purpose": "Raise the dominant WBD-001 Terra/low route from three to five observations.",
         "stage": "stage3-wbd001-confirm"
+      },
+      {
+        "completed": 0,
+        "pending": 8,
+        "planned": 8,
+        "purpose": "Give each selected runtime primary and token alternate a sixth observation that can promote 6/6 routes to high confidence.",
+        "stage": "stage4-selected-confidence"
       }
     ],
     "status": "pass",
     "unique_repeat_run_ids": 60
   },
-  "qualification_rule": "A route enters the reliability-qualified Pareto set only after at least three observations and 100% full-quality passes; medians use full-quality observations only.",
+  "qualification_rule": "Confidence is assigned only after planned sampling completes. High-confidence requires n>=6 and a full-quality Wilson-95 lower bound >=0.60; qualified requires n>=5 and a lower bound >=0.55; provisional requires n>=3 and a lower bound >=0.40. The Pareto set uses the highest available qualified tier and all-attempt retry-adjusted time/tokens.",
+  "retry_adjustment": "The smoothed success probability is (full_quality_passes+1)/(attempts+2). Expected time or tokens per full-quality success is the all-attempt mean divided by that probability. This is a planning estimate, not a monetary price or guarantee.",
   "run_label": "gpt56-repeat-20260714",
   "schema_version": 1,
+  "selection_cautions": [
+    "Wilson intervals are descriptive and are not adjusted for adaptive route selection.",
+    "Observed ranges report latency/token dispersion; the small samples do not support stable tail estimates.",
+    "Effective tokens exclude cached input and are a proxy, not billed monetary cost."
+  ],
   "source_matrix_label": "gpt56-full-20260713",
   "tasks": [
     {
-      "reliability_qualified_pareto": [
-        {
-          "attempts": 5,
-          "effort": "low",
-          "full_quality_passes": 5,
-          "median_effective_tokens": 12146,
-          "median_total_duration_ms": 52465,
-          "model": "gpt-5.6-terra"
-        },
-        {
-          "attempts": 3,
-          "effort": "low",
-          "full_quality_passes": 3,
-          "median_effective_tokens": 11469,
-          "median_total_duration_ms": 61562,
-          "model": "gpt-5.6-luna"
-        },
-        {
-          "attempts": 3,
-          "effort": "medium",
-          "full_quality_passes": 3,
-          "median_effective_tokens": 10671,
-          "median_total_duration_ms": 62353,
-          "model": "gpt-5.6-terra"
-        }
-      ],
+      "reliability_qualified_pareto": [],
       "route_stats": [
         {
           "attempts": 3,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 3,
+          "confidence": "provisional",
+          "effective_tokens_all_attempts_range": [
+            8117,
+            12326
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.4385,
             1.0
           ],
-          "capability_passes": 3,
-          "effort": "low",
           "full_quality_passes": 3,
+          "mean_effective_tokens_all_attempts": 10637.33,
+          "mean_total_duration_ms_all_attempts": 56960.33,
           "median_effective_tokens_full_quality": 11469,
           "median_total_duration_ms_full_quality": 61562,
           "median_worker_duration_ms_full_quality": 45843,
@@ -160,23 +156,39 @@
             }
           ],
           "planned_observations": 3,
+          "retry_adjusted_expected_effective_tokens": 13297,
+          "retry_adjusted_expected_total_duration_ms": 71200,
+          "sampling_complete": true,
           "scores": [
             100,
             100,
             100
           ],
-          "task_id": "WBD-001"
+          "smoothed_full_quality_probability": 0.8,
+          "task_id": "WBD-001",
+          "total_duration_ms_all_attempts_range": [
+            43941,
+            65378
+          ]
         },
         {
           "attempts": 3,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 3,
+          "confidence": "provisional",
+          "effective_tokens_all_attempts_range": [
+            10624,
+            15712
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.4385,
             1.0
           ],
-          "capability_passes": 3,
-          "effort": "low",
           "full_quality_passes": 3,
+          "mean_effective_tokens_all_attempts": 13158.33,
+          "mean_total_duration_ms_all_attempts": 70250.67,
           "median_effective_tokens_full_quality": 13139,
           "median_total_duration_ms_full_quality": 69360,
           "median_worker_duration_ms_full_quality": 52974,
@@ -205,23 +217,39 @@
             }
           ],
           "planned_observations": 3,
+          "retry_adjusted_expected_effective_tokens": 16448,
+          "retry_adjusted_expected_total_duration_ms": 87813,
+          "sampling_complete": true,
           "scores": [
             100,
             100,
             100
           ],
-          "task_id": "WBD-001"
+          "smoothed_full_quality_probability": 0.8,
+          "task_id": "WBD-001",
+          "total_duration_ms_all_attempts_range": [
+            58560,
+            82832
+          ]
         },
         {
           "attempts": 5,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 5,
+          "confidence": "incomplete",
+          "effective_tokens_all_attempts_range": [
+            6653,
+            13468
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.5655,
             1.0
           ],
-          "capability_passes": 5,
-          "effort": "low",
           "full_quality_passes": 5,
+          "mean_effective_tokens_all_attempts": 10551.8,
+          "mean_total_duration_ms_all_attempts": 52423.2,
           "median_effective_tokens_full_quality": 12146,
           "median_total_duration_ms_full_quality": 52465,
           "median_worker_duration_ms_full_quality": 35390,
@@ -263,7 +291,10 @@
               "total_duration_ms": 63750
             }
           ],
-          "planned_observations": 5,
+          "planned_observations": 6,
+          "retry_adjusted_expected_effective_tokens": 12310,
+          "retry_adjusted_expected_total_duration_ms": 61160,
+          "sampling_complete": false,
           "scores": [
             100,
             100,
@@ -271,18 +302,31 @@
             100,
             100
           ],
-          "task_id": "WBD-001"
+          "smoothed_full_quality_probability": 0.8571,
+          "task_id": "WBD-001",
+          "total_duration_ms_all_attempts_range": [
+            38104,
+            66094
+          ]
         },
         {
           "attempts": 3,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 3,
+          "confidence": "provisional",
+          "effective_tokens_all_attempts_range": [
+            10479,
+            23109
+          ],
+          "effort": "medium",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.4385,
             1.0
           ],
-          "capability_passes": 3,
-          "effort": "medium",
           "full_quality_passes": 3,
+          "mean_effective_tokens_all_attempts": 14753,
+          "mean_total_duration_ms_all_attempts": 61309,
           "median_effective_tokens_full_quality": 10671,
           "median_total_duration_ms_full_quality": 62353,
           "median_worker_duration_ms_full_quality": 46545,
@@ -311,46 +355,45 @@
             }
           ],
           "planned_observations": 3,
+          "retry_adjusted_expected_effective_tokens": 18441,
+          "retry_adjusted_expected_total_duration_ms": 76636,
+          "sampling_complete": true,
           "scores": [
             100,
             100,
             100
           ],
-          "task_id": "WBD-001"
+          "smoothed_full_quality_probability": 0.8,
+          "task_id": "WBD-001",
+          "total_duration_ms_all_attempts_range": [
+            39270,
+            82304
+          ]
         }
       ],
       "task_id": "WBD-001"
     },
     {
-      "reliability_qualified_pareto": [
-        {
-          "attempts": 5,
-          "effort": "low",
-          "full_quality_passes": 5,
-          "median_effective_tokens": 13197,
-          "median_total_duration_ms": 79082,
-          "model": "gpt-5.6-luna"
-        },
-        {
-          "attempts": 5,
-          "effort": "low",
-          "full_quality_passes": 5,
-          "median_effective_tokens": 12368,
-          "median_total_duration_ms": 93096,
-          "model": "gpt-5.6-sol"
-        }
-      ],
+      "reliability_qualified_pareto": [],
       "route_stats": [
         {
           "attempts": 5,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 5,
+          "confidence": "incomplete",
+          "effective_tokens_all_attempts_range": [
+            12141,
+            15419
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.5655,
             1.0
           ],
-          "capability_passes": 5,
-          "effort": "low",
           "full_quality_passes": 5,
+          "mean_effective_tokens_all_attempts": 13554,
+          "mean_total_duration_ms_all_attempts": 83431.4,
           "median_effective_tokens_full_quality": 13197,
           "median_total_duration_ms_full_quality": 79082,
           "median_worker_duration_ms_full_quality": 30892,
@@ -392,7 +435,10 @@
               "total_duration_ms": 79082
             }
           ],
-          "planned_observations": 5,
+          "planned_observations": 6,
+          "retry_adjusted_expected_effective_tokens": 15813,
+          "retry_adjusted_expected_total_duration_ms": 97337,
+          "sampling_complete": false,
           "scores": [
             100,
             100,
@@ -400,18 +446,31 @@
             100,
             100
           ],
-          "task_id": "WBD-002"
+          "smoothed_full_quality_probability": 0.8571,
+          "task_id": "WBD-002",
+          "total_duration_ms_all_attempts_range": [
+            76818,
+            98475
+          ]
         },
         {
           "attempts": 5,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 5,
+          "confidence": "incomplete",
+          "effective_tokens_all_attempts_range": [
+            10515,
+            15879
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.5655,
             1.0
           ],
-          "capability_passes": 5,
-          "effort": "low",
           "full_quality_passes": 5,
+          "mean_effective_tokens_all_attempts": 12615,
+          "mean_total_duration_ms_all_attempts": 97527,
           "median_effective_tokens_full_quality": 12368,
           "median_total_duration_ms_full_quality": 93096,
           "median_worker_duration_ms_full_quality": 45326,
@@ -453,7 +512,10 @@
               "total_duration_ms": 91077
             }
           ],
-          "planned_observations": 5,
+          "planned_observations": 6,
+          "retry_adjusted_expected_effective_tokens": 14718,
+          "retry_adjusted_expected_total_duration_ms": 113782,
+          "sampling_complete": false,
           "scores": [
             100,
             100,
@@ -461,18 +523,31 @@
             100,
             100
           ],
-          "task_id": "WBD-002"
+          "smoothed_full_quality_probability": 0.8571,
+          "task_id": "WBD-002",
+          "total_duration_ms_all_attempts_range": [
+            90421,
+            113629
+          ]
         },
         {
           "attempts": 3,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 3,
+          "confidence": "provisional",
+          "effective_tokens_all_attempts_range": [
+            21027,
+            35722
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.4385,
             1.0
           ],
-          "capability_passes": 3,
-          "effort": "low",
           "full_quality_passes": 3,
+          "mean_effective_tokens_all_attempts": 26581,
+          "mean_total_duration_ms_all_attempts": 92834.33,
           "median_effective_tokens_full_quality": 22994,
           "median_total_duration_ms_full_quality": 89690,
           "median_worker_duration_ms_full_quality": 40838,
@@ -501,38 +576,45 @@
             }
           ],
           "planned_observations": 3,
+          "retry_adjusted_expected_effective_tokens": 33226,
+          "retry_adjusted_expected_total_duration_ms": 116043,
+          "sampling_complete": true,
           "scores": [
             100,
             100,
             100
           ],
-          "task_id": "WBD-002"
+          "smoothed_full_quality_probability": 0.8,
+          "task_id": "WBD-002",
+          "total_duration_ms_all_attempts_range": [
+            83225,
+            105588
+          ]
         }
       ],
       "task_id": "WBD-002"
     },
     {
-      "reliability_qualified_pareto": [
-        {
-          "attempts": 5,
-          "effort": "low",
-          "full_quality_passes": 5,
-          "median_effective_tokens": 10664,
-          "median_total_duration_ms": 33493,
-          "model": "gpt-5.6-sol"
-        }
-      ],
+      "reliability_qualified_pareto": [],
       "route_stats": [
         {
           "attempts": 3,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 3,
+          "confidence": "provisional",
+          "effective_tokens_all_attempts_range": [
+            11340,
+            21293
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.4385,
             1.0
           ],
-          "capability_passes": 3,
-          "effort": "low",
           "full_quality_passes": 3,
+          "mean_effective_tokens_all_attempts": 15068.33,
+          "mean_total_duration_ms_all_attempts": 48522.67,
           "median_effective_tokens_full_quality": 12572,
           "median_total_duration_ms_full_quality": 49177,
           "median_worker_duration_ms_full_quality": 43353,
@@ -561,23 +643,39 @@
             }
           ],
           "planned_observations": 3,
+          "retry_adjusted_expected_effective_tokens": 18835,
+          "retry_adjusted_expected_total_duration_ms": 60653,
+          "sampling_complete": true,
           "scores": [
             100,
             100,
             100
           ],
-          "task_id": "WBD-003"
+          "smoothed_full_quality_probability": 0.8,
+          "task_id": "WBD-003",
+          "total_duration_ms_all_attempts_range": [
+            34705,
+            61686
+          ]
         },
         {
           "attempts": 5,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 5,
+          "confidence": "incomplete",
+          "effective_tokens_all_attempts_range": [
+            8298,
+            11681
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.5655,
             1.0
           ],
-          "capability_passes": 5,
-          "effort": "low",
           "full_quality_passes": 5,
+          "mean_effective_tokens_all_attempts": 10458,
+          "mean_total_duration_ms_all_attempts": 33914,
           "median_effective_tokens_full_quality": 10664,
           "median_total_duration_ms_full_quality": 33493,
           "median_worker_duration_ms_full_quality": 27863,
@@ -619,7 +717,10 @@
               "total_duration_ms": 30324
             }
           ],
-          "planned_observations": 5,
+          "planned_observations": 6,
+          "retry_adjusted_expected_effective_tokens": 12201,
+          "retry_adjusted_expected_total_duration_ms": 39566,
+          "sampling_complete": false,
           "scores": [
             100,
             100,
@@ -627,18 +728,31 @@
             100,
             100
           ],
-          "task_id": "WBD-003"
+          "smoothed_full_quality_probability": 0.8571,
+          "task_id": "WBD-003",
+          "total_duration_ms_all_attempts_range": [
+            30324,
+            39768
+          ]
         },
         {
           "attempts": 5,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 5,
+          "confidence": "incomplete",
+          "effective_tokens_all_attempts_range": [
+            10705,
+            36777
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.5655,
             1.0
           ],
-          "capability_passes": 5,
-          "effort": "low",
           "full_quality_passes": 5,
+          "mean_effective_tokens_all_attempts": 17518.4,
+          "mean_total_duration_ms_all_attempts": 32859.8,
           "median_effective_tokens_full_quality": 11875,
           "median_total_duration_ms_full_quality": 34685,
           "median_worker_duration_ms_full_quality": 29070,
@@ -680,7 +794,10 @@
               "total_duration_ms": 37223
             }
           ],
-          "planned_observations": 5,
+          "planned_observations": 6,
+          "retry_adjusted_expected_effective_tokens": 20438,
+          "retry_adjusted_expected_total_duration_ms": 38336,
+          "sampling_complete": false,
           "scores": [
             100,
             100,
@@ -688,7 +805,12 @@
             100,
             100
           ],
-          "task_id": "WBD-003"
+          "smoothed_full_quality_probability": 0.8571,
+          "task_id": "WBD-003",
+          "total_duration_ms_all_attempts_range": [
+            25045,
+            37223
+          ]
         }
       ],
       "task_id": "WBD-003"
@@ -697,32 +819,37 @@
       "reliability_qualified_pareto": [
         {
           "attempts": 5,
+          "confidence": "qualified",
           "effort": "low",
+          "full_quality_pass_wilson_95": [
+            0.5655,
+            1.0
+          ],
           "full_quality_passes": 5,
-          "median_effective_tokens": 18696,
-          "median_total_duration_ms": 50092,
-          "model": "gpt-5.6-luna"
-        },
-        {
-          "attempts": 5,
-          "effort": "low",
-          "full_quality_passes": 5,
-          "median_effective_tokens": 12832,
-          "median_total_duration_ms": 68144,
-          "model": "gpt-5.6-sol"
+          "model": "gpt-5.6-terra",
+          "retry_adjusted_expected_effective_tokens": 25738,
+          "retry_adjusted_expected_total_duration_ms": 69153
         }
       ],
       "route_stats": [
         {
           "attempts": 5,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 5,
+          "confidence": "incomplete",
+          "effective_tokens_all_attempts_range": [
+            9669,
+            37918
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.5655,
             1.0
           ],
-          "capability_passes": 5,
-          "effort": "low",
           "full_quality_passes": 5,
+          "mean_effective_tokens_all_attempts": 21767.6,
+          "mean_total_duration_ms_all_attempts": 51371,
           "median_effective_tokens_full_quality": 18696,
           "median_total_duration_ms_full_quality": 50092,
           "median_worker_duration_ms_full_quality": 23212,
@@ -764,7 +891,10 @@
               "total_duration_ms": 49005
             }
           ],
-          "planned_observations": 5,
+          "planned_observations": 6,
+          "retry_adjusted_expected_effective_tokens": 25396,
+          "retry_adjusted_expected_total_duration_ms": 59933,
+          "sampling_complete": false,
           "scores": [
             100,
             100,
@@ -772,18 +902,31 @@
             100,
             100
           ],
-          "task_id": "WBD-004"
+          "smoothed_full_quality_probability": 0.8571,
+          "task_id": "WBD-004",
+          "total_duration_ms_all_attempts_range": [
+            46892,
+            55609
+          ]
         },
         {
           "attempts": 5,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 5,
+          "confidence": "incomplete",
+          "effective_tokens_all_attempts_range": [
+            11595,
+            35878
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.5655,
             1.0
           ],
-          "capability_passes": 5,
-          "effort": "low",
           "full_quality_passes": 5,
+          "mean_effective_tokens_all_attempts": 20023.8,
+          "mean_total_duration_ms_all_attempts": 65533.4,
           "median_effective_tokens_full_quality": 12832,
           "median_total_duration_ms_full_quality": 68144,
           "median_worker_duration_ms_full_quality": 42093,
@@ -825,7 +968,10 @@
               "total_duration_ms": 84293
             }
           ],
-          "planned_observations": 5,
+          "planned_observations": 6,
+          "retry_adjusted_expected_effective_tokens": 23361,
+          "retry_adjusted_expected_total_duration_ms": 76456,
+          "sampling_complete": false,
           "scores": [
             100,
             100,
@@ -833,18 +979,31 @@
             100,
             100
           ],
-          "task_id": "WBD-004"
+          "smoothed_full_quality_probability": 0.8571,
+          "task_id": "WBD-004",
+          "total_duration_ms_all_attempts_range": [
+            52481,
+            84293
+          ]
         },
         {
           "attempts": 5,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 5,
+          "confidence": "qualified",
+          "effective_tokens_all_attempts_range": [
+            15140,
+            27942
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.5655,
             1.0
           ],
-          "capability_passes": 5,
-          "effort": "low",
           "full_quality_passes": 5,
+          "mean_effective_tokens_all_attempts": 22061,
+          "mean_total_duration_ms_all_attempts": 59274.4,
           "median_effective_tokens_full_quality": 23336,
           "median_total_duration_ms_full_quality": 61400,
           "median_worker_duration_ms_full_quality": 34174,
@@ -887,6 +1046,9 @@
             }
           ],
           "planned_observations": 5,
+          "retry_adjusted_expected_effective_tokens": 25738,
+          "retry_adjusted_expected_total_duration_ms": 69153,
+          "sampling_complete": true,
           "scores": [
             100,
             100,
@@ -894,33 +1056,37 @@
             100,
             100
           ],
-          "task_id": "WBD-004"
+          "smoothed_full_quality_probability": 0.8571,
+          "task_id": "WBD-004",
+          "total_duration_ms_all_attempts_range": [
+            49081,
+            66032
+          ]
         }
       ],
       "task_id": "WBD-004"
     },
     {
-      "reliability_qualified_pareto": [
-        {
-          "attempts": 5,
-          "effort": "high",
-          "full_quality_passes": 5,
-          "median_effective_tokens": 34402,
-          "median_total_duration_ms": 195608,
-          "model": "gpt-5.6-sol"
-        }
-      ],
+      "reliability_qualified_pareto": [],
       "route_stats": [
         {
           "attempts": 3,
           "capability_pass_rate": 0.3333,
-          "capability_pass_wilson_95": [
+          "capability_passes": 1,
+          "confidence": "insufficient",
+          "effective_tokens_all_attempts_range": [
+            23211,
+            37947
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 0.3333,
+          "full_quality_pass_wilson_95": [
             0.0615,
             0.7923
           ],
-          "capability_passes": 1,
-          "effort": "low",
           "full_quality_passes": 1,
+          "mean_effective_tokens_all_attempts": 30236.33,
+          "mean_total_duration_ms_all_attempts": 120895.67,
           "median_effective_tokens_full_quality": 29551,
           "median_total_duration_ms_full_quality": 110069,
           "median_worker_duration_ms_full_quality": 43253,
@@ -949,23 +1115,39 @@
             }
           ],
           "planned_observations": 3,
+          "retry_adjusted_expected_effective_tokens": 75591,
+          "retry_adjusted_expected_total_duration_ms": 302239,
+          "sampling_complete": true,
           "scores": [
             100,
             82,
             91
           ],
-          "task_id": "WBD-005"
+          "smoothed_full_quality_probability": 0.4,
+          "task_id": "WBD-005",
+          "total_duration_ms_all_attempts_range": [
+            110069,
+            137135
+          ]
         },
         {
           "attempts": 5,
           "capability_pass_rate": 1.0,
-          "capability_pass_wilson_95": [
+          "capability_passes": 5,
+          "confidence": "incomplete",
+          "effective_tokens_all_attempts_range": [
+            27618,
+            48853
+          ],
+          "effort": "high",
+          "full_quality_pass_rate": 1.0,
+          "full_quality_pass_wilson_95": [
             0.5655,
             1.0
           ],
-          "capability_passes": 5,
-          "effort": "high",
           "full_quality_passes": 5,
+          "mean_effective_tokens_all_attempts": 35718.8,
+          "mean_total_duration_ms_all_attempts": 209229.2,
           "median_effective_tokens_full_quality": 34402,
           "median_total_duration_ms_full_quality": 195608,
           "median_worker_duration_ms_full_quality": 128809,
@@ -1007,7 +1189,10 @@
               "total_duration_ms": 181890
             }
           ],
-          "planned_observations": 5,
+          "planned_observations": 6,
+          "retry_adjusted_expected_effective_tokens": 41672,
+          "retry_adjusted_expected_total_duration_ms": 244101,
+          "sampling_complete": false,
           "scores": [
             100,
             100,
@@ -1015,18 +1200,31 @@
             100,
             100
           ],
-          "task_id": "WBD-005"
+          "smoothed_full_quality_probability": 0.8571,
+          "task_id": "WBD-005",
+          "total_duration_ms_all_attempts_range": [
+            181890,
+            239242
+          ]
         },
         {
           "attempts": 6,
           "capability_pass_rate": 0.6667,
-          "capability_pass_wilson_95": [
+          "capability_passes": 4,
+          "confidence": "insufficient",
+          "effective_tokens_all_attempts_range": [
+            18782,
+            40548
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 0.6667,
+          "full_quality_pass_wilson_95": [
             0.3,
             0.9032
           ],
-          "capability_passes": 4,
-          "effort": "low",
           "full_quality_passes": 4,
+          "mean_effective_tokens_all_attempts": 24336.17,
+          "mean_total_duration_ms_all_attempts": 141032.5,
           "median_effective_tokens_full_quality": 20229,
           "median_total_duration_ms_full_quality": 147208.5,
           "median_worker_duration_ms_full_quality": 80105.5,
@@ -1076,6 +1274,9 @@
             }
           ],
           "planned_observations": 6,
+          "retry_adjusted_expected_effective_tokens": 38938,
+          "retry_adjusted_expected_total_duration_ms": 225652,
+          "sampling_complete": true,
           "scores": [
             100,
             100,
@@ -1084,18 +1285,31 @@
             91,
             100
           ],
-          "task_id": "WBD-005"
+          "smoothed_full_quality_probability": 0.625,
+          "task_id": "WBD-005",
+          "total_duration_ms_all_attempts_range": [
+            124743,
+            171420
+          ]
         },
         {
           "attempts": 6,
           "capability_pass_rate": 0.8333,
-          "capability_pass_wilson_95": [
+          "capability_passes": 5,
+          "confidence": "provisional",
+          "effective_tokens_all_attempts_range": [
+            31473,
+            42703
+          ],
+          "effort": "medium",
+          "full_quality_pass_rate": 0.8333,
+          "full_quality_pass_wilson_95": [
             0.4365,
             0.9699
           ],
-          "capability_passes": 5,
-          "effort": "medium",
           "full_quality_passes": 5,
+          "mean_effective_tokens_all_attempts": 37316.17,
+          "mean_total_duration_ms_all_attempts": 171664.67,
           "median_effective_tokens_full_quality": 36794,
           "median_total_duration_ms_full_quality": 164036,
           "median_worker_duration_ms_full_quality": 97160,
@@ -1145,6 +1359,9 @@
             }
           ],
           "planned_observations": 6,
+          "retry_adjusted_expected_effective_tokens": 49755,
+          "retry_adjusted_expected_total_duration_ms": 228886,
+          "sampling_complete": true,
           "scores": [
             100,
             100,
@@ -1153,18 +1370,31 @@
             100,
             87
           ],
-          "task_id": "WBD-005"
+          "smoothed_full_quality_probability": 0.75,
+          "task_id": "WBD-005",
+          "total_duration_ms_all_attempts_range": [
+            153047,
+            210730
+          ]
         },
         {
           "attempts": 3,
           "capability_pass_rate": 0.3333,
-          "capability_pass_wilson_95": [
+          "capability_passes": 1,
+          "confidence": "insufficient",
+          "effective_tokens_all_attempts_range": [
+            24022,
+            49302
+          ],
+          "effort": "low",
+          "full_quality_pass_rate": 0.3333,
+          "full_quality_pass_wilson_95": [
             0.0615,
             0.7923
           ],
-          "capability_passes": 1,
-          "effort": "low",
           "full_quality_passes": 1,
+          "mean_effective_tokens_all_attempts": 38207.67,
+          "mean_total_duration_ms_all_attempts": 165580.67,
           "median_effective_tokens_full_quality": 24022,
           "median_total_duration_ms_full_quality": 123509,
           "median_worker_duration_ms_full_quality": 56738,
@@ -1193,12 +1423,20 @@
             }
           ],
           "planned_observations": 3,
+          "retry_adjusted_expected_effective_tokens": 95519,
+          "retry_adjusted_expected_total_duration_ms": 413952,
+          "sampling_complete": true,
           "scores": [
             100,
             91,
             76
           ],
-          "task_id": "WBD-005"
+          "smoothed_full_quality_probability": 0.4,
+          "task_id": "WBD-005",
+          "total_duration_ms_all_attempts_range": [
+            123509,
+            248959
+          ]
         }
       ],
       "task_id": "WBD-005"
@@ -1209,6 +1447,7 @@
     "monetary_cost_usd": null,
     "repeat_capability_passes": 53,
     "repeat_effective_tokens": 1325228,
+    "repeat_full_quality_passes": 53,
     "repeat_runs": 60,
     "repeat_total_duration_ms": 5694079,
     "repeat_worker_duration_ms": 3437620

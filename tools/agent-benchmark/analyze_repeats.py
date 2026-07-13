@@ -42,6 +42,14 @@ def rounded_median(values: Iterable[int]) -> int | float | None:
     return int(value) if float(value).is_integer() else round(float(value), 2)
 
 
+def rounded_mean(values: Iterable[int]) -> int | float | None:
+    items = list(values)
+    if not items:
+        return None
+    value = statistics.mean(items)
+    return int(value) if float(value).is_integer() else round(float(value), 2)
+
+
 def score(row: dict[str, Any]) -> int:
     return int(row["grade"]["score"])
 
@@ -147,16 +155,37 @@ def route_stat(
     task, model, effort = key
     passing = [row for row in rows if row.get("capability_pass") is True]
     quality = [row for row in rows if full_quality(row)]
+    attempts = len(rows)
+    successes = len(quality)
+    sampling_complete = attempts == planned_observations
+    full_quality_interval = wilson_interval(successes, attempts)
+    smoothed_probability = (successes + 1) / (attempts + 2)
+    mean_total = float(statistics.mean(int(row["total_duration_ms"]) for row in rows))
+    mean_tokens = float(statistics.mean(int(row["effective_tokens"]) for row in rows))
+    if not sampling_complete:
+        confidence = "incomplete"
+    elif attempts >= 6 and full_quality_interval[0] >= 0.60:
+        confidence = "high-confidence"
+    elif attempts >= 5 and full_quality_interval[0] >= 0.55:
+        confidence = "qualified"
+    elif attempts >= 3 and full_quality_interval[0] >= 0.40:
+        confidence = "provisional"
+    else:
+        confidence = "insufficient"
     return {
         "task_id": task,
         "model": model,
         "effort": effort,
-        "attempts": len(rows),
+        "attempts": attempts,
         "planned_observations": planned_observations,
+        "sampling_complete": sampling_complete,
         "capability_passes": len(passing),
-        "capability_pass_rate": round(len(passing) / len(rows), 4),
-        "capability_pass_wilson_95": wilson_interval(len(passing), len(rows)),
-        "full_quality_passes": len(quality),
+        "capability_pass_rate": round(len(passing) / attempts, 4),
+        "full_quality_passes": successes,
+        "full_quality_pass_rate": round(successes / attempts, 4),
+        "full_quality_pass_wilson_95": full_quality_interval,
+        "smoothed_full_quality_probability": round(smoothed_probability, 4),
+        "confidence": confidence,
         "scores": [score(row) for row in rows],
         "median_total_duration_ms_full_quality": rounded_median(
             int(row["total_duration_ms"]) for row in quality
@@ -167,6 +196,22 @@ def route_stat(
         "median_effective_tokens_full_quality": rounded_median(
             int(row["effective_tokens"]) for row in quality
         ),
+        "mean_total_duration_ms_all_attempts": rounded_mean(
+            int(row["total_duration_ms"]) for row in rows
+        ),
+        "mean_effective_tokens_all_attempts": rounded_mean(
+            int(row["effective_tokens"]) for row in rows
+        ),
+        "total_duration_ms_all_attempts_range": [
+            min(int(row["total_duration_ms"]) for row in rows),
+            max(int(row["total_duration_ms"]) for row in rows),
+        ],
+        "effective_tokens_all_attempts_range": [
+            min(int(row["effective_tokens"]) for row in rows),
+            max(int(row["effective_tokens"]) for row in rows),
+        ],
+        "retry_adjusted_expected_total_duration_ms": round(mean_total / smoothed_probability),
+        "retry_adjusted_expected_effective_tokens": round(mean_tokens / smoothed_probability),
         "observations": [
             {
                 "run_id": row["run_id"],
@@ -181,37 +226,47 @@ def route_stat(
 
 
 def pareto(stats: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    confidence_order = {"qualified": 1, "high-confidence": 2}
+    qualified = [item for item in stats if item["confidence"] in confidence_order]
+    if not qualified:
+        return []
+    best_confidence = max(confidence_order[item["confidence"]] for item in qualified)
     qualified = [
-        item for item in stats
-        if item["attempts"] >= 3 and item["full_quality_passes"] == item["attempts"]
+        item for item in qualified if confidence_order[item["confidence"]] == best_confidence
     ]
     frontier = []
     for item in qualified:
-        duration = int(item["median_total_duration_ms_full_quality"])
-        tokens = int(item["median_effective_tokens_full_quality"])
+        duration = int(item["retry_adjusted_expected_total_duration_ms"])
+        tokens = int(item["retry_adjusted_expected_effective_tokens"])
         dominated = any(
             other is not item
-            and int(other["median_total_duration_ms_full_quality"]) <= duration
-            and int(other["median_effective_tokens_full_quality"]) <= tokens
+            and int(other["retry_adjusted_expected_total_duration_ms"]) <= duration
+            and int(other["retry_adjusted_expected_effective_tokens"]) <= tokens
             and (
-                int(other["median_total_duration_ms_full_quality"]) < duration
-                or int(other["median_effective_tokens_full_quality"]) < tokens
+                int(other["retry_adjusted_expected_total_duration_ms"]) < duration
+                or int(other["retry_adjusted_expected_effective_tokens"]) < tokens
             )
             for other in qualified
         )
         if not dominated:
             frontier.append(item)
     frontier.sort(key=lambda item: (
-        int(item["median_total_duration_ms_full_quality"]),
-        int(item["median_effective_tokens_full_quality"]),
+        int(item["retry_adjusted_expected_total_duration_ms"]),
+        int(item["retry_adjusted_expected_effective_tokens"]),
     ))
     return [{
         "model": item["model"],
         "effort": item["effort"],
         "attempts": item["attempts"],
         "full_quality_passes": item["full_quality_passes"],
-        "median_total_duration_ms": item["median_total_duration_ms_full_quality"],
-        "median_effective_tokens": item["median_effective_tokens_full_quality"],
+        "full_quality_pass_wilson_95": item["full_quality_pass_wilson_95"],
+        "confidence": item["confidence"],
+        "retry_adjusted_expected_total_duration_ms": item[
+            "retry_adjusted_expected_total_duration_ms"
+        ],
+        "retry_adjusted_expected_effective_tokens": item[
+            "retry_adjusted_expected_effective_tokens"
+        ],
     } for item in frontier]
 
 
@@ -252,6 +307,7 @@ def analyze(
         "totals": {
             "repeat_runs": len(repeat_rows),
             "repeat_capability_passes": sum(row.get("capability_pass") is True for row in repeat_rows),
+            "repeat_full_quality_passes": sum(full_quality(row) for row in repeat_rows),
             "repeat_total_duration_ms": sum(int(row["total_duration_ms"]) for row in repeat_rows),
             "repeat_worker_duration_ms": sum(int(row["execution"]["duration_ms"]) for row in repeat_rows),
             "repeat_effective_tokens": sum(int(row["effective_tokens"]) for row in repeat_rows),
@@ -259,9 +315,21 @@ def analyze(
             "monetary_cost_note": "No frozen price table or billed-cost field is available; effective tokens are the cost proxy.",
         },
         "qualification_rule": (
-            "A route enters the reliability-qualified Pareto set only after at least three observations "
-            "and 100% full-quality passes; medians use full-quality observations only."
+            "Confidence is assigned only after planned sampling completes. High-confidence requires "
+            "n>=6 and a full-quality Wilson-95 lower bound >=0.60; qualified requires n>=5 and "
+            "a lower bound >=0.55; provisional requires n>=3 and a lower bound >=0.40. The Pareto "
+            "set uses the highest available qualified tier and all-attempt retry-adjusted time/tokens."
         ),
+        "retry_adjustment": (
+            "The smoothed success probability is (full_quality_passes+1)/(attempts+2). "
+            "Expected time or tokens per full-quality success is the all-attempt mean divided by "
+            "that probability. This is a planning estimate, not a monetary price or guarantee."
+        ),
+        "selection_cautions": [
+            "Wilson intervals are descriptive and are not adjusted for adaptive route selection.",
+            "Observed ranges report latency/token dispersion; the small samples do not support stable tail estimates.",
+            "Effective tokens exclude cached input and are a proxy, not billed monetary cost.",
+        ],
         "tasks": tasks,
     }
 
@@ -271,11 +339,13 @@ def markdown(report: dict[str, Any]) -> str:
     lines = [
         f"# GPT-5.6 repeat summary — {report['run_label']}", "",
         "## Integrity and progress", "",
-        f"- Repeat rows: {totals['repeat_runs']}; capability passes: "
-        f"{totals['repeat_capability_passes']}/{totals['repeat_runs']}.",
+        f"- Repeat rows: {totals['repeat_runs']}; full-quality passes: "
+        f"{totals['repeat_full_quality_passes']}/{totals['repeat_runs']} "
+        f"(capability passes: {totals['repeat_capability_passes']}).",
         f"- Summed repeat time: {totals['repeat_total_duration_ms']:,} ms; "
         f"effective tokens: {totals['repeat_effective_tokens']:,}.",
         f"- {report['qualification_rule']}",
+        f"- {report['retry_adjustment']}",
     ]
     for stage in report["integrity"]["stage_progress"]:
         lines.append(
@@ -284,41 +354,44 @@ def markdown(report: dict[str, Any]) -> str:
         )
     lines.extend([
         "", "## Reliability-qualified Pareto routes", "",
-        "| Task | Route | Full-quality passes | Median total ms | Median effective tokens |",
-        "|---|---|---:|---:|---:|",
+        "| Task | Route | Confidence | Full-quality | Wilson lower | Expected total ms/success | Expected tokens/success |",
+        "|---|---|---|---:|---:|---:|---:|",
     ])
     for task in report["tasks"]:
         if not task["reliability_qualified_pareto"]:
-            lines.append(f"| {task['task_id']} | none yet | — | — | — |")
+            lines.append(f"| {task['task_id']} | none yet | — | — | — | — | — |")
         for item in task["reliability_qualified_pareto"]:
             lines.append(
                 f"| {task['task_id']} | {item['model']}/{item['effort']} | "
+                f"{item['confidence']} | "
                 f"{item['full_quality_passes']}/{item['attempts']} | "
-                f"{item['median_total_duration_ms']:,} | {item['median_effective_tokens']:,} |"
+                f"{item['full_quality_pass_wilson_95'][0]:.1%} | "
+                f"{item['retry_adjusted_expected_total_duration_ms']:,} | "
+                f"{item['retry_adjusted_expected_effective_tokens']:,} |"
             )
     lines.extend([
         "", "## All planned route evidence", "",
-        "| Task | Route | Complete | Passes | Pass rate | Wilson 95% | Median total ms | Median tokens |",
-        "|---|---|---:|---:|---:|---:|---:|---:|",
+        "| Task | Route | Complete | Full-quality | Wilson 95% | Confidence | Expected total ms/success | Expected tokens/success |",
+        "|---|---|---:|---:|---:|---|---:|---:|",
     ])
     for task in report["tasks"]:
         for item in task["route_stats"]:
-            interval = item["capability_pass_wilson_95"]
-            total = item["median_total_duration_ms_full_quality"]
-            tokens = item["median_effective_tokens_full_quality"]
+            interval = item["full_quality_pass_wilson_95"]
             lines.append(
                 f"| {task['task_id']} | {item['model']}/{item['effort']} | "
                 f"{item['attempts']}/{item['planned_observations']} | "
-                f"{item['capability_passes']}/{item['attempts']} | "
-                f"{item['capability_pass_rate']:.1%} | {interval[0]:.1%}–{interval[1]:.1%} | "
-                f"{total if total is not None else '—'} | {tokens if tokens is not None else '—'} |"
+                f"{item['full_quality_passes']}/{item['attempts']} | "
+                f"{interval[0]:.1%}–{interval[1]:.1%} | {item['confidence']} | "
+                f"{item['retry_adjusted_expected_total_duration_ms']:,} | "
+                f"{item['retry_adjusted_expected_effective_tokens']:,} |"
             )
     lines.extend([
         "", "## Interpretation", "",
-        "- Reliability is a gate, then median end-to-end time and effective tokens define the Pareto set.",
-        "- Three observations are still a small sample; Wilson intervals are reported to keep uncertainty visible.",
-        "- Monetary cost is unknown because the round did not freeze prices.", "",
+        "- Reliability confidence is a gate; retry-adjusted expected end-to-end time and effective tokens then define the Pareto set.",
+        "- Full-quality medians and all-attempt ranges remain available in the JSON report for direct observations and variability.",
     ])
+    lines.extend(f"- {caution}" for caution in report["selection_cautions"])
+    lines.append("")
     return "\n".join(lines)
 
 

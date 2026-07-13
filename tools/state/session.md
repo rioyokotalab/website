@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T02:37+0900
+updated: 2026-07-14T02:42+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -158,6 +158,24 @@ status: in-progress
   completed planned sampling, use full-quality Wilson bounds consistently,
   add smoothed success probability and all-attempt expected time/tokens per
   success, and do not permanently exclude a route after one failure.
+- Repeat analyzer corrected and deterministic regeneration passes. Confidence
+  now waits for planned sampling and uses full-quality Wilson bounds:
+  high-confidence is `n>=6`/lower `>=0.60`, qualified is `n>=5`/lower `>=0.55`,
+  provisional is `n>=3`/lower `>=0.40`. Route estimates use Beta(1,1)-smoothed
+  success probability and all-attempt mean time/tokens per expected success;
+  observed medians and ranges remain available. This keeps failed-attempt cost
+  and uncertainty visible. Intervals are descriptive, not selection-adjusted.
+- Corrected expected-cost frontiers: WBD-001 Terra/low dominates its sampled
+  alternatives; WBD-002 Luna/low is runtime versus Sol/low tokens; WBD-003
+  Terra/low is runtime versus Sol/low tokens; WBD-004 Luna/low is runtime versus
+  Sol/low tokens; WBD-005 Sol/high is the sole qualified route. Do not add
+  WBD-001 Luna repeats from the median-only signal.
+- Adaptive plan revision 5 adds a single sixth observation for those eight
+  selected primary/alternate routes. A 6/6 result crosses the predeclared
+  high-confidence threshold; any failure demotes the route and is therefore
+  high-information. Revision-5 plan SHA-256 is
+  `2ea10d37cd7dde0a3e59d3d30969591e58179d9f3e2cd7c7e328745bed2bd635`.
+  Recompute before allocating Stage 5.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
