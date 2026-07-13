@@ -26,7 +26,10 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   three more WBD-005 Sol/medium, two WBD-005 Sol/high fallback screens, two
   repeats for each WBD-004 low route and both WBD-002 Pareto routes, and two
   more WBD-001 Terra/low confirmations. Recompute after each substage and stop
-  allocating to a route once its routing value is resolved.
+  allocating to a route once its routing value is resolved. WBD-005
+  Sol/medium finished 5/6; its last run failed the lightbox Escape-close P2P
+  assertion. Sol/high passed its two-screen stage and is 3/3, triggering two
+  predeclared confirmation repeats before the shorter frontier stages.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that

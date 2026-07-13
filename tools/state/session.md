@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T01:57+0900
+updated: 2026-07-14T02:13+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -128,6 +128,16 @@ status: in-progress
   them; WBD-003 is resolved and receives no further allocation. Revision-3
   plan SHA-256 is
   `dc5fe7a451405e9c5d05894762676f6a3285814f03bfaa41d5bf22968f6846b0`.
+- WBD-005 Sol/medium confidence stage complete at 5/6 full-quality. Repeats 4
+  and 5 passed; repeat 6 scored 87 after the dialog remained visible on Escape
+  in the lightbox accessibility P2P suite. This is a substantive capability
+  failure, not infrastructure. Medium is stronger than low's 4/6 but does not
+  reach the intended high-confidence gate.
+- WBD-005 Sol/high screen passed both repeats and is 3/3 overall. Apply the
+  predeclared adaptive rule: revision 4 adds high repeats 4--5, then stop this
+  arm and recompute. Revision-4 plan SHA-256 is
+  `497f0bb4a742285880e66a4c66db563cd5d9d5996876ca62c6908550b724efe5`.
+  Continue with WBD-001/002/004 stages afterward.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
