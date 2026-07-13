@@ -1,11 +1,11 @@
 driver: codex
-updated: 2026-07-13T09:28+0900
+updated: 2026-07-13T09:31+0900
 task: none
 status: idle
 
 ## Now
 - Goal: complete, including post-change full-suite output verification.
-- Last done: T-128 adds exact task-definition, grader, and runner SHA-256 fingerprints to future results/metrics; strict comparisons reject unversioned task/grader drift and expose runner changes.
+- Last done: T-129 deduplicates compact failure responses by retaining finding count and diagnostic failures while omitting repeated `changed:` entries already listed in changed_files.
 - Next: none.
 
 ## Working set

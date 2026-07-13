@@ -351,7 +351,9 @@ def compact_result(result: dict[str, Any]) -> dict[str, Any]:
         "artifact": f"tools/out/agent-benchmark/{result.get('run_id')}/result.json",
     }
     if not result.get("capability_pass"):
-        payload["findings"] = grade.get("findings") or []
+        findings = grade.get("findings") or []
+        payload["findings_count"] = len(findings)
+        payload["diagnostic_findings"] = [item for item in findings if not str(item).startswith("changed:")]
     return payload
 
 

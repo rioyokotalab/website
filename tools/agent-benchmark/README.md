@@ -14,6 +14,8 @@ per-run rows are appended to `results.jsonl`.
 `run` prints a compact decision summary by default; the complete result remains
 in its artifact directory. Use `--verbose-result` only when a downstream caller
 needs the full inline grader tails rather than following the artifact pointer.
+Failure summaries deduplicate `changed:` findings already represented by
+`changed_files` while preserving their count and all diagnostic findings.
 
 Use `--handoff-mode runner-lite` for short instrumented trials: the runner
 captures the trajectory, patch, grade, metrics, and final message while the
