@@ -58,7 +58,9 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
   window for stepwise qualification attempts on Sol/medium and Sol/high; each
   started 5/6 and needs three consecutive passes to reach 8/9 qualified
   evidence. Both passed repeat 7 and are 6/7; run repeat 8 for both, advancing
-  only passing arms to the final repeat 9.
+  only passing arms to the final repeat 9. Medium failed repeat 8 on
+  `css-zero-motion` and stops at 6/8. High passed repeat 8 and is 7/8; run its
+  single final repeat 9, then stop all benchmark execution.
 - **T-152 — Install the evidence-backed dispatch policy:** write a versioned
   per-task/capability model-effort routing policy with fallback and confidence
   fields, reference it from the Codex delegation workflow, and validate that

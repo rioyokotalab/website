@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-14T04:02+0900
+updated: 2026-07-14T04:19+0900
 task: T-151 Allocate adaptive matched repeats
 status: in-progress
 
@@ -240,6 +240,12 @@ status: in-progress
   only passing arms to repeat 9, then stop benchmark allocation. Revision-10
   plan SHA-256 is
   `5185d3d08f6fd0468f43d3a8c296e8786fb6e52755db0b68d4462add2f994d62`.
+- WBD-005 medium repeat 8 failed `css-zero-motion` and stops at 6/8. High
+  repeat 8 passed at 218,487 ms/40,007 effective tokens and is 7/8. Adaptive
+  plan revision 11 adds exactly high repeat 9; it is the final benchmark cell
+  of the campaign and determines whether high reaches 8/9 qualification.
+  Revision-11 plan SHA-256 is
+  `266d2d782a422f43e76056b6d69eea0b3d57623fb8fbfce12fe85ce2632f0137`.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
