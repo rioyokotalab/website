@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-13T21:49+0900
+updated: 2026-07-13T22:40+0900
 task: T-147 Run all documented model/effort/task cells
 status: in-progress
 
@@ -19,8 +19,16 @@ status: in-progress
   frontier is Terra/medium fastest at 39,270 ms total and 10,671 effective
   tokens versus Luna/low lowest-token at 43,941 ms and 8,117 tokens. All other
   arms are dominated on score/runtime/tokens; both leaders require repeats.
-- Integrity checkpoint: 33 runs/artifacts/metric pointers, no errors; metrics
-  contain 33 v2 rows. T-147 is 30/75. Next frozen block: WBD-005 documented.
+- WBD-005 documented block complete: 10/15 capability passes. Provisional
+  passing Pareto frontier is Luna/low fastest at 110,069 ms and 29,551
+  effective tokens, Terra/low balanced at 123,509 ms and 24,022 tokens, and
+  Sol/low lowest-token at 140,525 ms and 18,826 tokens. Terra medium/high/max
+  and Luna/medium failed `js-reduced-zero`; Terra/xhigh passed all static
+  assertions but failed the lightbox focus-return P2P assertion. These are
+  genuine capability results, not infrastructure failures, and remain recorded.
+- Integrity checkpoint: 48 runs, artifact directories, and metric pointers,
+  no errors; metrics contain 48 v2 rows and all five benchmark self-audits
+  pass. T-147 is 45/75. Next frozen block: WBD-002 documented.
 
 ## Working set
 - `tools/agent-benchmark/gpt56-full-20260713.freeze.json`
