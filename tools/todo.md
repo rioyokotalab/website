@@ -1,20 +1,29 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-166.
+`tools/state/session.md`. Next free id: T-168.
 
 ## Active
 
-- **T-165 — Validate, publish, and verify:** run EN/JP/CRLF/CV/exporter/schema,
-  standards, browser, security, deploy-preview, Git, live-page, and remote-
-  commit gates; publish only the reviewed public changes and close the ledger.
+None.
 
 ## Blocked / awaiting user
 
-None.
+- **T-166 — Review and import the ResearchMap JSONL:** manually inspect and
+  upload the 318-operation `tools/out/researchmap-import.jsonl` through the
+  user-controlled ResearchMap import UI. Confirm successful validation/import
+  before a later driver records managed IDs; no automated login is authorized.
+- **T-167 — Resolve held metadata cases:** in a new primary-source lookup batch,
+  resolve the three quarantined citation conflicts and manually classify the
+  29 ambiguous/cross-type matches without weakening additive safety guards.
 
 ## Recently completed
 
+- **T-165 — Validate, publish, and verify:** passed offline/schema/security,
+  38/38 browser, deploy-preview, live-byte, and exact-remote-commit gates;
+  published both Achievements pages and denied public access to the preserved
+  deployment sentinel. The live pages each contain 309 entries and 30 exact
+  arXiv/BibTeX rows; final GitHub commit is `65dac52`.
 - **T-164 — Generate and audit ResearchMap import:** generated the 318-line
   `tools/out/researchmap-import.jsonl` (19 inserts, 299 additive updates, zero
   deletes), held 29 ambiguous/cross-type matches out, and independently
@@ -102,10 +111,4 @@ None.
   three models accept `ultra`; paused before T-147 at the user's request.
 - **T-150 — Expand the GPT-5.6 matrix:** replaced the finalist gate with all
   five WBD tasks across three models and six efforts (90 cells total).
-- **T-145 — Plan GPT-5.6 benchmark matrix:** initial gated design; superseded
-  by T-150 before paid work began.
-- **T-141--T-144 — Remove obsolete comparison machinery and normalize:**
-  removed the inactive project integration and retired comparison state,
-  retained the reusable regression suite, and compacted current tooling state.
-
 Historical Git commits remain intact; owner-scope settings were not changed.
