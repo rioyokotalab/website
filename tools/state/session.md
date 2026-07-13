@@ -1,34 +1,32 @@
 driver: codex
-updated: 2026-07-13T17:15+0900
-task: idle
-status: idle
+updated: 2026-07-13T17:39+0900
+task: T-142 Remove Claude project and runtime configuration
+status: in-progress
 
 ## Now
-- T-140 complete: reconstructed T-138/T-139 across `7140f44`, reconciled all
-  five Fable/max runs and totals, independently reviewed artifacts/metrics,
-  and reran all proportional closeout gates.
-- Confirmed `7140f44` was already pushed; canonical T-139 outcome remains 1/5
-  with current-harness unchanged. WBD-005's request reached the generator, but
-  no executor/grader ran.
-- Removed the redundant post-commit site-editor metrics residue after exact
-  preservation in `tools/out/t140-independent-artifact-audit.md`; retained the
-  valid standard T-139 driver row. No benchmark result row was rewritten.
-- Push-only T-140 bookkeeping closeout prepared after a clean required rebase;
-  no public website change, publish, or deploy.
+- T-141 complete: current-tree inventory found 47 tracked keyword-hit files
+  (820,326 bytes) plus `.mcp.json`; exact T-142--T-144 groups recorded. The
+  delegated classifier stalled after discovery and was interrupted; root
+  reproduced and completed the classification.
+- Immediate cleanup removed 17 completed top-level benchmark reports/plans
+  (133,343 bytes). Todo/facts/decisions were compacted from roughly 16 KB to
+  roughly 3 KB. Pointer-backed raw artifact trees remain until T-143.
+- Next: delete active project/runtime integration and obsolete MCP/dispatch
+  machinery, then rewrite the Codex-facing config/driver instructions so the
+  intermediate tree remains operable.
 
 ## Working set
-- `tools/out/t140-independent-artifact-audit.md`
-- `tools/out/driver-report-20260713-1714.md`
-- `tools/todo.md`, `tools/state/session.md`, `tools/task-metrics.jsonl`,
-  `tools/codex-log.md`
-- Verified: task-metrics selftest/validate; Claude selftest/artifacts; Codex
-  capsule/artifact audits; Python compile; Markdown sizes; diff checks; Git
-  branch/ref/status and required pull-rebase.
+- `tools/out/t141-claude-removal-inventory.md`
+- `tools/out/t141-benchmark-cleanup-inventory.md`
+- `.claude/`, `CLAUDE.md`, `.mcp.json`
+- `AGENTS.md`, `.gitignore`, root/shared configuration playbooks
+- MCP/worker-registry generation and dispatch files named in the inventory
+- Verify: current-tree path/reference scan, Git diff/status, Markdown budgets,
+  Codex delegation/config documentation consistency.
 
 ## Open questions
-- Non-blocking future work: make `tools/task-metrics.py` preserve generator
-  failure provenance and define a transparent correction policy for the four
-  already appended T-139 derived rows. No totals or decision change.
+- None blocking. Owner-scope settings and `.git` internals remain excluded;
+  Git history remains intact.
 
 ## Awaiting user
 - None.
