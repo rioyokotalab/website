@@ -15,14 +15,15 @@ None.
 
 - **T-137 — Compare Claude agentic-harness strategies:** ran the frozen
   WBD-001–005 suite across current-harness / autonomous / dynamic arms
-  (14 measured runs, 3 excluded generator-setup failures, $7.34/$54). Visible
-  WBD-001–004: 12/12 PASS at 100 across all arms. Held-out WBD-005: all
-  executed arms missed (autonomous 87, current-harness 78 on P2P
-  `standards-check.py`; dynamic unmeasured — systematic structured-output
-  generator failure). No arm passed 5/5, so no capability-gated winner and no
-  config change adopted; current-harness stays canonical. Autonomous flagged
-  as an efficiency candidate (−74% Claude-side tokens) and the dynamic
-  generator flagged with a reliability defect. Round record:
+  (15 measured runs, 3 excluded stochastic generator-setup failures,
+  $8.52/$54). Visible WBD-001–004: 12/12 PASS at 100 across all arms. Held-out
+  WBD-005: **dynamic PASS 100 — sole passer**; autonomous 87 and
+  current-harness 78 failed (P2P `standards-check.py`). Dynamic is the only arm
+  at 5/5 and clears the capability gate over current-harness; vs autonomous it
+  passes the gate but at +186% tokens. Not adopted (per-task generation
+  strategy, stochastic generator defect 3/8 calls, single screen);
+  current-harness stays canonical pending a generator-hardened confirmatory
+  phase; autonomous is the efficiency signal (−74% tokens). Round record:
   `tools/agent-benchmark/rounds/2026-07-13-claude.md`; driver report:
   `tools/out/t137-claude-benchmark.md`.
 - **T-136 — Benchmark-round cleanup and handoff:** promoted the compact round
