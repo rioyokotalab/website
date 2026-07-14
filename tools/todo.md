@@ -5,12 +5,16 @@ Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
 
 ## Active
 
-- **T-167 — Resolve held metadata cases:** rebuild the final ResearchMap live
-  dry-run from the verified offline checkpoint, confirm a zero-delete additive
-  plan with all reviewed classifications applied, and close the task if the
-  provider and full validation gates pass.
+None.
 
 ## Recently completed
+
+- **T-167 — Resolve held metadata cases:** corrected three citation conflicts,
+  classified all 29 held matches, reconciled one safely detected live candidate
+  drift, and independently audited a 251-operation additive ResearchMap plan
+  with 25 inserts, 226 updates, zero deletes, and zero unresolved ambiguities.
+  All offline/browser/live gates passed; mirrored Achievements pages were
+  published at `fd2f2d8`, while the reviewed JSONL remains a manual upload.
 
 - **T-176 — Prepare a restart-safe handoff:** audited the board, session,
   reports, metrics, website worktree, and synchronized harness repository;

@@ -37,9 +37,13 @@
   `long-running-task-ledger` for durable multi-session work. Six shared skills
   are linked into `~/.codex/skills/`, `$HOME/.agents/skills/`, and
   `~/.claude/skills/`; repository-specific instructions still layer locally.
-- **T-167 provider status (2026-07-14):** the fresh `--sync --dry-run` retry
-  again ended before retrieval when ResearchMap closed the `published_papers`
-  connection. The exporter returned 1 and wrote no import or state changes.
+- **T-167 completion (2026-07-14):** a fresh live rebuild and independent audit
+  validate 251 operations (25 inserts, 226 additive updates), zero deletes,
+  zero unresolved ambiguities, and 29 reviewed classifications. Five explicit
+  holds remain operation-free. The JSONL SHA-256 is
+  `a76493bcd32f5233d40c66d5d6a846a795c953a05f617e8c52b469ffc8f37f16`;
+  managed-ID state is unchanged. Website commit `fd2f2d8` and both deployed
+  Achievements pages were independently verified.
 - **Portable global harness (2026-07-14):** `~/harness` preserves the original
   Git history from commit `7f969317c4b597b9adaae629c05cf6723785aff2` and
   contains shared global guidance, six validated personal skills, reviewed
@@ -53,7 +57,7 @@
   interactive shells preserved other startup behavior and produced a clean
   default ephemeral probe with correct global instruction discovery. The
   separate arg0 warning came from accumulated/racing temp directories.
-- **Harness remote status (2026-07-14):** local and remote `main` both resolve
-  to `0bd31d1dc4f2ac923e276e81de5b4e3e2b7a1528`, tracking is established, and
-  divergence is zero. The successful retry used the externally configured
-  `github:rioyokotalab/harness` SSH alias and did not force-push.
+- **Harness task ownership (2026-07-14):** T-169 now lives in
+  `~/harness/TODO.md` at local commit `e76993d`; it no longer appears on this
+  repository's board. Harness `main` is intentionally one commit ahead of
+  `origin/main` because this task did not authorize a harness push.

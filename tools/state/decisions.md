@@ -55,3 +55,13 @@
   After `origin` changed to `github:rioyokotalab/harness` and the user requested
   a retry, use the configured agent socket, verify the remote is empty, push
   `main` without force, and confirm exact local/remote commit equality.
+- **2026-07-14 — Match the WCCM proceedings record exactly.** ResearchMap record
+  `published_papers:39797632` matches the 2014 WCCM row's title, date,
+  contributor order, venue, language, and proceedings type, independently
+  corroborated by the university researcher profile. Classify it as an exact
+  match while keeping the later 2017 journal article separate; retain
+  candidate-drift failure for any future live change.
+- **2026-07-14 — Move harness research ownership out of the website.** Keep
+  T-169 and future harness-specific planning in `~/harness/TODO.md`. The
+  website ledger may retain historical references but no longer owns or starts
+  that task.

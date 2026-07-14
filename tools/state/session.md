@@ -1,7 +1,7 @@
 driver: codex
-updated: 2026-07-14T14:32+0900
-task: T-167 Resolve held metadata cases
-status: in-progress
+updated: 2026-07-14T14:34+0900
+task: T-167 Resolve held metadata cases | idle
+status: idle
 
 ## Now
 - T-169 has moved to `/home/rioyokota/harness/TODO.md` and is no longer owned
@@ -22,21 +22,25 @@ status: in-progress
   The full security suite, 38 browser tests, metrics schema, metadata checks,
   normalization checks, and CRLF checks pass. Check remote state and deployment
   preview next; stop on any conflict, destructive preview, or auth failure.
+- T-167 is complete and published at `fd2f2d8`. The GitHub remote matches that
+  commit, both live Achievements pages match local bytes exactly, and the live
+  security gate passes. The reviewed import JSONL is retained for optional
+  manual ResearchMap upload; no account write or managed-ID update occurred.
 
 ## Working set
-- `/home/rioyokota/harness/TODO.md` and `/home/rioyokota/harness/README.md`
-- `/home/rioyokota/.bashrc` interactive-only system-completion guard; rollback
-  copy in the private T-174 quarantine
-- `~/.codex/AGENTS.md`, `~/.codex/rules/default.rules`,
-  `~/.codex/skills/<personal>`, `$HOME/.agents/skills/<personal>`,
-  `~/.claude/CLAUDE.md`, and `~/.claude/skills/<personal>` symlinks
-- T-167 uncommitted files listed by Git plus
-  `tools/researchmap-match-overrides.json`.
+- `/home/rioyokota/harness/TODO.md` at local commit `e76993d` (one commit ahead
+  of its remote; no harness push was requested)
+- `tools/out/researchmap-import.jsonl`
+- `tools/out/researchmap-import-audit-20260714.md`
 - `tools/out/researchmap-held-decisions-20260714.md`
+- `tools/out/driver-report-20260714-1433.md`
 
 ## Open questions
-- Five T-167 holds need human canonical-ID choices only if duplicate records
-  should later be consolidated; their current operation-free state is safe.
+- Five classified holds need human canonical-ID choices only if duplicate
+  records should later be consolidated; their current operation-free state is
+  safe.
 
 ## Awaiting user
-- None.
+- Optional: review and manually upload
+  `tools/out/researchmap-import.jsonl` in ResearchMap. Its audited SHA-256 is
+  `a76493bcd32f5233d40c66d5d6a846a795c953a05f617e8c52b469ffc8f37f16`.
