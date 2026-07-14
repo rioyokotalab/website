@@ -113,6 +113,7 @@ class SyncFixtures(unittest.TestCase):
             'update': {'type': 'published_papers', 'id': 'paper-doi'},
             'doc': {
                 'languages': ['eng'],
+                'paper_title': {'en': 'Stale title', 'ja': 'Stale title'},
             },
         })
         self.assertNotIn('identifiers', paper_update['doc'])
@@ -121,6 +122,10 @@ class SyncFixtures(unittest.TestCase):
                            if op['update']['id'] == 'book-url')
         self.assertEqual(book_update['doc'], {
             'publisher': {'en': 'Publisher', 'ja': 'Publisher'},
+            'book_title': {
+                'en': 'Different live title',
+                'ja': 'Different live title',
+            },
         })
 
         self.assertEqual(deletes, [
@@ -137,6 +142,29 @@ class SyncFixtures(unittest.TestCase):
                             for a in ambiguous))
         self.assertIn('paper-doi', refreshed['published_papers'])
         self.assertIn('managed-stale', refreshed['published_papers'])
+
+    def test_bulk_import_completes_required_title_languages(self):
+        inserted = RM.to_record(
+            '横田理央, 日本語タイトル, 研究会, 2025.',
+            'misc', {}, data_date='2025')
+        self.assertEqual(inserted['similar_merge']['paper_title'], {
+            'ja': '日本語タイトル',
+            'en': '日本語タイトル',
+        })
+
+        desired = {
+            'paper_title': {'ja': 'ローカルの別表記'},
+            'authors': {'ja': [{'name': '横田理央'}]},
+        }
+        live = {
+            'paper_title': {'ja': '公開済みタイトル'},
+            'authors': {},
+        }
+        changed = RM.changed_doc('misc', desired, live)
+        self.assertEqual(changed['paper_title'], {
+            'ja': '公開済みタイトル',
+            'en': '公開済みタイトル',
+        })
 
     def test_no_user_id_and_published_paper_date_required(self):
         inserts, updates, deletes, _refreshed, _ambiguous = RM.build_sync(
@@ -456,7 +484,9 @@ class AchievementSourceFixtures(unittest.TestCase):
 
     def test_complete_book_schema_and_isbn_equivalence(self):
         magazine = self.record_at('sub002', 1)['similar_merge']
-        self.assertEqual(magazine['book_title'], {'ja': '数学セミナー'})
+        self.assertEqual(magazine['book_title'], {
+            'ja': '数学セミナー', 'en': '数学セミナー',
+        })
         self.assertEqual(magazine['book_owner_range'], {'ja': '巨大行列とAI'})
         self.assertEqual(magazine['book_owner_role'], 'contributor')
         self.assertEqual(magazine['rep_page'], '29-33')

@@ -9,10 +9,10 @@ None.
 
 ## Blocked / awaiting user
 
-- **T-166 — Review and import the ResearchMap JSONL:** manually inspect and
-  upload the 318-operation `tools/out/researchmap-import.jsonl` through the
-  user-controlled ResearchMap import UI. Confirm successful validation/import
-  before a later driver records managed IDs; no automated login is authorized.
+- **T-166 — Repair and re-import the ResearchMap JSONL:** the uploaded error
+  CSV contained 86 required bilingual-title failures. The audited 86-operation
+  `tools/out/researchmap-import-retry-1.jsonl` is ready for manual upload; await
+  its result before recording managed IDs or removing the active evidence.
 - **T-167 — Resolve held metadata cases:** in a new primary-source lookup batch,
   resolve the three quarantined citation conflicts and manually classify the
   29 ambiguous/cross-type matches without weakening additive safety guards.

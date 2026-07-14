@@ -46,6 +46,12 @@ SECTIONS = {   # anchor -> (rm type, extra fields)
     'sub006': ('talk_or_misc', {'is_international_presentation': True}),
     'sub007': ('talk_or_misc', {'is_international_presentation': False}),
 }
+REQUIRED_TITLE_FIELDS = {
+    'published_papers': 'paper_title',
+    'misc': 'paper_title',
+    'books_etc': 'book_title',
+    'presentations': 'presentation_title',
+}
 
 # ResearchMap exposes additional system-derived identifier/link values in GET
 # responses, but its V2 schema rejects those values when they are echoed in an
@@ -130,6 +136,21 @@ def localized(value, lang):
     if lang == 'en':
         return {'ja': value, 'en': value}
     return {'ja': value}
+
+def complete_required_title(value):
+    """Return a title with both language slots required by bulk import."""
+    if isinstance(value, str):
+        current = {'ja': value} if value else {}
+    elif isinstance(value, dict):
+        current = {lang: title for lang, title in value.items()
+                   if lang in ('ja', 'en') and title}
+    else:
+        current = {}
+    fallback = current.get('ja') or current.get('en')
+    if fallback:
+        current.setdefault('ja', fallback)
+        current.setdefault('en', fallback)
+    return current
 
 def norm_date(s):
     """Normalize a data-date value to YYYY / YYYY-MM / YYYY-MM-DD, else None."""
@@ -395,6 +416,8 @@ def to_record(text, rm_type, extra, data_date=None, data_doi=None, data_isbn=Non
             doc['invited'] = True
             doc['presentation_type'] = 'invited_oral_presentation'
         doc['presenters'] = people
+    title_field = REQUIRED_TITLE_FIELDS[rm_type]
+    doc[title_field] = complete_required_title(doc[title_field])
     if date:
         doc['publication_date'] = date
     identifier_kinds = EDITABLE_IDENTIFIER_KINDS.get(rm_type, frozenset())
@@ -1016,8 +1039,14 @@ def date_is_at_least_as_precise(wanted, current):
 def changed_doc(rm_type, desired, live):
     """Return only exporter-owned fields whose complete values differ."""
     changed = {}
+    title_field = REQUIRED_TITLE_FIELDS.get(rm_type)
     for field in SYNC_FIELDS[rm_type]:
         if field not in desired:
+            continue
+        if field == title_field:
+            # ResearchMap validates the complete live record after a partial
+            # update. A monolingual live title therefore has to be repeated in
+            # both required slots whenever another field is changed.
             continue
         wanted = desired[field]
         if field == 'identifiers':
@@ -1048,6 +1077,11 @@ def changed_doc(rm_type, desired, live):
             continue
         if current in (None, '', []):
             changed[field] = wanted
+    if changed and title_field:
+        current_title = live.get(title_field)
+        completed_title = complete_required_title(current_title)
+        if completed_title and completed_title != current_title:
+            changed[title_field] = completed_title
     return changed
 
 def build_sync(website, live_by_type, managed_ids):
