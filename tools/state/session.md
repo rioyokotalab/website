@@ -1,33 +1,25 @@
 driver: codex
-updated: 2026-07-14T10:17+0900
-task: T-166 Repair and re-import ResearchMap JSONL | awaiting-user
-status: awaiting-user
+updated: 2026-07-14T10:30+0900
+task: T-166 Repair and re-import ResearchMap JSONL | idle
+status: idle
 
 ## Now
-- ResearchMap rejected 86/318 lines because its bulk importer requires both
-  JA and EN title slots: 5 inserts and 81 updates. The other 232 source lines
-  were not listed in the error CSV and may already have applied.
-- `tools/out/researchmap-import-retry-1.jsonl` contains exactly the 86 failed
-  lines with only the missing title language added. Its SHA-256 is
-  `2174570dda5226462439437f31fcbc5880f349dd0f789af06febec733421632a`.
-- The exporter and retry generator now enforce the bilingual-title constraint;
-  offline fixtures and an operation-by-operation retry audit pass.
-- Managed-ID state must remain unchanged until the user confirms a successful
-  retry. ResearchMap login/import remains manual.
-- Obsolete `tools/out/` artifacts were removed at the user's request. The
-  original import, error CSV, retry, analysis, and current driver report remain
-  until the retry result is known.
+- T-166 is complete: the user confirmed the corrected retry import succeeded.
+- The sanctioned public API matched and recorded 379 IDs: 155 papers, four
+  books, 42 presentations, 59 misc items, one award, 13 media items, 91
+  committee memberships, and 14 projects.
+- The read API still showed 18 inserts and 215 updates from the submitted plan,
+  consistent with documented post-import lag. That residual was not uploaded
+  and its generated JSONL was removed.
+- `tools/out/` was cleared of the original import, error CSV, retry, prior
+  reports, and analysis; generated Python bytecode was also removed.
+- The repository is ready for a new task. T-167 remains deliberately held.
 
 ## Working set
-- `tools/out/errors_researchmap-import-6.csv`
-- `tools/out/researchmap-import.jsonl`
-- `tools/out/researchmap-import-retry-1.jsonl`
-- `tools/out/researchmap-import-error-analysis-20260714.md`
+- None.
 
 ## Open questions
 - None.
 
 ## Awaiting user
-- Upload only `tools/out/researchmap-import-retry-1.jsonl` and report whether
-  ResearchMap accepts it. If it returns another error CSV, preserve and upload
-  that CSV; do not re-upload the original 318-line file.
+- None.

@@ -9,16 +9,17 @@ None.
 
 ## Blocked / awaiting user
 
-- **T-166 — Repair and re-import the ResearchMap JSONL:** the uploaded error
-  CSV contained 86 required bilingual-title failures. The audited 86-operation
-  `tools/out/researchmap-import-retry-1.jsonl` is ready for manual upload; await
-  its result before recording managed IDs or removing the active evidence.
 - **T-167 — Resolve held metadata cases:** in a new primary-source lookup batch,
   resolve the three quarantined citation conflicts and manually classify the
   29 ambiguous/cross-type matches without weakening additive safety guards.
 
 ## Recently completed
 
+- **T-166 — Repair and re-import the ResearchMap JSONL:** diagnosed all 86
+  bilingual-title validation errors, generated an exact minimal retry, and
+  received user confirmation that the retry import succeeded. Recorded 379
+  currently visible matched IDs without re-importing the lagging API residual,
+  then removed all superseded import/error/retry artifacts and bytecode.
 - **T-165 — Validate, publish, and verify:** passed offline/schema/security,
   38/38 browser, deploy-preview, live-byte, and exact-remote-commit gates;
   published both Achievements pages and denied public access to the preserved
