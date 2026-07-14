@@ -1,6 +1,6 @@
 driver: codex
-updated: 2026-07-15T08:25+0900
-task: T-182 Guard deployment staging cleanup | idle
+updated: 2026-07-15T08:30+0900
+task: Post-incident task-board reconciliation | idle
 status: idle
 
 ## Now
@@ -11,8 +11,8 @@ status: idle
   remote mutation ran.
 
 ## Working set
-- None; T-182 files are ready for one focused local commit. No public-site file
-  changed.
+- None. T-182 is committed at `362847d`; the task board and this idle pointer
+  contain the final post-incident reconciliation. No public-site file changed.
 
 ## Open questions
 - None.

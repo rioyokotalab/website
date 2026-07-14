@@ -65,13 +65,13 @@ None.
   managed policy may still override local defaults on some surfaces, but the
   verified fresh host CLI honored them. The app's synthetic read-only
   `.agents` mount blocked one sandboxed probe; the bounded real-host recovery
-  recreated the missing host directory and passed. Post-incident duplicate
-  facts, decisions, session chronology, and the temporary T-179 driver report
-  were consolidated into this board. Both ledgers pass structural/budget and
-  diff checks; website metrics and standards checks pass; no deploy-included
-  file changed. The isolated deployment-policy test stopped before execution
-  because recovered normal-PATH `lftp` is absent; no network or deployment ran,
-  and T-180 owns that recovery evidence.
+  recreated the missing host directory and passed. Duplicate recovery detail
+  and the temporary T-179 report were consolidated into this board. Ledger,
+  metrics, standards, and diff checks pass; no deploy-included file changed.
+  The first isolated deployment-policy test stopped before
+  execution because normal-PATH lftp was absent. Harness T-175 later restored
+  it through a checksum-pinned local transaction, and website T-182 passed the
+  complete offline deployment-policy suite without a network or live deploy.
 
 - **T-170–T-176 and T-178 — Establish and move the portable agent harness:**
   separated
