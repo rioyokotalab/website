@@ -1261,7 +1261,16 @@ def build_sync(website, live_by_type, managed_ids, overrides=None):
             ambiguous.append((text, rm_type, criterion, sorted(candidate_ids)))
             continue
         if item is None:
-            inserts.append((text, record))
+            # The planner has already classified known similarity.  Preserve
+            # reviewed-distinct works as separate records; for ordinary new
+            # records, make an unexpected ResearchMap similarity match fail
+            # instead of silently merging two works.
+            insert_mode = ('force' if criterion == 'reviewed distinct record'
+                           else 'merge')
+            inserts.append((text, {
+                'insert': dict(record['insert']),
+                insert_mode: record['similar_merge'],
+            }))
             continue
         rid = live_id(item)
         if not rid:

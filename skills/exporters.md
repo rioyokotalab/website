@@ -26,6 +26,13 @@ publish.sh.
   line; re-upload the corrected failing line as a tiny one-line jsonl, never
   the whole file. The public read API lags imports, so --check-live will not
   immediately dedupe just-imported entries.
+- Sync INSERT behavior is fail-closed against ResearchMap's similarity check:
+  use `merge` for an ordinary unmatched record so an unexpected similar record
+  becomes an error, and use `force` only for a reviewed matcher override whose
+  criterion is `distinct`. Never use `similar_merge` for sync output: it can
+  silently combine separate works and contaminate the existing record. If an
+  import does fail, retry only the reported lines; also inspect any reviewed
+  distinct inserts for silent merges before declaring the import complete.
 - The exporter parses citations heuristically (、/comma author lists,
   "LastAuthor. Title" boundary preserving initials, trailing parenthetical
   notes) but PREFERS data-* attributes (skills/achievements.md). Always

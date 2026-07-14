@@ -61,3 +61,11 @@
   `~/harness/TODO.md` at local commit `e76993d`; it no longer appears on this
   repository's board. Harness `main` is intentionally one commit ahead of
   `origin/main` because this task did not authorize a harness push.
+- **ResearchMap T-177 import reconciliation (2026-07-14):** the 251-operation
+  import partially applied. Six reported HTTP 409 rows and two additional
+  reviewed-distinct inserts were consequences of similarity merges into
+  existing `published_papers` records. The minimal repair contains eight
+  exact-ID corrective updates followed by eight forced distinct inserts,
+  zero deletes, and no user ID. Its SHA-256 is
+  `424050fa4ab0fad28c614c50cba4ac2f29406475294034c51c13226cb16403c1`;
+  the other 245 original rows must not be retried.

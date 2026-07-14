@@ -104,7 +104,7 @@ class SyncFixtures(unittest.TestCase):
             self.website, self.live, self.managed)
 
         self.assertEqual(len(inserts), 1)
-        self.assertEqual(inserts[0][1]['similar_merge']['publication_date'],
+        self.assertEqual(inserts[0][1]['merge']['publication_date'],
                          '2026-08')
         self.assertEqual(len(updates), 2)  # Additive paper/book field completion.
         paper_update = next(op for _text, op in updates
@@ -448,6 +448,9 @@ class SyncFixtures(unittest.TestCase):
         inserts, updates, deletes, _refreshed, ambiguous, classified = \
             RM.build_sync(website, live, managed, overrides)
         self.assertEqual([text for text, _record in inserts], ['distinct'])
+        self.assertIn('force', inserts[0][1])
+        self.assertNotIn('similar_merge', inserts[0][1])
+        self.assertNotIn('priority', inserts[0][1])
         self.assertEqual(updates, [])
         self.assertEqual(deletes, [])
         self.assertEqual(ambiguous, [])
@@ -467,13 +470,13 @@ class SyncFixtures(unittest.TestCase):
             RM.match_override_key(title_key, kind, record)
             for _text, title_key, kind, record in RM.website_records()
         }
-        self.assertEqual(len(overrides), 29)
+        self.assertEqual(len(overrides), 30)
         self.assertTrue(set(overrides).issubset(selectors))
         self.assertEqual(
             {action: sum(value['action'] == action
                          for value in overrides.values())
              for action in ('match', 'equivalent', 'distinct', 'hold')},
-            {'match': 12, 'equivalent': 5, 'distinct': 7, 'hold': 5})
+            {'match': 12, 'equivalent': 5, 'distinct': 8, 'hold': 5})
 
 
 class AchievementSourceFixtures(unittest.TestCase):

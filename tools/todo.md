@@ -1,11 +1,20 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-177.
+`tools/state/session.md`. Next free id: T-178.
 
 ## Active
 
 None.
+
+## Blocked / awaiting user
+
+- **T-177 — Repair ResearchMap import conflicts:** reconciled six reported HTTP
+  409 failures plus two silent similarity merges and produced the independently
+  audited 16-line `tools/out/researchmap-import-retry-2.jsonl` (eight corrective
+  updates, eight forced inserts, zero deletes). Awaiting manual upload and the
+  resulting success confirmation or new error CSV; never re-upload the original
+  251-line file.
 
 ## Recently completed
 

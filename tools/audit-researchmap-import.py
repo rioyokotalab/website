@@ -171,9 +171,18 @@ def main():
             identities.append(identity)
             validate_doc(operation[action]['type'], operation['doc'])
         elif action == 'insert':
-            if operation.get('priority') != 'similar_data':
-                raise ValueError('insert priority must be similar_data')
-            validate_doc(operation[action]['type'], operation['similar_merge'])
+            payloads = [name for name in ('merge', 'force', 'similar_merge')
+                        if name in operation]
+            if len(payloads) != 1:
+                raise ValueError('insert must have exactly one payload mode')
+            mode = payloads[0]
+            if mode == 'similar_merge':
+                if operation.get('priority') != 'similar_data':
+                    raise ValueError(
+                        'legacy similar_merge priority must be similar_data')
+            elif 'priority' in operation:
+                raise ValueError('%s insert must not specify priority' % mode)
+            validate_doc(operation[action]['type'], operation[mode])
         serialized = json.dumps(operation, ensure_ascii=False)
         if 'user_id' in serialized or 'rm:user_id' in serialized:
             raise ValueError('user_id must not occur in bulk import')
@@ -183,7 +192,11 @@ def main():
             raise ValueError('visible source-link label leaked into import')
     for _text, record in inserts:
         kind = record['insert']['type']
-        doc = record['similar_merge']
+        modes = [name for name in ('merge', 'force', 'similar_merge')
+                 if name in record]
+        if len(modes) != 1:
+            raise ValueError('planned insert has invalid payload mode')
+        doc = record[modes[0]]
         if kind in ('published_papers', 'misc') and not doc.get('paper_title'):
             raise ValueError('insert missing paper title')
         if kind == 'published_papers' and not doc.get('publication_date'):

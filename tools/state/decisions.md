@@ -65,3 +65,10 @@
   T-169 and future harness-specific planning in `~/harness/TODO.md`. The
   website ledger may retain historical references but no longer owns or starts
   that task.
+- **2026-07-14 — Make ResearchMap sync inserts fail closed.** Emit `merge` for
+  ordinary unmatched sync records so unexpected similarity is reported, and
+  emit `force` only when a reviewed override explicitly classifies the source
+  and candidate as distinct works. Do not emit `similar_merge` in sync plans:
+  ResearchMap can silently merge separate works and alter the existing record.
+  Repair a partial import with exact-ID corrections and only the affected
+  forced inserts, never by re-uploading the full source file.

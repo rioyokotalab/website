@@ -9,6 +9,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,6 +27,7 @@ ERROR = 'エラー内容(エラーコード, フィールド名, メッセージ
 REQUIRED_TITLE = re.compile(
     r'^required_value,[^,]+\((paper_title|book_title|presentation_title)\.'
     r'(ja|en)\),')
+CONFLICT = re.compile(r'^conflict,,.*\[([^]]+)\]。?$')
 
 
 def read_errors(path):
@@ -50,6 +52,15 @@ def read_inventory(path):
         return json.load(source)
 
 
+def read_silent_merge_plan(path):
+    with open(path, encoding='utf-8') as source:
+        plan = json.load(source)
+    if plan.get('schema_version') != 1 or not isinstance(
+            plan.get('repairs'), list):
+        raise ValueError('invalid silent-merge repair plan')
+    return plan['repairs']
+
+
 def parse_title_overrides(values):
     """Parse repeatable TYPE:ID:LANG:TITLE evidence supplied by the caller."""
     overrides = {}
@@ -64,6 +75,176 @@ def parse_title_overrides(values):
             raise ValueError('duplicate title override: %s/%s' % key)
         overrides[key] = {parts[2]: parts[3]}
     return overrides
+
+
+def parse_conflict_pairs(values):
+    """Parse repeatable ERROR_LINE:INSERT_LINE repair relationships."""
+    pairs = {}
+    insert_lines = set()
+    for value in values:
+        parts = value.split(':')
+        if len(parts) != 2:
+            raise ValueError(
+                'invalid conflict pair (expected ERROR_LINE:INSERT_LINE): %r' %
+                value)
+        try:
+            error_line, insert_line = (int(part) for part in parts)
+        except ValueError:
+            raise ValueError('invalid conflict pair line number: %r' % value)
+        if error_line < 1 or insert_line < 1:
+            raise ValueError('conflict pair lines must be positive: %r' % value)
+        if error_line in pairs or insert_line in insert_lines:
+            raise ValueError('duplicate conflict pair line: %r' % value)
+        pairs[error_line] = insert_line
+        insert_lines.add(insert_line)
+    return pairs
+
+
+def operation_title_keys(operation, doc):
+    action = 'insert' if 'insert' in operation else 'update'
+    kind = operation[action]['type']
+    field = RM.REQUIRED_TITLE_FIELDS.get(kind)
+    value = doc.get(field) if field else None
+    if isinstance(value, dict):
+        values = value.values()
+    elif value:
+        values = [value]
+    else:
+        values = []
+    return {
+        RM.key(unicodedata.normalize('NFKC', str(item)), limit=10**9)
+        for item in values if item
+    }
+
+
+def build_conflict_retry(errors, operations, pairs):
+    """Repair update/insert collisions with exact corrections then force-adds."""
+    corrections = []
+    force_inserts = []
+    error_lines = set()
+    for error in errors:
+        try:
+            line_number = int(error[LINE])
+        except (TypeError, ValueError):
+            raise ValueError('invalid error line number: %r' % error.get(LINE))
+        if line_number in error_lines:
+            raise ValueError('multiple errors for source line %d require review' %
+                             line_number)
+        error_lines.add(line_number)
+        if error[STATUS] != '409':
+            raise ValueError('unsupported conflict status on line %d: %s' %
+                             (line_number, error[STATUS]))
+        conflict = CONFLICT.match(error[ERROR])
+        if not conflict or conflict.group(1) != error[IDENTIFIER]:
+            raise ValueError('unsupported conflict on line %d: %s' %
+                             (line_number, error[ERROR]))
+        if line_number < 1 or line_number > len(operations):
+            raise ValueError('source line out of range: %d' % line_number)
+        operation = copy.deepcopy(operations[line_number - 1])
+        if (set(operation) != {'update', 'doc'} or
+                operation['update'].get('id') != error[IDENTIFIER] or
+                operation['update'].get('type') != error[KIND]):
+            raise ValueError('conflicted update mismatch on line %d' %
+                             line_number)
+        insert_line = pairs.get(line_number)
+        if insert_line is None or insert_line >= line_number or insert_line > len(
+                operations):
+            raise ValueError('missing/invalid source insert for line %d' %
+                             line_number)
+        source_insert = operations[insert_line - 1]
+        if (set(source_insert) != {'insert', 'similar_merge', 'priority'} or
+                source_insert.get('priority') != 'similar_data'):
+            raise ValueError('source line %d is not a legacy similarity insert' %
+                             insert_line)
+        update_titles = operation_title_keys(operation, operation['doc'])
+        insert_titles = operation_title_keys(
+            source_insert, source_insert['similar_merge'])
+        if not update_titles or not insert_titles or not (
+                update_titles & insert_titles):
+            raise ValueError('conflict pair title mismatch: %d:%d' %
+                             (line_number, insert_line))
+        forced = {
+            'insert': copy.deepcopy(source_insert['insert']),
+            'force': copy.deepcopy(source_insert['similar_merge']),
+        }
+        for candidate in (operation, forced):
+            serialized = json.dumps(candidate, ensure_ascii=False)
+            if 'user_id' in serialized or 'rm:user_id' in serialized:
+                raise ValueError('user_id found in conflict pair %d:%d' %
+                                 (line_number, insert_line))
+        corrections.append(operation)
+        force_inserts.append(forced)
+    missing = set(pairs) - error_lines
+    if missing:
+        raise ValueError('unused conflict error lines: %r' % sorted(missing))
+    if len(force_inserts) != len(errors):
+        raise ValueError('conflict repair must pair every rejected update')
+    return corrections + force_inserts
+
+
+def build_silent_merge_retry(operations, repairs):
+    """Correct explicitly evidenced silent merges and force-add their sources."""
+    corrections = []
+    force_inserts = []
+    identities = set()
+    insert_lines = set()
+    for repair in repairs:
+        if not isinstance(repair, dict) or not repair.get('reason'):
+            raise ValueError('silent-merge repair lacks reason')
+        kind = repair.get('type')
+        record_id = str(repair.get('id') or '')
+        doc = repair.get('doc')
+        insert_line = repair.get('insert_line')
+        identity = (kind, record_id)
+        if (kind not in RM.LIVE_TYPES or not record_id or not isinstance(doc, dict)
+                or not doc or identity in identities):
+            raise ValueError('invalid/duplicate silent-merge target: %r' %
+                             (identity,))
+        if (not isinstance(insert_line, int) or insert_line < 1 or
+                insert_line > len(operations) or insert_line in insert_lines):
+            raise ValueError('invalid/duplicate silent-merge insert line: %r' %
+                             insert_line)
+        source_insert = operations[insert_line - 1]
+        if (set(source_insert) != {'insert', 'similar_merge', 'priority'} or
+                source_insert.get('priority') != 'similar_data'):
+            raise ValueError('source line %d is not a legacy similarity insert' %
+                             insert_line)
+        correction = {
+            'update': {'type': kind, 'id': record_id},
+            'doc': copy.deepcopy(doc),
+        }
+        update_titles = operation_title_keys(correction, correction['doc'])
+        insert_titles = operation_title_keys(
+            source_insert, source_insert['similar_merge'])
+        if not update_titles or not insert_titles or not (
+                update_titles & insert_titles):
+            raise ValueError('silent-merge title mismatch: %s/%s line %d' %
+                             (kind, record_id, insert_line))
+        forced = {
+            'insert': copy.deepcopy(source_insert['insert']),
+            'force': copy.deepcopy(source_insert['similar_merge']),
+        }
+        for candidate in (correction, forced):
+            serialized = json.dumps(candidate, ensure_ascii=False)
+            if 'user_id' in serialized or 'rm:user_id' in serialized:
+                raise ValueError('user_id found in silent-merge repair')
+        identities.add(identity)
+        insert_lines.add(insert_line)
+        corrections.append(correction)
+        force_inserts.append(forced)
+    return corrections + force_inserts
+
+
+def updates_before_inserts(operations):
+    updates = [operation for operation in operations if 'update' in operation]
+    inserts = [operation for operation in operations if 'insert' in operation]
+    if len(updates) + len(inserts) != len(operations):
+        raise ValueError('retry may contain only updates and inserts')
+    identities = [(operation['update']['type'], operation['update']['id'])
+                  for operation in updates]
+    if len(identities) != len(set(identities)):
+        raise ValueError('retry contains duplicate update identities')
+    return updates + inserts
 
 
 def inventory_live_titles(errors, inventory, overrides=None):
@@ -194,27 +375,52 @@ def main():
         '--title-override', action='append', default=[],
         metavar='TYPE:ID:LANG:TITLE',
         help='exact observed live title missing from the saved inventory')
+    parser.add_argument(
+        '--conflict-pair', action='append', default=[],
+        metavar='ERROR_LINE:INSERT_LINE',
+        help='pair a rejected update with the earlier insert it collided with')
+    parser.add_argument(
+        '--silent-merge-plan',
+        help='evidence-backed JSON plan for merges that succeeded silently')
     parser.add_argument('--dry-run', action='store_true')
     args = parser.parse_args()
 
     try:
         errors = read_errors(args.errors)
         operations = read_operations(args.source)
-        if args.inventory:
-            inventory = read_inventory(args.inventory)
-            overrides = parse_title_overrides(args.title_override)
-            live_by_type = inventory_live_titles(
-                errors, inventory, overrides)
+        statuses = {row[STATUS] for row in errors}
+        if statuses == {'409'}:
+            if args.inventory or args.title_override:
+                raise ValueError(
+                    '409 conflict repair does not use title inventory options')
+            pairs = parse_conflict_pairs(args.conflict_pair)
+            retry = build_conflict_retry(errors, operations, pairs)
+            if args.silent_merge_plan:
+                repairs = read_silent_merge_plan(args.silent_merge_plan)
+                retry += build_silent_merge_retry(operations, repairs)
+            retry = updates_before_inserts(retry)
+        elif statuses == {'400'}:
+            if args.conflict_pair or args.silent_merge_plan:
+                raise ValueError(
+                    'conflict repair options require only 409 errors')
+            if args.inventory:
+                inventory = read_inventory(args.inventory)
+                overrides = parse_title_overrides(args.title_override)
+                live_by_type = inventory_live_titles(
+                    errors, inventory, overrides)
+            else:
+                if args.title_override:
+                    raise ValueError('--title-override requires --inventory')
+                kinds = sorted({row[KIND] for row in errors if row[IDENTIFIER]})
+                live_by_type = {}
+                for kind in kinds:
+                    live_by_type[kind] = {
+                        RM.live_id(item): item for item in RM.fetch_live(kind)
+                    }
+            retry = build_retry(errors, operations, live_by_type)
         else:
-            if args.title_override:
-                raise ValueError('--title-override requires --inventory')
-            kinds = sorted({row[KIND] for row in errors if row[IDENTIFIER]})
-            live_by_type = {}
-            for kind in kinds:
-                live_by_type[kind] = {
-                    RM.live_id(item): item for item in RM.fetch_live(kind)
-                }
-        retry = build_retry(errors, operations, live_by_type)
+            raise ValueError('mixed/unsupported error statuses: %r' %
+                             sorted(statuses))
     except Exception as error:
         print('ERROR: %s' % error, file=sys.stderr)
         return 1

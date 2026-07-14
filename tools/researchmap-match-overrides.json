@@ -31,6 +31,11 @@
       "candidates": [],
       "reason": "The website miscellaneous entry and presentation record have the same title, date, and event."
     },
+    "misc|2023-02|parallelqrfactorizationofblocklowrankmatrices|muhammadridwanapriansyah": {
+      "action": "distinct",
+      "candidates": [],
+      "reason": "The SIAM CSE presentation is distinct from the earlier ACM TOMS journal article with the same title."
+    },
     "published_papers|2023-01|empiricalstudyonoptimizerselectionforoutofdistributiongeneralization|hirokinaganuma": {
       "action": "distinct",
       "candidates": ["published_papers:41794845"],
