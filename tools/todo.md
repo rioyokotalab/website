@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-168.
+`tools/state/session.md`. Next free id: T-169.
 
 ## Active
 
@@ -15,6 +15,11 @@ None.
 
 ## Recently completed
 
+- **T-168 — Relocate benchmark artifacts and clear transient output:** moved
+  all 173 referenced raw benchmark runs (1,102 files, 57 MB) byte-for-byte to
+  the ignored benchmark-owned `tools/agent-benchmark/artifacts/` archive,
+  updated producers and 519 stored path occurrences, passed artifact/capsule/
+  metrics/security checks, and left `tools/out/` completely empty.
 - **T-166 — Repair and re-import the ResearchMap JSONL:** diagnosed all 86
   bilingual-title validation errors, generated an exact minimal retry, and
   received user confirmation that the retry import succeeded. Recorded 379
@@ -97,19 +102,4 @@ None.
   Sol/high is 8/9 qualified and still requires full validation.
   If evidence is resumed, Sol/high is the only efficient first arm: two clean
   repeats reach 10/11 high-confidence; recompute immediately after a failure.
-- **T-149 — Audit and summarize the complete matrix:** added deterministic
-  JSON/Markdown analysis with exact cell/identity/artifact/metrics checks. Low
-  was the only 15/15 full-quality effort and `ultra` was dominated on every
-  task; monetary cost remains unknown, so effective tokens are the cost proxy.
-- **T-148 — Complete the `ultra` rows:** completed all 15 ultra cells. Every
-  cell passed score 100 with exact scope and P2P, but every ultra route is
-  dominated by a documented-effort route.
-- **T-147 — Run all documented model/effort/task cells:** completed the frozen
-  75-cell grid with automatic switching and task-specific timeouts: 70
-  capability passes and five genuine WBD-005 failures.
-- **T-146 — Freeze, extend, and preflight the GPT-5.6 round:** froze all
-  identities, restored dependencies, audited five capsules, and proved all
-  three models accept `ultra`; paused before T-147 at the user's request.
-- **T-150 — Expand the GPT-5.6 matrix:** replaced the finalist gate with all
-  five WBD tasks across three models and six efforts (90 cells total).
 Historical Git commits remain intact; owner-scope settings were not changed.

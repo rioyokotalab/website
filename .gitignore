@@ -4,6 +4,7 @@ Thumbs.db
 *~
 *.swp
 /tools/out/
+/tools/agent-benchmark/artifacts/
 .preview-state/
 __pycache__/
 node_modules/

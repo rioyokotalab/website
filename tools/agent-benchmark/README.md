@@ -8,10 +8,11 @@ and strict changed-file scope. It is not a general frontend leaderboard.
 The tracked suite contains task definitions, mutations, grader logic, and the
 runner. Compact results and deterministic summaries may be retained while a
 routing decision depends on them; the current 173-run comparison supports
-`routing-policy.json`. New runs create ignored raw artifacts under
-`tools/out/agent-benchmark/` and append compact rows to `results.jsonl`. Raw
-artifacts remain disposable once their decision is durable and metric pointers
-are removed with them.
+`routing-policy.json`. New runs create ignored raw artifacts under the
+benchmark-owned `tools/agent-benchmark/artifacts/` archive and append compact
+rows to `results.jsonl`. Raw artifacts remain disposable once their decision
+is durable and metric pointers are removed with them; `tools/out/` is reserved
+for transient task handoffs.
 
 Current retained evidence:
 

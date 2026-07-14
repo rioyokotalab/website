@@ -262,7 +262,8 @@ def benchmark_row(result: dict[str, Any], stdout_override: Path | None = None) -
         "escalation": None,
         "failure_phase": failure_phase,
         "failure_category": failure_category,
-        "artifact": str(result.get("artifact") or f"tools/out/agent-benchmark/{run_id}/result.json"),
+        "artifact": str(result.get("artifact") or
+                        f"tools/agent-benchmark/artifacts/{run_id}/result.json"),
         "handoff_mode": str(result.get("handoff_mode") or "unknown"),
         "inspection_mode": str(result.get("inspection_mode") or "unknown"),
         "prompt_mode": str(result.get("prompt_mode") or "unknown"),

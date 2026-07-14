@@ -28,7 +28,7 @@ BENCHMARK_DIR = Path(__file__).resolve().parent
 TASKS_PATH = BENCHMARK_DIR / "tasks.json"
 RESULTS_PATH = BENCHMARK_DIR / "results.jsonl"
 EXCLUSIONS_PATH = BENCHMARK_DIR / "exclusions.json"
-ARTIFACTS_ROOT = ROOT / "tools" / "out" / "agent-benchmark"
+ARTIFACTS_ROOT = BENCHMARK_DIR / "artifacts"
 METRICS_SCHEMA_PATH = ROOT / "tools" / "task-metrics.schema.json"
 DOCUMENTED_EFFORTS = ("low", "medium", "high", "xhigh", "max")
 RUNTIME_VERIFIED_EFFORTS = ("ultra",)
@@ -365,7 +365,7 @@ def compact_result(result: dict[str, Any]) -> dict[str, Any]:
                          "grader": result.get("grader_duration_ms"), "total": result.get("total_duration_ms")},
         "changed_files": result.get("changed_files") or [],
         "failure_phase": result.get("failure_phase"),
-        "artifact": f"tools/out/agent-benchmark/{result.get('run_id')}/result.json",
+        "artifact": f"tools/agent-benchmark/artifacts/{result.get('run_id')}/result.json",
     }
     if not result.get("capability_pass"):
         findings = grade.get("findings") or []
