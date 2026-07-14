@@ -2,39 +2,48 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-181.
+evidence. Next free id: T-182.
 
 ## Recovery priority — do before any other task
 
 - **T-180 — Exhaustively re-audit Git history for additional recovery
-  candidates:**
-  1. Traverse the complete `website` and `harness` commit graphs, all local
-     refs, reflogs, and read-only unreachable-object reports. Begin with the
-     verified pre-incident website revision `628b53a` and harness revision
-     `5f6382b`; reconcile every restoration and configuration-recovery commit.
-  2. Compare pre-incident and current tracked inventories, modes, symlinks,
-     renamed control paths, deployment exclusions, and task state. Reconfirm
-     the exact eight website paths restored after the deletion and search for
-     additional tracked or dangling-object candidates without modifying the
-     public site.
-  3. Reconstruct website T-11 and T-170–T-179 from Git evidence, including old
-     path names before T-178. Cross-reference harness T-172 rather than keeping
-     a second divergent harness incident transcript here. T-179's first
-     unreachable-object search found surviving ledger variants but not the
-     deleted ignored proposal payload; repeat exhaustively without assuming a
-     second search will recover it.
-  4. Produce a recovery table with source commit/object/path, pre-incident
-     purpose, current state, confidence, sensitivity boundary, dependencies,
-     validation, and rollback. Distinguish already recovered, intentionally
-     retired, confirmed missing, and unresolved state.
-  5. Never inspect or restore credentials, private keys, tokens, auth stores,
-     shell/client histories, live sessions, `.git` internals, or secret values.
-     Perform no restoration or publication during the audit; present one
-     reviewed plan first.
+  candidates (complete 2026-07-15):** the full local refs, reflogs, reachable
+  graph, read-only unreachable objects, historical task paths, deployment
+  exclusions, pre-incident reports, metrics/logs, and pre-/post-incident trees
+  were reconciled with harness T-172. No public file, recovery candidate,
+  credential/auth state, owner config, package, remote, or deployment changed.
+
+  - `628b53a` and current each contain 275 paths with identical mode counts
+    (257 regular and 18 executable; no symlink/submodule). All eight damaged
+    paths—`README.md`, `cv/build-cv.sh`, `cv/cv.cls`, `cv/cv.pdf`, `cv/cv.tex`,
+    `package.json`, `publish.sh`, and `style.css`—match `628b53a` exactly by
+    object ID, working-file hash, and mode. The only later website changes are
+    the six recovery-ledger files.
+  - All 12 unreachable commits predate the incident and are superseded July 12
+    evaluation variants or the July 14 ResearchMap autostash. Named trees map
+    216 of 218 unreachable blobs. Safe header-only checks identify the other
+    two as in-progress T-29 and T-30 `session.md` checkpoints. None should be
+    restored or published.
+  - The ignored T-11 permission payload has no current path, reachable object,
+    or unreachable tree name. Commits `b73c2c5`, `f92abf3`, `31b5b5b`, and
+    `194fc04` preserve its intent and applied outcome, but the payload is
+    confirmed missing from local evidence and is superseded by T-179. The
+    surviving ignored T-170 configuration reports/proposals and T-167–T-178
+    driver reports predate the incident, are deploy-excluded, and remain valid
+    historical evidence; preserve them.
+  - T-170–T-179, the `tools/todo.md` to root `TODO.md` rename at `628b53a`, the
+    harness dot-directory move at `94119a2`, and both post-incident website
+    commits reconcile without a missing tracked path. Harness T-172 contains
+    the authoritative recovery table, sensitivity boundaries, validation and
+    rollback routes, and reviewed execution order.
+  - Deployment exclusions still keep tools, skills, ledgers, config, README,
+    and CV sources out of the public tree. Metrics validation and standards
+    checks use the repository Python entry points; the complete security suite
+    remains blocked at its local lftp prerequisite, owned by harness T-175.
 
 ## Active
 
-None besides recovery-first T-180.
+None. Current recovery/tool/fleet work is owned by `~/harness/TODO.md`.
 
 ## Blocked / awaiting user
 
@@ -95,3 +104,14 @@ Older task-by-task completion summaries, driver reports, and the pre-cleanup
 T-179 state remain in Git through commit `e9ac8a0` and earlier. Use them as
 evidence during T-180, not as current instructions. Harness work is owned by
 `~/harness/TODO.md`.
+
+## Issues appended during the T-180 sweep
+
+- **T-181 — Remove validation-command npm logs (complete 2026-07-15):** an
+  incorrect assumption that repository validation was exposed as npm scripts
+  failed before any test and created two diagnostic logs under `~/.npm/_logs`.
+  The files were never read; each exact canonical path was independently
+  checked for owner and post-incident timestamp, unlinked non-recursively, and
+  verified absent. The actual ledger checks are
+  `python3 tools/task-metrics.py validate`, `python3 tools/check-md-size.py`,
+  and `python3 tools/standards-check.py`.
