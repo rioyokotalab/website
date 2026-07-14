@@ -2,7 +2,7 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-182.
+evidence. Next free id: T-183.
 
 ## Recovery priority — do before any other task
 
@@ -38,8 +38,9 @@ evidence. Next free id: T-182.
     rollback routes, and reviewed execution order.
   - Deployment exclusions still keep tools, skills, ledgers, config, README,
     and CV sources out of the public tree. Metrics validation and standards
-    checks use the repository Python entry points; the complete security suite
-    remains blocked at its local lftp prerequisite, owned by harness T-175.
+    checks use the repository Python entry points. Harness T-175 restored the
+    local checksum-pinned lftp prerequisite; T-182 then passed the complete
+    offline security suite without a network or live deployment.
 
 ## Active
 
@@ -100,10 +101,8 @@ None.
 
 ## Archived detail
 
-Older task-by-task completion summaries, driver reports, and the pre-cleanup
-T-179 state remain in Git through commit `e9ac8a0` and earlier. Use them as
-evidence during T-180, not as current instructions. Harness work is owned by
-`~/harness/TODO.md`.
+Superseded task detail remains in Git through `e9ac8a0`; harness work is owned
+by `~/harness/TODO.md`.
 
 ## Issues appended during the T-180 sweep
 
@@ -115,3 +114,19 @@ evidence during T-180, not as current instructions. Harness work is owned by
   verified absent. The actual ledger checks are
   `python3 tools/task-metrics.py validate`, `python3 tools/check-md-size.py`,
   and `python3 tools/standards-check.py`.
+- **T-182 — Guard deployment staging and mirror deletion (complete
+  2026-07-15):** the T-175 review found raw recursive temporary-tree cleanup in
+  `deploy.sh` and three test/preview scripts, plus unbounded remote recursive
+  deletion in the lftp mirror. Added one shared canonical cleanup helper that
+  delegates to the harness's immutable manifest/token workflow, protects the
+  account home, verifies absence, and preserves operation/signal status. All
+  four owners now use it; no raw recursive cleanup remains in website shell
+  scripts. The lftp wrapper hashes and revalidates every staged file, requires
+  two identical validated dry-runs, protects `.dont-remove-me`, caps file
+  deletions at 250, refuses unsafe paths and all recursive directory deletion,
+  then applies autonomously without an approval prompt. Exact local file-
+  backend deletion, sentinel preservation, recursive-directory refusal, home-
+  target refusal, warning/error ShellCheck, Bash/Python syntax, diff checks,
+  preview/publish regressions, and the complete offline security suite pass.
+  No SSH, credential, live-server, public-file, push, or deployment operation
+  ran. The one validation-created bytecode file was unlinked exactly.

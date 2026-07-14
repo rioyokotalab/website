@@ -3,8 +3,25 @@
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
-TMP=$(mktemp -d)
-trap 'rm -rf "$TMP"' EXIT
+TMP_ROOT=${TMPDIR:-/tmp}
+TMP=$(mktemp -d "$TMP_ROOT/website-publish-test.XXXXXX")
+cleanup() {
+	status=$?
+	trap - EXIT HUP INT TERM
+	cleanup_failed=0
+	if [ -d "$TMP" ]; then
+		"$ROOT/tools/guarded-tree-cleanup.sh" "$TMP_ROOT" "$TMP" "$TMP_ROOT" \
+			>/dev/null || cleanup_failed=1
+	fi
+	if [ "$status" -eq 0 ] && [ "$cleanup_failed" -ne 0 ]; then
+		status=1
+	fi
+	exit "$status"
+}
+trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 fail() {
 	echo "FAIL: $*" >&2

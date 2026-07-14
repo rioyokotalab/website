@@ -2,14 +2,28 @@
 set -euo pipefail
 
 root=$(git rev-parse --show-toplevel)
-tmp=$(mktemp -d)
+tmp_root=${TMPDIR:-/tmp}
+tmp=$(mktemp -d "$tmp_root/website-preview-test.XXXXXX")
 cleanup() {
+	status=$?
+	trap - EXIT HUP INT TERM
+	cleanup_failed=0
 	for clone in a b; do
 		YOKOTA_PROJECT_DIR="$tmp/$clone" "$root/tools/preview-server.sh" stop 2>/dev/null || true
 	done
-	rm -rf "$tmp"
+	if [ -d "$tmp" ]; then
+		"$root/tools/guarded-tree-cleanup.sh" "$tmp_root" "$tmp" \
+			"$tmp_root" >/dev/null || cleanup_failed=1
+	fi
+	if [ "$status" -eq 0 ] && [ "$cleanup_failed" -ne 0 ]; then
+		status=1
+	fi
+	exit "$status"
 }
 trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 for clone in a b; do
 	mkdir -p "$tmp/$clone/.preview-state"

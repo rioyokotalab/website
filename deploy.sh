@@ -18,8 +18,26 @@ fi
 # Build a fresh positive-allowlist staging tree. Anything not selected by
 # tools/deploy-files.filter cannot be uploaded, even if it is untracked or a
 # future repository file that nobody remembered to exclude.
-STAGE=$(mktemp -d)
-trap 'rm -rf "$STAGE"' EXIT
+TMP_ROOT=${TMPDIR:-/tmp}
+STAGE=$(mktemp -d "$TMP_ROOT/website-deploy.XXXXXX")
+cleanup() {
+	status=$?
+	trap - EXIT HUP INT TERM
+	cleanup_failed=0
+	if [ -d "$STAGE" ]; then
+		"$ROOT/tools/guarded-tree-cleanup.sh" "$TMP_ROOT" "$STAGE" "$TMP_ROOT" \
+			>/dev/null || cleanup_failed=1
+	fi
+	if [ "$status" -eq 0 ] && [ "$cleanup_failed" -ne 0 ]; then
+		echo "FAILED: guarded deployment staging cleanup" >&2
+		status=1
+	fi
+	exit "$status"
+}
+trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
 tools/stage-public-site.sh "$STAGE" "$ROOT"
 
 # Make sure the SSH master connection is alive; re-establish it from the
@@ -35,6 +53,11 @@ if ! ssh -O check web >/dev/null 2>&1; then
 	fi
 fi
 
-# mirror -R: allowlisted staging tree -> remote. --delete removes anything
-# outside the public manifest from www, except the required server sentinel.
-lftp -e "mirror -R --delete --verbose $DRY_RUN -x '^\.dont-remove-me$' '$STAGE' www; bye" sftp://web
+# The wrapper snapshots the allowlisted source, validates two identical dry
+# runs, bounds file deletion, rejects recursive directory deletion, and then
+# applies without an approval prompt. The server sentinel remains excluded.
+if [ -n "$DRY_RUN" ]; then
+	tools/validated-lftp-mirror.sh --dry-run "$STAGE" www sftp://web
+else
+	tools/validated-lftp-mirror.sh "$STAGE" www sftp://web
+fi
