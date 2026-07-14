@@ -9,21 +9,22 @@ None.
 
 ## Blocked / awaiting user
 
-- **T-177 — Repair ResearchMap import conflicts:** reconciled six reported HTTP
-  409 failures plus two silent similarity merges and produced the independently
-  audited 16-line `tools/out/researchmap-import-retry-2.jsonl` (eight corrective
-  updates, eight forced inserts, zero deletes). Awaiting manual upload and the
-  resulting success confirmation or new error CSV; never re-upload the original
-  251-line file.
+None.
 
 ## Recently completed
+
+- **T-177 — Repair and close the ResearchMap import:** corrected six reported
+  conflicts and two silent similarity merges with a minimal 16-operation
+  repair, received confirmation that it imported successfully, recorded all
+  eight new IDs and 411 visible managed IDs, deleted the unuploaded five-row
+  live residual, and removed every transient ResearchMap artifact and cache.
 
 - **T-167 — Resolve held metadata cases:** corrected three citation conflicts,
   classified all 29 held matches, reconciled one safely detected live candidate
   drift, and independently audited a 251-operation additive ResearchMap plan
   with 25 inserts, 226 updates, zero deletes, and zero unresolved ambiguities.
   All offline/browser/live gates passed; mirrored Achievements pages were
-  published at `fd2f2d8`, while the reviewed JSONL remains a manual upload.
+  published at `fd2f2d8`, and the resulting import was completed under T-177.
 
 - **T-176 — Prepare a restart-safe handoff:** audited the board, session,
   reports, metrics, website worktree, and synchronized harness repository;

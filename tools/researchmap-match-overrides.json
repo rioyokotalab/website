@@ -32,14 +32,16 @@
       "reason": "The website miscellaneous entry and presentation record have the same title, date, and event."
     },
     "misc|2023-02|parallelqrfactorizationofblocklowrankmatrices|muhammadridwanapriansyah": {
-      "action": "distinct",
-      "candidates": [],
-      "reason": "The SIAM CSE presentation is distinct from the earlier ACM TOMS journal article with the same title."
+      "action": "match",
+      "target": "misc:54390630",
+      "candidates": ["misc:54390630"],
+      "reason": "The successfully imported record has the SIAM CSE presentation's date, venue, contributors, and type."
     },
     "published_papers|2023-01|empiricalstudyonoptimizerselectionforoutofdistributiongeneralization|hirokinaganuma": {
-      "action": "distinct",
-      "candidates": ["published_papers:41794845"],
-      "reason": "The TMLR journal article is distinct from the earlier live NeurIPS workshop record."
+      "action": "match",
+      "target": "published_papers:54390634",
+      "candidates": ["published_papers:54390634"],
+      "reason": "The successfully imported record has the TMLR journal article's date, venue, contributors, and type."
     },
     "published_papers|2022-12|empiricalstudyonoptimizerselectionforoutofdistributiongeneralization|hirokinaganuma": {
       "action": "match",
@@ -66,9 +68,10 @@
       "reason": "The live record date, publisher, pages, and DOI identify the published book chapter."
     },
     "published_papers|2016-09|fastmultipolemethodasamatrixfreehierarchicallowrankapproximation|rioyokota": {
-      "action": "distinct",
-      "candidates": ["published_papers:6193553"],
-      "reason": "The workshop presentation predates and is distinct from the published book chapter."
+      "action": "match",
+      "target": "published_papers:54390631",
+      "candidates": ["published_papers:54390631", "published_papers:6193553"],
+      "reason": "Record 54390631 is the successfully imported 2016 workshop paper; 6193553 is the distinct 2017 book chapter."
     },
     "published_papers|2012-04|fmmtreeconstructionongpus|rioyokota": {
       "action": "match",
@@ -83,20 +86,22 @@
       "reason": "The live record date, journal, volume, pages, and DOI identify the journal article."
     },
     "published_papers|2010-05|comparingthetreecodewithfmmongpusforvortexparticlesimulationsofaleapfr|rioyokota": {
-      "action": "distinct",
-      "candidates": ["published_papers:6220500"],
-      "reason": "The Parallel CFD conference entry predates and is distinct from the journal article."
+      "action": "match",
+      "target": "published_papers:54390637",
+      "candidates": ["published_papers:54390637", "published_papers:6220500"],
+      "reason": "Record 54390637 is the successfully imported Parallel CFD conference paper; 6220500 is the distinct journal article."
     },
     "published_papers|2026-04|optimalsparsityofmixtureofexpertslanguagemodelsforreasoningtasks|taishinakamura": {
-      "action": "distinct",
-      "candidates": ["published_papers:50836982"],
-      "reason": "The ICLR 2026 paper is distinct from the earlier ICML 2025 workshop record."
+      "action": "match",
+      "target": "published_papers:54390632",
+      "candidates": ["published_papers:50836982", "published_papers:54390632"],
+      "reason": "Record 54390632 is the successfully imported ICLR 2026 paper; 50836982 is the distinct ICML 2025 workshop paper."
     },
     "published_papers|2025-07|optimalsparsityofmixtureofexpertslanguagemodelsforreasoningtasks|taishinakamura": {
       "action": "match",
       "target": "published_papers:50836982",
-      "candidates": ["published_papers:50836982"],
-      "reason": "The live record date and venue identify the ICML 2025 workshop version."
+      "candidates": ["published_papers:50836982", "published_papers:54390632"],
+      "reason": "Record 50836982 has the ICML 2025 workshop date and venue; 54390632 is the distinct ICLR 2026 paper."
     },
     "published_papers|2024-09|formulasupervisedvisualgeometricpretraining|ryosukeyamada": {
       "action": "match",
@@ -105,36 +110,39 @@
       "reason": "The live record date, ECCV venue, pages, and DOI identify the ECCV paper."
     },
     "published_papers|2023-07|formulasupervisedvisualgeometricpretraining|ryosukeyamada": {
-      "action": "distinct",
-      "candidates": ["published_papers:48369800"],
-      "reason": "The MIRU 2023 presentation predates and is distinct from the ECCV paper."
+      "action": "match",
+      "target": "published_papers:54390633",
+      "candidates": ["published_papers:48369800", "published_papers:54390633"],
+      "reason": "Record 54390633 is the successfully imported MIRU 2023 presentation; 48369800 is the distinct ECCV paper."
     },
     "published_papers|2024-08|単眼カメラを用いたリアルタイムな3次元マップの変化検出を目的とした密なバンドル調整|kaiokawa": {
       "action": "match",
       "target": "published_papers:48407007",
-      "candidates": ["published_papers:48407007"],
-      "reason": "The live record date identifies the MIRU 2024 entry."
+      "candidates": ["published_papers:48407007", "published_papers:54390635"],
+      "reason": "Record 48407007 has the MIRU 2024 date; 54390635 is the distinct MIRU 2023 entry."
     },
     "published_papers|2023-07|単眼カメラを用いたリアルタイムな3次元マップの変化検出を目的とした密なバンドル調整|kaiokawa": {
-      "action": "distinct",
-      "candidates": ["published_papers:48407007"],
-      "reason": "The MIRU 2023 entry is distinct from the later MIRU 2024 record."
+      "action": "match",
+      "target": "published_papers:54390635",
+      "candidates": ["published_papers:48407007", "published_papers:54390635"],
+      "reason": "Record 54390635 is the successfully imported MIRU 2023 entry; 48407007 is the distinct MIRU 2024 entry."
     },
     "published_papers|2020-06|distributedmemorytaskbasedblocklowrankdirectsolver|sameerdeshmukh": {
       "action": "hold",
-      "candidates": ["published_papers:54337800", "published_papers:54337802"],
-      "reason": "The two ISC 2020 live records are byte-semantically identical, so no canonical ID can be selected safely."
+      "candidates": ["published_papers:54337800", "published_papers:54337802", "published_papers:54390636"],
+      "reason": "The two ISC 2020 records 54337800 and 54337802 are byte-semantically identical, so no canonical ISC ID can be selected safely; 54390636 is the distinct HPC Asia record."
     },
     "published_papers|2020-01|distributedmemorytaskbasedblocklowrankdirectsolver|sameerdeshmukh": {
-      "action": "distinct",
-      "candidates": ["published_papers:54337800", "published_papers:54337802"],
-      "reason": "The HPC Asia 2020 entry is a separate event from both duplicate ISC 2020 records."
+      "action": "match",
+      "target": "published_papers:54390636",
+      "candidates": ["published_papers:54337800", "published_papers:54337802", "published_papers:54390636"],
+      "reason": "Record 54390636 is the successfully imported HPC Asia 2020 entry; 54337800 and 54337802 are duplicate records for the distinct ISC 2020 paper."
     },
     "published_papers|2024-08|scalingbackwardsminimalsyntheticpretraining|ryutadokoro": {
       "action": "match",
       "target": "published_papers:48407013",
-      "candidates": ["published_papers:48406966", "published_papers:48407013"],
-      "reason": "The date and venue identify 48407013 as the MIRU 2024 record; 48406966 is the later ECCV version."
+      "candidates": ["published_papers:48407013"],
+      "reason": "The current live record's date and venue identify 48407013 as the MIRU 2024 record."
     },
     "misc|2023-08|vortexfilamentbundleinducedbynormalfluidturbulenceinturbulentsuperflui|hiromichikobayashi": {
       "action": "hold",

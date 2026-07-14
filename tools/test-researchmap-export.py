@@ -476,7 +476,7 @@ class SyncFixtures(unittest.TestCase):
             {action: sum(value['action'] == action
                          for value in overrides.values())
              for action in ('match', 'equivalent', 'distinct', 'hold')},
-            {'match': 12, 'equivalent': 5, 'distinct': 8, 'hold': 5})
+            {'match': 20, 'equivalent': 5, 'distinct': 0, 'hold': 5})
 
 
 class AchievementSourceFixtures(unittest.TestCase):
