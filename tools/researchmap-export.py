@@ -31,6 +31,8 @@ PAGE = os.path.join(ROOT, 'en', 'achievements', 'index.html')
 PROFILE = os.path.join(ROOT, 'jp', 'member', 'yokota.html')  # canonical for CV items
 STATE = os.path.join(ROOT, 'tools', 'researchmap-state.json')
 OUT = os.path.join(ROOT, 'tools', 'out', 'researchmap-import.jsonl')
+MATCH_OVERRIDES = os.path.join(ROOT, 'tools',
+                               'researchmap-match-overrides.json')
 PERMALINK = 'rioyokota'
 
 SECTIONS = {   # anchor -> (rm type, extra fields)
@@ -700,6 +702,38 @@ def save_state(state):
         json.dump(state, f, indent=2, ensure_ascii=False)
         f.write('\n')
 
+def load_match_overrides(path=MATCH_OVERRIDES):
+    """Load reviewed exact-match decisions for otherwise ambiguous records."""
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding='utf-8') as source:
+        data = json.load(source)
+    if data.get('schema_version') != 1 or not isinstance(
+            data.get('records'), dict):
+        raise ValueError('invalid ResearchMap match-override file')
+    allowed = {'match', 'equivalent', 'distinct', 'hold'}
+    for selector, decision in data['records'].items():
+        if not isinstance(selector, str) or not selector:
+            raise ValueError('empty ResearchMap match-override selector')
+        if not isinstance(decision, dict) or decision.get('action') not in allowed:
+            raise ValueError('invalid ResearchMap match override: %s' % selector)
+        if not decision.get('reason'):
+            raise ValueError('ResearchMap match override lacks reason: %s' %
+                             selector)
+        if (decision['action'] in {'match', 'equivalent'} and
+                not decision.get('target')):
+            raise ValueError('ResearchMap match override lacks target: %s' %
+                             selector)
+        if (decision['action'] in {'distinct', 'hold'} and
+                decision.get('target') is not None):
+            raise ValueError('ResearchMap non-match override has target: %s' %
+                             selector)
+        candidates = decision.get('candidates', [])
+        if not isinstance(candidates, list) or len(candidates) != len(
+                set(candidates)):
+            raise ValueError('invalid override candidates: %s' % selector)
+    return data['records']
+
 def fetch_live(rm_type):
     """Fetch all pages of a live researchmap collection, return list of item dicts."""
     items = []
@@ -1084,15 +1118,110 @@ def changed_doc(rm_type, desired, live):
             changed[title_field] = completed_title
     return changed
 
-def build_sync(website, live_by_type, managed_ids):
+def match_override_key(title_key, rm_type, record):
+    """Stable selector: type, date, normalized title, and first contributor."""
+    doc = record.get('similar_merge', {})
+    date = doc.get('publication_date') or doc.get('from_date') or ''
+    first = ''
+    for field in ('authors', 'presenters'):
+        people = doc.get(field)
+        if not isinstance(people, dict):
+            continue
+        values = people.get('en') or people.get('ja') or []
+        if values:
+            first = values[0].get('name', '') if isinstance(values[0], dict) else ''
+            break
+    return '|'.join((rm_type, str(date), title_key,
+                     key(first, limit=10**9)))
+
+def candidate_refs(rm_type, item, candidates):
+    pool = ([item] if item is not None else list(candidates))
+    return sorted('%s:%s' % (rm_type, live_id(value)) for value in pool
+                  if live_id(value))
+
+def override_target(live_by_type, reference):
+    if not isinstance(reference, str) or ':' not in reference:
+        raise ValueError('invalid ResearchMap override target: %r' % reference)
+    rm_type, record_id = reference.split(':', 1)
+    matches = [item for item in live_by_type.get(rm_type, [])
+               if live_id(item) == record_id]
+    if len(matches) != 1:
+        raise ValueError('ResearchMap override target missing/non-unique: %s' %
+                         reference)
+    return rm_type, matches[0]
+
+def build_sync(website, live_by_type, managed_ids, overrides=None):
     """Pure sync planner used by --sync and offline fixture tests."""
+    overrides = overrides or {}
+    seen_overrides = set()
     matches = []
     ambiguous = []
-    for text, _tkey, rm_type, record in website:
+    classified = []
+    reviewed_protected = {rm_type: set() for rm_type in LIVE_TYPES}
+    for text, tkey, rm_type, record in website:
         if rm_type not in LIVE_TYPES:
             continue
         item, candidates, criterion = match_live(record, live_by_type.get(rm_type, []))
-        if item is None and not candidates and rm_type not in COMBINED_FIELDS:
+        natural_refs = candidate_refs(rm_type, item, candidates)
+        selector = match_override_key(tkey, rm_type, record)
+        decision = overrides.get(selector)
+        skip_cross_type = False
+        if decision:
+            seen_overrides.add(selector)
+            expected = sorted(decision.get('candidates', []))
+            if natural_refs != expected:
+                raise ValueError('ResearchMap override candidate drift for %s: '
+                                 'expected %r, found %r' %
+                                 (selector, expected, natural_refs))
+            action = decision['action']
+            target = decision.get('target')
+            if action == 'match':
+                target_type, item = override_target(live_by_type, target)
+                if target_type != rm_type or target not in natural_refs:
+                    raise ValueError('invalid same-type match override: %s' %
+                                     selector)
+                candidates = []
+                criterion = 'reviewed exact override'
+                classified.append({
+                    'text': text, 'type': rm_type, 'action': action,
+                    'target': target, 'candidates': natural_refs,
+                    'reason': decision['reason'],
+                })
+            elif action == 'equivalent':
+                target_type, target_item = override_target(live_by_type, target)
+                doc = record.get('similar_merge', {})
+                titles_agree = bool(desired_title_keys(record) &
+                                    item_title_keys(target_item))
+                if (target_type == rm_type or not titles_agree or
+                        not cross_type_context_match(doc, target_item)):
+                    raise ValueError('invalid cross-type equivalent override: %s' %
+                                     selector)
+                classified.append({
+                    'text': text, 'type': rm_type, 'action': action,
+                    'target': target, 'candidates': natural_refs,
+                    'reason': decision['reason'],
+                })
+                reviewed_protected[target_type].add(live_id(target_item))
+                continue
+            elif action == 'distinct':
+                item, candidates, criterion = None, [], 'reviewed distinct record'
+                skip_cross_type = True
+                classified.append({
+                    'text': text, 'type': rm_type, 'action': action,
+                    'target': None, 'candidates': natural_refs,
+                    'reason': decision['reason'],
+                })
+            elif action == 'hold':
+                classified.append({
+                    'text': text, 'type': rm_type, 'action': action,
+                    'target': None, 'candidates': natural_refs,
+                    'reason': decision['reason'],
+                })
+                reviewed_protected[rm_type].update(
+                    reference.split(':', 1)[1] for reference in natural_refs)
+                continue
+        if (item is None and not candidates and not skip_cross_type and
+                rm_type not in COMBINED_FIELDS):
             cross = []
             for other_type in LIVE_TYPES:
                 if other_type == rm_type:
@@ -1111,6 +1240,10 @@ def build_sync(website, live_by_type, managed_ids):
                 continue
         matches.append([text, rm_type, record, item, candidates, criterion])
 
+    unused = sorted(set(overrides) - seen_overrides)
+    if unused:
+        raise ValueError('unused ResearchMap match overrides: %r' % unused)
+
     # Two website entries resolving to one rm:id are also ambiguous.
     id_counts = {}
     for _text, rm_type, _record, item, _candidates, _criterion in matches:
@@ -1120,7 +1253,7 @@ def build_sync(website, live_by_type, managed_ids):
 
     inserts, updates = [], []
     matched = {t: set() for t in LIVE_TYPES}
-    protected = {t: set() for t in LIVE_TYPES}
+    protected = {t: set(reviewed_protected[t]) for t in LIVE_TYPES}
     for text, rm_type, record, item, candidates, criterion in matches:
         candidate_ids = {live_id(x) for x in candidates if live_id(x)}
         if candidate_ids:
@@ -1155,7 +1288,7 @@ def build_sync(website, live_by_type, managed_ids):
         # Retain IDs until the public read API confirms deletion; otherwise a
         # failed/manual-skipped upload would make a pending delete unrecoverable.
         refreshed[rm_type] = sorted(matched[rm_type] | (old & live_ids))
-    return inserts, updates, deletes, refreshed, ambiguous
+    return inserts, updates, deletes, refreshed, ambiguous, classified
 
 def sync_live(dry_run=False, record_managed_state=False):
     live_by_type = {}
@@ -1168,17 +1301,23 @@ def sync_live(dry_run=False, record_managed_state=False):
                   file=sys.stderr)
             return 1
     state = load_state()
-    inserts, updates, deletes, refreshed, ambiguous = build_sync(
-        website_records(), live_by_type, state['managed_ids'])
+    inserts, updates, deletes, refreshed, ambiguous, classified = build_sync(
+        website_records(), live_by_type, state['managed_ids'],
+        load_match_overrides())
     for text, rm_type, criterion, ids in ambiguous:
         print(f'AMBIGUOUS ({rm_type}, {criterion}, ids={ids}): {text[:100]}',
+              file=sys.stderr)
+    for row in classified:
+        print('CLASSIFIED (%s, %s, target=%s): %s' %
+              (row['type'], row['action'], row['target'], row['text'][:100]),
               file=sys.stderr)
     operations = ([record for _text, record in inserts] +
                   [record for _text, record in updates] + deletes)
     for record in operations:
         print(json.dumps(record, ensure_ascii=False))
     print(f'\n{len(inserts)} inserts / {len(updates)} updates / '
-          f'{len(deletes)} deletes; {len(ambiguous)} ambiguous skipped')
+          f'{len(deletes)} deletes; {len(ambiguous)} ambiguous skipped; '
+          f'{len(classified)} reviewed classifications')
     if dry_run:
         print('dry run: no import or state file written')
         return 0

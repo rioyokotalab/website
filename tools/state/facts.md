@@ -32,3 +32,28 @@
   including 13 `js-reduced-zero` and five `css-zero-motion` assertion failures
   (with overlap), so its full static/browser grader remains mandatory. Evidence
   generalizes only to materially analogous capability classes.
+- **Global harness discovery (2026-07-14):** isolated Codex and Claude probes
+  both loaded the shared `# Global agent working agreements` heading and chose
+  `long-running-task-ledger` for durable multi-session work. Six shared skills
+  are linked into `~/.codex/skills/`, `$HOME/.agents/skills/`, and
+  `~/.claude/skills/`; repository-specific instructions still layer locally.
+- **T-167 provider status (2026-07-14):** the fresh `--sync --dry-run` retry
+  again ended before retrieval when ResearchMap closed the `published_papers`
+  connection. The exporter returned 1 and wrote no import or state changes.
+- **Portable global harness (2026-07-14):** `~/harness` preserves the original
+  Git history from commit `7f969317c4b597b9adaae629c05cf6723785aff2` and
+  contains shared global guidance, six validated personal skills, reviewed
+  Codex rules, non-secret config examples, and a fail-closed installer. Live
+  Codex, Claude, and user-skill discovery paths are symlinks to it. Its
+  requested GitHub repository is configured as `origin`; its exact transport
+  may be machine-local.
+- **Codex shell-snapshot diagnosis (2026-07-14):** CLI 0.144.3 serialized four
+  system Bash-completion functions whose extglob patterns fail its default
+  snapshot parser. Restricting `/usr/share/bash-completion/bash_completion` to
+  interactive shells preserved other startup behavior and produced a clean
+  default ephemeral probe with correct global instruction discovery. The
+  separate arg0 warning came from accumulated/racing temp directories.
+- **Harness remote status (2026-07-14):** local and remote `main` both resolve
+  to `0bd31d1dc4f2ac923e276e81de5b4e3e2b7a1528`, tracking is established, and
+  divergence is zero. The successful retry used the externally configured
+  `github:rioyokotalab/harness` SSH alias and did not force-push.

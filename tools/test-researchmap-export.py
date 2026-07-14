@@ -100,7 +100,7 @@ class SyncFixtures(unittest.TestCase):
         }
 
     def test_partial_update_registry_delete_bounds_and_ambiguity(self):
-        inserts, updates, deletes, refreshed, ambiguous = RM.build_sync(
+        inserts, updates, deletes, refreshed, ambiguous, _classified = RM.build_sync(
             self.website, self.live, self.managed)
 
         self.assertEqual(len(inserts), 1)
@@ -167,7 +167,7 @@ class SyncFixtures(unittest.TestCase):
         })
 
     def test_no_user_id_and_published_paper_date_required(self):
-        inserts, updates, deletes, _refreshed, _ambiguous = RM.build_sync(
+        inserts, updates, deletes, _refreshed, _ambiguous, _classified = RM.build_sync(
             self.website, self.live, self.managed)
         operations = ([record for _text, record in inserts] +
                       [record for _text, record in updates] + deletes)
@@ -306,7 +306,7 @@ class SyncFixtures(unittest.TestCase):
                 'publication_date': '2019-07-10',
             }],
         }
-        inserts, _updates, _deletes, _refreshed, ambiguous = RM.build_sync(
+        inserts, _updates, _deletes, _refreshed, ambiguous, _classified = RM.build_sync(
             website, live, {})
         self.assertEqual(inserts, [])
         self.assertTrue(any(row[2] == 'cross-type date/venue match' and
@@ -359,6 +359,121 @@ class SyncFixtures(unittest.TestCase):
         self.assertEqual(item['rm:id'], 'corroborated')
         self.assertEqual(candidates, [])
         self.assertEqual(criterion, 'title/date containment')
+
+    def test_reviewed_match_override_actions_and_drift_guards(self):
+        website = [
+            ('match', RM.key('Reviewed journal version'), 'published_papers',
+             insert('published_papers', {
+                 'paper_title': {'en': 'Reviewed journal version'},
+                 'publication_name': {'en': 'Example Journal'},
+                 'publication_date': '2024-01',
+             })),
+            ('distinct', RM.key('Conference and journal title'),
+             'published_papers', insert('published_papers', {
+                 'paper_title': {'en': 'Conference and journal title'},
+                 'publication_name': {'en': 'Example Workshop'},
+                 'publication_date': '2023-01',
+             })),
+            ('equivalent', RM.key('Cross type example title'), 'misc',
+             insert('misc', {
+                 'paper_title': {'en': 'Cross type example title'},
+                 'publication_name': {'en': 'Example Meeting'},
+                 'publication_date': '2022-02',
+             })),
+            ('hold', RM.key('Held presentation'), 'presentations',
+             insert('presentations', {
+                 'presentation_title': {'en': 'Held presentation'},
+                 'publication_date': '2021-03',
+             })),
+        ]
+        live = {
+            'published_papers': [
+                {'rm:id': 'match-id',
+                 'paper_title': {'en': 'Reviewed journal version'},
+                 'publication_name': {'en': 'Example Journal'},
+                 'publication_date': '2024-01'},
+                {'rm:id': 'distinct-id',
+                 'paper_title': {'en': 'Conference and journal title'},
+                 'publication_name': {'en': 'Later Journal'},
+                 'publication_date': '2024-01'},
+            ],
+            'misc': [],
+            'presentations': [
+                {'rm:id': 'cross-id',
+                 'presentation_title': {'en': 'Cross type example title'},
+                 'event': {'en': 'Example Meeting'},
+                 'publication_date': '2022-02'},
+                {'rm:id': 'hold-a',
+                 'presentation_title': {'en': 'Held presentation'},
+                 'publication_date': '2021-03'},
+                {'rm:id': 'hold-b',
+                 'presentation_title': {'en': 'Held presentation'},
+                 'publication_date': '2021-03'},
+            ],
+        }
+        overrides = {}
+        for _text, title_key, kind, record in website:
+            selector = RM.match_override_key(title_key, kind, record)
+            if _text == 'match':
+                overrides[selector] = {
+                    'action': 'match',
+                    'target': 'published_papers:match-id',
+                    'candidates': ['published_papers:match-id'],
+                    'reason': 'fixture match',
+                }
+            elif _text == 'distinct':
+                overrides[selector] = {
+                    'action': 'distinct',
+                    'candidates': ['published_papers:distinct-id'],
+                    'reason': 'fixture distinct',
+                }
+            elif _text == 'equivalent':
+                overrides[selector] = {
+                    'action': 'equivalent',
+                    'target': 'presentations:cross-id',
+                    'candidates': [],
+                    'reason': 'fixture equivalent',
+                }
+            else:
+                overrides[selector] = {
+                    'action': 'hold',
+                    'candidates': [
+                        'presentations:hold-a', 'presentations:hold-b'],
+                    'reason': 'fixture hold',
+                }
+
+        managed = {
+            'presentations': ['cross-id', 'hold-a', 'hold-b'],
+        }
+        inserts, updates, deletes, _refreshed, ambiguous, classified = \
+            RM.build_sync(website, live, managed, overrides)
+        self.assertEqual([text for text, _record in inserts], ['distinct'])
+        self.assertEqual(updates, [])
+        self.assertEqual(deletes, [])
+        self.assertEqual(ambiguous, [])
+        self.assertEqual([row['action'] for row in classified],
+                         ['match', 'distinct', 'equivalent', 'hold'])
+
+        broken = {key: dict(value) for key, value in overrides.items()}
+        match_selector = next(key for key, value in broken.items()
+                              if value['action'] == 'match')
+        broken[match_selector]['candidates'] = []
+        with self.assertRaisesRegex(ValueError, 'candidate drift'):
+            RM.build_sync(website, live, {}, broken)
+
+    def test_reviewed_override_file_covers_current_website_selectors(self):
+        overrides = RM.load_match_overrides()
+        selectors = {
+            RM.match_override_key(title_key, kind, record)
+            for _text, title_key, kind, record in RM.website_records()
+        }
+        self.assertEqual(len(overrides), 29)
+        self.assertTrue(set(overrides).issubset(selectors))
+        self.assertEqual(
+            {action: sum(value['action'] == action
+                         for value in overrides.values())
+             for action in ('match', 'equivalent', 'distinct', 'hold')},
+            {'match': 12, 'equivalent': 5, 'distinct': 7, 'hold': 5})
 
 
 class AchievementSourceFixtures(unittest.TestCase):

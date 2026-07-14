@@ -6,6 +6,7 @@ literal shared by the English and Japanese pages; values are invisible HTML
 data attributes consumed by ``researchmap-export.py``.  Reads and writes keep
 the legacy CRLF bytes intact.
 """
+import argparse
 import html
 import os
 import re
@@ -154,11 +155,73 @@ ALLOWED_REPLACEMENTS = {
      '第27回 画像の認識・理解シンポジウム (MIRU)'),
 }
 
+# Primary-source corrections for the three citation/data conflicts held out in
+# T-161.  Keep exact old/new literals so mirrored visible citations can be
+# updated idempotently without broad text rewriting.
+CITATION_REPLACEMENTS = {
+    ('QR Factorization of Block Low-rank Matrices with Weak Admissibility '
+     'Condition, Journal of Information Processing, Vol. 12, No. 4, Nov. '
+     '2019.'):
+    ('QR Factorization of Block Low-rank Matrices with Weak Admissibility '
+     'Condition, Journal of Information Processing, Vol. 27, pp. 831-839, '
+     'Nov. 2019.'),
+    ('Extreme Scale FMM-Accelerated Boundary Integral Equation Solver for '
+     'Wave Scattering, SIAM Journal on Scientific Computing, Vol. 4, No. 3, '
+     'pp. C245--C268, Jun. 2019.'):
+    ('Extreme Scale FMM-Accelerated Boundary Integral Equation Solver for '
+     'Wave Scattering, SIAM Journal on Scientific Computing, Vol. 41, No. 3, '
+     'pp. C245--C268, Jun. 2019.'),
+    ('Fast Multipole Method as a Matrix-Free Hierarchical Low-Rank '
+     'Approximation, Lecture Notes in Computational Science and Engineering, '
+     'Springer, Vol. 117, pp. 227-244 (2017).'):
+    ('Fast Multipole Method as a Matrix-Free Hierarchical Low-Rank '
+     'Approximation, Lecture Notes in Computational Science and Engineering, '
+     'Springer, Vol. 117, pp. 267-286 (2017).'),
+}
 
-def update_page(path):
+# These conference/workshop rows describe distinct earlier presentations of a
+# later journal/chapter work.  Metadata copied from that later publication
+# falsely collapsed the two records during ResearchMap matching.
+ATTRIBUTE_REMOVALS = {
+    'International Workshop on Eigenvalue Problems, Sep. 2016.': (
+        'data-doi', 'data-pages'),
+    'Fast Multipole Preconditioners for Sparse Linear Solvers, 11th World '
+    'Congress on Computational Mechanics, Jul. 2014.': (
+        'data-doi', 'data-volume', 'data-number', 'data-pages'),
+    '22nd International Conference on Parallel Computational Fluid Dynamics, '
+    'May. 2010.': (
+        'data-doi', 'data-volume', 'data-number', 'data-pages'),
+}
+
+
+def update_page(path, check=False):
     with open(path, newline='', encoding='utf-8') as source:
         content = source.read()
     original = content
+    for old, new in CITATION_REPLACEMENTS.items():
+        old_count = content.count(old)
+        new_count = content.count(new)
+        if old_count == 1 and new_count == 0:
+            content = content.replace(old, new, 1)
+        elif old_count == 0 and new_count == 1:
+            continue
+        else:
+            raise ValueError('%s: citation replacement counts old=%d new=%d '
+                             'for %r' % (path, old_count, new_count, old))
+    for literal, names in ATTRIBUTE_REMOVALS.items():
+        lines = [line for line in content.splitlines(keepends=True)
+                 if literal in line and re.search(r'<li\b', line, re.I)]
+        if len(lines) != 1:
+            raise ValueError('%s: expected one removal <li> for %r, found %d' %
+                             (path, literal, len(lines)))
+        line = lines[0]
+        tag_match = re.search(r'<li\b[^>]*>', line, re.I)
+        tag = tag_match.group(0)
+        for name in names:
+            tag = re.sub(r'\s+%s\s*=\s*(["\']).*?\1' % re.escape(name),
+                         '', tag, flags=re.I)
+        line = line[:tag_match.start()] + tag + line[tag_match.end():]
+        content = content.replace(lines[0], line, 1)
     for literal, attributes in UPDATES.items():
         lines = [line for line in content.splitlines(keepends=True)
                  if literal in line and re.search(r'<li\b', line, re.I)]
@@ -192,6 +255,8 @@ def update_page(path):
             line = line[:tag_match.start()] + replacement + line[tag_match.end():]
             content = content.replace(lines[0], line, 1)
     if content != original:
+        if check:
+            raise ValueError('%s: metadata/citation update required' % path)
         with open(path, 'w', newline='', encoding='utf-8') as target:
             target.write(content)
 
@@ -202,12 +267,19 @@ def opening_tags(path):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--check', action='store_true')
+    args = parser.parse_args()
     for page in PAGES:
-        update_page(page)
+        update_page(page, check=args.check)
     en_tags, jp_tags = (opening_tags(page) for page in PAGES)
     if en_tags != jp_tags:
         raise ValueError('EN/JP opening-tag parity failed after metadata update')
-    print('updated %d metadata rows on two mirrored pages' % len(UPDATES))
+    verb = 'validated' if args.check else 'updated'
+    print('%s %d metadata rows, %d citation corrections, and %d classified '
+          'attribute removals on two mirrored pages' %
+          (verb, len(UPDATES), len(CITATION_REPLACEMENTS),
+           len(ATTRIBUTE_REMOVALS)))
 
 
 if __name__ == '__main__':

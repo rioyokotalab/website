@@ -143,8 +143,9 @@ def main():
         operations = [json.loads(line) for line in source if line.strip()]
     live_by_type = {kind: RM.fetch_live(kind) for kind in RM.LIVE_TYPES}
     state = RM.load_state()
-    inserts, updates, deletes, _refreshed, ambiguous = RM.build_sync(
-        RM.website_records(), live_by_type, state['managed_ids'])
+    inserts, updates, deletes, _refreshed, ambiguous, classified = RM.build_sync(
+        RM.website_records(), live_by_type, state['managed_ids'],
+        RM.load_match_overrides())
     expected = ([record for _text, record in inserts] +
                 [record for _text, record in updates] + deletes)
     if operations != expected:
@@ -196,6 +197,8 @@ def main():
         for operation in operations if 'update' in operation
         for field in operation['doc'])
     ambiguity_counts = collections.Counter(row[2] for row in ambiguous)
+    classification_counts = collections.Counter(row['action']
+                                                 for row in classified)
     with open(IMPORT, 'rb') as source:
         digest = hashlib.sha256(source.read()).hexdigest()
 
@@ -206,7 +209,9 @@ def main():
         '- SHA-256: `%s`' % digest,
         '- Operations: **%d** (%d inserts, %d additive updates, 0 deletes)' %
         (len(operations), len(inserts), len(updates)),
-        '- Held out: **%d** ambiguous/cross-type matches' % len(ambiguous),
+        '- Unresolved ambiguities: **%d**' % len(ambiguous),
+        '- Reviewed classifications: **%d** explicit decisions' %
+        len(classified),
         '- Safety: every operation exactly matches a fresh public-API plan; '
         'no existing scalar, localized value, caller-editable identifier, URL, '
         'or language is removed or replaced. System-managed nested values are '
@@ -220,6 +225,15 @@ def main():
     ]
     for (action, kind), count in sorted(action_type_counts.items()):
         lines.append('| %s | `%s` | %d |' % (action, kind, count))
+    lines += [
+        '',
+        '## Reviewed classifications',
+        '',
+        '| Action | Entries |',
+        '|---|---:|',
+    ]
+    for action, count in sorted(classification_counts.items()):
+        lines.append('| `%s` | %d |' % (action, count))
     lines += [
         '',
         '## Additive update fields',

@@ -15,4 +15,5 @@ python3 tools/css-selector-check.py
 python3 tools/test-researchmap-export.py
 python3 tools/test-researchmap-retry-errors.py
 python3 tools/test-orcid-export.py
+python3 tools/populate-achievement-metadata.py --check
 python3 tools/normalize-achievement-format.py --check

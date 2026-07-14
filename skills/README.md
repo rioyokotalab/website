@@ -6,6 +6,13 @@ playbooks matching the task; dispatches cite paths instead of restating rules.
 Skills are tracked and deploy-excluded. Update the matching skill whenever a
 convention changes.
 
+These files remain repository-local and self-contained. Personal defaults and
+cross-project workflows live outside the repository in `~/.codex/AGENTS.md`
+and user skills; this project must not depend on that private layer. The local
+ledger, delegation, lookup, and configuration playbooks deliberately retain
+website-specific paths, limits, benchmark routing, and authority gates even
+when a more general personal skill exists.
+
 | Skill | Use when |
 | --- | --- |
 | `html-editing.md` | page HTML, CSS, or template edits |

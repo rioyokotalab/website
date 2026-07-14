@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "records": {
+    "misc|2025-06|improvinglorawithvariationallearning|baicong": {
+      "action": "equivalent",
+      "target": "published_papers:52532469",
+      "candidates": [],
+      "reason": "The website miscellaneous entry and published-paper record have the same title, date, and venue."
+    },
+    "misc|2014-06|communicationcomplexityofthefastmultipolemethodanditsalgebraicvariants|rioyokota": {
+      "action": "equivalent",
+      "target": "presentations:10728640",
+      "candidates": [],
+      "reason": "The website miscellaneous entry and presentation record have the same title, date, and event."
+    },
+    "misc|2011-02|largescalemultigpufmmforbioelectrostatics|rioyokota": {
+      "action": "equivalent",
+      "target": "presentations:4121572",
+      "candidates": [],
+      "reason": "The website miscellaneous entry and presentation record have the same title, date, and event."
+    },
+    "misc|2010-07|rbfinterpolationusinggaussianswithdomaindecompositionongpus|rioyokota": {
+      "action": "equivalent",
+      "target": "presentations:4121569",
+      "candidates": [],
+      "reason": "The website miscellaneous entry and presentation record have the same title, date, and event."
+    },
+    "misc|2006-12|渦法による一様等方性乱流の解析|rioyokota": {
+      "action": "equivalent",
+      "target": "presentations:4121550",
+      "candidates": [],
+      "reason": "The website miscellaneous entry and presentation record have the same title, date, and event."
+    },
+    "published_papers|2023-01|empiricalstudyonoptimizerselectionforoutofdistributiongeneralization|hirokinaganuma": {
+      "action": "distinct",
+      "candidates": ["published_papers:41794845"],
+      "reason": "The TMLR journal article is distinct from the earlier live NeurIPS workshop record."
+    },
+    "published_papers|2022-12|empiricalstudyonoptimizerselectionforoutofdistributiongeneralization|hirokinaganuma": {
+      "action": "match",
+      "target": "published_papers:41794845",
+      "candidates": ["published_papers:41794845"],
+      "reason": "The live record date and venue identify the NeurIPS 2022 workshop version."
+    },
+    "published_papers|2017-11|fastmultipolepreconditionersforsparsematricesarisingfromellipticequati|hudaibeid": {
+      "action": "match",
+      "target": "published_papers:5789979",
+      "candidates": ["published_papers:5789979"],
+      "reason": "The live record date, journal, and DOI identify the published journal article."
+    },
+    "published_papers|2014-07|fastmultipolepreconditionersforsparselinearsolvers|hudaibeid": {
+      "action": "match",
+      "target": "published_papers:39797632",
+      "candidates": ["published_papers:39797632"],
+      "reason": "The live record exactly matches the WCCM proceedings title, date, contributor order, and venue; it remains distinct from the later journal article."
+    },
+    "published_papers|2017-10|fastmultipolemethodasamatrixfreehierarchicallowrankapproximation|rioyokota": {
+      "action": "match",
+      "target": "published_papers:6193553",
+      "candidates": ["published_papers:6193553"],
+      "reason": "The live record date, publisher, pages, and DOI identify the published book chapter."
+    },
+    "published_papers|2016-09|fastmultipolemethodasamatrixfreehierarchicallowrankapproximation|rioyokota": {
+      "action": "distinct",
+      "candidates": ["published_papers:6193553"],
+      "reason": "The workshop presentation predates and is distinct from the published book chapter."
+    },
+    "published_papers|2012-04|fmmtreeconstructionongpus|rioyokota": {
+      "action": "match",
+      "target": "published_papers:6220452",
+      "candidates": ["published_papers:54386163", "published_papers:6220452"],
+      "reason": "Record 6220452 has the complete title, journal metadata, and DOI; 54386163 is a malformed ORCID-created duplicate."
+    },
+    "published_papers|2010-12|comparingthetreecodewithfmmongpusforvortexparticlesimulationsofaleapfr|rioyokota": {
+      "action": "match",
+      "target": "published_papers:6220500",
+      "candidates": ["published_papers:6220500"],
+      "reason": "The live record date, journal, volume, pages, and DOI identify the journal article."
+    },
+    "published_papers|2010-05|comparingthetreecodewithfmmongpusforvortexparticlesimulationsofaleapfr|rioyokota": {
+      "action": "distinct",
+      "candidates": ["published_papers:6220500"],
+      "reason": "The Parallel CFD conference entry predates and is distinct from the journal article."
+    },
+    "published_papers|2026-04|optimalsparsityofmixtureofexpertslanguagemodelsforreasoningtasks|taishinakamura": {
+      "action": "distinct",
+      "candidates": ["published_papers:50836982"],
+      "reason": "The ICLR 2026 paper is distinct from the earlier ICML 2025 workshop record."
+    },
+    "published_papers|2025-07|optimalsparsityofmixtureofexpertslanguagemodelsforreasoningtasks|taishinakamura": {
+      "action": "match",
+      "target": "published_papers:50836982",
+      "candidates": ["published_papers:50836982"],
+      "reason": "The live record date and venue identify the ICML 2025 workshop version."
+    },
+    "published_papers|2024-09|formulasupervisedvisualgeometricpretraining|ryosukeyamada": {
+      "action": "match",
+      "target": "published_papers:48369800",
+      "candidates": ["published_papers:48369800"],
+      "reason": "The live record date, ECCV venue, pages, and DOI identify the ECCV paper."
+    },
+    "published_papers|2023-07|formulasupervisedvisualgeometricpretraining|ryosukeyamada": {
+      "action": "distinct",
+      "candidates": ["published_papers:48369800"],
+      "reason": "The MIRU 2023 presentation predates and is distinct from the ECCV paper."
+    },
+    "published_papers|2024-08|単眼カメラを用いたリアルタイムな3次元マップの変化検出を目的とした密なバンドル調整|kaiokawa": {
+      "action": "match",
+      "target": "published_papers:48407007",
+      "candidates": ["published_papers:48407007"],
+      "reason": "The live record date identifies the MIRU 2024 entry."
+    },
+    "published_papers|2023-07|単眼カメラを用いたリアルタイムな3次元マップの変化検出を目的とした密なバンドル調整|kaiokawa": {
+      "action": "distinct",
+      "candidates": ["published_papers:48407007"],
+      "reason": "The MIRU 2023 entry is distinct from the later MIRU 2024 record."
+    },
+    "published_papers|2020-06|distributedmemorytaskbasedblocklowrankdirectsolver|sameerdeshmukh": {
+      "action": "hold",
+      "candidates": ["published_papers:54337800", "published_papers:54337802"],
+      "reason": "The two ISC 2020 live records are byte-semantically identical, so no canonical ID can be selected safely."
+    },
+    "published_papers|2020-01|distributedmemorytaskbasedblocklowrankdirectsolver|sameerdeshmukh": {
+      "action": "distinct",
+      "candidates": ["published_papers:54337800", "published_papers:54337802"],
+      "reason": "The HPC Asia 2020 entry is a separate event from both duplicate ISC 2020 records."
+    },
+    "published_papers|2024-08|scalingbackwardsminimalsyntheticpretraining|ryutadokoro": {
+      "action": "match",
+      "target": "published_papers:48407013",
+      "candidates": ["published_papers:48406966", "published_papers:48407013"],
+      "reason": "The date and venue identify 48407013 as the MIRU 2024 record; 48406966 is the later ECCV version."
+    },
+    "misc|2023-08|vortexfilamentbundleinducedbynormalfluidturbulenceinturbulentsuperflui|hiromichikobayashi": {
+      "action": "hold",
+      "candidates": ["misc:54364663", "misc:54364664"],
+      "reason": "The two same-event live records differ only in capitalization and author order; the website also has conflicting first-author order."
+    },
+    "misc|2023-08|vortexfilamentbundleinducedbynormalfluidturbulenceinturbulentsuperflui|satoshiyui": {
+      "action": "hold",
+      "candidates": ["misc:54364663", "misc:54364664"],
+      "reason": "The two same-event live records differ only in capitalization and author order; the website also has conflicting first-author order."
+    },
+    "presentations|2022-09|人工画像を用いたvisiontransformerの大規模事前学習|rioyokota": {
+      "action": "match",
+      "target": "presentations:40664083",
+      "candidates": ["presentations:40664083", "presentations:40664087"],
+      "reason": "The live date identifies 40664083 as the September 2022 presentation."
+    },
+    "presentations|2022-07|人工画像を用いたvisiontransformerの大規模事前学習|rioyokota": {
+      "action": "match",
+      "target": "presentations:40664087",
+      "candidates": ["presentations:40664083", "presentations:40664087"],
+      "reason": "The live date identifies 40664087 as the July 2022 presentation."
+    },
+    "research_projects|2022|2相乱流の普遍統計法則の解明による流体機器の混合促進機能向上|": {
+      "action": "hold",
+      "candidates": ["research_projects:45294843", "research_projects:51322592"],
+      "reason": "The public collection exposes two matching project IDs without enough record detail to select a canonical one."
+    },
+    "research_projects|2022|階層的低ランク近似による高速・高精度な固有値計算と大規模電子状態計算への応用|": {
+      "action": "hold",
+      "candidates": ["research_projects:37045906", "research_projects:51326828"],
+      "reason": "The public collection exposes two matching project IDs without enough record detail to select a canonical one."
+    }
+  }
+}
