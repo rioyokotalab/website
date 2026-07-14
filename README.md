@@ -125,7 +125,7 @@ changed; this README is orientation, not the procedure itself.
 
 ## Working on the site
 
-At driver start, read `tools/todo.md` and `tools/state/session.md`, then only
+At driver start, read `TODO.md` and `tools/state/session.md`, then only
 the facts, decisions, and task playbooks required for the work. Checkpoint
 in-flight state according to `skills/context-ledger.md`.
 
@@ -157,7 +157,7 @@ credentials and login UIs are never automated.
 
 The context ledger separates state by purpose:
 
-- `tools/todo.md`: task board;
+- `TODO.md`: task board;
 - `tools/state/session.md`: current handoff;
 - `tools/state/facts.md`: verified current facts;
 - `tools/state/decisions.md`: durable choices and rationale.

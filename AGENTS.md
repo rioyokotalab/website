@@ -29,7 +29,7 @@ again. Load task-specific playbooks and source ranges only when required.
 
 Canonical protocol: `skills/context-ledger.md`.
 
-- DRIVER always reads `tools/todo.md` and `tools/state/session.md` at start. If
+- DRIVER always reads `TODO.md` and `tools/state/session.md` at start. If
   another driver updated an in-flight task within about one hour, ask before
   takeover. DRIVER owns and checkpoints `session.md` at task start, each
   completed step/failure, before risky or long work, and session end.

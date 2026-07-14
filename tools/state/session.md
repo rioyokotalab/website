@@ -1,26 +1,25 @@
 driver: codex
-updated: 2026-07-14T15:16+0900
-task: T-177 Repair ResearchMap import conflicts | idle
+updated: 2026-07-14T15:28+0900
+task: T-178 Align repository housekeeping paths | idle
 status: idle
 
 ## Now
-- T-177 is complete: the user confirmed the audited repair imported
-  successfully, and the sanctioned public API exposes all eight forced records
-  as IDs `54390630`--`54390637`.
-- The managed registry now contains 411 visible IDs: 172 papers, four books,
-  44 presentations, 60 misc items, one award, 13 media items, 98 committee
-  memberships, and 19 projects.
-- The live refresh proposed five residual inserts. They were not uploaded; the
-  generated residual and every import/error/retry/audit scratch artifact were
-  removed, along with ResearchMap bytecode.
-- Reviewed overrides now select the correct IDs on both sides of each distinct
-  pair. Reusable fail-closed exporter behavior and regression tests remain.
+- T-178 is complete. The website board is root `TODO.md`, and every current
+  website instruction, README, playbook, size check, achievement tracker, and
+  benchmark-protection reference uses that path.
+- Harness client sources are `.codex/` and `.claude/`; documentation, global
+  guidance, allowlist, internal guidance link, and installer paths are aligned.
+- Live Codex/Claude discovery links resolve through the new paths. The installer
+  migrates only exact legacy targets and remains idempotent and fail-closed for
+  unrelated paths.
+- Website security/metadata checks and harness isolated migration, live-link,
+  stale-reference, and clean-clone restore checks pass.
 
 ## Working set
 - None.
 
 ## Open questions
-- None.
+- None; the requested naming and scope are explicit.
 
 ## Awaiting user
 - None.

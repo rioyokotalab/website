@@ -7,20 +7,20 @@ reconstructs all in-flight work from the ledger.
 
 | File | Holds | Budget (bytes) |
 | --- | --- | --- |
-| `tools/todo.md` | Active / blocked / recently completed tasks | 8000 |
+| `TODO.md` | Active / blocked / recently completed tasks | 8000 |
 | `tools/state/session.md` | Current task, last/next step, working set, asks | 4000 |
 | `tools/state/facts.md` | Current verified facts | 10000 |
 | `tools/state/decisions.md` | Durable choices and rationale | 10000 |
 | `tools/codex-log.md` | Delegation/driver log | — |
 | `tools/out/` | Transient deliverables and scratch | — |
 
-Procedures belong in `skills/`; tasks in `todo.md`; current state in
+Procedures belong in `skills/`; tasks in `TODO.md`; current state in
 `session.md`; facts and decisions in their named files. Prune stale material
 when a budget is approached; Git keeps history.
 
 ## Session start
 
-1. Read `tools/todo.md` and `tools/state/session.md`.
+1. Read `TODO.md` and `tools/state/session.md`.
 2. If another driver owns a recently updated in-flight task, ask before
    takeover. Otherwise continue from `Next` after checking the working set
    against Git status.
@@ -30,7 +30,7 @@ when a budget is approached; Git keeps history.
 
 Update `session.md` at task start, after each completed step/discovery/failure,
 before risky or long work, and at session end. When finished, set task/status
-to `idle` and move one compact completion entry to `todo.md`.
+to `idle` and move one compact completion entry to `TODO.md`.
 
 Keep these headings exactly:
 
@@ -45,7 +45,7 @@ status: in-progress | blocked | awaiting-user | idle
 ## Awaiting user
 ```
 
-`todo.md` uses stable `T-<n>` IDs and records the next free ID. Ledger files
+`TODO.md` uses stable `T-<n>` IDs and records the next free ID. Ledger files
 commit with the task; never create a ledger-only commit merely for persistence.
 
 ## Delegation and handoff

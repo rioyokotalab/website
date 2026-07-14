@@ -23,4 +23,4 @@ sub007 domestic non-reviewed. Entries are newest-first inside each `<ol>`.
 - cv.tex sync is automatic and bidirectional: any change here (or in the CV
   sections of jp/member/yokota.html) updates the matching `cv/cv.tex` section
   in the SAME edit, and vice versa (see skills/exporters.md).
-- Lookup/attribute progress tracker: `tools/todo.md`.
+- Lookup/attribute progress tracker: `TODO.md`.

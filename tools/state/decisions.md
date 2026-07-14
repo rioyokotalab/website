@@ -72,3 +72,9 @@
   ResearchMap can silently merge separate works and alter the existing record.
   Repair a partial import with exact-ID corrections and only the affected
   forced inserts, never by re-uploading the full source file.
+- **2026-07-14 — Align repository-owned control paths at project roots.** Keep
+  the website task board at root `TODO.md`. Keep portable client-specific
+  harness sources under `.codex/` and `.claude/` to mirror project conventions,
+  while live client state remains outside the repository. During this rename,
+  permit the installer to replace only symlinks targeting the exact legacy
+  harness paths; retain fail-closed behavior for every unrelated path.

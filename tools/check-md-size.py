@@ -5,7 +5,7 @@ import os
 import sys
 
 BUDGETS = {  # repo-root-relative path -> max bytes
-    "tools/todo.md": 8000,
+    "TODO.md": 8000,
     "tools/state/session.md": 4000,
     "tools/state/facts.md": 10000,
     "tools/state/decisions.md": 10000,

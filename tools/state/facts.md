@@ -58,9 +58,12 @@
   default ephemeral probe with correct global instruction discovery. The
   separate arg0 warning came from accumulated/racing temp directories.
 - **Harness task ownership (2026-07-14):** T-169 now lives in
-  `~/harness/TODO.md` at local commit `e76993d`; it no longer appears on this
-  repository's board. Harness `main` is intentionally one commit ahead of
-  `origin/main` because this task did not authorize a harness push.
+  `~/harness/TODO.md`; it no longer appears on this repository's board.
+- **Housekeeping path alignment (2026-07-14):** the website task board is root
+  `TODO.md`. Harness client sources are `~/harness/.codex/` and
+  `~/harness/.claude/`; live global guidance and Codex rules resolve through
+  those locations. The harness installer safely migrates only its three exact
+  legacy symlink targets and still refuses unrelated existing paths.
 - **ResearchMap T-177 completion (2026-07-14):** the user confirmed the
   16-operation repair imported successfully after six reported conflicts and
   two silent similarity merges were corrected. The public API now exposes all

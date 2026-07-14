@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-178.
+`tools/state/session.md`. Next free id: T-179.
 
 ## Active
 
@@ -12,6 +12,11 @@ None.
 None.
 
 ## Recently completed
+
+- **T-178 — Align repository housekeeping paths:** moved the website task board
+  to root `TODO.md`; moved harness client sources to `.codex/` and `.claude/`;
+  updated every current reference and the fail-closed legacy-link migration;
+  and passed website, isolated-installer, live-link, and clean-clone checks.
 
 - **T-177 — Repair and close the ResearchMap import:** corrected six reported
   conflicts and two silent similarity merges with a minimal 16-operation
