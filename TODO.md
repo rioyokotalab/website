@@ -2,7 +2,7 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-183.
+evidence. Next free id: T-184.
 
 ## Recovery priority — do before any other task
 
@@ -52,26 +52,14 @@ None.
 
 ## Recently completed
 
-- **T-179 — Recover and consolidate global/local agent configuration:** after
-  the home-deletion incident, reconstructed T-11 and T-170–T-173 from Git
-  history and chose the current layered design rather than retired project
-  machinery. Restored Codex `never`/`danger-full-access` plus exact home and
-  website trust while preserving Sol/high; harness transaction
-  `20260714T202625Z-3548153` recreated 17 missing command/guidance/rule/skill
-  links and retained eight surviving Claude links. Repeated plan/doctor,
-  mode-0600 transaction, TOML, idempotence, and fresh host Codex checks passed
-  (`GLOBAL_OK SKILL_OK`). Surviving Claude settings and the untracked website
-  pre-commit hook were left unchanged; agents do not edit `.git`. Product-
-  managed policy may still override local defaults on some surfaces, but the
-  verified fresh host CLI honored them. The app's synthetic read-only
-  `.agents` mount blocked one sandboxed probe; the bounded real-host recovery
-  recreated the missing host directory and passed. Duplicate recovery detail
-  and the temporary T-179 report were consolidated into this board. Ledger,
-  metrics, standards, and diff checks pass; no deploy-included file changed.
-  The first isolated deployment-policy test stopped before
-  execution because normal-PATH lftp was absent. Harness T-175 later restored
-  it through a checksum-pinned local transaction, and website T-182 passed the
-  complete offline deployment-policy suite without a network or live deploy.
+- **T-179 — Recover and consolidate global/local agent configuration
+  (complete):** reconstructed the non-secret layered configuration from Git,
+  preserved owner settings, and used harness transaction
+  `20260714T202625Z-3548153` to restore missing discovery links. Repeated
+  plan/doctor, mode, TOML, idempotence, and fresh-client checks passed. Detailed
+  recovery chronology was consolidated here; T-175 later restored pinned lftp
+  and T-182 passed the complete offline deployment-policy suite. No public
+  file, credential, deployment, or unrelated owner setting changed.
 
 - **T-170–T-176 and T-178 — Establish and move the portable agent harness:**
   separated
@@ -130,3 +118,9 @@ by `~/harness/TODO.md`.
   preview/publish regressions, and the complete offline security suite pass.
   No SSH, credential, live-server, public-file, push, or deployment operation
   ran. The one validation-created bytecode file was unlinked exactly.
+- **T-183 — Push recovered repositories and prepare the next-task handoff
+  (complete 2026-07-15):** reconciled both clean branches with `origin/main`,
+  reserved harness T-182 ahead of the owner-gated T-181 proposal, validated the
+  ledgers and local harness doctor, and pushed without force or deployment.
+  Final acceptance requires each current local `HEAD` to equal its remote
+  `origin/main`; exact revisions are reported in the session handoff.

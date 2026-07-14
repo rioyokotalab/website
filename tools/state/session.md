@@ -1,18 +1,18 @@
 driver: codex
-updated: 2026-07-15T08:30+0900
-task: Post-incident task-board reconciliation | idle
+updated: 2026-07-15T08:46+0900
+task: T-183 Push recovered repositories and prepare next-task handoff | idle
 status: idle
 
 ## Now
-- T-182 is complete. All local tree cleanup is manifest-bound; deletion-bearing
-  mirrors require a stable double preview and reject recursive directories.
-- The full offline security suite now passes with the recovered local lftp.
-- No deployment, SSH command, credential access, public-file change, push, or
-  remote mutation ran.
+- T-183 is complete when each clean local `main` equals `origin/main`; the
+  final handoff verifies and reports both exact revisions after push.
+- Harness has a documented insertion point for T-182, which takes priority
+  over the owner-review-gated T-181 evaluation proposal.
+- No deployment, credential inspection, package, scheduler, or public-site
+  operation is part of this push-only housekeeping task.
 
 ## Working set
-- None. T-182 is committed at `362847d`; the task board and this idle pointer
-  contain the final post-incident reconciliation. No public-site file changed.
+- None after the final ledger commit is pushed and remote equality is checked.
 
 ## Open questions
 - None.
