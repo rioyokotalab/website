@@ -1,5 +1,17 @@
 # Current facts
 
+- **T-179 configuration recovery (2026-07-15):** Git history identifies T-11
+  commit `194fc04` as the zero-interaction rollout and T-170–T-173 as its later
+  global/project separation. The mode-600 Codex config again has global
+  approval `never`, sandbox `danger-full-access`, preserved Sol/high defaults,
+  and trusted home/website records. Harness transaction
+  `20260714T202625Z-3548153` recreated 17 missing command/guidance/rule/skill
+  links and retained eight Claude links; a repeated host plan is all-keep,
+  doctor has zero failures, and both transaction files are mode 600. A fresh
+  tool-free Codex process loaded the global agreements and ledger skill and
+  reported the recovered effective defaults. Claude bypass/skip-prompt, its 11
+  lifecycle hook classes, website trust/allowed tools, and the untracked
+  pre-commit hook had survived and were left unchanged.
 - **GPT-5.6 campaign identity:** matrix label `gpt56-full-20260713`, repeat
   label `gpt56-repeat-20260714`, frozen baseline `c4b0720`, full prompt,
   default inspection, runner-lite, P2P, automatic model/effort switching, and

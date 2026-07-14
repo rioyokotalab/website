@@ -1,7 +1,7 @@
 # Lab website — task board
 
 Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-179.
+`tools/state/session.md`. Next free id: T-180.
 
 ## Active
 
@@ -12,6 +12,13 @@ None.
 None.
 
 ## Recently completed
+
+- **T-179 — Recover untracked global/local agent configuration:** reconstructed
+  T-11 and T-170–T-173 from Git history; restored Codex never/full-access and
+  exact website trust while preserving the current model; transactionally
+  recreated 17 missing harness/global discovery links; retained surviving
+  Claude owner state and the repository hook; and passed host-side idempotence,
+  doctor, TOML, transaction-mode, and fresh Codex discovery/default checks.
 
 - **T-178 — Align repository housekeeping paths:** moved the website task board
   to root `TODO.md`; moved harness client sources to `.codex/` and `.claude/`;

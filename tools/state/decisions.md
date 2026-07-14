@@ -1,5 +1,12 @@
 # Durable decisions
 
+- **2026-07-15 — Recover the current layered configuration, not retired T-11
+  project machinery.** Restore T-11's owner Codex autonomy keys and the
+  T-170–T-173 portable harness links from committed evidence. Preserve current
+  model, trust, Claude state, credentials, and owner shell/SSH edits. Do not
+  resurrect project `.claude/settings.json`, `.mcp.json`, Claude agents, or the
+  absent config-approval marker that T-142 intentionally removed; keep the
+  surviving Git hook because repository policy forbids agent edits to `.git`.
 - **2026-07-13 — Use a Codex-only repository workflow.** The inactive
   integration and project configuration, obsolete comparison infrastructure,
   retained comparison data, and transient artifacts are removed from the
