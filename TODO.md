@@ -1,11 +1,40 @@
 # Lab website — task board
 
-Protocol and schemas: `skills/context-ledger.md`. In-flight detail:
-`tools/state/session.md`. Next free id: T-180.
+Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
+`tools/state/session.md`. Git preserves older completion detail and command
+evidence. Next free id: T-181.
+
+## Recovery priority — do before any other task
+
+- **T-180 — Exhaustively re-audit Git history for additional recovery
+  candidates:**
+  1. Traverse the complete `website` and `harness` commit graphs, all local
+     refs, reflogs, and read-only unreachable-object reports. Begin with the
+     verified pre-incident website revision `628b53a` and harness revision
+     `5f6382b`; reconcile every restoration and configuration-recovery commit.
+  2. Compare pre-incident and current tracked inventories, modes, symlinks,
+     renamed control paths, deployment exclusions, and task state. Reconfirm
+     the exact eight website paths restored after the deletion and search for
+     additional tracked or dangling-object candidates without modifying the
+     public site.
+  3. Reconstruct website T-11 and T-170–T-179 from Git evidence, including old
+     path names before T-178. Cross-reference harness T-172 rather than keeping
+     a second divergent harness incident transcript here. T-179's first
+     unreachable-object search found surviving ledger variants but not the
+     deleted ignored proposal payload; repeat exhaustively without assuming a
+     second search will recover it.
+  4. Produce a recovery table with source commit/object/path, pre-incident
+     purpose, current state, confidence, sensitivity boundary, dependencies,
+     validation, and rollback. Distinguish already recovered, intentionally
+     retired, confirmed missing, and unresolved state.
+  5. Never inspect or restore credentials, private keys, tokens, auth stores,
+     shell/client histories, live sessions, `.git` internals, or secret values.
+     Perform no restoration or publication during the audit; present one
+     reviewed plan first.
 
 ## Active
 
-None.
+None besides recovery-first T-180.
 
 ## Blocked / awaiting user
 
@@ -13,90 +42,56 @@ None.
 
 ## Recently completed
 
-- **T-179 — Recover untracked global/local agent configuration:** reconstructed
-  T-11 and T-170–T-173 from Git history; restored Codex never/full-access and
-  exact website trust while preserving the current model; transactionally
-  recreated 17 missing harness/global discovery links; retained surviving
-  Claude owner state and the repository hook; and passed host-side idempotence,
-  doctor, TOML, transaction-mode, and fresh Codex discovery/default checks.
+- **T-179 — Recover and consolidate global/local agent configuration:** after
+  the home-deletion incident, reconstructed T-11 and T-170–T-173 from Git
+  history and chose the current layered design rather than retired project
+  machinery. Restored Codex `never`/`danger-full-access` plus exact home and
+  website trust while preserving Sol/high; harness transaction
+  `20260714T202625Z-3548153` recreated 17 missing command/guidance/rule/skill
+  links and retained eight surviving Claude links. Repeated plan/doctor,
+  mode-0600 transaction, TOML, idempotence, and fresh host Codex checks passed
+  (`GLOBAL_OK SKILL_OK`). Surviving Claude settings and the untracked website
+  pre-commit hook were left unchanged; agents do not edit `.git`. Product-
+  managed policy may still override local defaults on some surfaces, but the
+  verified fresh host CLI honored them. The app's synthetic read-only
+  `.agents` mount blocked one sandboxed probe; the bounded real-host recovery
+  recreated the missing host directory and passed. Post-incident duplicate
+  facts, decisions, session chronology, and the temporary T-179 driver report
+  were consolidated into this board. Both ledgers pass structural/budget and
+  diff checks; website metrics and standards checks pass; no deploy-included
+  file changed. The isolated deployment-policy test stopped before execution
+  because recovered normal-PATH `lftp` is absent; no network or deployment ran,
+  and T-180 owns that recovery evidence.
 
-- **T-178 — Align repository housekeeping paths:** moved the website task board
-  to root `TODO.md`; moved harness client sources to `.codex/` and `.claude/`;
-  updated every current reference and the fail-closed legacy-link migration;
-  and passed website, isolated-installer, live-link, and clean-clone checks.
+- **T-170–T-176 and T-178 — Establish and move the portable agent harness:**
+  separated
+  cross-project agreements from website rules; added conservative promotion;
+  versioned the non-secret allowlisted harness; integrated Codex and Claude;
+  diagnosed shell-snapshot/arg0 warnings; pushed the harness after the owner
+  configured its SSH remote; transferred harness task ownership; and moved the
+  website board plus harness client sources to their current root/dot paths.
+  The canonical implementation and current recovery state now live in
+  `~/harness`; this board retains only the website-facing outcome. Key durable
+  commits include `194fc04`, `7f96931`, `805db48`, `0bd31d1`, and `628b53a`.
 
-- **T-177 — Repair and close the ResearchMap import:** corrected six reported
-  conflicts and two silent similarity merges with a minimal 16-operation
-  repair, received confirmation that it imported successfully, recorded all
-  eight new IDs and 411 visible managed IDs, deleted the unuploaded five-row
-  live residual, and removed every transient ResearchMap artifact and cache.
+- **T-177 and T-167 — Complete the ResearchMap reconciliation:** reviewed 29
+  held classifications, published the mirrored citation corrections, audited
+  an additive 251-operation plan, repaired six conflicts and two silent merges,
+  received successful-import confirmation, recorded all eight forced IDs and
+  411 visible managed IDs, and removed the unuploaded residual and transient
+  import artifacts. Exact operation and hash evidence remains in Git and
+  `tools/researchmap-state.json`.
 
-- **T-167 — Resolve held metadata cases:** corrected three citation conflicts,
-  classified all 29 held matches, reconciled one safely detected live candidate
-  drift, and independently audited a 251-operation additive ResearchMap plan
-  with 25 inserts, 226 updates, zero deletes, and zero unresolved ambiguities.
-  All offline/browser/live gates passed; mirrored Achievements pages were
-  published at `fd2f2d8`, and the resulting import was completed under T-177.
+- **T-168 and T-146–T-166 — Close the benchmark/metadata campaign:** relocated
+  173 referenced benchmark runs to the ignored benchmark archive, reconciled
+  all result/metric pointers, installed routing policy `2026-07-14.3`,
+  completed the ResearchMap metadata/export sequence, and published the
+  validated Achievements pages. Detailed evidence remains in the benchmark
+  data, state files, metrics, and Git.
 
-- **T-176 — Prepare a restart-safe handoff:** audited the board, session,
-  reports, metrics, website worktree, and synchronized harness repository;
-  confirmed there is no active task, preserved the T-167 dirty working set,
-  and made the explicit restart boundary “wait for user; do not start T-169.”
+## Archived detail
 
-- **T-175 — Push the integrated harness:** after the user externally changed
-  `origin` to the configured SSH alias and requested a retry, confirmed the
-  remote was empty, passed all local and clean-clone gates, pushed local
-  `0bd31d1` to new remote `main` without force, established tracking, and
-  verified exact commit equality with zero divergence. T-169 was not started.
-
-- **T-174 — Diagnose Codex CLI shell-snapshot warnings safely:** traced the
-  arg0 warning to accumulated/racing temp directories, removed 329 empty dirs,
-  quarantined four inactive scaffolding dirs, preserved three active locks,
-  isolated the snapshot failure to four extglob-dependent system-completion
-  functions, made Bash completion interactive-only, passed a clean default
-  ephemeral discovery probe, and documented the workaround at harness commit
-  `0bd31d1`. T-169 was not started.
-
-- **T-173 — Integrate Codex and Claude in a portable harness:** preserved Git
-  history while moving the repository to `~/harness`, split Codex/Claude/shared
-  surfaces, installed common guidance and six skills for both clients, excluded
-  sensitive/runtime Claude state, added the requested GitHub `origin` without
-  pushing, passed live and clean-clone discovery checks, and committed
-  `805db48` locally.
-
-- **T-172 — Version the portable global Codex harness:** created the original
-  allowlisted repository (moved to `~/harness` by T-173), made global guidance,
-  six personal skills, and reviewed rules canonical there, installed
-  fail-closed discovery symlinks, verified a fresh Codex project and
-  clean-clone restore, and committed `7f96931` without sensitive/runtime files.
-- **T-171 — Add automatic global-configuration promotion policy:** added and
-  fresh-project-verified a global rule that automatically promotes only stable,
-  evidence-backed, non-sensitive cross-project guidance and personal skills;
-  keeps repositories self-contained; and batches approval for `config.toml`,
-  profiles, hooks, MCP, plugins, authentication, packages, and external state.
-- **T-170 — Separate project and global Codex configuration:** installed and
-  diagnostically verified `~/.codex/AGENTS.md` plus six reusable personal
-  skills for ledgers, delegation, evidence, research engineering,
-  presentations, and research-program management. Kept all website formats,
-  deployment, ResearchMap, ledger adapters, and WBD routing evidence local;
-  left the existing mode-0600 `~/.codex/config.toml` unread and untouched.
-- **T-168 — Relocate benchmark artifacts and clear transient output:** moved
-  173 referenced raw runs (1,102 files, 57 MB) to the ignored benchmark-owned
-  archive, migrated every producer/result/metric pointer, passed all checks,
-  and left `tools/out/` empty.
-- **T-166 — Repair and re-import the ResearchMap JSONL:** repaired all 86
-  bilingual-title validation errors, received confirmation that the retry
-  import succeeded, recorded 379 visible matched IDs, and removed transient
-  import artifacts.
-- **T-165 — Validate, publish, and verify:** passed offline, browser,
-  deployment, live-byte, and remote-commit gates; published both Achievements
-  pages at commit `65dac52`.
-- **T-157–T-164 — ResearchMap metadata campaign:** inventoried 309 entries,
-  filled evidence-backed metadata, normalized mirrored Achievements formatting,
-  added 30 arXiv/BibTeX rows per language, aligned exporter schemas, and
-  generated an independently audited additive import.
-- **T-146–T-156 — GPT-5.6 benchmark campaign and housekeeping:** reconciled
-  173 runs, installed routing policy `2026-07-14.3`, published comparison
-  tables at the bottom of the README, and preserved all referenced evidence.
-
-Older completion history remains in Git and `tools/codex-log.md`.
+Older task-by-task completion summaries, driver reports, and the pre-cleanup
+T-179 state remain in Git through commit `e9ac8a0` and earlier. Use them as
+evidence during T-180, not as current instructions. Harness work is owned by
+`~/harness/TODO.md`.

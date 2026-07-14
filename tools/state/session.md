@@ -1,34 +1,27 @@
 driver: codex
-updated: 2026-07-15T05:30+0900
-task: T-179 Recover untracked global/local agent configuration | idle
+updated: 2026-07-15T06:31+0900
+task: T-179 Consolidate post-incident recovery ledgers | idle
 status: idle
 
 ## Now
-- T-179 is complete. T-11 was reconstructed at commit `194fc04`; its later
-  README preserves the exact Codex bootstrap and hook recipes. T-170–T-173's
-  superseding portable/global layer is canonical in `~/harness`.
-- Merged never/full-access and exact website trust into the mode-600 Codex
-  config while preserving Sol/high and the existing home trust. Surviving
-  Claude user/project state was inspected only through selected non-secret
-  keys and left unchanged.
-- Harness transaction `20260714T202625Z-3548153` created 17 missing links and
-  retained eight Claude links. The repeated host plan is all-keep, doctor has
-  zero failures, both manifest files are mode 600, and Codex/agent discovery
-  each has seven linked skills.
-- A fresh host-level, tool-free Codex process returned `GLOBAL_OK SKILL_OK` and
-  reported Sol/high, approval never, and danger-full-access. The current app
-  process retains its startup mounts/policy until restarted.
-- The untracked pre-commit hook survived. Its Claude-size branch is obsolete
-  after T-142 but inert for the current Codex-only tracked tree; repository
-  policy forbids the agent from editing `.git`, so it was preserved.
+- Harness and website recovery facts are consolidated into their `TODO.md`
+  boards; superseded chronology was pruned from website facts/decisions.
+- T-180 and harness T-172 are the first recovery-priority items and require an
+  exhaustive read-only Git-history audit before other work.
+- The old harness recovery handoff and exact T-179 driver report were removed
+  after their unique facts were preserved. No pre-incident report was removed.
+- Consolidation is complete. T-180 is now the next website task; its harness
+  counterpart is T-172.
 
 ## Working set
-- Website ledger/report/metrics changes for T-179 only.
-- Owner/global recovery paths are complete and independently validated.
+- No public-site file. The intended ledger changes travel in one local website
+  commit and one local harness commit; neither is pushed by this task.
 
 ## Open questions
-- Product-managed policy may still override local never/full-access in some
-  surfaces; the direct host CLI cold-start probe honored the recovered values.
+- `tools/test-deploy-policy.sh` could not start its local file-transport check:
+  line 31 reports `lftp: command not found`. No public file changed, and no
+  network/deployment ran. Treat the missing normal-PATH tool as T-180 recovery
+  evidence; do not install or improvise it during this ledger cleanup.
 
 ## Awaiting user
 - None.
