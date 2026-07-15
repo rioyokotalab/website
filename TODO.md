@@ -2,7 +2,7 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-184.
+evidence. Next free id: T-185.
 
 ## Recovery priority — do before any other task
 
@@ -44,7 +44,12 @@ evidence. Next free id: T-184.
 
 ## Active
 
-None. Current recovery/tool/fleet work is owned by `~/harness/TODO.md`.
+- **T-184 — Reconcile global PIE and node-onboarding skill work (in progress
+  2026-07-16):** keep the website ledger compact and consistent while harness
+  T-189 creates the shared ledger-backed PIE skill and T-190 uses it to design
+  automatic onboarding for a newly configured SSH host. Implementation is
+  owned by `~/harness`; no public-site, deployment, credential, or remote write
+  is in website scope.
 
 ## Blocked / awaiting user
 
