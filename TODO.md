@@ -44,18 +44,22 @@ evidence. Next free id: T-185.
 
 ## Active
 
-- **T-184 — Reconcile global PIE and node-onboarding skill work (in progress
-  2026-07-16):** keep the website ledger compact and consistent while harness
-  T-189 creates the shared ledger-backed PIE skill and T-190 uses it to design
-  automatic onboarding for a newly configured SSH host. Implementation is
-  owned by `~/harness`; no public-site, deployment, credential, or remote write
-  is in website scope.
+None.
 
 ## Blocked / awaiting user
 
 None.
 
 ## Recently completed
+
+- **T-184 — Reconcile global PIE and node-onboarding skill work (complete
+  2026-07-16):** harness T-189 established the shared ledger-backed PIE skill;
+  T-190 then implemented, installed, tested, and published the guarded
+  `onboard HOST` workflow at `b5bb171`, with its compact completion ledger at
+  `d5b82cd`. The alias remains the entire discovery boundary; credentials stay
+  owner-only; both manual restore gates precede separately authorized
+  scheduling. No live node, public-site file, deployment,
+  credential, SSH configuration, package, or scheduler state changed.
 
 - **T-179 — Recover and consolidate global/local agent configuration
   (complete):** reconstructed the non-secret layered configuration from Git,
