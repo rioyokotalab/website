@@ -1,17 +1,19 @@
 driver: codex
-updated: 2026-07-16T20:15+0900
-task: idle
-status: idle
+updated: 2026-07-17T14:36+0900
+task: T-185 Assess risks of making the repository public
+status: in-progress
 
 ## Now
-- T-185 is complete. Public visibility creates no direct write path to the
-  static site, but a sanitized allowlist mirror is safer than exposing deleted
-  personal content, operational history, and deployment topology. The initial
-  ledger-size failure was corrected by pruning completed detail preserved in
-  Git; all closeout checks now pass.
+- Recovered the interrupted T-185 closeout after the power outage. The saved
+  report and four ledger changes passed metrics, Markdown-size, standards, and
+  diff checks and are preserved in local commit `4864fab`. A generic GitHub
+  fetch failed because it did not use the repository's configured agent
+  socket; retry the exact push-gate pull through that socket before deciding
+  whether owner action is required.
 
 ## Working set
-- None.
+- `tools/state/session.md`
+- Local closeout commit `4864fab`
 
 ## Open questions
 - None.
