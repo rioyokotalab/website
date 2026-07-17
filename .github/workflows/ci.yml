@@ -35,6 +35,13 @@ jobs:
           test "$(git -C "$RUNNER_TEMP/harness" rev-parse HEAD)" = \
             6bcadab38e94540fbce33143962bb38057a44e1b
 
+      - name: Install the pinned local-mirror test dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends \
+            lftp=4.9.2-2ubuntu1.1
+          lftp --version | grep -F 'Version 4.9.2'
+
       - name: Validate ledger and static-site policy
         env:
           HARNESS_BIN: ${{ runner.temp }}/harness/bin/harness

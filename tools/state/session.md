@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-17T17:10+0900
+updated: 2026-07-17T17:15+0900
 task: T-186 Publish recovered ledger commits and add offline CI
 status: in-progress
 
@@ -15,7 +15,11 @@ status: in-progress
   `29565322001` failed before browser setup because the generic runner lacked
   the guarded-delete harness required by deploy-policy tests. The correction
   fetches and verifies exact public harness commit `6bcadab` in runner temp and
-  passes its binary explicitly; rerun the full hosted gate.
+  passes its binary explicitly. Hosted run `29565463735` then reached the same
+  step but failed because the runner also lacks `lftp`, which the local
+  `file:///` mirror regression exercises. Install exact Ubuntu 24.04 package
+  `4.9.2-2ubuntu1.1` without running any live-site check, then rerun the hosted
+  gate.
 
 ## Working set
 - `TODO.md`
