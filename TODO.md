@@ -44,17 +44,20 @@ evidence. Next free id: T-188.
 
 ## Active
 
-- **T-187 — Validate strict `main` ruleset through a pull request
-  (`awaiting-review`):** active ruleset `19127356` exactly matches the reviewed
-  five-rule payload with no bypass actor. This deploy-excluded ledger-only test
-  PR requires `Offline checks` and non-author `rioyokota2` approval, then squash
-  or rebase merge. No deployment or public-site file is in scope.
+None.
 
 ## Blocked / awaiting user
 
 None.
 
 ## Recently completed
+
+- **T-187 — Validate strict `main` ruleset through a pull request (complete
+  2026-07-18):** active ruleset `19127356` still exactly matches the reviewed
+  five-rule payload with no bypass actor. Deploy-excluded ledger-only PR #1
+  passed required `Offline checks`, received non-author `rioyokota2` approval
+  on its tested head, and squash-merged through the ruleset as `162bef0`. No
+  deployment or public-site file changed.
 
 - **T-186 — Publish recovered ledger commits and add offline CI (complete
   2026-07-17):** pushed the three recovered T-185 commits unchanged, then added
