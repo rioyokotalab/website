@@ -2,7 +2,7 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-185.
+evidence. Next free id: T-186.
 
 ## Recovery priority — do before any other task
 
@@ -52,6 +52,17 @@ None.
 
 ## Recently completed
 
+- **T-185 — Assess risks of making the repository public (complete
+  2026-07-16):** the current static tree, 379-commit reachable history, public
+  staging boundary, client dependencies, live headers/redirects, and excluded
+  live paths were reviewed. Both offline and live security suites pass; no
+  confirmed credential or direct repository-to-site compromise path was found.
+  Public visibility still exposes deleted photos/member content, old config and
+  reports, deployment topology, and the local credential-file location. Prefer
+  a sanitized public allowlist mirror, or complete an owner privacy/history
+  review and enable repository/account protections before exposing this exact
+  history. No public file, account, push, or deployment changed.
+
 - **T-184 — Reconcile global PIE and node-onboarding skill work (complete
   2026-07-16):** harness T-189 established the shared ledger-backed PIE skill;
   T-190 then implemented, installed, tested, and published the guarded
@@ -70,36 +81,10 @@ None.
   and T-182 passed the complete offline deployment-policy suite. No public
   file, credential, deployment, or unrelated owner setting changed.
 
-- **T-170–T-176 and T-178 — Establish and move the portable agent harness:**
-  separated
-  cross-project agreements from website rules; added conservative promotion;
-  versioned the non-secret allowlisted harness; integrated Codex and Claude;
-  diagnosed shell-snapshot/arg0 warnings; pushed the harness after the owner
-  configured its SSH remote; transferred harness task ownership; and moved the
-  website board plus harness client sources to their current root/dot paths.
-  The canonical implementation and current recovery state now live in
-  `~/harness`; this board retains only the website-facing outcome. Key durable
-  commits include `194fc04`, `7f96931`, `805db48`, `0bd31d1`, and `628b53a`.
-
-- **T-177 and T-167 — Complete the ResearchMap reconciliation:** reviewed 29
-  held classifications, published the mirrored citation corrections, audited
-  an additive 251-operation plan, repaired six conflicts and two silent merges,
-  received successful-import confirmation, recorded all eight forced IDs and
-  411 visible managed IDs, and removed the unuploaded residual and transient
-  import artifacts. Exact operation and hash evidence remains in Git and
-  `tools/researchmap-state.json`.
-
-- **T-168 and T-146–T-166 — Close the benchmark/metadata campaign:** relocated
-  173 referenced benchmark runs to the ignored benchmark archive, reconciled
-  all result/metric pointers, installed routing policy `2026-07-14.3`,
-  completed the ResearchMap metadata/export sequence, and published the
-  validated Achievements pages. Detailed evidence remains in the benchmark
-  data, state files, metrics, and Git.
-
 ## Archived detail
 
-Superseded task detail remains in Git through `e9ac8a0`; harness work is owned
-by `~/harness/TODO.md`.
+Superseded task detail remains in Git; harness work is owned by
+`~/harness/TODO.md`.
 
 ## Issues appended during the T-180 sweep
 
