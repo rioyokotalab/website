@@ -48,7 +48,15 @@ None.
 
 ## Blocked / awaiting user
 
-None.
+- **T-185 closeout sync:** the substantive public-repository risk assessment is
+  complete and preserved in local commit `4864fab`; recovery checkpoint
+  `fd1f19e` records the interrupted-session state, and the current local
+  blocker checkpoint records the failed gate. The configured agent socket
+  authenticated for the first recovery pull, but the mandatory repeat
+  pre-push pull failed with `Permission denied (publickey)`. Per the publish
+  gate, restore the GitHub SSH agent in a real terminal, then rerun the exact
+  socket-bound pull, reconcile any contributor changes, and push without
+  force. No deployment or public-site file changed.
 
 ## Recently completed
 
