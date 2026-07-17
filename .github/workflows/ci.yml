@@ -54,7 +54,8 @@ jobs:
       - name: Install locked browser-test dependencies
         run: |
           npm ci
-          npx playwright install --with-deps chromium
+          PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers \
+            npx playwright install --with-deps chromium
 
       - name: Run locked browser tests
         run: npm run test:browser
