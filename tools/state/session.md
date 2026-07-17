@@ -1,19 +1,24 @@
 driver: codex
-updated: 2026-07-17T17:44+0900
-task: none
-status: idle
+updated: 2026-07-18T08:26+0900
+task: T-187 Validate strict main ruleset through a pull request
+status: awaiting-user
 
 ## Now
-- T-186 is complete. The recovered T-185 commits were published unchanged and
-  the separate read-only CI now passes the complete offline static and locked
-  browser suites in hosted run `29566375620` at `c90760b`. No public-site file
-  was deployed. Repository rules remain a later T-251 external-setting gate.
+- Active ruleset `19127356` exactly matches the reviewed website payload. This
+  deploy-excluded ledger-only PR #1 is open and exercises required `Offline
+  checks` plus one non-author approval without touching or deploying a
+  public-site file.
 
 ## Working set
-- None.
+- `TODO.md`
+- `tools/state/session.md`
+- `tools/out/driver-report-20260718-0826.md`
+- `tools/task-metrics.jsonl`
+- `tools/codex-log.md`
 
 ## Open questions
 - None.
 
 ## Awaiting user
-- None.
+- `rioyokota2` approval on https://github.com/rioyokotalab/website/pull/1 after
+  hosted CI passes.
