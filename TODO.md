@@ -2,7 +2,7 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-187.
+evidence. Next free id: T-188.
 
 ## Recovery priority — do before any other task
 
@@ -44,7 +44,11 @@ evidence. Next free id: T-187.
 
 ## Active
 
-None.
+- **T-187 — Validate strict `main` ruleset through a pull request
+  (`awaiting-review`):** active ruleset `19127356` exactly matches the reviewed
+  five-rule payload with no bypass actor. This deploy-excluded ledger-only test
+  PR requires `Offline checks` and non-author `rioyokota2` approval, then squash
+  or rebase merge. No deployment or public-site file is in scope.
 
 ## Blocked / awaiting user
 
