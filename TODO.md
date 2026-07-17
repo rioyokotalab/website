@@ -44,18 +44,20 @@ evidence. Next free id: T-187.
 
 ## Active
 
-- **T-186 — Publish recovered ledger commits and add offline CI:** owner-approved
-  T-251 execution. Review and push the three existing T-185 recovery commits
-  without rewriting, then add a credential-free offline GitHub Actions check
-  in a separate verified commit. Do not deploy public-site files. Strict
-  repository rules remain a later external-setting step after eligible-reviewer
-  verification and all required direct pushes.
+None.
 
 ## Blocked / awaiting user
 
 None.
 
 ## Recently completed
+
+- **T-186 — Publish recovered ledger commits and add offline CI (complete
+  2026-07-17):** pushed the three recovered T-185 commits unchanged, then added
+  read-only Ubuntu 24.04 CI for the complete offline static and locked browser
+  suites. Hosted run `29566375620` passed at `c90760b`; no public-site file was
+  deployed. Strict repository rules remain gated on an eligible non-author
+  reviewer and completion of all required direct pushes.
 
 - **T-185 — Assess risks of making the repository public (complete
   2026-07-16):** the current static tree, 379-commit reachable history, public
