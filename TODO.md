@@ -2,7 +2,7 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-186.
+evidence. Next free id: T-187.
 
 ## Recovery priority — do before any other task
 
@@ -44,19 +44,16 @@ evidence. Next free id: T-186.
 
 ## Active
 
-None.
+- **T-186 — Publish recovered ledger commits and add offline CI:** owner-approved
+  T-251 execution. Review and push the three existing T-185 recovery commits
+  without rewriting, then add a credential-free offline GitHub Actions check
+  in a separate verified commit. Do not deploy public-site files. Strict
+  repository rules remain a later external-setting step after eligible-reviewer
+  verification and all required direct pushes.
 
 ## Blocked / awaiting user
 
-- **T-185 closeout sync:** the substantive public-repository risk assessment is
-  complete and preserved in local commit `4864fab`; recovery checkpoint
-  `fd1f19e` records the interrupted-session state, and the current local
-  blocker checkpoint records the failed gate. The configured agent socket
-  authenticated for the first recovery pull, but the mandatory repeat
-  pre-push pull failed with `Permission denied (publickey)`. Per the publish
-  gate, restore the GitHub SSH agent in a real terminal, then rerun the exact
-  socket-bound pull, reconcile any contributor changes, and push without
-  force. No deployment or public-site file changed.
+None.
 
 ## Recently completed
 

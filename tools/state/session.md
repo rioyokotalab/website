@@ -1,28 +1,25 @@
 driver: codex
-updated: 2026-07-17T14:38+0900
-task: T-185 Assess risks of making the repository public
-status: awaiting-user
+updated: 2026-07-17T17:04+0900
+task: T-186 Publish recovered ledger commits and add offline CI
+status: in-progress
 
 ## Now
-- Recovered the interrupted T-185 closeout after the power outage. The saved
-  report and four ledger changes passed metrics, Markdown-size, standards, and
-  diff checks and are preserved in local commit `4864fab`; recovery checkpoint
-  `fd1f19e` is also committed. The configured socket completed one clean
-  recovery pull, but the required repeat pre-push pull then failed with GitHub
-  `Permission denied (publickey)`. Stop per the publish playbook rather than
-  retrying or improvising with credentials.
+- The three existing T-185 recovery commits were reviewed, passed the complete
+  offline suite, and were pushed unchanged at `fdaa18d` with no deployment.
+  A separate read-only GitHub Actions workflow now runs ledger/static policy
+  checks plus the locked Playwright browser suite on Ubuntu 24.04. Validate,
+  commit, push, and require its hosted check to pass. The complete local static
+  suite passes; the restarted machine's pre-existing `node_modules` is missing
+  `playwright/lib/common`, so local browser execution is not acceptance evidence
+  and the generated dependency tree was not destructively replaced.
 
 ## Working set
-- None after the local blocker checkpoint. The saved ignored report is
-  `tools/out/driver-report-20260717-1438.md`; commits `4864fab` and `fd1f19e`
-  plus the blocker checkpoint remain unpublished.
+- `TODO.md`
+- `tools/state/session.md`
+- `.github/workflows/ci.yml` after the existing commits are published
 
 ## Open questions
 - None.
 
 ## Awaiting user
-- Restore the repository's GitHub SSH agent in a real terminal, then ask Codex
-  to resume. Exact next gate:
-  `SSH_AUTH_SOCK="$HOME/.ssh/agent.sock" git pull --rebase --autostash origin main`.
-  If it succeeds, reconcile any contributor changes, validate, repeat the
-  pre-push gate, push normally, and verify `HEAD == origin/main`.
+- None.
