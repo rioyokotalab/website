@@ -25,7 +25,19 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Fetch the pinned public guarded-delete harness
+        run: |
+          git init "$RUNNER_TEMP/harness"
+          git -C "$RUNNER_TEMP/harness" fetch --depth=1 \
+            https://github.com/rioyokotalab/harness.git \
+            6bcadab38e94540fbce33143962bb38057a44e1b
+          git -C "$RUNNER_TEMP/harness" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/harness" rev-parse HEAD)" = \
+            6bcadab38e94540fbce33143962bb38057a44e1b
+
       - name: Validate ledger and static-site policy
+        env:
+          HARNESS_BIN: ${{ runner.temp }}/harness/bin/harness
         run: |
           python3 tools/task-metrics.py validate
           python3 tools/check-md-size.py

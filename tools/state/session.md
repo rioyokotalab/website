@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-17T17:04+0900
+updated: 2026-07-17T17:10+0900
 task: T-186 Publish recovered ledger commits and add offline CI
 status: in-progress
 
@@ -11,7 +11,11 @@ status: in-progress
   commit, push, and require its hosted check to pass. The complete local static
   suite passes; the restarted machine's pre-existing `node_modules` is missing
   `playwright/lib/common`, so local browser execution is not acceptance evidence
-  and the generated dependency tree was not destructively replaced.
+  and the generated dependency tree was not destructively replaced. Hosted run
+  `29565322001` failed before browser setup because the generic runner lacked
+  the guarded-delete harness required by deploy-policy tests. The correction
+  fetches and verifies exact public harness commit `6bcadab` in runner temp and
+  passes its binary explicitly; rerun the full hosted gate.
 
 ## Working set
 - `TODO.md`
