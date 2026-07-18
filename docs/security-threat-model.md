@@ -57,6 +57,16 @@ This is where public status adds the most risk. Confirmed gaps (2026-07-18):
 | B6 | `has_wiki`/`has_projects` enabled but **unused** | Low | Disable to reduce surface (T-197) |
 | B7 | CI `npm ci` runs **lifecycle scripts**; top-level perms not minimal | Medium | `--ignore-scripts`, explicit minimal `permissions` (T-196) |
 | B8 | No `SECURITY.md`, no workflow-security regression test | Low | Add both (T-196) |
+| B9 | **66 org-inherited write collaborators** + zero required approvals: any can merge to the deploy-feeding `main` unreviewed | High | Owner decision — org-wide/people scope, see T-197 note |
+
+B1–B8 are resolved by T-196/T-197. B9 is the highest-severity item and is not
+agent-actionable: the 66 write accounts are inherited from the `rioyokotalab`
+org (`default_repository_permission: write`), so they cannot be removed
+per-repository, and the ruleset's zero-approval setting was the owner's explicit
+choice. Options for the owner: (a) require ≥1 approving review in ruleset
+`19127356`; (b) lower the org default repository permission to `read` (org-wide
+blast radius); (c) accept the risk as trusted lab members. Recorded for an
+explicit owner decision; no change made.
 
 Already sound: secret scanning + push protection on with zero alerts; the
 value-free history audit (`tools/public-repo-audit.py`) found no credential;
@@ -86,6 +96,10 @@ transport. Assessed adequate; no change queued.
   workflow token read-only, disable token PR-approval, require SHA-pinned
   actions, enable Dependabot security updates, require fork-PR approval for all
   outside collaborators, disable unused wiki/projects.
-- **Proposals (owner judgment)**: raise HSTS `max-age` toward a preload-length
-  commitment; consider restricting Actions `allowed_actions` to selected once
-  the exact pinned set is enumerated.
+- **T-197 applied** (settings): default workflow token read-only, token cannot
+  approve PRs, SHA-pinned actions required, Actions restricted to GitHub-owned,
+  Dependabot security updates + private vulnerability reporting enabled, fork-PR
+  approval for all external contributors, unused wiki/projects disabled.
+  Rollback: `tools/out/t197-settings-rollback.md`.
+- **Proposals (owner judgment)**: resolve B9 (write-collaborator review gate);
+  raise HSTS `max-age` toward a preload-length commitment.

@@ -13,7 +13,12 @@ data = json.loads(path.read_text(encoding="utf-8"))
 assert data["name"] == "main-strict-review"
 assert data["target"] == "branch"
 assert data["enforcement"] == "active"
-assert data["bypass_actors"] == []
+# Repository-admin bypass (role id 5) lets the owner — the sole admin; the
+# other collaborators are write — merge own PRs without review, while the
+# review requirement below gates everyone else (T-198).
+assert data["bypass_actors"] == [
+    {"actor_id": 5, "actor_type": "RepositoryRole", "bypass_mode": "always"}
+]
 assert data["conditions"] == {
     "ref_name": {"exclude": [], "include": ["refs/heads/main"]}
 }
@@ -30,7 +35,7 @@ assert pull_request["parameters"] == {
     "dismiss_stale_reviews_on_push": True,
     "require_code_owner_review": False,
     "require_last_push_approval": False,
-    "required_approving_review_count": 0,
+    "required_approving_review_count": 1,
     "required_review_thread_resolution": True,
 }
 checks = next(rule for rule in data["rules"] if rule["type"] == "required_status_checks")
