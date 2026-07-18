@@ -1,24 +1,30 @@
 driver: claude
-updated: 2026-07-18T22:05+0900
+updated: 2026-07-18T23:10+0900
 task: idle
 status: idle
 
 ## Now
-- T-200 (security proposals) resolved. HSTS max-age raised 1 day → 1 year in
-  .htaccess (host-scoped), merged `d8a23ce`; live effect pending owner deploy
-  (tools/out/t200-hsts-deploy-handoff.md — needs SFTP password). Org
-  default_repository_permission change DECLINED by owner (org-wide 100+ repos;
-  T-198 review gate suffices). Recorded in decisions.md + threat model.
-- Board clear. Next free ID: T-201.
-- Skills applied: config-proposals, publish-and-verify, html-editing (CRLF/LF
-  check on .htaccess), context-ledger.
+- T-200 COMPLETE: HSTS `.htaccess` change deployed to the live site and
+  verified — `Strict-Transport-Security: max-age=31536000` served, HTTP→HTTPS
+  301 intact, live security suite passes. Deploy touched 3 files (.htaccess +
+  drifted style.css, cv/cv.pdf), 0 deletions.
+- T-202 COMPLETE (`439ef4d`): fixed the deploy deletion guard, which mis-read
+  SFTP in-place updates ("Removing old file" + "Transferring") as unmatched
+  deletions and blocked every real deploy. True deletions = removed-not-
+  transferred; SFTP-format test coverage added. This was the T-200 blocker.
+- The deploy connection was restored by the owner (recreated `~/.ssh`
+  web-password/askpass/ControlMaster wiped by the 2026-07-15 incident; see
+  memory + website commit `1467909`).
+- Board clear. Next free ID: T-203.
+- Skills applied: evidence-first-research (git-history recovery),
+  publish-and-verify (deploy gates), research-engineering-validation (guard
+  fix + tests), context-ledger.
 
 ## Working set
-- None (closure committed on the T-200 branch).
+- None (T-200/T-202 closure pending commit).
 
 ## Open questions
 - None.
 
 ## Awaiting user
-- Deploy the HSTS .htaccess (owner-run) per the T-200 handoff.
 - Optional: T-194 "notify only for failed workflows" checkbox.
