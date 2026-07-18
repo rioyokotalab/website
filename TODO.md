@@ -2,7 +2,7 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-188.
+evidence. Next free id: T-189.
 
 ## Recovery priority — do before any other task
 
@@ -44,7 +44,21 @@ evidence. Next free id: T-188.
 
 ## Active
 
-None.
+- **T-188 — Make website independent of harness (executing):** the owner gave
+  explicit `go` on 2026-07-18. The clean, fresh-fetched website revision is
+  `daca468`; coordinated harness task T-263
+  records the opposite-side removals. Replace the harness-backed cleanup
+  runtime with a website-owned manifest/token implementation and safety tests;
+  remove the pinned harness fetch and `HARNESS_BIN` from CI; locally own the
+  website ruleset restore payload/test and website public-history audit
+  evidence; and provide a checksum-pinned rootless local `lftp` bootstrap so a
+  clean website checkout needs no harness checkout. Preserve immutable
+  historical provenance, current deployment behavior, and the existing live
+  `lftp` installation. Do not deploy, mutate account settings, inspect
+  credentials, or rewrite history. The first action is the website-owned
+  guarded-cleanup implementation. Acceptance is a complete website suite from
+  a clean clone with no harness checkout or path available, plus its own
+  required CI.
 
 ## Blocked / awaiting user
 
@@ -97,38 +111,6 @@ None.
 
 ## Archived detail
 
-Superseded task detail remains in Git; harness work is owned by
-`~/harness/TODO.md`.
-
-## Issues appended during the T-180 sweep
-
-- **T-181 — Remove validation-command npm logs (complete 2026-07-15):** an
-  incorrect assumption that repository validation was exposed as npm scripts
-  failed before any test and created two diagnostic logs under `~/.npm/_logs`.
-  The files were never read; each exact canonical path was independently
-  checked for owner and post-incident timestamp, unlinked non-recursively, and
-  verified absent. The actual ledger checks are
-  `python3 tools/task-metrics.py validate`, `python3 tools/check-md-size.py`,
-  and `python3 tools/standards-check.py`.
-- **T-182 — Guard deployment staging and mirror deletion (complete
-  2026-07-15):** the T-175 review found raw recursive temporary-tree cleanup in
-  `deploy.sh` and three test/preview scripts, plus unbounded remote recursive
-  deletion in the lftp mirror. Added one shared canonical cleanup helper that
-  delegates to the harness's immutable manifest/token workflow, protects the
-  account home, verifies absence, and preserves operation/signal status. All
-  four owners now use it; no raw recursive cleanup remains in website shell
-  scripts. The lftp wrapper hashes and revalidates every staged file, requires
-  two identical validated dry-runs, protects `.dont-remove-me`, caps file
-  deletions at 250, refuses unsafe paths and all recursive directory deletion,
-  then applies autonomously without an approval prompt. Exact local file-
-  backend deletion, sentinel preservation, recursive-directory refusal, home-
-  target refusal, warning/error ShellCheck, Bash/Python syntax, diff checks,
-  preview/publish regressions, and the complete offline security suite pass.
-  No SSH, credential, live-server, public-file, push, or deployment operation
-  ran. The one validation-created bytecode file was unlinked exactly.
-- **T-183 — Push recovered repositories and prepare the next-task handoff
-  (complete 2026-07-15):** reconciled both clean branches with `origin/main`,
-  reserved harness T-182 ahead of the owner-gated T-181 proposal, validated the
-  ledgers and local harness doctor, and pushed without force or deployment.
-  Final acceptance requires each current local `HEAD` to equal its remote
-  `origin/main`; exact revisions are reported in the session handoff.
+Superseded completion detail and command evidence remain in website Git
+history. Cross-repository task references above are immutable provenance, not
+execution or ownership dependencies.

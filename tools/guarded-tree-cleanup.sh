@@ -7,16 +7,20 @@ usage() {
 }
 
 [ "$#" -eq 3 ] || usage
+ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 WITHIN=$1
 TARGET=$2
 STATE_DIR=$3
-HARNESS=${HARNESS_BIN:-$HOME/harness/bin/harness}
+GUARDED_DELETE=$ROOT/tools/guarded-delete
 
-case "$HARNESS:$WITHIN:$TARGET:$STATE_DIR" in
+case "$GUARDED_DELETE:$WITHIN:$TARGET:$STATE_DIR" in
 	/*:/*:/*:/*) ;;
 	*) usage ;;
 esac
-[ -x "$HARNESS" ] || { echo "Guarded-delete harness is unavailable: $HARNESS" >&2; exit 2; }
+[ -x "$GUARDED_DELETE" ] || {
+	echo "Website guarded-delete tool is unavailable: $GUARDED_DELETE" >&2
+	exit 2
+}
 for directory in "$WITHIN" "$TARGET" "$STATE_DIR"; do
 	[ -d "$directory" ] && [ ! -L "$directory" ] || {
 		echo "Cleanup path is not a real directory: $directory" >&2
@@ -67,11 +71,11 @@ trap 'exit 143' TERM
 	exit 2
 }
 
-"$HARNESS" guarded-delete plan --within "$WITHIN" \
+"$GUARDED_DELETE" plan --within "$WITHIN" \
 	--manifest "$manifest" -- "$TARGET" >"$plan_output"
 token=$(sed -n 's/^TOKEN sha256=//p' "$plan_output")
 [ -n "$token" ] || { echo "Cleanup plan emitted no token" >&2; exit 2; }
-"$HARNESS" guarded-delete apply --manifest "$manifest" --token "$token"
+"$GUARDED_DELETE" apply --manifest "$manifest" --token "$token"
 [ ! -e "$TARGET" ] && [ ! -L "$TARGET" ] || {
 	echo "Cleanup target remains: $TARGET" >&2
 	exit 2
