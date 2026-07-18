@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-195.
+free ID: T-198.
 
 ## Current state
 
@@ -34,15 +34,39 @@ free ID: T-195.
 
 ## Next resume checkpoint
 
-The board is empty. One optional owner step remains from T-194: the
+Security-hardening loop (T-195) is active. T-196 (repo-content baseline)
+lands via PR; execute T-197 (repository-settings hardening) next per
+`docs/security-threat-model.md`. Optional owner step from T-194 remains: the
 account-level "Only notify for failed workflows" checkbox
-(`tools/out/t194-actions-notifications-handoff.md`). Claim T-195 for new
-work, read the matching playbook in `skills/`, and checkpoint
+(`tools/out/t194-actions-notifications-handoff.md`). For unrelated new
+work, claim T-198, read the matching playbook in `skills/`, and checkpoint
 `tools/state/session.md` at task start.
 
 ## Active tasks
 
-None.
+### T-195 — Security attack-surface investigation and hardening loop
+
+Evidence-based threat model in `docs/security-threat-model.md`: the served
+site and supply chain are strongly hardened (strict CSP, SRI-pinned CDN
+assets, pinned lockfile, allowlist deploy); the new exposure is the public
+repository's GitHub settings and CI. Spawns T-196 (repo-content baseline)
+and T-197 (repository-settings hardening). Loop stays open for further
+findings as they surface.
+
+### T-196 — Repository-content security baseline
+
+`SECURITY.md`, `.github/dependabot.yml` (monthly grouped github-actions + npm
+updates), `ci.yml` hardening (`permissions: {}` top-level + job `contents:
+read`, `npm ci --ignore-scripts`), and `tools/workflow-security-check.py` with
+`tools/test-workflow-security.sh` (3 checks) wired into the offline suite.
+Full suite green. Landing via PR.
+
+### T-197 — Repository-settings hardening
+
+Owner-scope, reversible, reported: default workflow token → read-only, disable
+token PR-approval, require SHA-pinned actions, enable Dependabot security
+updates, require fork-PR approval for all outside collaborators, disable unused
+wiki/projects. Execute via `gh api`; document rollback.
 
 ## Completed-task index
 
