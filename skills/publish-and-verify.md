@@ -2,10 +2,10 @@
 
 ## Role boundary
 
-- A Codex WORKER never runs `publish.sh`, `deploy.sh`, `lftp`, `ssh`, or
-  `git push`. It returns evidence to its caller.
-- A directly user-started Codex DRIVER may publish or push as normal completion
-  of owner-requested repository changes.
+- A WORKER never runs `publish.sh`, `deploy.sh`, `lftp`, `ssh`, or `git push`.
+  It returns evidence to its caller.
+- A directly user-started Codex or Claude DRIVER may publish or push as normal
+  completion of owner-requested repository changes.
 - The standing authorization does not broaden scope: analysis, proposals,
   unfinished/blocked work, or unrelated changes are not publication authority.
 

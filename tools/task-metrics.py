@@ -80,6 +80,8 @@ def validate_row(row: dict[str, Any]) -> list[str]:
         errors.append("missing: " + ", ".join(missing))
     if version not in (1, 2):
         errors.append(f"unsupported schema_version: {version!r}")
+    if row.get("agent") not in ("codex", "claude"):
+        errors.append("agent must be codex or claude")
     if version == 2:
         extra = sorted(row.keys() - V2_ALLOWED)
         if extra:
@@ -323,7 +325,12 @@ def import_benchmark(label: str, *, dry_run: bool, metrics_path: Path = METRICS,
     }
 
 
-def append_driver_tasks(task_ids: list[str], report: str, model: str, path: Path = METRICS) -> dict[str, Any]:
+def append_driver_tasks(
+    task_ids: list[str], report: str, model: str, path: Path = METRICS,
+    *, agent: str = "codex",
+) -> dict[str, Any]:
+    if agent not in {"codex", "claude"}:
+        return {"status": "fail", "errors": [f"invalid driver agent: {agent}"]}
     existing_rows, _, errors = read_jsonl(path)
     if errors:
         return {"status": "fail", "errors": errors}
@@ -333,16 +340,17 @@ def append_driver_tasks(task_ids: list[str], report: str, model: str, path: Path
     }
     rows = []
     duplicates = []
+    tier = f"driver-{agent}"
     for task_id in task_ids:
-        key = (task_id, "driver-codex", report)
+        key = (task_id, tier, report)
         if key in existing:
             duplicates.append(task_id)
             continue
         if not task_id.startswith("T-") or not task_id[2:].isdigit():
             return {"status": "fail", "errors": [f"invalid task id: {task_id}"]}
         rows.append({
-            "date": date.today().isoformat(), "task_type": "other", "agent": "codex",
-            "tier": "driver-codex", "model": model, "duration_ms": None,
+            "date": date.today().isoformat(), "task_type": "other", "agent": agent,
+            "tier": tier, "model": model, "duration_ms": None,
             "success": True, "task_id": task_id, "report": report,
             "note": f"{task_id} complete; {report}",
         })
@@ -640,6 +648,11 @@ def selftest() -> dict[str, Any]:
         }
         row = benchmark_row(result, stdout)
         assert row["effective_tokens"] == 18 and row["completed_commands"] == 1 and not validate_row(row)
+        bad_agent_row = {**row, "agent": "gpt-crew"}
+        assert validate_row(bad_agent_row) == ["agent must be codex or claude"]
+        bad_agent_legacy = {"date": "2026-01-01", "task_type": "other", "agent": "gpt-crew",
+                             "tier": "low", "duration_ms": 1, "success": True, "note": "legacy"}
+        assert validate_row(bad_agent_legacy) == ["agent must be codex or claude"]
         results = root / "results.jsonl"; results.write_text(json.dumps(result) + "\n", encoding="utf-8")
         exclusions = root / "exclusions.json"; exclusions.write_text("{}\n", encoding="utf-8")
         dry = import_benchmark("selftest", dry_run=True, metrics_path=metrics, results_path=results, exclusions_path=exclusions)
@@ -674,6 +687,15 @@ def selftest() -> dict[str, Any]:
         assert driver["appended"] == 2
         driver_duplicate = append_driver_tasks(["T-1"], "tools/out/report.md", "gpt-5", metrics)
         assert driver_duplicate["duplicates"] == ["T-1"]
+        claude_driver = append_driver_tasks(
+            ["T-3"], "tools/out/claude-report.md", "claude-test", metrics,
+            agent="claude",
+        )
+        assert claude_driver["appended"] == 1
+        stored_rows, _, stored_errors = read_jsonl(metrics)
+        assert not stored_errors
+        stored_claude = next(row for _, row in stored_rows if row.get("task_id") == "T-3")
+        assert stored_claude["agent"] == "claude" and stored_claude["tier"] == "driver-claude"
     return {"status": "pass", "command_event_deduplication": "pass", "dry_run": "pass", "append_and_dedupe": "pass", "legacy_and_v2_validation": "pass", "safe_comparison": "pass", "label_cost_summary": "pass"}
 
 
@@ -686,6 +708,7 @@ def parser() -> argparse.ArgumentParser:
     driver.add_argument("--task-ids", nargs="+", required=True)
     driver.add_argument("--report", required=True)
     driver.add_argument("--model", default="gpt-5")
+    driver.add_argument("--agent", choices=("codex", "claude"), default="codex")
     summary = sub.add_parser("summarize"); summary.add_argument("--run-label"); summary.add_argument("--details", action="store_true")
     labels = sub.add_parser("labels"); labels.add_argument("--path", type=Path, default=METRICS)
     comparison = sub.add_parser("compare")
@@ -701,7 +724,8 @@ def main() -> int:
     if args.command == "validate": result = validate_file(args.path)
     elif args.command == "import-benchmark":
         result = import_benchmark(args.run_label, dry_run=args.dry_run)
-    elif args.command == "append-driver": result = append_driver_tasks(args.task_ids, args.report, args.model)
+    elif args.command == "append-driver":
+        result = append_driver_tasks(args.task_ids, args.report, args.model, agent=args.agent)
     elif args.command == "summarize": result = summarize(args.run_label, details=args.details)
     elif args.command == "labels": result = summarize_labels(args.path)
     elif args.command == "compare": result = compare_labels(args.baseline_label, args.candidate_label, args.path)

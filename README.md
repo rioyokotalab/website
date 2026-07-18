@@ -13,7 +13,7 @@ can replace one prefix with the other.
 GitHub write access and web-server credentials are provisioned separately by
 the owner. Never copy credentials into repository configuration.
 
-### 1. Install Node.js and Codex CLI
+### 1. Install Node.js and agent clients
 
 ```sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
@@ -21,11 +21,11 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 nvm install 24.16.0
 nvm alias default 24.16.0
-npm install --global @openai/codex@0.144.1
+npm install --global @openai/codex@0.144.1 @anthropic-ai/claude-code@2.1.207
 codex login --device-auth
 ```
 
-### 2. Clone and configure Codex
+### 2. Clone and configure the clients
 
 ```sh
 cd "$HOME"
@@ -38,6 +38,9 @@ chmod 600 "$HOME/.codex/config.toml"
 
 Owner-scope configuration affects other projects. Preserve unrelated keys when
 updating an existing file; see `skills/config-proposals.md`.
+Claude reads the tracked root `CLAUDE.md`, which imports the same repository
+rules as Codex. Authenticate Claude interactively through its supported client
+flow; never put authentication material in project files.
 
 ### 3. Verify or install the deployment client
 
@@ -70,9 +73,11 @@ chmod 755 .git/hooks/pre-commit
 codex --version
 codex login status
 codex doctor --summary
+claude --version
+claude doctor
 python3 tools/check-md-size.py
 git status --short
-codex
+codex  # or: claude
 ```
 
 ## Preview and tests
@@ -135,7 +140,7 @@ pages together, and rerun browser, offline, and online checks.
 | `skills/` | Canonical editing, lookup, ledger, and publish playbooks |
 | `tools/` | Checks, exporters, ledger, metrics, and transient output |
 | `docs/` | Repository-owned ruleset, audit evidence, and controls |
-| `AGENTS.md` | Codex role, security, workflow, and repository invariants |
+| `AGENTS.md`, `CLAUDE.md` | Shared role, security, workflow, and repository invariants |
 | `publish.sh`, `deploy.sh` | Gated publish pipeline and SFTP mirror |
 
 The playbook index is `skills/README.md`. Read the playbook for the area being
@@ -163,10 +168,11 @@ For a normal page change:
 5. A directly user-started DRIVER completes the gated commit/push/publish
    workflow; bounded workers return evidence and never publish or push.
 
-Native subagent delegation follows `skills/codex-delegation.md`. Use it only
-for independent bounded work where an on-disk handoff saves root context. The
-root DRIVER owns the ledger, review, integration, configuration, commits, and
-external writes.
+Native subagent delegation follows the bounded contract in
+`skills/codex-delegation.md` and the active client's repository entry point.
+Use it only for independent bounded work where an on-disk handoff saves root
+context. The root DRIVER owns the ledger, review, integration, configuration,
+commits, and external writes.
 
 Project configuration changes require explicit task scope. Owner-scope changes
 remain proposal-only without exact authorization.
@@ -187,8 +193,8 @@ The context ledger separates state by purpose:
 
 ## Publishing and deployment
 
-A directly user-started Codex DRIVER has standing authority to push or publish
-completed owner-requested repository changes after every gate in
+A directly user-started Codex or Claude DRIVER has standing authority to push
+or publish completed owner-requested repository changes after every gate in
 `skills/publish-and-verify.md` passes. Workers never publish or push. Blocked
 work, unrelated changes, credentials, force operations, unexpected deploy
 changes, and material scope expansion remain fail-closed.

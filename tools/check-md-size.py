@@ -11,6 +11,7 @@ BUDGETS = {  # repo-root-relative path -> max bytes
     "tools/state/decisions.md": 10000,
     "skills/context-ledger.md": 8000,
     "AGENTS.md": 10000,
+    "CLAUDE.md": 4000,
 }
 
 

@@ -1,10 +1,10 @@
 # Skill: project config changes and tools/out lifecycle
 
-Project configuration such as `AGENTS.md` may be edited directly only when the
-current task explicitly authorizes that exact scope. Use the normal edit,
-review, and verification workflow. Task authorization to edit project config
-does not authorize publishing, credentials access, unrelated owner settings,
-or material scope expansion.
+Project configuration such as `AGENTS.md` or `CLAUDE.md` may be edited directly
+only when the current task explicitly authorizes that exact scope. Use the
+normal edit, review, and verification workflow. Task authorization to edit
+project config does not authorize publishing, credentials access, unrelated
+owner settings, or material scope expansion.
 
 Owner-scope files such as `~/.codex/config.toml` remain proposal-only unless the
 user explicitly authorizes the exact external write in the current

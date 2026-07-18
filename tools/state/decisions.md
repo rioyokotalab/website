@@ -1,9 +1,12 @@
 # Durable decisions
 
-- **2026-07-13 — Use a Codex-only repository workflow.** The inactive
-  integration and project configuration, obsolete comparison infrastructure,
-  retained comparison data, and transient artifacts are removed from the
-  current tree. Git history remains intact, owner-scope settings remain
+- **2026-07-18 — Support independent Codex and Claude repository workflows.**
+  This supersedes the 2026-07-13 Codex-only client decision at the owner's
+  explicit request. `AGENTS.md` is the shared project policy and root
+  `CLAUDE.md` imports it with a narrow client-compatibility overlay. The
+  website retains its own ledger, skills, tests, metrics, and publication
+  gates; no sibling repository supplies runtime guidance or tooling. The old
+  Claude benchmark/agent framework remains retired, owner-scope settings stay
   untouched, and no force-push or history rewrite is authorized.
 - **2026-07-13 — Keep two Codex operating lessons from the retired comparison
   work.** Use progressive disclosure and task-specific source inspection for

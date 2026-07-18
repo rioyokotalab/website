@@ -1,12 +1,14 @@
-# Codex instructions — YOKOTA Lab website
+# Agent instructions — YOKOTA Lab website
 
-Codex has two roles. A **WORKER** receives a bounded dispatch naming an output
-file and scope; its caller owns integration and publication. A **DRIVER** is
-started directly by the user and owns orchestration, ledger, verification, and
-normal repository completion. If role is ambiguous, act as WORKER.
+Codex and Claude share two roles. A **WORKER** receives a bounded dispatch
+naming an output file and scope; its caller owns integration and publication.
+A **DRIVER** is started directly by the user and owns orchestration, ledger,
+verification, and normal repository completion. If role is ambiguous, act as
+WORKER.
 
-Codex injects this file into the turn. Do not spend a tool call printing it
-again. Load task-specific playbooks and source ranges only when required.
+Codex reads this file directly; Claude imports it through root `CLAUDE.md`.
+Do not spend a tool call printing it again. Load task-specific playbooks and
+source ranges only when required.
 
 ## Security and authority
 
@@ -41,11 +43,14 @@ Canonical protocol: `skills/context-ledger.md`.
 
 ## Driver workflow
 
-1. Reconstruct state from the ledger and set `driver: codex`.
+1. Reconstruct state from the ledger and set `driver:` to the active client,
+   `codex` or `claude`.
 2. Work in small verified steps. Delegate only bounded independent work when
-   `skills/codex-delegation.md` predicts net context savings; default one and
-   at most two disjoint subagents. Root owns review, decisions, ledger, config,
-   commits, publishing, and push.
+   the client-native delegation route predicts net context savings; default
+   one and at most two disjoint subagents. Codex routing is documented in
+   `skills/codex-delegation.md`; Claude uses the equivalent authority and
+   handoff contract in `CLAUDE.md`. Root owns review, decisions, ledger,
+   config, commits, publishing, and push.
 3. Follow the relevant playbooks below. Preserve user changes and use normal
    non-destructive Git commands.
 4. At session end update board/session, write

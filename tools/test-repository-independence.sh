@@ -6,7 +6,7 @@ cd "$ROOT"
 
 scan_files=$(
 	{
-		printf '%s\n' AGENTS.md README.md deploy.sh publish.sh package.json
+		printf '%s\n' AGENTS.md CLAUDE.md README.md deploy.sh publish.sh package.json
 		find .github docs skills tools -type f -print
 	} |
 		LC_ALL=C sort -u |

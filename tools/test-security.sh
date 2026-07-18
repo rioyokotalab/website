@@ -11,6 +11,7 @@ tools/test-guarded-delete.sh
 tools/test-public-repo-audit.sh
 tools/test-github-ruleset.sh
 tools/test-bootstrap-lftp.sh
+tools/test-claude-takeover.sh
 tools/test-repository-independence.sh
 tools/test-deploy-policy.sh
 python3 tools/supply-chain-check.py
