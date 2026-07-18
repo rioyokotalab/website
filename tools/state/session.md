@@ -1,15 +1,17 @@
 driver: claude
-updated: 2026-07-18T16:15+0900
+updated: 2026-07-18T17:35+0900
 task: idle
 status: idle
 
 ## Now
-- T-191 complete: read-only `gh api` comparison shows live ruleset `19127356`
-  (updated 2026-07-18T08:53+09:00) semantically equals the tracked
-  `docs/github-rulesets/main.json`; only API response-default fields differ.
-  The T-188 payload already recorded the zero-approval author-merge form, so
-  no payload, test, doc, or live setting changed. Board and evidence updated.
-- Board is empty: no active or blocked tasks. Next free id: T-192.
+- T-192 closed with owner reversal: mirror PR #10 closed unmerged; the owner
+  chose direct public visibility with the T-185 deleted-member-content caveat
+  surfaced. `gh repo edit --visibility public` applied; verified PUBLIC,
+  ruleset `19127356` active, default branch `main`. Decision recorded in
+  decisions.md: every commit is now public the moment it is pushed.
+- Owner approved the proposal; secret scanning and push protection are
+  enabled and the alert list is empty (0 alerts).
+- Board is empty. Next free id: T-193.
 
 ## Working set
 - None.

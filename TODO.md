@@ -2,7 +2,7 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-192.
+evidence. Next free id: T-193.
 
 ## Active
 
@@ -13,6 +13,18 @@ None.
 None.
 
 ## Recently completed
+
+- **T-192 — Public repository route (complete 2026-07-18, mirror reversed):**
+  a sanitized single-commit mirror generator with 7-check coverage and a
+  clean value-free trial audit was built on PR #10, then the owner reversed
+  the mirror decision, stating the repository content is public information.
+  PR #10 was closed unmerged (generator preserved in its commits) and, on the
+  owner's explicit choice with the T-185 deleted-member-content caveat
+  surfaced, `rioyokotalab/website` was made PUBLIC as-is via one
+  `gh repo edit --visibility public` write. Verified: visibility PUBLIC,
+  ruleset `19127356` still active, default branch `main`. With separate owner
+  approval, secret scanning and push protection were then enabled; the alert
+  list is empty. No other setting, deployment, or file changed.
 
 - **T-191 — Reconcile tracked ruleset payload with the relaxed live rules
   (complete 2026-07-18):** verified no divergence exists; the task premise was
