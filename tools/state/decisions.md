@@ -1,5 +1,12 @@
 # Durable decisions
 
+- **2026-07-18 — Security proposals resolved (T-200).** HSTS `max-age` raised
+  from 1 day to 1 year in `.htaccess` (host-scoped, no includeSubDomains/
+  preload), applied in the repo (`d8a23ce`) and pending an owner deploy
+  (`tools/out/t200-hsts-deploy-handoff.md`). The org
+  `default_repository_permission: write → read` proposal was **declined** by
+  the owner: it is org-wide (100+ repos, every member) and the T-198 review
+  gate already mitigates the website risk. The org default stays `write`.
 - **2026-07-18 — `main` requires one review except owner merges (T-198).**
   The public repo has 66 write collaborators inherited from the `rioyokotalab`
   org default (`default_repository_permission: write`); with zero required

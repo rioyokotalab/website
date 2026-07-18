@@ -104,6 +104,6 @@ transport. Assessed adequate; no change queued.
   approval for all external contributors, unused wiki/projects disabled.
   Rollback: `tools/out/t197-settings-rollback.md`.
 - **T-200**: HSTS `max-age` raised to one year (host-scoped) in the repo,
-  pending owner deploy. The org `default_repository_permission: write` change
-  remains an explicit owner decision (100+ org repos, all members — the T-198
-  review gate already mitigates the website risk).
+  pending owner deploy. The org `default_repository_permission: write → read`
+  change was **declined** by the owner (100+ org repos, all members; the T-198
+  review gate already mitigates the website risk). No open proposals remain.
