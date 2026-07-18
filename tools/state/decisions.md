@@ -1,5 +1,15 @@
 # Durable decisions
 
+- **2026-07-18 — The repository is public; treat every commit as public.**
+  At the owner's explicit instruction (T-192, after reversing the sanitized-
+  mirror route), `rioyokotalab/website` including its full history is
+  publicly visible. The owner regards the repository content as public
+  information; the T-185 caveat about deleted member photos/content in
+  history was surfaced and accepted. Consequence for all future work:
+  ledgers, reports, metrics, and any tracked file are public the moment they
+  are pushed — never commit private member data, unpublished results, or
+  operational secrets, and keep credential handling outside the repository
+  as before.
 - **2026-07-18 — Standing owner authorization after T-190.** The owner removed
   the required non-author review from the live `main` ruleset and, after
   applying the T-190 hook, granted standing authorization for similar tasks:
