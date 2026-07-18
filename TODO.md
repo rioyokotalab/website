@@ -22,9 +22,9 @@ None.
   owner's explicit choice with the T-185 deleted-member-content caveat
   surfaced, `rioyokotalab/website` was made PUBLIC as-is via one
   `gh repo edit --visibility public` write. Verified: visibility PUBLIC,
-  ruleset `19127356` still active, default branch `main`. Proposed but not
-  applied: enabling secret scanning + push protection. No other setting,
-  deployment, or file changed.
+  ruleset `19127356` still active, default branch `main`. With separate owner
+  approval, secret scanning and push protection were then enabled; the alert
+  list is empty. No other setting, deployment, or file changed.
 
 - **T-191 — Reconcile tracked ruleset payload with the relaxed live rules
   (complete 2026-07-18):** verified no divergence exists; the task premise was
