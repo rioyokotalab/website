@@ -6,19 +6,25 @@ evidence. Next free id: T-192.
 
 ## Active
 
-- **T-191 — Reconcile tracked ruleset payload with the relaxed live rules:**
-  on 2026-07-18 the owner removed the required non-author review from the live
-  `main` ruleset (see decisions.md). The tracked payload and
-  `tools/test-github-ruleset.sh` still describe the five-rule form validated
-  in T-187. Read the live ruleset via `gh api`, update the tracked payload,
-  test, and any T-187-era documentation to match, and note the change history.
-  Read-only against GitHub settings; no further live setting change.
+None.
 
 ## Blocked / awaiting user
 
 None.
 
 ## Recently completed
+
+- **T-191 — Reconcile tracked ruleset payload with the relaxed live rules
+  (complete 2026-07-18):** verified no divergence exists; the task premise was
+  wrong. Live ruleset `19127356` (updated 2026-07-18T08:53+09:00) semantically
+  equals `docs/github-rulesets/main.json` on name, target, enforcement, bypass
+  actors, conditions, and all five rules — the T-188 payload already recorded
+  the zero-approval author-merge-after-CI form, and `required_approving_
+  review_count` is 0 in both. The only GET-vs-payload differences are API
+  response defaults (`dismissal_restriction` disabled, `required_reviewers`
+  empty), correctly omitted from an update payload. `tools/
+  test-github-ruleset.sh` and `docs/repository-controls.md` already match; no
+  file, test, doc, or live setting needed changing. Read-only `gh api` only.
 
 - **T-190 — Repair the stale local pre-commit hook safely (complete
   2026-07-18):** canonical `tools/hooks/pre-commit`, `tools/hook-doctor.sh`
