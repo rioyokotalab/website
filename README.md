@@ -272,3 +272,38 @@ policy with, for example:
 ```sh
 python3 tools/agent-benchmark/select_route.py --task WBD-003 --objective runtime
 ```
+
+## Claude benchmark results (July 2026)
+
+The same suite was repeated with Claude Code across `claude-fable-5`,
+`claude-opus-4-8`, and `claude-sonnet-5` at five efforts (low–max) — 75
+singleton cells plus 14 WBD-003 adaptive repeats, using the identical capsules
+and graders. `effective_tokens` is not directly comparable to the GPT rows
+(Claude's cached system prompt inflates the input term).
+
+72 of 75 singletons were full-quality; the 3 misses were all WBD-003
+(consent JS) at higher effort and **none reproduced** (14/14 repeats passed),
+so every model × effort route is reliable on these tasks.
+
+| Model | Full-quality | Median total time | Median effective tokens |
+| --- | ---: | ---: | ---: |
+| `claude-fable-5` | 25/25 | 51.4 s | 25,405 |
+| `claude-opus-4-8` | 24/25 | 86.3 s | 28,892 |
+| `claude-sonnet-5` | 23/25 | 41.1 s | 29,404 |
+
+Fable 5 was the only model to pass every singleton cell and was the most
+token-efficient; Sonnet 5 was fastest; Opus 4.8 was slowest.
+
+| Effort | Full-quality | Median total time | Median effective tokens |
+| --- | ---: | ---: | ---: |
+| low | 15/15 | 46.2 s | 22,771 |
+| medium | 14/15 | 47.0 s | 23,701 |
+| high | 15/15 | 71.3 s | 27,480 |
+| xhigh | 15/15 | 68.8 s | 33,591 |
+| max | 13/15 | 142.2 s | 45,277 |
+
+Low effort was fastest, cheapest, and the only effort with no misses — the same
+"low is best" pattern the GPT-5.6 run showed; higher effort cost ~3× the time
+and 2× the tokens with no quality gain and all of the variance. Full methods,
+per-task routes, and caveats:
+[Claude summary](tools/agent-benchmark/claude-full-20260718.summary.md).
