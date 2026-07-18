@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-201.
+free ID: T-202.
 
 ## Current state
 
@@ -32,11 +32,10 @@ free ID: T-201.
 
 ## Next resume checkpoint
 
-Board is clear. Pending owner deploy: the T-200 HSTS change
-(`tools/out/t200-hsts-deploy-handoff.md`). Optional owner step from T-194: the
-account-level "Only notify for failed workflows" checkbox
-(`tools/out/t194-actions-notifications-handoff.md`). Claim T-201 for new work
-and checkpoint `tools/state/session.md`.
+Board is clear. Owner to-do: deploy the T-200 HSTS change
+(`tools/out/t200-hsts-deploy-handoff.md`); optional T-194 "notify only for
+failed workflows" checkbox (`tools/out/t194-actions-notifications-handoff.md`).
+Claim T-202 for new work; checkpoint `tools/state/session.md`.
 
 ## Active tasks
 
@@ -73,3 +72,4 @@ anchored versions below hold command-level detail for each era.
 | T-195–T-198 | Attack-surface hardening loop (`docs/security-threat-model.md`). T-196 repo-content baseline (`781e317`: SECURITY.md, dependabot.yml, least-privilege CI token, `workflow-security-check.py` + test). T-197 settings applied (reversible via `tools/out/t197-settings-rollback.md`: read-only token, SHA-pinned + GitHub-owned actions, Dependabot security updates, private vuln reporting, fork-PR approval all-external, wiki/projects off). T-198 = B9: `main` requires 1 review with a Repository-admin bypass (owner self-merges; 66 org write collaborators need approval) — ruleset `19127356`, `3574f40`. Verified `actions/checkout` v7.0.0 bump `c52c101`. |
 | T-199 | Repeated the README benchmark with Claude (harness support `58f5e7b`): 75 singletons × {fable-5, opus-4-8, sonnet-5} × 5 efforts + 14 repeats. 72/75 full-quality; the 3 higher-effort WBD-003 misses were variance (14/14 repeats pass). Low effort best; Fable 25/25. `tools/agent-benchmark/claude-full-20260718.summary.md` + README section. |
 | T-200 | Security proposals resolved (`d8a23ce`): HSTS `max-age` raised 1 day → 1 year (host-scoped) in `.htaccess`, pending owner deploy (`tools/out/t200-hsts-deploy-handoff.md`). Org `default_repository_permission` change **declined** (org-wide 100+ repos; T-198 gate suffices). |
+| T-201 | Merged the GPT-5.6 and Claude README benchmark tables into one section (unified 6-model table + side-by-side per-effort comparison; token caveat kept). |
