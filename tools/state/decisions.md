@@ -1,5 +1,13 @@
 # Durable decisions
 
+- **2026-07-18 — Website-started sessions never modify `~/harness`.** After a
+  website DRIVER promoted guidance into the harness (harness PR #16), the
+  owner ruled that a DRIVER started from `~/website` must never modify
+  anything in `~/harness`: no edits, commits, branches, worktrees, pushes,
+  PRs, or merges, regardless of standing Git authorizations. Reading harness
+  skills/guidance remains expected. Harness-bound changes become `tools/out/`
+  proposals for the owner or a harness-started session. Recorded in
+  `AGENTS.md` Security and authority.
 - **2026-07-18 — The repository is public; treat every commit as public.**
   At the owner's explicit instruction (T-192, after reversing the sanitized-
   mirror route), `rioyokotalab/website` including its full history is
