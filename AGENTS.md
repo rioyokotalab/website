@@ -26,6 +26,11 @@ source ranges only when required.
 - Project config (`AGENTS.md`) may be edited only when the current user task
   explicitly authorizes that scope. Owner-scope config remains proposal-only
   without exact external-write authorization.
+- Sessions started in this repository treat `~/harness` as strictly read-only
+  (owner rule, 2026-07-18): no file edit, commit, branch, worktree, push, PR,
+  or merge there, overriding any standing Git authorization. Reading its
+  shared skills is fine. Work that belongs in the harness becomes a
+  `tools/out/` proposal for the owner or a harness-started session.
 
 ## Context ledger
 
