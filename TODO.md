@@ -32,9 +32,8 @@ free ID: T-203.
 
 ## Next resume checkpoint
 
-Board is clear. Optional owner to-do: the T-194 "notify only for failed
-workflows" checkbox (`tools/out/t194-actions-notifications-handoff.md`).
-Claim T-203 for new work; checkpoint `tools/state/session.md`.
+Board is clear with no outstanding owner items. Claim T-203 for new work and
+checkpoint `tools/state/session.md` at task start.
 
 ## Active tasks
 
@@ -67,7 +66,7 @@ anchored versions below hold command-level detail for each era.
 | T-191 | Live ruleset `19127356` verified to match `docs/github-rulesets/main.json`; presumed divergence did not exist; read-only. |
 | T-192 | Sanitized-mirror route built then reversed by owner; repository made public with ruleset intact; secret scanning enabled, zero alerts (`676c209`). |
 | T-193 | Task board restyled to the harness layout: current state, resume checkpoint, and this grouped completed-task index reconstructed from full board history. |
-| T-194 | "CI workflow run" email noise fixed (`69172ae`): CI is PR-only (post-merge push run was redundant); account "notify only on failure" step handed to owner. Owner also ruled `~/harness` read-only for website sessions (`063f021`). |
+| T-194 | "CI workflow run" email noise fixed (`69172ae`): CI is PR-only (post-merge push run was redundant); owner enabled the account "notify only on failure" setting. Owner also ruled `~/harness` read-only for website sessions (`063f021`). |
 | T-195–T-198 | Attack-surface hardening loop (`docs/security-threat-model.md`). T-196 repo-content baseline (`781e317`: SECURITY.md, dependabot.yml, least-privilege CI token, `workflow-security-check.py` + test). T-197 settings applied (reversible via `tools/out/t197-settings-rollback.md`: read-only token, SHA-pinned + GitHub-owned actions, Dependabot security updates, private vuln reporting, fork-PR approval all-external, wiki/projects off). T-198 = B9: `main` requires 1 review with a Repository-admin bypass (owner self-merges; 66 org write collaborators need approval) — ruleset `19127356`, `3574f40`. Verified `actions/checkout` v7.0.0 bump `c52c101`. |
 | T-199 | Repeated the README benchmark with Claude (harness support `58f5e7b`): 75 singletons × {fable-5, opus-4-8, sonnet-5} × 5 efforts + 14 repeats. 72/75 full-quality; the 3 higher-effort WBD-003 misses were variance (14/14 repeats pass). Low effort best; Fable 25/25. `tools/agent-benchmark/claude-full-20260718.summary.md` + README section. |
 | T-200 | Security proposals: HSTS `max-age` raised 1 day → 1 year, **deployed and verified live** (max-age=31536000, HTTP→HTTPS intact). Org `default_repository_permission` change **declined** (org-wide 100+ repos; T-198 gate suffices). |
