@@ -1,0 +1,7 @@
+#!/bin/sh
+# Canonical repository pre-commit hook. Source of truth: tools/hooks/pre-commit.
+# Verify or install the live .git/hooks copy with tools/hook-doctor.sh.
+
+python3 tools/check-md-size.py || exit 1
+
+exit 0
