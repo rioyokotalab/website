@@ -2,26 +2,34 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-191.
+evidence. Next free id: T-192.
 
 ## Active
 
-None.
+- **T-191 — Reconcile tracked ruleset payload with the relaxed live rules:**
+  on 2026-07-18 the owner removed the required non-author review from the live
+  `main` ruleset (see decisions.md). The tracked payload and
+  `tools/test-github-ruleset.sh` still describe the five-rule form validated
+  in T-187. Read the live ruleset via `gh api`, update the tracked payload,
+  test, and any T-187-era documentation to match, and note the change history.
+  Read-only against GitHub settings; no further live setting change.
 
 ## Blocked / awaiting user
 
-- **T-190 — Repair the stale local pre-commit hook safely (awaiting owner
-  apply):** tracked work is done: canonical `tools/hooks/pre-commit`,
-  `tools/hook-doctor.sh` (read-only doctor + owner apply/rollback with
-  automatic backup), `tools/test-hook-doctor.sh` (8 checks) wired into
-  `tools/test-security.sh`, and README section 4 now installs via the doctor.
-  Full offline suite passes; doctor confirms the live hook is stale; no `.git`
-  file was edited, the removed checker stays removed, and no bypass was used.
-  Owner: follow `tools/out/t190-hook-apply-handoff.md`
-  (`tools/hook-doctor.sh apply`, doctor `ok`, one ordinary commit through the
-  hook; rollback via `tools/hook-doctor.sh rollback`), then T-190 can close.
+None.
 
 ## Recently completed
+
+- **T-190 — Repair the stale local pre-commit hook safely (complete
+  2026-07-18):** canonical `tools/hooks/pre-commit`, `tools/hook-doctor.sh`
+  (read-only doctor + apply/rollback with automatic backup), 8-check
+  `tools/test-hook-doctor.sh` wired into the offline suite, and README §4
+  landed via PR #7 (`e6faf3b`, CI run `29633326190`). Owner applied the hook;
+  doctor reports `ok`, the live hook matches canonical byte-for-byte, the
+  pre-apply backup is preserved, and the closing ledger commit passed the
+  hook ordinarily without bypass. The removed checker stays removed; no
+  public-site file or deployment changed. Owner granted the standing
+  authorization recorded in decisions.md.
 
 - **T-189 — Add website-owned Claude takeover and live evaluation (complete
   2026-07-18):** repository-owned Claude guidance and client-neutral ledger,
