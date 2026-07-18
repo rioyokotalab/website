@@ -1,21 +1,29 @@
 driver: claude
-updated: 2026-07-18T16:15+0900
-task: idle
-status: idle
+updated: 2026-07-18T17:00+0900
+task: T-192 Prepare a sanitized public allowlist mirror
+status: awaiting-user
 
 ## Now
-- T-191 complete: read-only `gh api` comparison shows live ruleset `19127356`
-  (updated 2026-07-18T08:53+09:00) semantically equals the tracked
-  `docs/github-rulesets/main.json`; only API response-default fields differ.
-  The T-188 payload already recorded the zero-approval author-merge form, so
-  no payload, test, doc, or live setting changed. Board and evidence updated.
-- Board is empty: no active or blocked tasks. Next free id: T-192.
+- T-192 tracked work complete: `tools/build-public-mirror.sh` (single-commit
+  allowlist mirror, .htaccess excluded, provenance README, forbidden-path
+  checks, value-free audit gate), `tools/test-public-mirror.sh` (7 checks)
+  wired into `tools/test-security.sh`, and a mirror section in
+  `docs/public-repository-safety.md`. Trial build audit clean (7 public
+  large blobs only); full offline suite green; trial cleaned via guarded
+  cleanup.
+- Next: land the PR and self-merge after CI (standing authorization), then
+  owner executes `tools/out/t192-public-mirror-handoff.md` (repo create +
+  push are external owner writes). Close T-192 after owner confirmation.
 
 ## Working set
-- None.
+- Branch t192-public-mirror: tools/build-public-mirror.sh,
+  tools/test-public-mirror.sh, tools/test-security.sh,
+  docs/public-repository-safety.md, TODO.md, session.md, report, metrics,
+  log.
 
 ## Open questions
-- None.
+- None (mirror omits .htaccess by default; owner may opt in via handoff).
 
 ## Awaiting user
-- None.
+- Execute the publication steps in tools/out/t192-public-mirror-handoff.md
+  and confirm, or adjust the mirror scope first.

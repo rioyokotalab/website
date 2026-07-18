@@ -2,7 +2,7 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-192.
+evidence. Next free id: T-193.
 
 ## Active
 
@@ -10,7 +10,16 @@ None.
 
 ## Blocked / awaiting user
 
-None.
+- **T-192 — Prepare a sanitized public allowlist mirror (awaiting owner
+  publication):** tracked work is done. `tools/build-public-mirror.sh` builds
+  a fresh local single-commit mirror of the deploy allowlist minus
+  `.htaccess`, with a provenance README, forbidden-path checks, and a
+  value-free audit gate (trial build: clean, only public large blobs).
+  `tools/test-public-mirror.sh` (7 checks) is wired into the offline suite;
+  `docs/public-repository-safety.md` documents the route. Build is local-only
+  with no remote. Owner: run `tools/out/t192-public-mirror-handoff.md`
+  (build, `gh repo create`, push, verify; refresh and rollback included),
+  then T-192 can close. The private repository is unchanged.
 
 ## Recently completed
 

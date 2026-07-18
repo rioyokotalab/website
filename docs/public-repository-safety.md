@@ -29,3 +29,16 @@ python3 tools/public-repo-audit.py --repo "$PWD" --name website \
 proves that matching values stay absent from stdout, stderr, and the JSON
 report. A finding is a review signal, not proof of a secret. Metadata-first
 review must not print or copy the matched value.
+
+## Sanitized public mirror (T-192)
+
+Per the T-185 assessment, this repository's full history must not be made
+public directly. `tools/build-public-mirror.sh DEST [AUDIT_OUT]` builds the
+approved alternative: a fresh local Git repository containing one commit of
+only the deploy allowlist minus `.htaccess`, plus a provenance README naming
+the source commit. It refuses relative or non-empty destinations, verifies
+that tooling, ledgers, configuration, and CV sources are absent, and fails on
+any non-`large-blob` audit finding or value exposure. The build is entirely
+local and configures no remote; creating or pushing a public repository is a
+separate owner-authorized action. `tools/test-public-mirror.sh` covers the
+generator offline.
