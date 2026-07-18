@@ -1,23 +1,23 @@
 driver: claude
-updated: 2026-07-18T18:20+0900
+updated: 2026-07-18T19:20+0900
 task: idle
 status: idle
 
 ## Now
-- T-193 complete: `TODO.md` restyled to the harness board layout (current
-  state, next resume checkpoint, active tasks, grouped completed-task index
-  with `commit:path` anchors). The index was reconstructed from the complete
-  board history — 262 revisions of `TODO.md`/`tools/todo.md` — covering the
-  pre-T-1 free-form era through T-193. All anchor commits verified to
-  contain the named path. `skills/context-ledger.md` updated in the same
-  change set per config-proposals.
-- Board is empty. Next free ID: T-194.
+- T-194 repo side complete: `ci.yml` is pull-request-only (the post-merge
+  push run was redundant under strict up-to-date + squash and only produced
+  duplicate actor emails); `docs/repository-controls.md` updated; YAML,
+  supply-chain, and repository-independence checks pass. Landing via PR.
+- Remaining owner step (optional, no API): account "Only notify for failed
+  workflows" — `tools/out/t194-actions-notifications-handoff.md`.
+- Earlier this session: harness read-only rule merged (`063f021`); harness
+  PR #16 confirmed kept. Board otherwise empty. Next free ID: T-195.
 
 ## Working set
-- None.
+- None after T-194 publication.
 
 ## Open questions
 - None.
 
 ## Awaiting user
-- None.
+- Optional: the account notification checkbox per the T-194 handoff.

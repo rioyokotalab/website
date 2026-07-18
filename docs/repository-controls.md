@@ -1,9 +1,12 @@
 # Repository controls
 
 The website owns its complete contributor gate. `.github/workflows/ci.yml`
-runs on `main` pushes and pull requests with read-only contents permission,
+runs on pull requests targeting `main` with read-only contents permission,
 immutable checkout, no persisted Git credentials, no deployment, and no
 repository-external source checkout. The required check is `Offline checks`.
+There is no post-merge push run: the ruleset's strict up-to-date policy plus
+squash merges make the merged tree byte-identical to the tested PR head, and
+the duplicate run only produced redundant actor notification emails (T-194).
 
 Active ruleset `19127356` protects `main` with pull requests, conversation
 resolution, an up-to-date branch, linear history, force-push and deletion

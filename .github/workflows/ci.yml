@@ -1,8 +1,9 @@
 name: CI
 
+# Pull-request-only: the main ruleset's strict up-to-date policy plus squash
+# merges make a post-merge push run byte-identical to the tested PR head, and
+# the duplicate run only generated redundant actor notification emails.
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 

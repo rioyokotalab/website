@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-194.
+free ID: T-195.
 
 ## Current state
 
@@ -30,8 +30,10 @@ free ID: T-194.
 
 ## Next resume checkpoint
 
-The board is empty and nothing awaits the owner. Claim T-194 for new work,
-read the matching playbook in `skills/`, and checkpoint
+The board is empty. One optional owner step remains from T-194: the
+account-level "Only notify for failed workflows" checkbox
+(`tools/out/t194-actions-notifications-handoff.md`). Claim T-195 for new
+work, read the matching playbook in `skills/`, and checkpoint
 `tools/state/session.md` at task start.
 
 ## Active tasks
@@ -65,3 +67,4 @@ anchored versions below hold command-level detail for each era.
 | T-191 | Live ruleset `19127356` verified to match `docs/github-rulesets/main.json`; presumed divergence did not exist; read-only. |
 | T-192 | Sanitized-mirror route built then reversed by the owner (PR #10 closed unmerged); repository made public with ruleset intact; secret scanning enabled, zero alerts (PR #11, `676c209`). |
 | T-193 | Task board restyled to the harness layout: current state, resume checkpoint, and this grouped completed-task index reconstructed from full board history. |
+| T-194 | "CI workflow run" email noise fixed repo-side: redundant post-merge push run removed from `ci.yml` (strict up-to-date + squash makes it byte-identical to the tested PR head); account "Only notify for failed workflows" step handed to the owner. Owner also ruled `~/harness` read-only for website sessions (`063f021`). |
