@@ -1,14 +1,15 @@
 driver: codex
-updated: 2026-07-18T11:42+0900
+updated: 2026-07-18T11:54+0900
 task: T-188 Make website independent of harness
 status: in-progress
 
 ## Now
-- Website static/security, deployment-policy, and all 38 browser tests pass.
-  The incomplete generated Node tree and missing Chromium shell were replaced
-  through guarded cleanup plus locked installs; `.last-run.json` records
-  `passed`. Harness phase one passes after its website-specific removals. Next
-  commit each implementation and validate each commit from an isolated clone.
+- Local and isolated-clone website validation passed, including all 38 browser
+  tests. PR #3 CI then failed because the lftp plan test used `/usr/bin` to
+  simulate absence, but CI had just installed `/usr/bin/lftp`; its expected
+  `action=install` grep therefore failed. The test now uses a minimal fake PATH
+  containing only `dirname` and `uname`. Rerun locally, commit, push, and require
+  a new green `Offline checks` run before merge.
 
 ## Working set
 - `TODO.md`

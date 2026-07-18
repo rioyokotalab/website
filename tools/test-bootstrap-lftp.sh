@@ -28,7 +28,11 @@ trap 'exit 143' TERM
 sh -n "$BOOTSTRAP"
 "$BOOTSTRAP" doctor >"$TEST_ROOT/doctor.out"
 grep -F 'LFTP_DOCTOR status=pass' "$TEST_ROOT/doctor.out" >/dev/null
-env PATH=/usr/bin:/bin WEBSITE_LFTP_PREFIX="$TEST_ROOT/prefix" \
+mkdir -p "$TEST_ROOT/plan-bin"
+for command_name in dirname uname; do
+	ln -s "$(command -v "$command_name")" "$TEST_ROOT/plan-bin/$command_name"
+done
+env PATH="$TEST_ROOT/plan-bin" WEBSITE_LFTP_PREFIX="$TEST_ROOT/prefix" \
 	"$BOOTSTRAP" plan >"$TEST_ROOT/plan.out"
 grep -F 'action=install' "$TEST_ROOT/plan.out" >/dev/null
 grep -F 'sha256=60140fcd971e86f0be1cea9d206a4cdf9baead70cb65adcc09403c6294290b72' \
