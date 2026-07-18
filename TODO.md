@@ -38,33 +38,31 @@ evidence. Next free id: T-189.
     rollback routes, and reviewed execution order.
   - Deployment exclusions still keep tools, skills, ledgers, config, README,
     and CV sources out of the public tree. Metrics validation and standards
-    checks use the repository Python entry points. Harness T-175 restored the
-    local checksum-pinned lftp prerequisite; T-182 then passed the complete
-    offline security suite without a network or live deployment.
+    checks use the repository Python entry points. Harness T-175 originally
+    restored the local lftp prerequisite; T-188 now owns its checksum-pinned
+    rootless bootstrap and complete offline validation locally.
 
 ## Active
 
-- **T-188 — Make website independent of harness (executing):** the owner gave
-  explicit `go` on 2026-07-18. The clean, fresh-fetched website revision is
-  `daca468`; coordinated harness task T-263
-  records the opposite-side removals. Replace the harness-backed cleanup
-  runtime with a website-owned manifest/token implementation and safety tests;
-  remove the pinned harness fetch and `HARNESS_BIN` from CI; locally own the
-  website ruleset restore payload/test and website public-history audit
-  evidence; and provide a checksum-pinned rootless local `lftp` bootstrap so a
-  clean website checkout needs no harness checkout. Preserve immutable
-  historical provenance, current deployment behavior, and the existing live
-  `lftp` installation. Do not deploy, mutate account settings, inspect
-  credentials, or rewrite history. The first action is the website-owned
-  guarded-cleanup implementation. Acceptance is a complete website suite from
-  a clean clone with no harness checkout or path available, plus its own
-  required CI.
+None.
 
 ## Blocked / awaiting user
 
 None.
 
 ## Recently completed
+
+- **T-188 — Make website independent of harness (complete 2026-07-18):**
+  website now owns its manifest/token guarded cleanup, CI path, ruleset
+  payload/test, value-free public-history audit tool/evidence/test, and
+  checksum-pinned rootless lftp bootstrap. Focused safety checks, the complete
+  offline suite, 38 browser tests, and an isolated clean clone with unusable
+  `HARNESS_BIN` and a locally bootstrapped lftp passed. PR #3's first CI run
+  exposed and fixed a system-path test assumption; exact head `beb44b9` then
+  passed required `Offline checks` run `29627893789` and squash-merged as
+  `6f1ad83`. Coordinated harness PR #7 passed its own CI and merged as
+  `f1b095c`. No public-site file, deployment, live lftp removal, account
+  setting, credential, history rewrite, or fleet operation occurred.
 
 - **T-187 — Validate strict `main` ruleset through a pull request (complete
   2026-07-18):** active ruleset `19127356` still exactly matches the reviewed
