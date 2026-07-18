@@ -39,9 +39,11 @@ and `tools/supply-chain-check.py`:
   content, sensitive URL queries, and pre-consent analytics requests fail the
   check. Analytics load only after explicit opt-in.
 
-Residual: HSTS `max-age=86400` is deliberately short (fast recovery if HTTPS
-breaks) rather than a preload-length commitment. Raising it is a sticky live
-change; recorded as a proposal, not auto-applied.
+HSTS `max-age` was raised from 86400 (1 day) to 31536000 (1 year) at the
+owner's request (T-200), host-scoped (no `includeSubDomains`/`preload`, since
+this is a subdomain of the institution). This takes effect only after the
+owner deploys the updated `.htaccess`; until then the live header is unchanged.
+The `--live` security check expects the new value, so run it only post-deploy.
 
 ## Surface B — public repository and CI (newly exposed)
 
@@ -101,5 +103,7 @@ transport. Assessed adequate; no change queued.
   Dependabot security updates + private vulnerability reporting enabled, fork-PR
   approval for all external contributors, unused wiki/projects disabled.
   Rollback: `tools/out/t197-settings-rollback.md`.
-- **Proposals (owner judgment)**: resolve B9 (write-collaborator review gate);
-  raise HSTS `max-age` toward a preload-length commitment.
+- **T-200**: HSTS `max-age` raised to one year (host-scoped) in the repo,
+  pending owner deploy. The org `default_repository_permission: write` change
+  remains an explicit owner decision (100+ org repos, all members — the T-198
+  review gate already mitigates the website risk).
