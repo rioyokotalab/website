@@ -12,7 +12,7 @@ import stat
 import sys
 
 REMOVAL = re.compile(r"^Removing old (file|directory) `(.+)'$")
-DELETE_COMMAND = re.compile(r"^(?:rm|rmdir)(?:\s|$)")
+TRANSFER = re.compile(r"^Transferring file `(.+)'$")
 
 
 def snapshot(root: Path) -> str:
@@ -49,17 +49,22 @@ def snapshot(root: Path) -> str:
 
 def validate_preview(path: Path, maximum: int) -> str:
     text = path.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    # lftp narrates an in-place file UPDATE as "Removing old file X" followed by
+    # "Transferring file X" (remove-then-reupload). A TRUE deletion is a
+    # "Removing old file X" whose path is never transferred. Directory removals
+    # are always refused. Collect transfers first, then classify removals.
+    transferred = {match.group(1) for line in lines if (match := TRANSFER.match(line))}
     removals: list[str] = []
-    command_count = 0
-    for line in text.splitlines():
-        if DELETE_COMMAND.match(line):
-            command_count += 1
+    for line in lines:
         match = REMOVAL.match(line)
         if not match:
             continue
         kind, relative = match.groups()
         if kind == "directory":
             raise ValueError(f"recursive remote directory deletion is forbidden: {relative}")
+        if relative in transferred:
+            continue  # in-place update, not a net deletion
         pure = PurePosixPath(relative)
         if (not relative or pure.is_absolute() or any(part in ("", ".", "..") for part in pure.parts)):
             raise ValueError(f"unsafe remote deletion path: {relative}")
@@ -68,8 +73,6 @@ def validate_preview(path: Path, maximum: int) -> str:
         if any(ord(character) < 32 or ord(character) == 127 for character in relative):
             raise ValueError("remote deletion path contains a control character")
         removals.append(relative)
-    if command_count != len(removals):
-        raise ValueError("unrecognized or unmatched remote deletion command")
     if len(removals) > maximum:
         raise ValueError(f"remote deletion count {len(removals)} exceeds limit {maximum}")
     return f"deletions={len(removals)} max={maximum}"

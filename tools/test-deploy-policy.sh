@@ -67,4 +67,39 @@ if "$ROOT/tools/guarded-tree-cleanup.sh" /home "$HOME" "${TMPDIR:-/tmp}" \
 	exit 1
 fi
 test -d "$HOME"
+
+# SFTP preview format: lftp narrates an in-place update as
+# "Removing old file X" + "Transferring file X" (no rm command line), which the
+# earlier command-count check mis-read as an unmatched deletion. Cover both the
+# update format and true deletions directly against the validator.
+VP="$ROOT/tools/validate-lftp-preview.py"
+expect_deletions() {  # expected_count preview_file
+	got=$(python3 "$VP" preview "$2") || { echo "validator failed on $2" >&2; exit 1; }
+	[ "$got" = "deletions=$1 max=250" ] || { echo "expected deletions=$1, got '$got'" >&2; exit 1; }
+}
+expect_refused() {  # marker preview_file
+	if python3 "$VP" preview "$2" >"$TMP/vp.out" 2>&1; then
+		echo "validator did not refuse $2" >&2; exit 1
+	fi
+	grep -qF "$1" "$TMP/vp.out" || { echo "missing refusal '$1' for $2" >&2; exit 1; }
+}
+# Update-only (remove + retransfer, same paths) => 0 net deletions.
+printf 'Removing old file `.htaccess'\''\nTransferring file `.htaccess'\''\nRemoving old file `style.css'\''\nTransferring file `style.css'\''\n' \
+	>"$TMP/upd.txt"
+expect_deletions 0 "$TMP/upd.txt"
+# Mixed: one update, one true deletion => 1 deletion.
+printf 'Removing old file `en/index.html'\''\nTransferring file `en/index.html'\''\nRemoving old file `rogue.html'\''\n' \
+	>"$TMP/mixed.txt"
+expect_deletions 1 "$TMP/mixed.txt"
+# True deletions (no matching transfer) are counted.
+printf 'Removing old file `a.html'\''\nRemoving old file `b/c.html'\''\n' >"$TMP/del.txt"
+expect_deletions 2 "$TMP/del.txt"
+# Sentinel, recursive directory, and traversal deletions are refused.
+printf 'Removing old file `.dont-remove-me'\''\n' >"$TMP/sent.txt"
+expect_refused "sentinel" "$TMP/sent.txt"
+printf 'Removing old directory `stale'\''\n' >"$TMP/dir.txt"
+expect_refused "directory deletion is forbidden" "$TMP/dir.txt"
+printf 'Removing old file `../escape'\''\n' >"$TMP/trav.txt"
+expect_refused "unsafe remote deletion path" "$TMP/trav.txt"
+
 echo "PASS: deploy staging is allowlisted; remote sentinel is preserved; rogue files are removed"
