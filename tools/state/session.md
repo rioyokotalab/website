@@ -1,18 +1,15 @@
 driver: claude
-updated: 2026-07-18T15:45+0900
+updated: 2026-07-18T16:15+0900
 task: idle
 status: idle
 
 ## Now
-- T-190 complete. PR #7 merged as `e6faf3b` after required CI passed; owner
-  applied the hook via `tools/hook-doctor.sh apply`. Doctor reports `ok`,
-  live hook matches canonical byte-for-byte, pre-apply backup preserved, and
-  the closing ledger commit passed the hook without bypass.
-- Owner relaxed the live main ruleset (no required non-author review) and
-  granted the standing authorization recorded in `tools/state/decisions.md`.
-- Next task on the board: T-191 — reconcile the tracked ruleset payload and
-  `tools/test-github-ruleset.sh` with the relaxed live rules (read-only
-  against GitHub settings).
+- T-191 complete: read-only `gh api` comparison shows live ruleset `19127356`
+  (updated 2026-07-18T08:53+09:00) semantically equals the tracked
+  `docs/github-rulesets/main.json`; only API response-default fields differ.
+  The T-188 payload already recorded the zero-approval author-merge form, so
+  no payload, test, doc, or live setting changed. Board and evidence updated.
+- Board is empty: no active or blocked tasks. Next free id: T-192.
 
 ## Working set
 - None.
