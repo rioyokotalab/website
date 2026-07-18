@@ -7,6 +7,11 @@ cd "$ROOT"
 python3 tools/security-check.py "$@"
 python3 tools/link-check.py
 python3 tools/test-link-check.py
+tools/test-guarded-delete.sh
+tools/test-public-repo-audit.sh
+tools/test-github-ruleset.sh
+tools/test-bootstrap-lftp.sh
+tools/test-repository-independence.sh
 tools/test-deploy-policy.sh
 python3 tools/supply-chain-check.py
 python3 tools/generate-sitemap.py --check

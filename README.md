@@ -39,7 +39,24 @@ chmod 600 "$HOME/.codex/config.toml"
 Owner-scope configuration affects other projects. Preserve unrelated keys when
 updating an existing file; see `skills/config-proposals.md`.
 
-### 3. Install repository pre-commit checks
+### 3. Verify or install the deployment client
+
+The offline deployment-policy suite requires lftp 4.9.2. A healthy system
+command is accepted; otherwise the repository can install its checksum-pinned
+Ubuntu 24.04 x86-64 package without root access:
+
+```sh
+tools/bootstrap-lftp.sh doctor || tools/bootstrap-lftp.sh plan
+tools/bootstrap-lftp.sh apply
+hash -r
+tools/bootstrap-lftp.sh doctor
+```
+
+`plan` is read-only. `apply` downloads only the pinned HTTPS package, verifies
+its SHA-256 digest, extracts only `./usr/bin/lftp`, and installs under
+`~/.local`. It does not require another repository.
+
+### 4. Install repository pre-commit checks
 
 ```sh
 mkdir -p .git/hooks
@@ -47,7 +64,7 @@ printf '%s\n' '#!/bin/sh' 'python3 tools/check-md-size.py || exit 1' '' 'exit 0'
 chmod 755 .git/hooks/pre-commit
 ```
 
-### 4. Verify and start
+### 5. Verify and start
 
 ```sh
 codex --version
@@ -117,11 +134,17 @@ pages together, and rerun browser, offline, and online checks.
 | `cv/` | Public PDF plus deploy-excluded source/build files |
 | `skills/` | Canonical editing, lookup, ledger, and publish playbooks |
 | `tools/` | Checks, exporters, ledger, metrics, and transient output |
+| `docs/` | Repository-owned ruleset, audit evidence, and controls |
 | `AGENTS.md` | Codex role, security, workflow, and repository invariants |
 | `publish.sh`, `deploy.sh` | Gated publish pipeline and SFTP mirror |
 
 The playbook index is `skills/README.md`. Read the playbook for the area being
 changed; this README is orientation, not the procedure itself.
+
+The repository is operationally self-contained: its CI, guarded cleanup,
+ruleset restore payload, public-history audit, and rootless lftp bootstrap do
+not fetch or invoke a separate control repository. Historical task references
+are provenance only.
 
 ## Working on the site
 
