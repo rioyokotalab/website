@@ -217,19 +217,60 @@ SFTP web root with deletion. Only `.htaccess`, `index.html`, `style.css`,
 - Publish or push only after role, scope, verification, rebase, and applicable
   dry-run gates pass.
 
-## GPT-5.6 benchmark results (July 2026)
+## Benchmark results (July 2026)
 
-The repository benchmark ran 90 frozen singleton cells (five tasks × three
-models × six efforts) followed by 83 adaptive matched repeats. The final 173
-runs produced 154 full-quality results. This is a YOKOTA Lab website-maintenance
-benchmark, not a general model leaderboard; `effective_tokens` excludes cached
-input and is a planning proxy, not monetary cost.
+The repository benchmark was run on two agent stacks against the identical
+capsules, mutated fixtures, and F2P / browser P2P graders: **GPT-5.6** (three
+models × six efforts, 90 singletons + 83 adaptive repeats = 173 runs) and
+**Claude Code** (three models × five efforts, 75 singletons + 14 WBD-003
+repeats = 89 runs). This is a YOKOTA Lab website-maintenance benchmark, not a
+general leaderboard. `effective_tokens` = input − cached input + output is a
+planning proxy, not monetary cost, and is **not comparable across providers**
+(Claude Code's large cached system prompt inflates its input term); compare
+within a provider. GPT denominators are out of 30 cells/model (six efforts),
+Claude out of 25 (five efforts). Both stacks reached full quality on nearly
+every cell — GPT 154/173 full-quality overall, Claude 72/75 singletons with the
+three misses (all WBD-003 at higher effort) not reproducing (14/14 repeats).
 
-### Recommended dispatch routes
+### Per-model comparison (full-quality singleton medians)
+
+| Model | Full-quality cells | Median total time | Median effective tokens |
+| --- | ---: | ---: | ---: |
+| `gpt-5.6-luna` | 29/30 | 110.1 s | 24,322 |
+| `gpt-5.6-terra` | 26/30 | 101.1 s | 22,692 |
+| `gpt-5.6-sol` | 29/30 | 118.7 s | 19,823 |
+| `claude-fable-5` | 25/25 | 51.4 s | 25,405 |
+| `claude-opus-4-8` | 24/25 | 86.3 s | 28,892 |
+| `claude-sonnet-5` | 23/25 | 41.1 s | 29,404 |
+
+Within Claude, Fable 5 was the only model to pass every singleton and was the
+most token-efficient; Sonnet 5 was fastest overall; Opus 4.8 slowest. Wall-clock
+medians ran lower for the Claude stack, but token counts are not cross-comparable
+per the caveat above.
+
+### Per-effort comparison (full-quality singleton medians, all models)
+
+| Effort | GPT cells | GPT time | GPT tokens | Claude cells | Claude time | Claude tokens |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| low | 15/15 | 69.4 s | 12,141 | 15/15 | 46.2 s | 22,771 |
+| medium | 13/15 | 77.2 s | 18,867 | 14/15 | 47.0 s | 23,701 |
+| high | 14/15 | 102.0 s | 23,545 | 15/15 | 71.3 s | 27,480 |
+| xhigh | 13/15 | 127.6 s | 22,199 | 15/15 | 68.8 s | 33,591 |
+| max | 14/15 | 134.3 s | 25,992 | 13/15 | 142.2 s | 45,277 |
+| ultra | 15/15 | 131.8 s | 32,103 | — | — | — |
+
+**Low effort was best on both stacks** — fastest, cheapest, and (for Claude) the
+only effort with no misses; higher effort added time and tokens with no quality
+gain and all of the variance. GPT's `ultra` cells all passed but were dominated
+by another effort on every task (Claude has no `ultra`).
+
+### Recommended dispatch routes (GPT-5.6)
 
 Reliability confidence gates route selection before runtime or token use. The
-runtime objective is the default; every implementation still requires the
-linked policy's independent validation.
+runtime objective is the default; every implementation still requires the linked
+policy's independent validation. For Claude, all model × effort routes are
+reliable, so routing is by runtime/tokens — default to low effort; per-task
+routes are in the Claude summary.
 
 | Measured task class | Runtime / reliability route (expected time) | Effective-token route (expected tokens) | Evidence |
 | --- | --- | --- | --- |
@@ -239,71 +280,13 @@ linked policy's independent validation.
 | WBD-004 — responsive CSS visual contracts | `gpt-5.6-luna` / low (59.0 s) | `gpt-5.6-sol` / low (21,394) | both 6/6, high-confidence |
 | WBD-005 — cross-cutting shared assets | `gpt-5.6-sol` / high (249.1 s) | `gpt-5.6-sol` / high (45,053) | 8/9, qualified; full grader mandatory |
 
-### Frozen singleton comparison
-
-These descriptive aggregates use the 90-cell matrix only. Medians include
-full-quality cells and are not substitutes for the confidence-backed routes
-above.
-
-| Model | Full-quality cells | Median total time | Median effective tokens |
-| --- | ---: | ---: | ---: |
-| `gpt-5.6-luna` | 29/30 | 110.1 s | 24,322 |
-| `gpt-5.6-terra` | 26/30 | 101.1 s | 22,692 |
-| `gpt-5.6-sol` | 29/30 | 118.7 s | 19,823 |
-
-| Effort | Full-quality cells | Median total time | Median effective tokens |
-| --- | ---: | ---: | ---: |
-| low | 15/15 | 69.4 s | 12,141 |
-| medium | 13/15 | 77.2 s | 18,867 |
-| high | 14/15 | 102.0 s | 23,545 |
-| xhigh | 13/15 | 127.6 s | 22,199 |
-| max | 14/15 | 134.3 s | 25,992 |
-| ultra | 15/15 | 131.8 s | 32,103 |
-
-Low was the only documented effort to pass all 15 singleton cells and was best
-in aggregate. All 15 capability-gated `ultra` cells passed, but every ultra
-route was dominated by another effort on its task. See the
-[full matrix summary](tools/agent-benchmark/gpt56-full-20260713.summary.md),
-[adaptive repeat summary](tools/agent-benchmark/gpt56-repeat-20260714.summary.md),
-and [versioned routing policy](tools/agent-benchmark/routing-policy.json) for
-methods, intervals, failures, fallback chains, and exact values. Query the
-policy with, for example:
+Full methods, intervals, failures, and exact values:
+[GPT full matrix](tools/agent-benchmark/gpt56-full-20260713.summary.md),
+[GPT adaptive repeats](tools/agent-benchmark/gpt56-repeat-20260714.summary.md),
+[GPT routing policy](tools/agent-benchmark/routing-policy.json), and
+[Claude summary](tools/agent-benchmark/claude-full-20260718.summary.md). Query
+the GPT policy with, for example:
 
 ```sh
 python3 tools/agent-benchmark/select_route.py --task WBD-003 --objective runtime
 ```
-
-## Claude benchmark results (July 2026)
-
-The same suite was repeated with Claude Code across `claude-fable-5`,
-`claude-opus-4-8`, and `claude-sonnet-5` at five efforts (low–max) — 75
-singleton cells plus 14 WBD-003 adaptive repeats, using the identical capsules
-and graders. `effective_tokens` is not directly comparable to the GPT rows
-(Claude's cached system prompt inflates the input term).
-
-72 of 75 singletons were full-quality; the 3 misses were all WBD-003
-(consent JS) at higher effort and **none reproduced** (14/14 repeats passed),
-so every model × effort route is reliable on these tasks.
-
-| Model | Full-quality | Median total time | Median effective tokens |
-| --- | ---: | ---: | ---: |
-| `claude-fable-5` | 25/25 | 51.4 s | 25,405 |
-| `claude-opus-4-8` | 24/25 | 86.3 s | 28,892 |
-| `claude-sonnet-5` | 23/25 | 41.1 s | 29,404 |
-
-Fable 5 was the only model to pass every singleton cell and was the most
-token-efficient; Sonnet 5 was fastest; Opus 4.8 was slowest.
-
-| Effort | Full-quality | Median total time | Median effective tokens |
-| --- | ---: | ---: | ---: |
-| low | 15/15 | 46.2 s | 22,771 |
-| medium | 14/15 | 47.0 s | 23,701 |
-| high | 15/15 | 71.3 s | 27,480 |
-| xhigh | 15/15 | 68.8 s | 33,591 |
-| max | 13/15 | 142.2 s | 45,277 |
-
-Low effort was fastest, cheapest, and the only effort with no misses — the same
-"low is best" pattern the GPT-5.6 run showed; higher effort cost ~3× the time
-and 2× the tokens with no quality gain and all of the variance. Full methods,
-per-task routes, and caveats:
-[Claude summary](tools/agent-benchmark/claude-full-20260718.summary.md).
