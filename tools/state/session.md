@@ -1,28 +1,29 @@
 driver: claude
-updated: 2026-07-18T20:45+0900
-task: T-195 Security hardening loop
-status: in-progress
+updated: 2026-07-18T21:30+0900
+task: idle
+status: idle
 
 ## Now
-- T-196 merged (`781e317`): repo-content baseline (SECURITY.md, dependabot.yml,
-  ci.yml least-privilege + --ignore-scripts, workflow-security check/test).
-- T-197 settings APPLIED and verified (rollback:
-  tools/out/t197-settings-rollback.md): workflow token read, no token
-  PR-approve, SHA-pinning required, Actions restricted to GitHub-owned,
-  Dependabot security updates + private vuln reporting on, fork-PR approval
-  all-external, wiki/projects disabled. 0 webhooks, 0 deploy keys.
-- T-197 doc PR (docs/repository-controls.md + threat-model B9 + settings note)
-  pending — landing now.
-- T-198 = DECISION for owner: 66 org-inherited write collaborators +
-  zero-approval ruleset = anyone can merge to deploy-feeding main. Not
-  agent-actionable (org/people/reverses owner choice). Surfaced to owner.
+- T-195 hardening loop closed. Agent-actionable work done: T-196 (`781e317`,
+  repo-content baseline), T-197 (settings, applied + reversible via
+  tools/out/t197-settings-rollback.md), T-198 (`3574f40`, review gate on main
+  with admin bypass). Dependabot bump of actions/checkout to the verified
+  v7.0.0 SHA merged (`c52c101`). Secrets/variables/environments/runners/pages
+  sweep clean.
+- Two owner-judgment proposals remain (not agent-actionable): org default
+  repository permission `write`, and HSTS max-age. In TODO + threat model.
+- Skills applied this loop: context-ledger, config-proposals,
+  publish-and-verify (website); evidence-first-research,
+  long-running-task-ledger (harness). Going forward, name skills inline at
+  task start + a `Skills applied:` line in reports (owner preference).
+- Board empty. Next free ID: T-199.
 
 ## Working set
-- Branch t197-settings-docs: docs/repository-controls.md,
-  docs/security-threat-model.md, TODO.md, session.md.
+- Closure branch: TODO.md, tools/state/{session,decisions}.md.
 
 ## Open questions
-- B9 collaborator/approval decision (T-198) — asked.
+- Owner asked to rename away the "security" keyword; needs a direct answer
+  (see final message) — not auto-done.
 
 ## Awaiting user
-- T-198 decision; optional T-194 notification checkbox.
+- Org-default-permission and HSTS proposals; the rename-keyword request.

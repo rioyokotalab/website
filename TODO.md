@@ -40,21 +40,17 @@ T-199 and checkpoint `tools/state/session.md` at task start.
 
 ## Active tasks
 
-### T-195 — Security hardening loop
+None. The T-195 security-hardening loop's agent-actionable work (T-196, T-197,
+T-198) is complete; two owner-judgment proposals remain in
+`docs/security-threat-model.md`, listed below.
 
-Threat model: `docs/security-threat-model.md`. Served site and supply chain
-already strong; the new exposure is the public repo's GitHub settings/CI.
-T-196 (repo-content) merged `781e317`; T-197 (settings) applied. Loop stays
-open for further findings.
+## Owner-judgment proposals (not agent-actionable)
 
-### T-198 — Require review on main except owner commits (B9)
-
-Owner decision: require 1 approving review on `main`, with the owner able to
-merge own PRs without review. Implementing via ruleset `19127356`
-(required_approving_review_count 0→1 plus an owner bypass actor); update the
-tracked payload `docs/github-rulesets/main.json`, `tools/test-github-ruleset.sh`,
-and `docs/repository-controls.md` to match. Caveat to confirm: the agent acts
-as the owner's account, so agent self-merges also bypass the gate.
+Both detailed in `docs/security-threat-model.md`: (1) org
+`default_repository_permission: write` is the root of the 66 write
+collaborators (B9) — lowering to `read` is org-wide; the T-198 review gate
+mitigates the website risk without it. (2) `.htaccess` HSTS `max-age=86400` is
+short — raising it is more secure but a sticky live change.
 
 ## Completed-task index
 
@@ -84,5 +80,4 @@ anchored versions below hold command-level detail for each era.
 | T-192 | Sanitized-mirror route built then reversed by the owner (PR #10 closed unmerged); repository made public with ruleset intact; secret scanning enabled, zero alerts (PR #11, `676c209`). |
 | T-193 | Task board restyled to the harness layout: current state, resume checkpoint, and this grouped completed-task index reconstructed from full board history. |
 | T-194 | "CI workflow run" email noise fixed repo-side (merged `69172ae`): redundant post-merge push run removed from `ci.yml` (strict up-to-date + squash makes it byte-identical to the tested PR head); account "Only notify for failed workflows" step handed to the owner. Owner also ruled `~/harness` read-only for website sessions (`063f021`). |
-| T-196 | Repository-content security baseline (merged `781e317`): `SECURITY.md`, `.github/dependabot.yml`, `ci.yml` least-privilege token + `npm ci --ignore-scripts`, and `tools/workflow-security-check.py` + 3-check test in the suite. Part of the T-195 loop. |
-| T-197 | Repository-settings hardening applied (reversible via `tools/out/t197-settings-rollback.md`): read-only default token, no token PR-approval, SHA-pinned + GitHub-owned actions only, Dependabot security updates + private vulnerability reporting, fork-PR approval for all external contributors, wiki/projects disabled. |
+| T-195–T-198 | Attack-surface hardening loop (`docs/security-threat-model.md`). T-196 repo-content baseline (`781e317`: SECURITY.md, dependabot.yml, least-privilege CI token, `workflow-security-check.py` + test). T-197 settings applied (reversible via `tools/out/t197-settings-rollback.md`: read-only token, SHA-pinned + GitHub-owned actions, Dependabot security updates, private vuln reporting, fork-PR approval all-external, wiki/projects off). T-198 = B9: `main` requires 1 review with a Repository-admin bypass (owner self-merges; 66 org write collaborators need approval) — ruleset `19127356`, `3574f40`. Verified `actions/checkout` v7.0.0 bump `c52c101`. |

@@ -1,5 +1,18 @@
 # Durable decisions
 
+- **2026-07-18 — `main` requires one review except owner merges (T-198).**
+  The public repo has 66 write collaborators inherited from the `rioyokotalab`
+  org default (`default_repository_permission: write`); with zero required
+  approvals any could merge to the deploy-feeding `main` unreviewed (threat
+  model B9). Owner decision: require one approving review in ruleset
+  `19127356`, with a Repository-admin bypass (role id 5) so the sole admin
+  owner still merges own PRs unreviewed while the write collaborators need an
+  approval. The agent acts through the owner's admin account, so agent
+  self-merges also bypass — the owner confirmed this is acceptable — but must
+  use `gh pr merge --admin` (plain merge is BLOCKED: REVIEW_REQUIRED). The
+  tracked payload `docs/github-rulesets/main.json` and
+  `tools/test-github-ruleset.sh` encode the new form. The org-wide default
+  permission and HSTS max-age remain owner-judgment proposals, not changed.
 - **2026-07-18 — Website-started sessions never modify `~/harness`.** After a
   website DRIVER promoted guidance into the harness (harness PR #16), the
   owner ruled that a DRIVER started from `~/website` must never modify
