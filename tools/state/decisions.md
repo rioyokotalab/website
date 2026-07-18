@@ -1,5 +1,14 @@
 # Durable decisions
 
+- **2026-07-18 — Standing owner authorization after T-190.** The owner removed
+  the required non-author review from the live `main` ruleset and, after
+  applying the T-190 hook, granted standing authorization for similar tasks:
+  a direct DRIVER may self-merge its own PR once required CI passes, and may
+  run `tools/hook-doctor.sh apply`/`rollback` on the local pre-commit hook
+  when the read-only doctor reports drift from the tracked canonical copy.
+  This does not extend to other `.git` internals, credentials, deployment
+  beyond existing gates, account settings, or history rewrites; those remain
+  proposal-only. Tracked ruleset payload/test reconciliation is T-191.
 - **2026-07-18 — Support independent Codex and Claude repository workflows.**
   This supersedes the 2026-07-13 Codex-only client decision at the owner's
   explicit request. `AGENTS.md` is the shared project policy and root
