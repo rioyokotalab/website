@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-203.
+free ID: T-204.
 
 ## Current state
 
@@ -56,12 +56,7 @@ anchored versions below hold command-level detail for each era.
 | T-167, T-177 | 2026-07-14: ResearchMap reconciliation completed, including fail-closed sync inserts (see decisions.md). `041a453:TODO.md`. |
 | T-170–T-176, T-178 | 2026-07-14: portable agent harness established and moved out of the website, including the pinned lftp restore. `041a453:TODO.md`. |
 | T-179–T-183 | 2026-07-14–16: post-incident recovery — layered agent configuration reconstructed (T-179); exhaustive Git recovery re-audit found no additional candidate (T-180); npm validation logs removed (T-181); deployment staging and mirror deletion guarded (T-182); recovered repositories pushed with next-task handoff (T-183). `041a453:TODO.md`, `64c4b18:TODO.md`. |
-| T-184 | Global PIE and node-onboarding skill work reconciled; alias-only discovery boundary, credentials owner-only. |
-| T-185 | Public-visibility risk assessment: no credential path found; history exposure caveats recorded and later accepted at T-192. |
-| T-186 | Recovered ledger commits pushed; read-only offline CI added (run `29566375620` at `c90760b`). |
-| T-187 | Strict `main` ruleset validated end-to-end through PR #1 (`162bef0`). |
-| T-188 | Website made operationally independent of the harness; PR #3 merged as `6f1ad83`. |
-| T-189 | Website-owned Claude takeover and live evaluation passed; `docs/audits/claude-live-takeover-2026-07-18.md`. |
+| T-184–T-189 | 2026-07-16–18: PIE/node-onboarding reconciliation (T-184); public-visibility risk assessment (T-185, caveats accepted at T-192); recovered ledger commits pushed + offline CI added (T-186, `c90760b`); strict `main` ruleset validated via PR #1 (T-187, `162bef0`); website made harness-independent (T-188, `6f1ad83`); website-owned Claude takeover + live evaluation (T-189, `docs/audits/claude-live-takeover-2026-07-18.md`). |
 | T-190 | Canonical pre-commit hook and doctor landed (PR #7 `e6faf3b`); owner-applied hook verified byte-identical; standing authorization recorded. |
 | T-191 | Live ruleset `19127356` verified to match `docs/github-rulesets/main.json`; presumed divergence did not exist; read-only. |
 | T-192 | Sanitized-mirror route built then reversed by owner; repository made public with ruleset intact; secret scanning enabled, zero alerts (`676c209`). |
@@ -72,3 +67,4 @@ anchored versions below hold command-level detail for each era.
 | T-200 | Security proposals: HSTS `max-age` raised 1 day → 1 year, **deployed and verified live** (max-age=31536000, HTTP→HTTPS intact). Org `default_repository_permission` change **declined** (org-wide 100+ repos; T-198 gate suffices). |
 | T-201 | Merged the GPT-5.6 and Claude README benchmark tables into one section (unified 6-model table + side-by-side per-effort comparison; token caveat kept). |
 | T-202 | Fixed the deploy deletion guard (`439ef4d`): it mis-read SFTP in-place updates as unmatched deletions, blocking every real deploy since T-182. True deletion = removed-not-transferred; SFTP-format test added. Unblocked T-200. |
+| T-203 | Housekeeping: pruned 8 stale remote-tracking refs, deleted the superseded `t187-ruleset-closeout` branch, and guarded-deleted 92 disposable Claude benchmark artifact dirs (~37 MB; 173 GPT artifacts + tracked evidence intact). |
