@@ -176,7 +176,7 @@ def header_policy_source_checks() -> list[Finding]:
         "base-uri 'self'",
         "style-src 'self' https://cdnjs.cloudflare.com",
         "Permissions-Policy",
-        'Strict-Transport-Security "max-age=86400"',
+        'Strict-Transport-Security "max-age=31536000"',
     )
     for value in required:
         if value not in text:
@@ -229,7 +229,7 @@ def live_checks() -> list[Finding]:
             "x-frame-options": "sameorigin",
             "referrer-policy": None,
             "permissions-policy": None,
-            "strict-transport-security": "max-age=86400",
+            "strict-transport-security": "max-age=31536000",
             csp_header: None,
         }
         for header, expected in required.items():
