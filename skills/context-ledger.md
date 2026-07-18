@@ -7,7 +7,7 @@ reconstructs all in-flight work from the ledger.
 
 | File | Holds | Budget (bytes) |
 | --- | --- | --- |
-| `TODO.md` | Active / blocked / recently completed tasks | 8000 |
+| `TODO.md` | Current state, active tasks, completed-task index | 8000 |
 | `tools/state/session.md` | Current task, last/next step, working set, asks | 4000 |
 | `tools/state/facts.md` | Current verified facts | 10000 |
 | `tools/state/decisions.md` | Durable choices and rationale | 10000 |
@@ -30,7 +30,9 @@ when a budget is approached; Git keeps history.
 
 Update `session.md` at task start, after each completed step/discovery/failure,
 before risky or long work, and at session end. When finished, set task/status
-to `idle` and move one compact completion entry to `TODO.md`.
+to `idle` and add one compact row to the completed-task index in `TODO.md`
+(harness-style board: current state, resume checkpoint, active tasks, index;
+group older rows by era with `commit:path` pointers when the budget nears).
 
 Keep these headings exactly:
 
