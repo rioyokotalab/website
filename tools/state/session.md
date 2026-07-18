@@ -1,28 +1,24 @@
 driver: claude
-updated: 2026-07-18T21:35+0900
+updated: 2026-07-18T22:05+0900
 task: idle
 status: idle
 
 ## Now
-- T-199 complete. Claude benchmark support merged (PR #20, `58f5e7b`) and the
-  full study ran: 75 singletons (claude-full-20260718) + 14 WBD-003 adaptive
-  repeats (claude-repeat-20260718) in results.jsonl. Result: 72/75 singletons
-  full-quality; the 3 WBD-003 higher-effort misses did NOT reproduce (14/14
-  repeats pass) — variance, not capability. Low effort best default; Fable 5
-  only clean 25/25 sweep + most token-efficient; Sonnet fastest; Opus slowest.
-- Deliverables: tools/agent-benchmark/claude-full-20260718.summary.md +
-  README "Claude benchmark results" section. Landing via PR (admin-merge only
-  on CONFIRMED CI pass).
-- Note: the long-lived background repeat orchestrator was killed twice by host
-  pressure; the essential repeats were finished in reliable foreground batches.
-- Skills applied: research-engineering-validation, plan-interview-execute,
-  context-ledger.
+- T-200 (security proposals) resolved. HSTS max-age raised 1 day → 1 year in
+  .htaccess (host-scoped), merged `d8a23ce`; live effect pending owner deploy
+  (tools/out/t200-hsts-deploy-handoff.md — needs SFTP password). Org
+  default_repository_permission change DECLINED by owner (org-wide 100+ repos;
+  T-198 review gate suffices). Recorded in decisions.md + threat model.
+- Board clear. Next free ID: T-201.
+- Skills applied: config-proposals, publish-and-verify, html-editing (CRLF/LF
+  check on .htaccess), context-ledger.
 
 ## Working set
-- results.jsonl (+89 claude rows), summary, README — in the T-199 results PR.
+- None (closure committed on the T-200 branch).
 
 ## Open questions
 - None.
 
 ## Awaiting user
-- None.
+- Deploy the HSTS .htaccess (owner-run) per the T-200 handoff.
+- Optional: T-194 "notify only for failed workflows" checkbox.
