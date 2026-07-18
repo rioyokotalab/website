@@ -47,9 +47,14 @@ for forbidden in tools skills docs .github .git AGENTS.md CLAUDE.md TODO.md \
 	}
 done
 
+# The mirror commit is generated output, not personal authorship; a fixed
+# identity keeps builds working on identity-less CI runners.
 git -C "$DEST" init --quiet --initial-branch=main
 git -C "$DEST" add --all
-git -C "$DEST" commit --quiet \
+git -C "$DEST" \
+	-c user.name='YOKOTA Lab website mirror' \
+	-c user.email='noreply@users.noreply.github.com' \
+	commit --quiet \
 	-m "Public mirror of the YOKOTA Lab website (source $SOURCE_COMMIT)"
 
 COMMITS=$(git -C "$DEST" rev-list --count HEAD)
