@@ -25,8 +25,12 @@ free ID: T-195.
   positive-allowlist staging behind gated `publish.sh`/`deploy.sh`; tools,
   skills, ledger, config, README, and CV sources never deploy.
 - The complete offline suite (`tools/test-security.sh`) and the locked
-  browser tests run green in required CI; the repository is operationally
-  independent of any sibling repository (T-188).
+  browser tests run green in required CI, which triggers on pull requests
+  only — there is no post-merge push run (T-194, `69172ae`). The repository
+  is operationally independent of any sibling repository (T-188).
+- Website-started sessions treat `~/harness` as strictly read-only (owner
+  rule in `AGENTS.md`, `063f021`); its shared skills are read and applied by
+  default per the promoted global guidance (harness `66abee5`).
 
 ## Next resume checkpoint
 
@@ -67,4 +71,4 @@ anchored versions below hold command-level detail for each era.
 | T-191 | Live ruleset `19127356` verified to match `docs/github-rulesets/main.json`; presumed divergence did not exist; read-only. |
 | T-192 | Sanitized-mirror route built then reversed by the owner (PR #10 closed unmerged); repository made public with ruleset intact; secret scanning enabled, zero alerts (PR #11, `676c209`). |
 | T-193 | Task board restyled to the harness layout: current state, resume checkpoint, and this grouped completed-task index reconstructed from full board history. |
-| T-194 | "CI workflow run" email noise fixed repo-side: redundant post-merge push run removed from `ci.yml` (strict up-to-date + squash makes it byte-identical to the tested PR head); account "Only notify for failed workflows" step handed to the owner. Owner also ruled `~/harness` read-only for website sessions (`063f021`). |
+| T-194 | "CI workflow run" email noise fixed repo-side (merged `69172ae`): redundant post-merge push run removed from `ci.yml` (strict up-to-date + squash makes it byte-identical to the tested PR head); account "Only notify for failed workflows" step handed to the owner. Owner also ruled `~/harness` read-only for website sessions (`063f021`). |
