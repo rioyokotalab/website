@@ -2,7 +2,7 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-190.
+evidence. Next free id: T-191.
 
 ## Recovery priority — do before any other task
 
@@ -44,7 +44,19 @@ evidence. Next free id: T-190.
 
 ## Active
 
-None.
+- **T-190 — Repair the stale local pre-commit hook safely (ready for Claude):**
+  T-189's first commit failed because `.git/hooks/pre-commit` still calls the
+  removed `tools/check-claude-size.py` before the valid
+  `tools/check-md-size.py`; the README already documents the current hook.
+  A Claude DRIVER should claim T-190, read `skills/config-proposals.md`, and
+  implement the smallest website-owned, deploy-excluded canonical hook/doctor
+  plus focused offline coverage and an exact owner apply/rollback handoff.
+  Do not restore the removed checker, depend on a sibling repository, use
+  `--no-verify` as the final fix, deploy, or change public-site files. Agent
+  edits to the live `.git` hook remain forbidden without a new explicit owner
+  override, so mark `awaiting-user` after tracked work. Complete only after the
+  owner-applied hook matches the canonical form, the size gate passes, and an
+  ordinary test commit reaches it without bypass.
 
 ## Blocked / awaiting user
 
@@ -53,15 +65,11 @@ None.
 ## Recently completed
 
 - **T-189 — Add website-owned Claude takeover and live evaluation (complete
-  2026-07-18):** root `CLAUDE.md` now imports shared project policy with a
-  narrow client overlay; ledger, metrics, publication, size, independence, and
-  offline-test surfaces recognize Claude without importing or invoking a
-  sibling repository. Three bounded Claude Sonnet 5/high sessions passed cold
-  reconstruction, technical audit, and an exact single-file metrics hardening
-  implementation. Primary review, the complete offline suite, and all 38
-  browser tests passed. Durable evidence is
-  `docs/audits/claude-live-takeover-2026-07-18.md`. No public-site file,
-  deployment, owner setting, credential, or external repository changed.
+  2026-07-18):** repository-owned Claude guidance and client-neutral ledger,
+  metrics, publication, and offline coverage passed three bounded sessions,
+  primary review, and all tests. Evidence:
+  `docs/audits/claude-live-takeover-2026-07-18.md`. No public
+  file, deployment, owner setting, credential, or external repository changed.
 
 - **T-188 — Make website independent of harness (complete 2026-07-18):**
   website now owns its manifest/token guarded cleanup, CI path, ruleset
