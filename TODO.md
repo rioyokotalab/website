@@ -4,63 +4,22 @@ Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
 evidence. Next free id: T-191.
 
-## Recovery priority — do before any other task
-
-- **T-180 — Exhaustively re-audit Git history for additional recovery
-  candidates (complete 2026-07-15):** the full local refs, reflogs, reachable
-  graph, read-only unreachable objects, historical task paths, deployment
-  exclusions, pre-incident reports, metrics/logs, and pre-/post-incident trees
-  were reconciled with harness T-172. No public file, recovery candidate,
-  credential/auth state, owner config, package, remote, or deployment changed.
-
-  - `628b53a` and current each contain 275 paths with identical mode counts
-    (257 regular and 18 executable; no symlink/submodule). All eight damaged
-    paths—`README.md`, `cv/build-cv.sh`, `cv/cv.cls`, `cv/cv.pdf`, `cv/cv.tex`,
-    `package.json`, `publish.sh`, and `style.css`—match `628b53a` exactly by
-    object ID, working-file hash, and mode. The only later website changes are
-    the six recovery-ledger files.
-  - All 12 unreachable commits predate the incident and are superseded July 12
-    evaluation variants or the July 14 ResearchMap autostash. Named trees map
-    216 of 218 unreachable blobs. Safe header-only checks identify the other
-    two as in-progress T-29 and T-30 `session.md` checkpoints. None should be
-    restored or published.
-  - The ignored T-11 permission payload has no current path, reachable object,
-    or unreachable tree name. Commits `b73c2c5`, `f92abf3`, `31b5b5b`, and
-    `194fc04` preserve its intent and applied outcome, but the payload is
-    confirmed missing from local evidence and is superseded by T-179. The
-    surviving ignored T-170 configuration reports/proposals and T-167–T-178
-    driver reports predate the incident, are deploy-excluded, and remain valid
-    historical evidence; preserve them.
-  - T-170–T-179, the `tools/todo.md` to root `TODO.md` rename at `628b53a`, the
-    harness dot-directory move at `94119a2`, and both post-incident website
-    commits reconcile without a missing tracked path. Harness T-172 contains
-    the authoritative recovery table, sensitivity boundaries, validation and
-    rollback routes, and reviewed execution order.
-  - Deployment exclusions still keep tools, skills, ledgers, config, README,
-    and CV sources out of the public tree. Metrics validation and standards
-    checks use the repository Python entry points. Harness T-175 originally
-    restored the local lftp prerequisite; T-188 now owns its checksum-pinned
-    rootless bootstrap and complete offline validation locally.
-
 ## Active
 
-- **T-190 — Repair the stale local pre-commit hook safely (ready for Claude):**
-  T-189's first commit failed because `.git/hooks/pre-commit` still calls the
-  removed `tools/check-claude-size.py` before the valid
-  `tools/check-md-size.py`; the README already documents the current hook.
-  A Claude DRIVER should claim T-190, read `skills/config-proposals.md`, and
-  implement the smallest website-owned, deploy-excluded canonical hook/doctor
-  plus focused offline coverage and an exact owner apply/rollback handoff.
-  Do not restore the removed checker, depend on a sibling repository, use
-  `--no-verify` as the final fix, deploy, or change public-site files. Agent
-  edits to the live `.git` hook remain forbidden without a new explicit owner
-  override, so mark `awaiting-user` after tracked work. Complete only after the
-  owner-applied hook matches the canonical form, the size gate passes, and an
-  ordinary test commit reaches it without bypass.
+None.
 
 ## Blocked / awaiting user
 
-None.
+- **T-190 — Repair the stale local pre-commit hook safely (awaiting owner
+  apply):** tracked work is done: canonical `tools/hooks/pre-commit`,
+  `tools/hook-doctor.sh` (read-only doctor + owner apply/rollback with
+  automatic backup), `tools/test-hook-doctor.sh` (8 checks) wired into
+  `tools/test-security.sh`, and README section 4 now installs via the doctor.
+  Full offline suite passes; doctor confirms the live hook is stale; no `.git`
+  file was edited, the removed checker stays removed, and no bypass was used.
+  Owner: follow `tools/out/t190-hook-apply-handoff.md`
+  (`tools/hook-doctor.sh apply`, doctor `ok`, one ordinary commit through the
+  hook; rollback via `tools/hook-doctor.sh rollback`), then T-190 can close.
 
 ## Recently completed
 
@@ -116,6 +75,16 @@ None.
   owner-only; both manual restore gates precede separately authorized
   scheduling. No live node, public-site file, deployment,
   credential, SSH configuration, package, or scheduler state changed.
+
+- **T-180 — Exhaustively re-audit Git history for additional recovery
+  candidates (complete 2026-07-15):** refs, reflogs, the reachable graph,
+  unreachable objects, historical task paths, deployment exclusions, and pre-/
+  post-incident trees were reconciled with harness T-172. All eight damaged
+  paths match `628b53a` exactly; all 12 unreachable commits are superseded
+  pre-incident variants; the ignored T-11 payload is confirmed missing and
+  superseded by T-179. Deployment exclusions remain intact. Full evidence is
+  preserved in Git history of this entry. No public file, recovery candidate,
+  credential/auth state, owner config, package, remote, or deployment changed.
 
 - **T-179 — Recover and consolidate global/local agent configuration
   (complete):** reconstructed the non-secret layered configuration from Git,

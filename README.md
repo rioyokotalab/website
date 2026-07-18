@@ -61,10 +61,13 @@ its SHA-256 digest, extracts only `./usr/bin/lftp`, and installs under
 
 ### 4. Install repository pre-commit checks
 
+The canonical hook is tracked at `tools/hooks/pre-commit`. Install or verify
+the live copy with the doctor:
+
 ```sh
-mkdir -p .git/hooks
-printf '%s\n' '#!/bin/sh' 'python3 tools/check-md-size.py || exit 1' '' 'exit 0' > .git/hooks/pre-commit
-chmod 755 .git/hooks/pre-commit
+tools/hook-doctor.sh          # read-only status
+tools/hook-doctor.sh apply    # back up any existing hook, install canonical
+tools/hook-doctor.sh rollback # restore the pre-apply backup if needed
 ```
 
 ### 5. Verify and start
