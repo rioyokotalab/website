@@ -1,17 +1,17 @@
 driver: claude
-updated: 2026-07-18T17:35+0900
+updated: 2026-07-18T18:20+0900
 task: idle
 status: idle
 
 ## Now
-- T-192 closed with owner reversal: mirror PR #10 closed unmerged; the owner
-  chose direct public visibility with the T-185 deleted-member-content caveat
-  surfaced. `gh repo edit --visibility public` applied; verified PUBLIC,
-  ruleset `19127356` active, default branch `main`. Decision recorded in
-  decisions.md: every commit is now public the moment it is pushed.
-- Owner approved the proposal; secret scanning and push protection are
-  enabled and the alert list is empty (0 alerts).
-- Board is empty. Next free id: T-193.
+- T-193 complete: `TODO.md` restyled to the harness board layout (current
+  state, next resume checkpoint, active tasks, grouped completed-task index
+  with `commit:path` anchors). The index was reconstructed from the complete
+  board history — 262 revisions of `TODO.md`/`tools/todo.md` — covering the
+  pre-T-1 free-form era through T-193. All anchor commits verified to
+  contain the named path. `skills/context-ledger.md` updated in the same
+  change set per config-proposals.
+- Board is empty. Next free ID: T-194.
 
 ## Working set
 - None.

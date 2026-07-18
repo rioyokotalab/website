@@ -1,128 +1,67 @@
 # Lab website — task board
 
-Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
-`tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-193.
+This is the authoritative resume point for the YOKOTA Lab website repository.
+Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
+`tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
+retains superseded chronology and command-level evidence — keep only current
+state, active tasks, blockers, and compact historical pointers here. Next
+free ID: T-194.
 
-## Active
+## Current state
+
+- The repository, including its full history, is public (T-192, 2026-07-18)
+  at the owner's explicit instruction; every tracked file is public the
+  moment it is pushed. Secret scanning and push protection are enabled with
+  zero alerts.
+- `main` is protected by active ruleset `19127356`: pull request plus the
+  required `Offline checks` CI run, linear history, conversation resolution,
+  no bypass actors, zero required approvals. A driver may self-merge its own
+  PR after the required check passes and may repair local pre-commit hook
+  drift via `tools/hook-doctor.sh` (standing authorizations in decisions.md).
+- The live pre-commit hook matches the tracked canonical
+  `tools/hooks/pre-commit`; `tools/hook-doctor.sh` verifies, applies, and
+  rolls back (T-190).
+- The site is static mirrored EN/JP HTML with no build step. Deployment is
+  positive-allowlist staging behind gated `publish.sh`/`deploy.sh`; tools,
+  skills, ledger, config, README, and CV sources never deploy.
+- The complete offline suite (`tools/test-security.sh`) and the locked
+  browser tests run green in required CI; the repository is operationally
+  independent of any sibling repository (T-188).
+
+## Next resume checkpoint
+
+The board is empty and nothing awaits the owner. Claim T-194 for new work,
+read the matching playbook in `skills/`, and checkpoint
+`tools/state/session.md` at task start.
+
+## Active tasks
 
 None.
 
-## Blocked / awaiting user
+## Completed-task index
 
-None.
+Git history is the durable evidence store: full chronology lives in this
+file's history, at `tools/todo.md` before the `628b53a` root rename. The
+anchored versions below hold command-level detail for each era.
 
-## Recently completed
-
-- **T-192 — Public repository route (complete 2026-07-18, mirror reversed):**
-  a sanitized single-commit mirror generator with 7-check coverage and a
-  clean value-free trial audit was built on PR #10, then the owner reversed
-  the mirror decision, stating the repository content is public information.
-  PR #10 was closed unmerged (generator preserved in its commits) and, on the
-  owner's explicit choice with the T-185 deleted-member-content caveat
-  surfaced, `rioyokotalab/website` was made PUBLIC as-is via one
-  `gh repo edit --visibility public` write. Verified: visibility PUBLIC,
-  ruleset `19127356` still active, default branch `main`. With separate owner
-  approval, secret scanning and push protection were then enabled; the alert
-  list is empty. No other setting, deployment, or file changed.
-
-- **T-191 — Reconcile tracked ruleset payload with the relaxed live rules
-  (complete 2026-07-18):** verified no divergence exists; the task premise was
-  wrong. Live ruleset `19127356` (updated 2026-07-18T08:53+09:00) semantically
-  equals `docs/github-rulesets/main.json` on name, target, enforcement, bypass
-  actors, conditions, and all five rules — the T-188 payload already recorded
-  the zero-approval author-merge-after-CI form, and `required_approving_
-  review_count` is 0 in both. The only GET-vs-payload differences are API
-  response defaults (`dismissal_restriction` disabled, `required_reviewers`
-  empty), correctly omitted from an update payload. `tools/
-  test-github-ruleset.sh` and `docs/repository-controls.md` already match; no
-  file, test, doc, or live setting needed changing. Read-only `gh api` only.
-
-- **T-190 — Repair the stale local pre-commit hook safely (complete
-  2026-07-18):** canonical `tools/hooks/pre-commit`, `tools/hook-doctor.sh`
-  (read-only doctor + apply/rollback with automatic backup), 8-check
-  `tools/test-hook-doctor.sh` wired into the offline suite, and README §4
-  landed via PR #7 (`e6faf3b`, CI run `29633326190`). Owner applied the hook;
-  doctor reports `ok`, the live hook matches canonical byte-for-byte, the
-  pre-apply backup is preserved, and the closing ledger commit passed the
-  hook ordinarily without bypass. The removed checker stays removed; no
-  public-site file or deployment changed. Owner granted the standing
-  authorization recorded in decisions.md.
-
-- **T-189 — Add website-owned Claude takeover and live evaluation (complete
-  2026-07-18):** repository-owned Claude guidance and client-neutral ledger,
-  metrics, publication, and offline coverage passed three bounded sessions,
-  primary review, and all tests. Evidence:
-  `docs/audits/claude-live-takeover-2026-07-18.md`. No public
-  file, deployment, owner setting, credential, or external repository changed.
-
-- **T-188 — Make website independent of harness (complete 2026-07-18):**
-  website now owns its manifest/token guarded cleanup, CI path, ruleset
-  payload/test, value-free public-history audit tool/evidence/test, and
-  checksum-pinned rootless lftp bootstrap. Focused safety checks, the complete
-  offline suite, 38 browser tests, and an isolated clean clone with unusable
-  `HARNESS_BIN` and a locally bootstrapped lftp passed. PR #3's first CI run
-  exposed and fixed a system-path test assumption; exact head `beb44b9` then
-  passed required `Offline checks` run `29627893789` and squash-merged as
-  `6f1ad83`. Coordinated harness PR #7 passed its own CI and merged as
-  `f1b095c`. No public-site file, deployment, live lftp removal, account
-  setting, credential, history rewrite, or fleet operation occurred.
-
-- **T-187 — Validate strict `main` ruleset through a pull request (complete
-  2026-07-18):** active ruleset `19127356` still exactly matches the reviewed
-  five-rule payload with no bypass actor. Deploy-excluded ledger-only PR #1
-  passed required `Offline checks`, received non-author `rioyokota2` approval
-  on its tested head, and squash-merged through the ruleset as `162bef0`. No
-  deployment or public-site file changed.
-
-- **T-186 — Publish recovered ledger commits and add offline CI (complete
-  2026-07-17):** pushed the three recovered T-185 commits unchanged, then added
-  read-only Ubuntu 24.04 CI for the complete offline static and locked browser
-  suites. Hosted run `29566375620` passed at `c90760b`; no public-site file was
-  deployed. Strict repository rules remain gated on an eligible non-author
-  reviewer and completion of all required direct pushes.
-
-- **T-185 — Assess risks of making the repository public (complete
-  2026-07-16):** the current static tree, 379-commit reachable history, public
-  staging boundary, client dependencies, live headers/redirects, and excluded
-  live paths were reviewed. Both offline and live security suites pass; no
-  confirmed credential or direct repository-to-site compromise path was found.
-  Public visibility still exposes deleted photos/member content, old config and
-  reports, deployment topology, and the local credential-file location. Prefer
-  a sanitized public allowlist mirror, or complete an owner privacy/history
-  review and enable repository/account protections before exposing this exact
-  history. No public file, account, push, or deployment changed.
-
-- **T-184 — Reconcile global PIE and node-onboarding skill work (complete
-  2026-07-16):** harness T-189 established the shared ledger-backed PIE skill;
-  T-190 then implemented, installed, tested, and published the guarded
-  `onboard HOST` workflow at `b5bb171`, with its compact completion ledger at
-  `d5b82cd`. The alias remains the entire discovery boundary; credentials stay
-  owner-only; both manual restore gates precede separately authorized
-  scheduling. No live node, public-site file, deployment,
-  credential, SSH configuration, package, or scheduler state changed.
-
-- **T-180 — Exhaustively re-audit Git history for additional recovery
-  candidates (complete 2026-07-15):** refs, reflogs, the reachable graph,
-  unreachable objects, historical task paths, deployment exclusions, and pre-/
-  post-incident trees were reconciled with harness T-172. All eight damaged
-  paths match `628b53a` exactly; all 12 unreachable commits are superseded
-  pre-incident variants; the ignored T-11 payload is confirmed missing and
-  superseded by T-179. Deployment exclusions remain intact. Full evidence is
-  preserved in Git history of this entry. No public file, recovery candidate,
-  credential/auth state, owner config, package, remote, or deployment changed.
-
-- **T-179 — Recover and consolidate global/local agent configuration
-  (complete):** reconstructed the non-secret layered configuration from Git,
-  preserved owner settings, and used harness transaction
-  `20260714T202625Z-3548153` to restore missing discovery links. Repeated
-  plan/doctor, mode, TOML, idempotence, and fresh-client checks passed. Detailed
-  recovery chronology was consolidated here; T-175 later restored pinned lftp
-  and T-182 passed the complete offline deployment-policy suite. No public
-  file, credential, deployment, or unrelated owner setting changed.
-
-## Archived detail
-
-Superseded completion detail and command evidence remain in website Git
-history. Cross-repository task references above are immutable provenance, not
-execution or ownership dependencies.
+| Task | Completed outcome / durable pointer |
+|---|---|
+| pre-T-1 | 2026-07-08–11: ResearchMap metadata fields 1–5 applied to both mirrored achievements pages and the researchmap/ORCID exporters; JP mobile-nav fix; codex-offload configuration and SPARK worker migration; size-guard pre-commit. Free-form chronology at `986ed09:tools/todo.md`. |
+| T-1–T-23 | 2026-07-12: context-ledger scheme adopted; README rewrite; deploy exclusions; DOI/CV reconciliation; permission audit; two design-evaluation rounds closed without adoption; bounded native Codex delegation; Dreamweaver template cleanup. `28f8685:tools/todo.md`. |
+| T-24–T-53 | 2026-07-12–13: security and metadata hardening — archived-PDF history purge, expired-credential removal, CSP/HSTS/Permissions-Policy enforcement, SRI audit, positive-allowlist deploy staging, offline security suite wired into `publish.sh`, landmarks, crawler files, social metadata. `d44f862:tools/todo.md`, `8aa8582:tools/todo.md`. |
+| T-54–T-108 | 2026-07-13: page-quality campaign — titles/descriptions, image dimensions/lazy-loading/decoding, shared-CSS migration off legacy markup, print layer, no-JS, reduced-motion and forced-colors support, accessible Lightbox, dead-CSS source-reference gates, locked Playwright suite. `b37c792:tools/todo.md`, `17b5eb8:tools/todo.md`. |
+| T-109–T-141 | 2026-07-13: agent-benchmark era — capability suite frozen, harness calibrated, routing/handoff optimization iterations, artifact and handoff integrity gates, metrics schema and compaction. `d888cbc:tools/todo.md`. |
+| T-142–T-166, T-168 | 2026-07-13–14: GPT-5.6 benchmark matrix campaign, evidence-backed dispatch policy, WBD005 qualification, obsolete comparison machinery removed. `d928540:tools/todo.md`. |
+| T-167, T-177 | 2026-07-14: ResearchMap reconciliation completed, including fail-closed sync inserts (see decisions.md). `041a453:TODO.md`. |
+| T-170–T-176, T-178 | 2026-07-14: portable agent harness established and moved out of the website, including the pinned lftp restore. `041a453:TODO.md`. |
+| T-179–T-183 | 2026-07-14–16: post-incident recovery — layered agent configuration reconstructed (T-179); exhaustive Git recovery re-audit found no additional candidate (T-180); npm validation logs removed (T-181); deployment staging and mirror deletion guarded (T-182); recovered repositories pushed with next-task handoff (T-183). `041a453:TODO.md`, `64c4b18:TODO.md`. |
+| T-184 | Global PIE and node-onboarding skill work reconciled; alias-only discovery boundary, credentials owner-only. |
+| T-185 | Public-visibility risk assessment: no credential path found; history exposure caveats recorded and later accepted at T-192. |
+| T-186 | Recovered ledger commits pushed; read-only offline CI added (run `29566375620` at `c90760b`). |
+| T-187 | Strict `main` ruleset validated end-to-end through PR #1 (`162bef0`). |
+| T-188 | Website made operationally independent of the harness; PR #3 merged as `6f1ad83`. |
+| T-189 | Website-owned Claude takeover and live evaluation passed; `docs/audits/claude-live-takeover-2026-07-18.md`. |
+| T-190 | Canonical pre-commit hook and doctor landed (PR #7 `e6faf3b`); owner-applied hook verified byte-identical; standing authorization recorded. |
+| T-191 | Live ruleset `19127356` verified to match `docs/github-rulesets/main.json`; presumed divergence did not exist; read-only. |
+| T-192 | Sanitized-mirror route built then reversed by the owner (PR #10 closed unmerged); repository made public with ruleset intact; secret scanning enabled, zero alerts (PR #11, `676c209`). |
+| T-193 | Task board restyled to the harness layout: current state, resume checkpoint, and this grouped completed-task index reconstructed from full board history. |
