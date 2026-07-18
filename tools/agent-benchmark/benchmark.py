@@ -313,6 +313,144 @@ def run_codex(task: dict[str, Any], task_id: str, workspace: Path, artifact: Pat
     }
 
 
+def parse_claude_jsonl(path: Path) -> tuple[dict[str, int] | None, dict[str, int], str | None, int, dict[str, Any]]:
+    """Parse Claude Code stream-json into the same shape parse_jsonl returns.
+
+    Claude's final `result` event carries aggregated usage and text; assistant
+    messages carry `tool_use` content blocks; user messages carry `tool_result`
+    blocks. Usage is normalized to the codex field names the downstream expects:
+    input_tokens (all non-cache-read input), cached_input_tokens (cache reads),
+    output_tokens, reasoning_output_tokens (0 — Claude folds thinking into
+    output_tokens, so it must not be added twice).
+    """
+    usage: dict[str, int] | None = None
+    item_types: dict[str, int] = {}
+    final_message: str | None = None
+    invalid = 0
+    completed_commands = 0
+    failed_commands = 0
+    command_input_chars = 0
+    command_output_chars = 0
+    context_paths: set[str] = set()
+    context_re = re.compile(
+        r"(AGENTS\.md|CLAUDE\.md|skills/[A-Za-z0-9_.-]+\.md|TODO\.md|tools/state/[A-Za-z0-9_.-]+\.md)"
+    )
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            invalid += 1
+            continue
+        etype = event.get("type")
+        if etype == "assistant":
+            for block in (event.get("message") or {}).get("content") or []:
+                btype = block.get("type")
+                if btype == "text":
+                    item_types["agent_message"] = item_types.get("agent_message", 0) + 1
+                elif btype == "thinking":
+                    item_types["reasoning"] = item_types.get("reasoning", 0) + 1
+                elif btype == "tool_use":
+                    item_types["command_execution"] = item_types.get("command_execution", 0) + 1
+                    completed_commands += 1
+                    serialized = json.dumps(block.get("input") or {}, ensure_ascii=False)
+                    command_input_chars += len(serialized)
+                    context_paths.update(context_re.findall(serialized))
+        elif etype == "user":
+            for block in (event.get("message") or {}).get("content") or []:
+                if block.get("type") == "tool_result":
+                    if block.get("is_error"):
+                        failed_commands += 1
+                    content = block.get("content")
+                    if isinstance(content, list):
+                        content = "".join(c.get("text", "") for c in content if isinstance(c, dict))
+                    command_output_chars += len(content or "")
+        elif etype == "result":
+            final_message = event.get("result")
+            raw = event.get("usage") or {}
+            cache_read = int(raw.get("cache_read_input_tokens", 0) or 0)
+            fresh_input = int(raw.get("input_tokens", 0) or 0) + int(raw.get("cache_creation_input_tokens", 0) or 0)
+            usage = {
+                "input_tokens": fresh_input + cache_read,
+                "cached_input_tokens": cache_read,
+                "output_tokens": int(raw.get("output_tokens", 0) or 0),
+                "reasoning_output_tokens": 0,
+            }
+    tool_metrics = {
+        "completed_commands": completed_commands,
+        "failed_commands": failed_commands,
+        "command_input_chars": command_input_chars,
+        "command_output_chars": command_output_chars,
+        "observed_context_paths": sorted(context_paths),
+    }
+    return usage, item_types, final_message, invalid, tool_metrics
+
+
+def run_claude(task: dict[str, Any], task_id: str, workspace: Path, artifact: Path,
+               *, model: str, effort: str, prompt_mode: str, reference: Path | None,
+               timeout_seconds: int, handoff_mode: str, inspection_mode: str) -> dict[str, Any]:
+    prompt = prompt_for(task, task_id, prompt_mode, handoff_mode, inspection_mode)
+    if reference:
+        prompt += (
+            f"\n\nA reference screenshot is available at {reference}. "
+            "Use the Read tool to view it before matching the visual contract."
+        )
+    prompt_path = artifact / "prompt.txt"
+    stdout_path = artifact / "stdout.jsonl"
+    stderr_path = artifact / "stderr.log"
+    prompt_path.write_text(prompt, encoding="utf-8")
+    command = [
+        "claude", "-p",
+        "--output-format", "stream-json", "--verbose",
+        "--model", model,
+        "--effort", effort,
+        "--dangerously-skip-permissions",
+    ]
+    env = os.environ.copy()
+    env["PLAYWRIGHT_BROWSERS_PATH"] = str(ROOT / ".playwright" / "browsers")
+    env["NODE_PATH"] = str(ROOT / "node_modules")
+    started = time.monotonic()
+    timed_out = False
+    with stdout_path.open("w", encoding="utf-8") as stdout, stderr_path.open("w", encoding="utf-8") as stderr:
+        process = subprocess.Popen(command, cwd=workspace, env=env, stdin=subprocess.PIPE,
+                                   stdout=stdout, stderr=stderr, text=True,
+                                   start_new_session=True)
+        assert process.stdin is not None
+        process.stdin.write(prompt)
+        process.stdin.close()
+        try:
+            exit_code = process.wait(timeout=timeout_seconds)
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            os.killpg(process.pid, signal.SIGTERM)
+            try:
+                exit_code = process.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                os.killpg(process.pid, signal.SIGKILL)
+                exit_code = process.wait()
+    duration_ms = round((time.monotonic() - started) * 1000)
+    usage, item_types, final_message, invalid_jsonl, tool_metrics = parse_claude_jsonl(stdout_path)
+    if final_message:
+        (artifact / "final-message.md").write_text(final_message + "\n", encoding="utf-8")
+    return {
+        "exit_code": exit_code,
+        "timed_out": timed_out,
+        "duration_ms": duration_ms,
+        "usage": usage,
+        "item_types": item_types,
+        "tool_metrics": tool_metrics,
+        "invalid_jsonl_lines": invalid_jsonl,
+        "prompt_bytes": len(prompt.encode("utf-8")),
+        "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+        "stdout_path": str(stdout_path.relative_to(ROOT)),
+        "stderr_path": str(stderr_path.relative_to(ROOT)),
+    }
+
+
+def dispatch_worker(model: str):
+    """Select the model runner by provider prefix."""
+    return run_claude if model.startswith("claude") else run_codex
+
+
 def task_route(task: dict[str, Any], model: str | None, effort: str | None,
                worker_override: str | None = None) -> tuple[str, str, str]:
     worker_name = worker_override or task.get("default_worker") or task["worker"]
@@ -424,6 +562,8 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
         "run_p2p": bool(args.run_p2p),
         "codex_cli": subprocess.run(["codex", "--version"], text=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.DEVNULL).stdout.strip(),
+        "claude_cli": subprocess.run(["claude", "--version"], text=True, stdout=subprocess.PIPE,
+                                     stderr=subprocess.DEVNULL).stdout.strip() if model.startswith("claude") else None,
     }
     try:
         setup_started = time.monotonic()
@@ -433,7 +573,7 @@ def run_one(args: argparse.Namespace) -> dict[str, Any]:
         result["instruction_bytes"] = (workspace / "AGENTS.md").stat().st_size
         reference = Path(fixture["reference"]) if fixture.get("reference") else None
         result["fixture"] = fixture["mutation"]
-        execution = run_codex(task, args.task_id, workspace, artifact, model=model,
+        execution = dispatch_worker(model)(task, args.task_id, workspace, artifact, model=model,
                               effort=effort, prompt_mode=args.prompt_mode,
                               reference=reference, timeout_seconds=args.timeout or task["timeout_seconds"],
                               handoff_mode=args.handoff_mode, inspection_mode=args.inspection_mode)
@@ -696,7 +836,26 @@ def selftest() -> dict[str, Any]:
         assert usage and usage["input_tokens"] == 100
         assert item_types == {"agent_message": 1} and final_message == "ok" and invalid == 0
         assert tool_metrics["completed_commands"] == 0
+    with tempfile.TemporaryDirectory() as temporary:
+        path = Path(temporary) / "claude.jsonl"
+        path.write_text(
+            '{"type":"assistant","message":{"role":"assistant","content":['
+            '{"type":"thinking","thinking":"x"},'
+            '{"type":"tool_use","name":"Bash","input":{"command":"cat AGENTS.md"}}]}}\n'
+            '{"type":"user","message":{"content":[{"type":"tool_result","content":"out","is_error":false}]}}\n'
+            '{"type":"result","subtype":"success","is_error":false,"result":"done",'
+            '"usage":{"input_tokens":10,"cache_creation_input_tokens":30,"cache_read_input_tokens":40,"output_tokens":12}}\n',
+            encoding="utf-8",
+        )
+        cusage, citems, cfinal, cinvalid, ctools = parse_claude_jsonl(path)
+        # effective_tokens = input - cached + output = (10+30+40) - 40 + 12 = 52
+        assert cusage and cusage["input_tokens"] == 80 and cusage["cached_input_tokens"] == 40
+        assert cusage["output_tokens"] == 12 and cusage["reasoning_output_tokens"] == 0
+        assert cfinal == "done" and cinvalid == 0
+        assert citems.get("command_execution") == 1 and citems.get("reasoning") == 1
+        assert ctools["completed_commands"] == 1 and ctools["observed_context_paths"] == ["AGENTS.md"]
     return {"status": "ok", "tasks": len(tasks), "telemetry_parser": "ok",
+            "claude_telemetry_parser": "ok",
             "benchmark_efforts": list(BENCHMARK_EFFORTS),
             "runtime_verified_efforts": list(RUNTIME_VERIFIED_EFFORTS)}
 
