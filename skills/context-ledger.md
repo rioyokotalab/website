@@ -35,7 +35,7 @@ to `idle` and move one compact completion entry to `TODO.md`.
 Keep these headings exactly:
 
 ```text
-driver: codex
+driver: codex | claude
 updated: <ISO local time>
 task: T-<n> <title> | idle
 status: in-progress | blocked | awaiting-user | idle
@@ -64,11 +64,11 @@ telemetry, escalations, network operations, rule exceptions, and self-noted
 gaps.
 
 Instrumented work uses schema v2 and validates with
-`python3 tools/task-metrics.py validate`; unknown telemetry is null. Codex
-drivers append one legacy-compatible row per uninstrumented task with
-`tools/task-metrics.py append-driver --task-ids ... --report ...`. The driver
-log line is:
+`python3 tools/task-metrics.py validate`; unknown telemetry is null. Drivers
+append one legacy-compatible row per uninstrumented task with
+`tools/task-metrics.py append-driver --agent CLIENT --task-ids ... --report
+...`. The driver log line is:
 
 ```text
-date | codex-driver (<model>) | tasks | report path | n/a | outcome
+date | CLIENT-driver (<model>) | tasks | report path | n/a | outcome
 ```

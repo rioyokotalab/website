@@ -1,7 +1,8 @@
 # Skills — repository playbooks
 
-Keep one canonical copy of each recurring procedure. Codex reads only the
-playbooks matching the task; dispatches cite paths instead of restating rules.
+Keep one canonical copy of each recurring procedure. Codex and Claude read only
+the playbooks matching the task; dispatches cite paths instead of restating
+rules.
 
 Skills are tracked and deploy-excluded. Update the matching skill whenever a
 convention changes.

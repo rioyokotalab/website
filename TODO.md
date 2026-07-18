@@ -2,7 +2,7 @@
 
 Protocol and schemas: `skills/context-ledger.md`. Immediate execution state:
 `tools/state/session.md`. Git preserves older completion detail and command
-evidence. Next free id: T-189.
+evidence. Next free id: T-190.
 
 ## Recovery priority — do before any other task
 
@@ -51,6 +51,17 @@ None.
 None.
 
 ## Recently completed
+
+- **T-189 — Add website-owned Claude takeover and live evaluation (complete
+  2026-07-18):** root `CLAUDE.md` now imports shared project policy with a
+  narrow client overlay; ledger, metrics, publication, size, independence, and
+  offline-test surfaces recognize Claude without importing or invoking a
+  sibling repository. Three bounded Claude Sonnet 5/high sessions passed cold
+  reconstruction, technical audit, and an exact single-file metrics hardening
+  implementation. Primary review, the complete offline suite, and all 38
+  browser tests passed. Durable evidence is
+  `docs/audits/claude-live-takeover-2026-07-18.md`. No public-site file,
+  deployment, owner setting, credential, or external repository changed.
 
 - **T-188 — Make website independent of harness (complete 2026-07-18):**
   website now owns its manifest/token guarded cleanup, CI path, ruleset
