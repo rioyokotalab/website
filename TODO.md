@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-198.
+free ID: T-199.
 
 ## Current state
 
@@ -18,55 +18,43 @@ free ID: T-198.
   no bypass actors, zero required approvals. A driver may self-merge its own
   PR after the required check passes and may repair local pre-commit hook
   drift via `tools/hook-doctor.sh` (standing authorizations in decisions.md).
-- The live pre-commit hook matches the tracked canonical
-  `tools/hooks/pre-commit`; `tools/hook-doctor.sh` verifies, applies, and
-  rolls back (T-190).
+- The live pre-commit hook matches canonical `tools/hooks/pre-commit`;
+  `tools/hook-doctor.sh` verifies/applies/rolls back (T-190).
 - The site is static mirrored EN/JP HTML with no build step. Deployment is
   positive-allowlist staging behind gated `publish.sh`/`deploy.sh`; tools,
   skills, ledger, config, README, and CV sources never deploy.
-- The complete offline suite (`tools/test-security.sh`) and the locked
-  browser tests run green in required CI, which triggers on pull requests
-  only — there is no post-merge push run (T-194, `69172ae`). The repository
-  is operationally independent of any sibling repository (T-188).
+- The offline suite (`tools/test-security.sh`) and locked browser tests run
+  green in required CI, which triggers on pull requests only (T-194). The
+  repository is operationally independent of any sibling repo (T-188).
 - Website-started sessions treat `~/harness` as strictly read-only (owner
   rule in `AGENTS.md`, `063f021`); its shared skills are read and applied by
   default per the promoted global guidance (harness `66abee5`).
 
 ## Next resume checkpoint
 
-Security-hardening loop (T-195) is active. T-196 (repo-content baseline)
-lands via PR; execute T-197 (repository-settings hardening) next per
-`docs/security-threat-model.md`. Optional owner step from T-194 remains: the
+Security-hardening loop (T-195) active; implement T-198 (review gate) next per
+`docs/security-threat-model.md`. Optional owner step from T-194: the
 account-level "Only notify for failed workflows" checkbox
-(`tools/out/t194-actions-notifications-handoff.md`). For unrelated new
-work, claim T-198, read the matching playbook in `skills/`, and checkpoint
-`tools/state/session.md` at task start.
+(`tools/out/t194-actions-notifications-handoff.md`). For unrelated work claim
+T-199 and checkpoint `tools/state/session.md` at task start.
 
 ## Active tasks
 
-### T-195 — Security attack-surface investigation and hardening loop
+### T-195 — Security hardening loop
 
-Evidence-based threat model in `docs/security-threat-model.md`: the served
-site and supply chain are strongly hardened (strict CSP, SRI-pinned CDN
-assets, pinned lockfile, allowlist deploy); the new exposure is the public
-repository's GitHub settings and CI. Spawns T-196 (repo-content baseline)
-and T-197 (repository-settings hardening). Loop stays open for further
-findings as they surface.
+Threat model: `docs/security-threat-model.md`. Served site and supply chain
+already strong; the new exposure is the public repo's GitHub settings/CI.
+T-196 (repo-content) merged `781e317`; T-197 (settings) applied. Loop stays
+open for further findings.
 
-### T-196 — Repository-content security baseline
+### T-198 — Require review on main except owner commits (B9)
 
-`SECURITY.md`, `.github/dependabot.yml` (monthly grouped github-actions + npm
-updates), `ci.yml` hardening (`permissions: {}` top-level + job `contents:
-read`, `npm ci --ignore-scripts`), and `tools/workflow-security-check.py` with
-`tools/test-workflow-security.sh` (3 checks) wired into the offline suite.
-Full suite green. Landing via PR.
-
-### T-197 — Repository-settings hardening
-
-Owner-scope, reversible, reported: default workflow token → read-only, disable
-token PR-approval, require SHA-pinned actions, enable Dependabot security
-updates, require fork-PR approval for all outside collaborators, disable unused
-wiki/projects. Execute via `gh api`; document rollback.
+Owner decision: require 1 approving review on `main`, with the owner able to
+merge own PRs without review. Implementing via ruleset `19127356`
+(required_approving_review_count 0→1 plus an owner bypass actor); update the
+tracked payload `docs/github-rulesets/main.json`, `tools/test-github-ruleset.sh`,
+and `docs/repository-controls.md` to match. Caveat to confirm: the agent acts
+as the owner's account, so agent self-merges also bypass the gate.
 
 ## Completed-task index
 
@@ -96,3 +84,5 @@ anchored versions below hold command-level detail for each era.
 | T-192 | Sanitized-mirror route built then reversed by the owner (PR #10 closed unmerged); repository made public with ruleset intact; secret scanning enabled, zero alerts (PR #11, `676c209`). |
 | T-193 | Task board restyled to the harness layout: current state, resume checkpoint, and this grouped completed-task index reconstructed from full board history. |
 | T-194 | "CI workflow run" email noise fixed repo-side (merged `69172ae`): redundant post-merge push run removed from `ci.yml` (strict up-to-date + squash makes it byte-identical to the tested PR head); account "Only notify for failed workflows" step handed to the owner. Owner also ruled `~/harness` read-only for website sessions (`063f021`). |
+| T-196 | Repository-content security baseline (merged `781e317`): `SECURITY.md`, `.github/dependabot.yml`, `ci.yml` least-privilege token + `npm ci --ignore-scripts`, and `tools/workflow-security-check.py` + 3-check test in the suite. Part of the T-195 loop. |
+| T-197 | Repository-settings hardening applied (reversible via `tools/out/t197-settings-rollback.md`): read-only default token, no token PR-approval, SHA-pinned + GitHub-owned actions only, Dependabot security updates + private vulnerability reporting, fork-PR approval for all external contributors, wiki/projects disabled. |
