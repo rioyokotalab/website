@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-205.
+free ID: T-206.
 
 ## Current state
 
@@ -32,11 +32,24 @@ free ID: T-205.
 
 ## Next resume checkpoint
 
-No active task. Start from `tools/state/session.md`.
+Resume T-205 from `tools/state/session.md`.
 
 ## Active tasks
 
-None.
+### T-205 — Nightly Codex/Claude benchmark refresh
+
+**Phase:** planning. For eight hours from 2026-07-23 evening JST, use the
+receipt-backed Codex–Claude cowork protocol to rerun the README's five-task
+website benchmark for both current agent stacks, compare matched results with
+the July baselines, investigate regressions, and test prompt/workflow
+improvements without changing task mutations or graders. Update the README
+table only from complete validated matrices. No deployment or public-site
+content change is in scope.
+
+The durable cowork exchange is
+`tools/state/cowork/t205-nightly-20260723/`; raw runs remain ignored under
+`tools/agent-benchmark/artifacts/`. The frozen plan, stop conditions, timebox,
+and exact next action are in the exchange and `tools/state/session.md`.
 
 ## Completed-task index
 
