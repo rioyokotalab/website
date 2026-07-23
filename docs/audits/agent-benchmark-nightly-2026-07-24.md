@@ -21,8 +21,52 @@ comparable between providers.
 
 ## Results
 
-<!-- T-205: final generated tables are inserted here after both frozen matrices
-     pass exact-grid validation. -->
+Within each current frozen grid, exact-cell, task, baseline, runner, grader,
+client, and workflow identities passed validation. The matched-comparison
+caveats below identify identities that changed from the prior grid.
+
+| Provider | Previous strict | Current strict | Previous browser-functional | Current browser-functional |
+| --- | ---: | ---: | ---: | ---: |
+| GPT-5.6 | 85/90 | 86/90 | 89/90 | 90/90 |
+| Claude Code | 72/75 | 71/75 | 74/75 | 74/75 |
+
+The matched per-cell median wall-time delta was +38.2 seconds for GPT and
++13.8 seconds for Claude. GPT's median effective-token delta was +5,246.
+Claude's was +104,129, but its invocation/accounting changed as described
+below.
+
+### Task-level matched results
+
+Each cell shows strict passes, browser-functional passes, and median total time.
+
+| Provider / task | Previous | Current |
+| --- | ---: | ---: |
+| GPT WBD-001 | 18/18, 18/18, 112.8 s | 18/18, 18/18, 113.8 s |
+| GPT WBD-002 | 18/18, 18/18, 129.7 s | 18/18, 18/18, 186.1 s |
+| GPT WBD-003 | 18/18, 18/18, 44.6 s | 18/18, 18/18, 70.7 s |
+| GPT WBD-004 | 18/18, 18/18, 88.6 s | 18/18, 18/18, 121.3 s |
+| GPT WBD-005 | 13/18, 17/18, 206.0 s | 14/18, 18/18, 264.4 s |
+| Claude WBD-001 | 15/15, 15/15, 89.1 s | 15/15, 15/15, 82.8 s |
+| Claude WBD-002 | 15/15, 15/15, 132.3 s | 15/15, 15/15, 146.7 s |
+| Claude WBD-003 | 12/15, 14/15, 62.6 s | 13/15, 15/15, 83.0 s |
+| Claude WBD-004 | 15/15, 15/15, 112.5 s | 15/15, 15/15, 135.9 s |
+| Claude WBD-005 | 15/15, 15/15, 212.1 s | 13/15, 14/15, 223.1 s |
+
+### Focused workflow iteration
+
+Focused inspection was tested only on the three observed current Claude misses
+selected in advance:
+
+| Route | Default | Focused | Interpretation |
+| --- | ---: | ---: | --- |
+| Opus/xhigh, WBD-003 | 89, browser pass | 100 | recovered |
+| Sonnet/xhigh, WBD-003 | 89, browser pass | 89, browser pass | static blind spot persists |
+| Sonnet/low, WBD-005 | 63, browser fail | 100, browser pass | functional recovery |
+
+The WBD-005 recovery took 212.5 seconds versus 137.2 seconds for the failed
+default cell. Focused inspection is therefore a useful reliability fallback for
+cross-cutting changes, not evidence that it should replace every default route.
+These cells are not included in either singleton denominator.
 
 ## What changed and why
 
@@ -55,6 +99,12 @@ failed two reduced-motion browser tests. This row is not classified as a grader
 blind spot. A separately labeled, one-cell focused-inspection retry tests
 whether a tighter workflow recovers the route while preserving the failed
 singleton in the broad matrix.
+
+The matched matrix contains five GPT recoveries and four GPT regressions at the
+strict gate, for a net +1 capability pass. Claude has three recoveries and four
+regressions, for a net −1 strict pass. This route churn—despite stable task
+definitions—shows why a one-point aggregate change should not be interpreted as
+a general model capability shift.
 
 ### Runtime
 
@@ -92,9 +142,9 @@ workflow overhead, not task difficulty.
 
 - Each broad-matrix route is a singleton. Runtime and token medians summarize
   routes, not repeated service-level guarantees.
-- Task, prompt, baseline, and scoring semantics are matched. GPT's grader hash
-  changed only because the protected ledger filename changed from
-  `tools/todo.md` to `TODO.md`; Claude's grader hash is identical.
+- Task, prompt, baseline, and scoring semantics are matched. The reviewed GPT
+  grader diff was the protected-ledger rename from `tools/todo.md` to
+  `TODO.md`; Claude's grader hash is identical.
 - Exact historical global tool-schema context was not frozen.
 - Focused follow-up cells are reported separately and never added to singleton
   denominators.
@@ -102,7 +152,8 @@ workflow overhead, not task difficulty.
 ## Reproducibility
 
 The exact freezes, machine-readable summaries, matched comparison reports, and
-focused experiment are linked from the README benchmark section. Raw artifacts
+focused experiments are linked from the README benchmark section and colocated
+under `tools/agent-benchmark/`. Raw artifacts
 for this nightly run remain locally available under
 `tools/agent-benchmark/artifacts/`; compact result rows and summaries are
 tracked.

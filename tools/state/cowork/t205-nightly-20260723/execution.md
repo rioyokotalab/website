@@ -117,6 +117,19 @@
     with the same baseline, task, grader, client, and browser suite. It joins
     the existing two-cell WBD-003 focused experiment and does not change either
     broad-matrix denominator.
+24. Focused inspection recovered Opus/xhigh WBD-003 from 89 to 100. The matched
+    Sonnet/xhigh route remained 89 while again passing its browser suite, so
+    the workflow reduces but does not eliminate literal-sensitive static
+    variance.
+25. Focused inspection recovered Sonnet/low WBD-005 from the genuine 63-point
+    browser failure to 100 with correct scope and all browser checks passing.
+    It took 212.5 seconds versus 137.2 seconds for the failed default cell, so
+    it is a reliability fallback rather than a blanket faster default.
+26. Claude performed a final read-only reciprocal critique of the README,
+    audit, summaries, comparisons, and focused summaries. It confirmed the
+    arithmetic and routes and identified one ambiguous identity-validation
+    sentence, which the driver narrowed. The durable critique is
+    `artifacts/final-critique.md`.
 
 ## Deviations
 

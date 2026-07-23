@@ -1,0 +1,86 @@
+{
+  "by_effort": [
+    {
+      "capability_passes": 1,
+      "effort": "low",
+      "full_quality_passes": 1,
+      "mean_score": 100,
+      "median_effective_tokens_full_quality": 53700,
+      "median_task_normalized_latency": 1.0,
+      "median_task_normalized_tokens": 1.0,
+      "median_total_duration_ms_full_quality": 212484,
+      "runs": 1
+    }
+  ],
+  "by_model": [
+    {
+      "capability_passes": 1,
+      "full_quality_passes": 1,
+      "mean_score": 100,
+      "median_effective_tokens_full_quality": 53700,
+      "median_task_normalized_latency": 1.0,
+      "median_task_normalized_tokens": 1.0,
+      "median_total_duration_ms_full_quality": 212484,
+      "model": "claude-sonnet-5",
+      "runs": 1
+    }
+  ],
+  "integrity": {
+    "documented_cells": 1,
+    "expected_cells": 1,
+    "observed_cells": 1,
+    "runner_identity_counts": {
+      "matrix": 1
+    },
+    "status": "pass",
+    "ultra_cells": 0
+  },
+  "provider": "claude",
+  "run_label": "claude-nightly-20260723-focused-wbd005",
+  "schema_version": 1,
+  "selection_caution": "Each matrix cell has one observation. Pareto routes are repeat candidates, not final medians.",
+  "settings": {
+    "baseline_commit": "edd585e991ae4348d82002bb6590fb035256633d",
+    "handoff_mode": "runner-lite",
+    "inspection_mode": "focused",
+    "invocation_policy": "print mode, dontAsk, no session persistence, Read/Edit/Write/Bash",
+    "prompt_mode": "full",
+    "run_p2p": true,
+    "timeout": "task-default",
+    "wbd_005_include_held_out": true,
+    "worker_override": "claude-nightly-focused"
+  },
+  "tasks": [
+    {
+      "best_passing_score": 100,
+      "capability_passes": 1,
+      "failures": [],
+      "pareto_frontier": [
+        {
+          "effective_tokens": 53700,
+          "effort": "low",
+          "model": "claude-sonnet-5",
+          "run_id": "claude-nightly-20260723-focused-wbd005-low-sonnet-5-wbd005",
+          "score": 100,
+          "total_duration_ms": 212484
+        }
+      ],
+      "runs": 1,
+      "task_id": "WBD-005"
+    }
+  ],
+  "totals": {
+    "cached_input_tokens": 1459359,
+    "capability_passes": 1,
+    "effective_tokens": 53700,
+    "input_tokens": 1508374,
+    "mean_score": 100,
+    "monetary_cost_note": "No model price table or billed-cost field was frozen for this round.",
+    "monetary_cost_usd": null,
+    "output_tokens": 4685,
+    "reasoning_output_tokens": 0,
+    "runs": 1,
+    "total_duration_ms": 212484,
+    "worker_duration_ms": 115479
+  }
+}
