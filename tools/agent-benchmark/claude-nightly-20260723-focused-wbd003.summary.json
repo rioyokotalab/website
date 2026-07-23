@@ -1,0 +1,108 @@
+{
+  "by_effort": [
+    {
+      "capability_passes": 1,
+      "effort": "xhigh",
+      "full_quality_passes": 1,
+      "mean_score": 94.5,
+      "median_effective_tokens_full_quality": 50111,
+      "median_task_normalized_latency": 1.0,
+      "median_task_normalized_tokens": 1.0,
+      "median_total_duration_ms_full_quality": 162690,
+      "runs": 2
+    }
+  ],
+  "by_model": [
+    {
+      "capability_passes": 1,
+      "full_quality_passes": 1,
+      "mean_score": 100,
+      "median_effective_tokens_full_quality": 50111,
+      "median_task_normalized_latency": 1.0,
+      "median_task_normalized_tokens": 1.0,
+      "median_total_duration_ms_full_quality": 162690,
+      "model": "claude-opus-4-8",
+      "runs": 1
+    },
+    {
+      "capability_passes": 0,
+      "full_quality_passes": 0,
+      "mean_score": 89,
+      "median_effective_tokens_full_quality": null,
+      "median_task_normalized_latency": 0.0,
+      "median_task_normalized_tokens": 0.0,
+      "median_total_duration_ms_full_quality": null,
+      "model": "claude-sonnet-5",
+      "runs": 1
+    }
+  ],
+  "integrity": {
+    "documented_cells": 2,
+    "expected_cells": 2,
+    "observed_cells": 2,
+    "runner_identity_counts": {
+      "matrix": 2
+    },
+    "status": "pass",
+    "ultra_cells": 0
+  },
+  "provider": "claude",
+  "run_label": "claude-nightly-20260723-focused-wbd003",
+  "schema_version": 1,
+  "selection_caution": "Each matrix cell has one observation. Pareto routes are repeat candidates, not final medians.",
+  "settings": {
+    "baseline_commit": "edd585e991ae4348d82002bb6590fb035256633d",
+    "handoff_mode": "runner-lite",
+    "inspection_mode": "focused",
+    "invocation_policy": "print mode, dontAsk, no session persistence, Read/Edit/Write/Bash",
+    "prompt_mode": "full",
+    "run_p2p": true,
+    "timeout": "task-default",
+    "wbd_005_include_held_out": false,
+    "worker_override": "claude-nightly-focused"
+  },
+  "tasks": [
+    {
+      "best_passing_score": 100,
+      "capability_passes": 1,
+      "failures": [
+        {
+          "effort": "xhigh",
+          "failure_phase": "f2p-or-visual",
+          "findings": [
+            "failed:reject-first-focus"
+          ],
+          "model": "claude-sonnet-5",
+          "run_id": "claude-nightly-20260723-focused-wbd003-xhigh-sonnet-5-wbd003",
+          "score": 89
+        }
+      ],
+      "pareto_frontier": [
+        {
+          "effective_tokens": 50111,
+          "effort": "xhigh",
+          "model": "claude-opus-4-8",
+          "run_id": "claude-nightly-20260723-focused-wbd003-xhigh-opus-4-8-wbd003",
+          "score": 100,
+          "total_duration_ms": 162690
+        }
+      ],
+      "runs": 2,
+      "task_id": "WBD-003"
+    }
+  ],
+  "totals": {
+    "cached_input_tokens": 1276520,
+    "capability_passes": 1,
+    "effective_tokens": 107631,
+    "input_tokens": 1367577,
+    "mean_score": 94.5,
+    "monetary_cost_note": "No model price table or billed-cost field was frozen for this round.",
+    "monetary_cost_usd": null,
+    "output_tokens": 16574,
+    "reasoning_output_tokens": 0,
+    "runs": 2,
+    "total_duration_ms": 276868,
+    "worker_duration_ms": 252183
+  }
+}

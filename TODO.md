@@ -32,27 +32,11 @@ free ID: T-206.
 
 ## Next resume checkpoint
 
-Resume T-205 from `tools/state/session.md`.
+No active task. The next free ID is T-206.
 
 ## Active tasks
 
-### T-205 — Nightly Codex/Claude benchmark refresh
-
-**Phase:** executing. For eight hours from 2026-07-23 evening JST, use the
-receipt-backed Codex–Claude cowork protocol to rerun the README's five-task
-website benchmark for both current agent stacks, compare matched results with
-the July baselines, investigate regressions, and test prompt/workflow
-improvements without changing task mutations or graders. Update the README
-table only from complete validated matrices. No deployment or public-site
-content change is in scope.
-
-The durable cowork exchange is
-`tools/state/cowork/t205-nightly-20260723/`; raw runs remain ignored under
-`tools/agent-benchmark/artifacts/`. The independent and reciprocal evidence
-receipts validate and the reconciled plan is frozen. Stop conditions, timebox,
-and the exact next action are in the exchange and `tools/state/session.md`.
-The generic freeze runner, non-bypass Claude route, focused tests, and both
-provider capability probes pass; visible matrix blocks are in progress.
+None.
 
 ## Completed-task index
 
@@ -78,3 +62,4 @@ anchored versions below hold command-level detail for each era.
 | T-202 | Fixed the deploy deletion guard (`439ef4d`): it mis-read SFTP in-place updates as unmatched deletions, blocking every real deploy since T-182. True deletion = removed-not-transferred; SFTP-format test added. Unblocked T-200. |
 | T-203 | Housekeeping: pruned 8 stale remote-tracking refs, deleted the superseded `t187-ruleset-closeout` branch, and guarded-deleted 92 disposable Claude benchmark artifact dirs (~37 MB; 173 GPT artifacts + tracked evidence intact). |
 | T-204 | Relocated the Local checkout to `~/projects/website` by fresh clone; preserved all ignored state and the remote-backed branch, kept Playwright runtime state local for NFS performance, passed offline and 38 browser checks, and guarded-deleted the old checkout. |
+| T-205 | Reran exact current GPT-5.6 (90 cells) and Claude Code (75 cells) matrices through receipt-backed cowork. GPT moved 85→86 strict and 89→90 browser-functional; Claude moved 72→71 strict and held 74 browser-functional. Focused inspection recovered two selected routes. README tables, matched comparisons, and `docs/audits/agent-benchmark-nightly-2026-07-24.md` updated; security and 38 browser tests pass. |

@@ -219,74 +219,75 @@ SFTP web root with deletion. Only `.htaccess`, `index.html`, `style.css`,
 
 ## Benchmark results (July 2026)
 
-The repository benchmark was run on two agent stacks against the identical
-capsules, mutated fixtures, and F2P / browser P2P graders: **GPT-5.6** (three
-models × six efforts, 90 singletons + 83 adaptive repeats = 173 runs) and
-**Claude Code** (three models × five efforts, 75 singletons + 14 WBD-003
-repeats = 89 runs). This is a YOKOTA Lab website-maintenance benchmark, not a
-general leaderboard. `effective_tokens` = input − cached input + output is a
-planning proxy, not monetary cost, and is **not comparable across providers**
-(Claude Code's large cached system prompt inflates its input term); compare
-within a provider. GPT denominators are out of 30 cells/model (six efforts),
-Claude out of 25 (five efforts). Both stacks reached full quality on nearly
-every cell — GPT 154/173 full-quality overall, Claude 72/75 singletons with the
-three misses (all WBD-003 at higher effort) not reproducing (14/14 repeats).
+The 2026-07-23/24 refresh reran two exact, sequential singleton matrices against
+the same public baseline and task capsules: **GPT-5.6** (3 models × 6 efforts ×
+5 tasks = 90 cells) and **Claude Code** (3 × 5 × 5 = 75 cells). This is a
+website-maintenance benchmark, not a general leaderboard. Strict frozen-grader
+passes were 86/90 for GPT (previously 85/90) and 71/75 for Claude (previously
+72/75). Browser-functional results were 90/90 for GPT (previously 89/90) and
+74/75 for Claude (unchanged).
 
-### Per-model comparison (full-quality singleton medians)
+Four GPT and three Claude strict misses passed every browser test but used
+semantically valid JavaScript forms rejected by literal-sensitive static
+assertions. Claude Sonnet/low's WBD-005 miss was different: it changed an
+out-of-scope file and failed two browser tests. A separately labeled focused
+retry recovered that route to 100; focused inspection also recovered one of two
+Claude WBD-003 static misses. These retries do not alter the singleton totals.
 
-| Model | Full-quality cells | Median total time | Median effective tokens |
+`effective_tokens = input - cached_input + output` is a planning proxy, not
+monetary cost, and is **not comparable across providers**. Claude's current
+fresh, no-session-persistence invocation also changed its accounting baseline.
+
+### Per-model matched change
+
+Times and tokens are medians over strict full-quality singleton cells.
+
+| Model | Strict cells, previous → current | Median total time | Median effective tokens |
 | --- | ---: | ---: | ---: |
-| `gpt-5.6-luna` | 29/30 | 110.1 s | 24,322 |
-| `gpt-5.6-terra` | 26/30 | 101.1 s | 22,692 |
-| `gpt-5.6-sol` | 29/30 | 118.7 s | 19,823 |
-| `claude-fable-5` | 25/25 | 51.4 s | 25,405 |
-| `claude-opus-4-8` | 24/25 | 86.3 s | 28,892 |
-| `claude-sonnet-5` | 23/25 | 41.1 s | 29,404 |
+| `gpt-5.6-luna` | 29/30 → 27/30 | 110.1 → 121.1 s | 24,322 → 26,819 |
+| `gpt-5.6-sol` | 29/30 → 29/30 | 118.7 → 146.5 s | 19,823 → 32,487 |
+| `gpt-5.6-terra` | 26/30 → 30/30 | 101.1 → 160.4 s | 22,692 → 25,685 |
+| `claude-fable-5` | 25/25 → 25/25 | 112.8 → 126.1 s | 25,405 → 129,411 |
+| `claude-opus-4-8` | 24/25 → 23/25 | 144.4 → 144.9 s | 28,892 → 129,309 |
+| `claude-sonnet-5` | 23/25 → 23/25 | 98.8 → 122.9 s | 29,404 → 156,992 |
 
-Within Claude, Fable 5 was the only model to pass every singleton and was the
-most token-efficient; Sonnet 5 was fastest overall; Opus 4.8 slowest. Wall-clock
-medians ran lower for the Claude stack, but token counts are not cross-comparable
-per the caveat above.
+### Per-effort current result
 
-### Per-effort comparison (full-quality singleton medians, all models)
-
-| Effort | GPT cells | GPT time | GPT tokens | Claude cells | Claude time | Claude tokens |
+| Effort | GPT strict cells | GPT time | GPT tokens | Claude strict cells | Claude time | Claude tokens |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| low | 15/15 | 69.4 s | 12,141 | 15/15 | 46.2 s | 22,771 |
-| medium | 13/15 | 77.2 s | 18,867 | 14/15 | 47.0 s | 23,701 |
-| high | 14/15 | 102.0 s | 23,545 | 15/15 | 71.3 s | 27,480 |
-| xhigh | 13/15 | 127.6 s | 22,199 | 15/15 | 68.8 s | 33,591 |
-| max | 14/15 | 134.3 s | 25,992 | 13/15 | 142.2 s | 45,277 |
-| ultra | 15/15 | 131.8 s | 32,103 | — | — | — |
+| low | 14/15 | 99.3 s | 23,792 | 14/15 | 97.9 s | 125,312 |
+| medium | 15/15 | 103.1 s | 27,319 | 15/15 | 117.1 s | 129,411 |
+| high | 15/15 | 130.7 s | 28,534 | 14/15 | 101.7 s | 130,536 |
+| xhigh | 14/15 | 131.8 s | 34,718 | 13/15 | 169.4 s | 137,350 |
+| max | 13/15 | 171.0 s | 32,487 | 15/15 | 201.2 s | 153,197 |
+| ultra | 15/15 | 210.8 s | 33,863 | — | — | — |
 
-**Low effort was best on both stacks** — fastest, cheapest, and (for Claude) the
-only effort with no misses; higher effort added time and tokens with no quality
-gain and all of the variance. GPT's `ultra` cells all passed but were dominated
-by another effort on every task (Claude has no `ultra`).
+Higher effort did not monotonically improve quality, time, or token use.
+GPT/medium and Claude/medium passed every strict cell at materially lower
+median time than max; GPT/ultra also passed every cell but was slower and more
+token-heavy than medium. Because every current route has only one observation,
+the following quality-first routes are repeat candidates, not service-level
+guarantees.
 
-### Recommended dispatch routes (GPT-5.6)
+### Current runtime candidates
 
-Reliability confidence gates route selection before runtime or token use. The
-runtime objective is the default; every implementation still requires the linked
-policy's independent validation. For Claude, all model × effort routes are
-reliable, so routing is by runtime/tokens — default to low effort; per-task
-routes are in the Claude summary.
+| Measured task class | GPT-5.6 | Claude Code |
+| --- | --- | --- |
+| WBD-001 — bilingual legacy-HTML semantics | `terra` / low (44.7 s) | `fable-5` / low (49.2 s) |
+| WBD-002 — mirrored secure accessible links | `terra` / low (131.5 s) | `opus-4-8` / low (112.9 s) |
+| WBD-003 — security/privacy JavaScript | `luna` / low (32.0 s) | `sonnet-5` / low (45.5 s) |
+| WBD-004 — responsive CSS visual contracts | `sol` / medium (70.1 s) | `sonnet-5` / low (54.1 s) |
+| WBD-005 — cross-cutting shared assets | `sol` / low (160.8 s) | `sonnet-5` / medium (153.1 s) |
 
-| Measured task class | Runtime / reliability route (expected time) | Effective-token route (expected tokens) | Evidence |
-| --- | --- | --- | --- |
-| WBD-001 — bilingual legacy-HTML semantics | `gpt-5.6-terra` / low (57.0 s) | `gpt-5.6-terra` / low (11,444) | 6/6, high-confidence |
-| WBD-002 — mirrored secure accessible links | `gpt-5.6-luna` / low (94.0 s) | `gpt-5.6-sol` / low (14,867) | both 6/6, high-confidence |
-| WBD-003 — security/privacy JavaScript | `gpt-5.6-terra` / low (35.6 s) | `gpt-5.6-sol` / low (12,355) | both 6/6, high-confidence |
-| WBD-004 — responsive CSS visual contracts | `gpt-5.6-luna` / low (59.0 s) | `gpt-5.6-sol` / low (21,394) | both 6/6, high-confidence |
-| WBD-005 — cross-cutting shared assets | `gpt-5.6-sol` / high (249.1 s) | `gpt-5.6-sol` / high (45,053) | 8/9, qualified; full grader mandatory |
-
-Full methods, intervals, failures, and exact values:
-[GPT full matrix](tools/agent-benchmark/gpt56-full-20260713.summary.md),
-[GPT adaptive repeats](tools/agent-benchmark/gpt56-repeat-20260714.summary.md),
-[GPT routing policy](tools/agent-benchmark/routing-policy.json), and
-[Claude summary](tools/agent-benchmark/claude-full-20260718.summary.md). Query
-the GPT policy with, for example:
-
-```sh
-python3 tools/agent-benchmark/select_route.py --task WBD-003 --objective runtime
-```
+Current wall time includes confirmed NFS blocking and shared browser-grader
+slowdown, so it must not be attributed entirely to the model clients. Full
+methods, matched deltas, failures, and interpretation:
+[nightly audit](docs/audits/agent-benchmark-nightly-2026-07-24.md),
+[GPT summary](tools/agent-benchmark/gpt56-nightly-20260723.summary.md),
+[GPT comparison](tools/agent-benchmark/gpt56-nightly-20260723.comparison.json),
+[Claude summary](tools/agent-benchmark/claude-nightly-20260723.summary.md), and
+[Claude comparison](tools/agent-benchmark/claude-nightly-20260723.comparison.json).
+Focused results:
+[WBD-003](tools/agent-benchmark/claude-nightly-20260723-focused-wbd003.summary.md)
+and
+[WBD-005](tools/agent-benchmark/claude-nightly-20260723-focused-wbd005.summary.md).
