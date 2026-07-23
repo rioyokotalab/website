@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "status": "frozen",
+  "provider": "claude",
+  "run_label": "claude-nightly-20260723-focused-wbd003",
+  "baseline_commit": "edd585e991ae4348d82002bb6590fb035256633d",
+  "models": [
+    "claude-opus-4-8",
+    "claude-sonnet-5"
+  ],
+  "documented_efforts": [
+    "xhigh"
+  ],
+  "runtime_verified_efforts": [],
+  "tasks": {
+    "WBD-003": {
+      "version": 1,
+      "sha256": "3d0a37078410bc2b1c595cdc52860f9c02c33b5a9c74c5e925617a0974130709"
+    }
+  },
+  "settings": {
+    "prompt_mode": "full",
+    "handoff_mode": "runner-lite",
+    "inspection_mode": "focused",
+    "run_p2p": true,
+    "worker_override": "claude-nightly-focused",
+    "timeout": "task-default",
+    "wbd_005_include_held_out": false,
+    "invocation_policy": "print mode, dontAsk, no session persistence, Read/Edit/Write/Bash"
+  },
+  "execution_order": {
+    "method": "matched workflow correction for frozen singleton failures",
+    "task_blocks": [
+      "WBD-003"
+    ],
+    "within_block": "listed"
+  },
+  "identities": {
+    "claude_cli": "2.1.207 (Claude Code)",
+    "orchestrator_sha256": "b3ad07ef111192d98a3aa4b0cb06e17de26650b0140caed18570fbc7107b5336",
+    "matrix_runner_sha256": "a799e20fdaa548f80cf05046ba23589bc0f7ce83702dfa7c986b8ba46963fbd3",
+    "grader_sha256": "d6929e6893092a5f1c5eaac0477625ecd4c4e0f05fa4a6da9ad554edf5785564",
+    "tasks_manifest_sha256": "f2a80ec1d9723b9fed84738f8e0d75aee75e549006aa7b3c3e62859f1a3f17aa",
+    "final_schema_sha256": "0e32d8ea7856fe0decea6e28a84e01c64e7ce491724b3676219d7aa283f66be6",
+    "metrics_schema_sha256": "524ef3aec516b6b838863cdf5826e4d9c3881b39b60739702f21844b091af691",
+    "metrics_tool_sha256": "0a22f7a9fe69936e0dde216d9623e7867aa44b7040065177f7829d8808ad0b37"
+  }
+}
