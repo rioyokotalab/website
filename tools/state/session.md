@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-23T20:45+0900
+updated: 2026-07-23T20:52+0900
 task: T-205 nightly Codex/Claude benchmark refresh
 status: planning
 
@@ -14,8 +14,12 @@ status: planning
   retaining compact rows/summaries, so the raw artifact audit reports those
   historical pointers missing; this is prior archival state, not a new run
   failure.
-- Execute the blinded independent and reciprocal cowork evidence phases, freeze
-  the reconciled benchmark protocol, then begin capability probes.
+- Driver sandbox selftest/audit and a real Codex Terra/low WBD-001 probe passed
+  100/100 at 55.664 seconds and 13,586 effective tokens. One pair is not
+  treated as a trend.
+- The matrix runner's hard-coded freeze/artifact path and Claude's prior bypass
+  invocation require correction before broad calls. Driver evidence is frozen;
+  run the sealed blinded Claude evidence window next.
 
 ## Working set
 - `TODO.md`
