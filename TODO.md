@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-204.
+free ID: T-205.
 
 ## Current state
 
@@ -32,12 +32,19 @@ free ID: T-204.
 
 ## Next resume checkpoint
 
-Board is clear with no outstanding owner items. Claim T-203 for new work and
-checkpoint `tools/state/session.md` at task start.
+Resume T-204 from `tools/state/session.md`.
 
 ## Active tasks
 
-None.
+### T-204 — Relocate the Local website checkout
+
+**Status:** in progress. Move the clean public checkout from `~/website` to
+`~/projects/website` through a fresh clone, preserve its declared ignored
+state and remote-backed local branch, repair generated absolute-path state,
+validate the destination, publish the two path-documentation corrections, and
+remove the old cross-filesystem source only through guarded deletion. The
+tracked `.dont-remove-me` file is recreated by the public clone and must never
+be inspected.
 
 ## Completed-task index
 
@@ -47,16 +54,10 @@ anchored versions below hold command-level detail for each era.
 
 | Task | Completed outcome / durable pointer |
 |---|---|
-| pre-T-1 | 2026-07-08–11: ResearchMap metadata fields 1–5 applied to both mirrored achievements pages and the researchmap/ORCID exporters; JP mobile-nav fix; codex-offload configuration and SPARK worker migration; size-guard pre-commit. Free-form chronology at `986ed09:tools/todo.md`. |
-| T-1–T-23 | 2026-07-12: context-ledger scheme adopted; README rewrite; deploy exclusions; DOI/CV reconciliation; permission audit; two design-evaluation rounds closed without adoption; bounded native Codex delegation; Dreamweaver template cleanup. `28f8685:tools/todo.md`. |
-| T-24–T-53 | 2026-07-12–13: security and metadata hardening — archived-PDF history purge, expired-credential removal, CSP/HSTS/Permissions-Policy enforcement, SRI audit, positive-allowlist deploy staging, offline security suite wired into `publish.sh`, landmarks, crawler files, social metadata. `d44f862:tools/todo.md`, `8aa8582:tools/todo.md`. |
-| T-54–T-108 | 2026-07-13: page-quality campaign — titles/descriptions, image dimensions/lazy-loading/decoding, shared-CSS migration off legacy markup, print layer, no-JS, reduced-motion and forced-colors support, accessible Lightbox, dead-CSS source-reference gates, locked Playwright suite. `b37c792:tools/todo.md`, `17b5eb8:tools/todo.md`. |
-| T-109–T-141 | 2026-07-13: agent-benchmark era — capability suite frozen, harness calibrated, routing/handoff optimization iterations, artifact and handoff integrity gates, metrics schema and compaction. `d888cbc:tools/todo.md`. |
-| T-142–T-166, T-168 | 2026-07-13–14: GPT-5.6 benchmark matrix campaign, evidence-backed dispatch policy, WBD005 qualification, obsolete comparison machinery removed. `d928540:tools/todo.md`. |
-| T-167, T-177 | 2026-07-14: ResearchMap reconciliation completed, including fail-closed sync inserts (see decisions.md). `041a453:TODO.md`. |
-| T-170–T-176, T-178 | 2026-07-14: portable agent harness established and moved out of the website, including the pinned lftp restore. `041a453:TODO.md`. |
-| T-179–T-183 | 2026-07-14–16: post-incident recovery — layered agent configuration reconstructed (T-179); exhaustive Git recovery re-audit found no additional candidate (T-180); npm validation logs removed (T-181); deployment staging and mirror deletion guarded (T-182); recovered repositories pushed with next-task handoff (T-183). `041a453:TODO.md`, `64c4b18:TODO.md`. |
-| T-184–T-189 | 2026-07-16–18: PIE/node-onboarding reconciliation (T-184); public-visibility risk assessment (T-185, caveats accepted at T-192); recovered ledger commits pushed + offline CI added (T-186, `c90760b`); strict `main` ruleset validated via PR #1 (T-187, `162bef0`); website made harness-independent (T-188, `6f1ad83`); website-owned Claude takeover + live evaluation (T-189, `docs/audits/claude-live-takeover-2026-07-18.md`). |
+| pre-T-1–T-23 | Initial ResearchMap/site fixes and the context-ledger, deployment exclusions, bounded delegation, and repository workflow. `986ed09:tools/todo.md`, `28f8685:tools/todo.md`. |
+| T-24–T-108 | Security, deploy allowlisting, metadata, accessibility, responsive/print behavior, and locked browser coverage. `d44f862:tools/todo.md`, `17b5eb8:tools/todo.md`. |
+| T-109–T-178 | Agent benchmark/handoff work, ResearchMap reconciliation, and extraction of the portable harness. `d888cbc:tools/todo.md`, `d928540:tools/todo.md`, `041a453:TODO.md`. |
+| T-179–T-189 | Recovery, guarded deployment cleanup, protected CI, harness independence, and website-owned Claude takeover. `64c4b18:TODO.md`, `docs/audits/claude-live-takeover-2026-07-18.md`. |
 | T-190 | Canonical pre-commit hook and doctor landed (PR #7 `e6faf3b`); owner-applied hook verified byte-identical; standing authorization recorded. |
 | T-191 | Live ruleset `19127356` verified to match `docs/github-rulesets/main.json`; presumed divergence did not exist; read-only. |
 | T-192 | Sanitized-mirror route built then reversed by owner; repository made public with ruleset intact; secret scanning enabled, zero alerts (`676c209`). |
