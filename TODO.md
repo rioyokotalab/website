@@ -32,19 +32,11 @@ free ID: T-205.
 
 ## Next resume checkpoint
 
-Resume T-204 from `tools/state/session.md`.
+No active task. Start from `tools/state/session.md`.
 
 ## Active tasks
 
-### T-204 — Relocate the Local website checkout
-
-**Status:** in progress. Move the clean public checkout from `~/website` to
-`~/projects/website` through a fresh clone, preserve its declared ignored
-state and remote-backed local branch, repair generated absolute-path state,
-validate the destination, publish the two path-documentation corrections, and
-remove the old cross-filesystem source only through guarded deletion. The
-tracked `.dont-remove-me` file is recreated by the public clone and must never
-be inspected.
+None.
 
 ## Completed-task index
 
@@ -69,3 +61,4 @@ anchored versions below hold command-level detail for each era.
 | T-201 | Merged the GPT-5.6 and Claude README benchmark tables into one section (unified 6-model table + side-by-side per-effort comparison; token caveat kept). |
 | T-202 | Fixed the deploy deletion guard (`439ef4d`): it mis-read SFTP in-place updates as unmatched deletions, blocking every real deploy since T-182. True deletion = removed-not-transferred; SFTP-format test added. Unblocked T-200. |
 | T-203 | Housekeeping: pruned 8 stale remote-tracking refs, deleted the superseded `t187-ruleset-closeout` branch, and guarded-deleted 92 disposable Claude benchmark artifact dirs (~37 MB; 173 GPT artifacts + tracked evidence intact). |
+| T-204 | Relocated the Local checkout to `~/projects/website` by fresh clone; preserved all ignored state and the remote-backed branch, kept Playwright runtime state local for NFS performance, passed offline and 38 browser checks, and guarded-deleted the old checkout. |

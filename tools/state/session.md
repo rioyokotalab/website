@@ -1,34 +1,27 @@
 driver: codex
-updated: 2026-07-23T19:53+0900
-task: T-204 relocate the Local website checkout
-status: in-progress
+updated: 2026-07-23T19:56+0900
+task: idle
+status: idle
 
 ## Now
-- Preflight passed: source was clean at `f249ae8`, origin was current, and the
-  move is cross-filesystem. The first clone's checkout was interrupted; its
-  stale zero-owner-open index lock was exact-unlinked, then the index and
-  worktree were restored from `HEAD` and verified clean.
-- `.dont-remove-me` is a regular tracked public file; no content was read.
-- All six ignored state roots were copied and matched by file count, symlink
-  count, and bytes. `t187-ruleset-validation` is backed by an up-to-date
-  remote branch.
-- The destination clone is on `t204-relocate-website`; the remote-backed
-  `t187-ruleset-validation` branch and canonical pre-commit hook are present.
-- NFS made browser runtime state too slow, so the original `.playwright` state
-  was moved intact to `~/.cache/website-playwright`; both checkouts expose it
-  through an ignored symlink and its registration points only at the new
-  physical checkout.
-- Destination validation passed: `tools/test-security.sh`, task-metrics
-  validation, hook doctor, and all 38 browser tests. Guarded-delete the old
-  checkout, then close the ledger and publish through protected `main`.
+- T-204 is complete locally. The repository now lives at
+  `~/projects/website`; `~/website` and all guarded-delete transaction state
+  are absent.
+- All ignored state was preserved. `.playwright` is an ignored symlink to
+  local `~/.cache/website-playwright`, avoiding NFS runtime timeouts while
+  keeping the project checkout on backed-up storage.
+- The public tracked sentinel was recreated by Git without content inspection.
+  The canonical hook and remote-backed `t187-ruleset-validation` branch are
+  present.
+- Offline checks, task-metrics validation, hook doctor, and all 38 browser
+  tests pass. Publish the closeout commit and merge its protected PR.
 
 ## Working set
 - `TODO.md`
 - `tools/state/session.md`
-- `README.md`
-- `tools/state/decisions.md`
-- source `~/website`
-- destination `~/projects/website`
+- `tools/codex-log.md`
+- `tools/task-metrics.jsonl`
+- `tools/out/driver-report-20260723-1956.md`
 
 ## Open questions
 - None.
