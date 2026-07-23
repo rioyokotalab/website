@@ -38,7 +38,7 @@ Resume T-205 from `tools/state/session.md`.
 
 ### T-205 — Nightly Codex/Claude benchmark refresh
 
-**Phase:** ready for execution. For eight hours from 2026-07-23 evening JST, use the
+**Phase:** executing. For eight hours from 2026-07-23 evening JST, use the
 receipt-backed Codex–Claude cowork protocol to rerun the README's five-task
 website benchmark for both current agent stacks, compare matched results with
 the July baselines, investigate regressions, and test prompt/workflow
@@ -51,6 +51,8 @@ The durable cowork exchange is
 `tools/agent-benchmark/artifacts/`. The independent and reciprocal evidence
 receipts validate and the reconciled plan is frozen. Stop conditions, timebox,
 and the exact next action are in the exchange and `tools/state/session.md`.
+The generic freeze runner, non-bypass Claude route, focused tests, and both
+provider capability probes pass; visible matrix blocks are in progress.
 
 ## Completed-task index
 

@@ -1,7 +1,7 @@
 driver: codex
-updated: 2026-07-23T21:42+0900
+updated: 2026-07-23T21:54+0900
 task: T-205 nightly Codex/Claude benchmark refresh
-status: ready-for-execution
+status: executing
 
 ## Now
 - Branch `t205-nightly-agent-benchmark` starts clean from public `main`
@@ -23,6 +23,11 @@ status: ready-for-execution
 - Historical complete singleton runtime is 5.73 hours across both providers.
   The execution rule prioritizes all 165 singleton cells, reevaluates the
   projection every 15 cells, and reserves the final 45 minutes for closeout.
+- Generic 90-cell GPT and 75-cell Claude freeze plans validate. Selftest,
+  capsule audit, focused matrix tests, and a bounded Claude denial-path probe
+  pass.
+- The first frozen capability cell for each provider passed 100/100. The
+  remaining visible singleton blocks are executing sequentially.
 
 ## Working set
 - `TODO.md`
@@ -40,5 +45,5 @@ status: ready-for-execution
 - None.
 
 ## Next action
-- Commit the frozen cowork exchange, advance the session to `executing`, then
-  implement and test the generic matrix runner and non-bypass Claude route.
+- Finish GPT WBD-001, checkpoint throughput and quality, then run Claude
+  WBD-001. Continue alternating visible blocks before releasing WBD-005.
