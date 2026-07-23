@@ -37,6 +37,17 @@
     1.24× for GPT and 0.88× for Claude. Applying each only to its provider
     projected singleton completion near 04:03 JST; optional repeats remain
     deferred, and the sequential protocol remains intact.
+11. WBD-002 completed without a capability or score miss: GPT 18/18 and
+    Claude 15/15. Task-wide median total time moved 129.7 → 186.1 seconds for
+    GPT and 132.3 → 146.7 seconds for Claude. The browser-grader component rose
+    by approximately 26 seconds for both providers, isolating a shared current
+    runner/environment contribution rather than attributing the whole delta to
+    either worker.
+12. GPT WBD-003 completed 18/18 at 100. Claude Fable completed 5/5 at 100.
+    Claude Opus/max recovered its July singleton miss and scored 100, while
+    Opus/xhigh newly scored 89 after failing only `reject-first-focus`; its
+    scope and changed file were otherwise correct. The singleton is retained
+    and a matched repeat is required before classifying the regression.
 
 ## Deviations
 

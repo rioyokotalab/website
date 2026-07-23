@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-23T22:45+0900
+updated: 2026-07-24T01:24+0900
 task: T-205 nightly Codex/Claude benchmark refresh
 status: executing
 
@@ -32,9 +32,20 @@ status: executing
   median time was nearly flat versus July; Claude improved 7%. Effective
   tokens rose 36% for GPT and about 5.2× for Claude, with unchanged public
   prompt/task hashes.
-- The 30-cell provider-specific projection reaches approximately 04:03 JST.
-  Optional repeats are deferred; complete singleton denominators remain the
-  priority.
+- WBD-002 is complete: GPT 18/18 and Claude 15/15 full-score passes. Median
+  total time increased from 129.7 to 186.1 seconds for GPT and from 132.3 to
+  146.7 seconds for Claude; both providers shared a roughly 26-second increase
+  in browser-grader time, so the current runner/environment is a measured
+  contributor independent of worker behavior.
+- GPT WBD-003 is complete at 18/18 full-score passes. Claude WBD-003 is in
+  progress: Fable is 5/5, Opus is 4/5, and Opus/max recovered its prior July
+  singleton failure. Opus/xhigh scored 89 and missed only `reject-first-focus`;
+  preserve it as a new singleton regression and run a matched repeat after the
+  complete matrices before concluding whether it is stochastic.
+- The 75-cell projection reaches approximately 05:02 JST. A continuation
+  guard extends the sequential controller through 05:10 so the exact frozen
+  singleton denominators remain the priority; optional repeats remain deferred
+  except for observed failures.
 
 ## Working set
 - `TODO.md`
@@ -52,6 +63,7 @@ status: executing
 - None.
 
 ## Next action
-- Continue the autonomous WBD-002 through WBD-004 provider blocks, reassess
-  failures/projection every 15 cells, then release frozen WBD-005 only if the
-  complete matrices remain feasible.
+- Complete Claude WBD-003, then run frozen WBD-004 and WBD-005 provider blocks
+  sequentially. Preserve every singleton failure, repeat each observed failure
+  under the matched workflow if time remains, then analyze complete matrices
+  and update the README.
