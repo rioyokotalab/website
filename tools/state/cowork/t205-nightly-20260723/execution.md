@@ -62,6 +62,17 @@
     independent routes now demonstrate that this is a systematic measurement
     blind spot for a valid implementation form rather than an isolated product
     failure.
+15. GPT WBD-004 completed 18/18 at 100. Median total time increased
+    88.6 → 121.3 seconds versus July, with measured increases in setup
+    (4.0 → 6.5), worker (61.9 → 74.0), and grader (22.7 → 29.9). The first
+    cell's setup alone rose to 28.7 seconds while later cells were lower, and
+    live NFS reads also varied; storage/setup and browser-grader variance are
+    confirmed covariates alongside worker service time.
+16. Higher effort did not improve WBD-004 quality. For example, Terra/medium
+    scored 100 in 76.6 seconds and 19,637 effective tokens, while Terra/xhigh
+    scored the same 100 in 145.4 seconds and 54,838 tokens. Sol/medium was the
+    fastest current GPT observation at 70.1 seconds; singletons remain
+    insufficient for a stable service guarantee.
 
 ## Deviations
 
