@@ -254,9 +254,16 @@ def analyze(rows: list[dict[str, Any]], freeze: dict[str, Any], label: str) -> d
             "pareto_frontier": frontier,
             "failures": failures,
         })
+    probe_note = ""
+    if "probe" in integrity["runner_identity_counts"]:
+        probe_note = (
+            " The three WBD-001 ultra capability probes used the frozen probe "
+            "runner; the other cells used the frozen matrix runner."
+        )
     return {
         "schema_version": 1,
         "run_label": label,
+        "provider": freeze.get("provider", "codex"),
         "integrity": integrity,
         "settings": {
             "baseline_commit": freeze["baseline_commit"],
@@ -282,9 +289,8 @@ def analyze(rows: list[dict[str, Any]], freeze: dict[str, Any], label: str) -> d
         "by_effort": aggregate(rows, "effort"),
         "tasks": tasks,
         "selection_caution": (
-            "Each matrix cell has one observation. Pareto routes are repeat candidates, not final medians. "
-            "The three dominated WBD-001 ultra probes used the frozen probe runner; the other 87 cells "
-            "used the frozen matrix runner."
+            "Each matrix cell has one observation. Pareto routes are repeat "
+            "candidates, not final medians." + probe_note
         ),
     }
 

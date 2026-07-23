@@ -28,6 +28,15 @@
    49,236 ms with 123,383 effective tokens under the non-bypass policy.
 8. The remaining visible singleton blocks are running sequentially with
    provider alternation and immutable per-cell checkpoints.
+9. WBD-001 completed as an exact matched block: GPT 18/18 and Claude 15/15
+   capability/full-score passes. GPT median time was effectively flat
+   (112.8 → 113.8 seconds) while median effective tokens rose
+   22,049 → 29,988. Claude median time improved 89.1 → 82.8 seconds while
+   effective tokens rose 25,071 → 129,736.
+10. At 30 total cells, provider-specific matched median runtime scales were
+    1.24× for GPT and 0.88× for Claude. Applying each only to its provider
+    projected singleton completion near 04:03 JST; optional repeats remain
+    deferred, and the sequential protocol remains intact.
 
 ## Deviations
 
@@ -43,3 +52,7 @@
   code and task-definition hashes are unchanged. The current grader exactly
   matches the July Claude matrix. This administrative identity drift will be
   disclosed in the final comparison.
+- The first 15-cell projection pessimistically applied GPT's WBD-001 slowdown
+  to both providers and projected 04:49. After the full matched Claude block,
+  separate provider scaling moved the estimate to 04:03. No concurrency was
+  introduced because it would contaminate wall-time comparison.
