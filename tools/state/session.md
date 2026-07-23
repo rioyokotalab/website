@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-24T02:09+0900
+updated: 2026-07-24T02:51+0900
 task: T-205 nightly Codex/Claude benchmark refresh
 status: executing
 
@@ -35,10 +35,13 @@ status: executing
   `rejectButton.focus()` implementation, although all browser tests passed.
   This is a confirmed literal-sensitive grader false negative, not a functional
   regression.
-- GPT WBD-004 is complete at 18/18 full-score passes. The median total time
+- WBD-004 is complete at GPT 18/18 and Claude 15/15 full-score passes. GPT
+  median total time
   increased 88.6 → 121.3 seconds; the increase is split across setup
   (4.0 → 6.5), worker (61.9 → 74.0), and grader (22.7 → 29.9), confirming
-  multiple contributors. Claude WBD-004 is now executing.
+  multiple contributors. Claude median total time increased 112.5 → 135.9
+  seconds and worker time 63.2 → 88.6; Read-before-Edit retries and direct
+  kernel NFS waits were observed.
 - A separately labeled two-cell workflow correction is frozen for the two
   WBD-003 misses. It changes only inspection mode from `default` to `focused`
   and will run after both complete singleton matrices.
@@ -64,7 +67,6 @@ status: executing
 - None.
 
 ## Next action
-- Complete Claude WBD-004, then run frozen WBD-005 provider blocks
-  sequentially. Execute the frozen two-cell focused workflow only after both
-  complete grids, then analyze, obtain reciprocal Claude critique, update the
-  README, validate, and publish through protected Git.
+- Complete frozen WBD-005 provider blocks sequentially. Then execute the
+  frozen two-cell focused workflow, analyze, obtain reciprocal Claude critique,
+  update the README, validate, and publish through protected Git.

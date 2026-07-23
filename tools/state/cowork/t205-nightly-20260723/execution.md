@@ -73,6 +73,27 @@
     scored the same 100 in 145.4 seconds and 54,838 tokens. Sol/medium was the
     fastest current GPT observation at 70.1 seconds; singletons remain
     insufficient for a stable service guarantee.
+17. Claude Fable/low WBD-004 passed 100 but rose 112.8 → 218.6 seconds and
+    19,483 → 102,144 effective tokens. Its trajectory contains nine tool calls
+    versus six previously and two rejected `Edit` calls: shell inspection did
+    not satisfy Claude's enforced requirement to `Read` the target before
+    editing. The eventual edit passed after a `Read`. This is a confirmed
+    safe-invocation workflow cost and motivates a separately labeled
+    Read-before-Edit experiment after the frozen matrices.
+18. Multiple Local probes blocked on the repository's hard NFS mount. More
+    decisively, the active Claude Opus/max process was observed in kernel
+    `nfs_wait` while its stream JSON was written directly to the NFS-backed
+    artifact path. It later completed 100 in 236.5 seconds, of which 194.6 was
+    counted as worker time. Current worker duration therefore includes proven
+    storage blocking and cannot be interpreted as pure model/service latency.
+    Future runner work should stage raw artifacts locally and copy them only
+    after process completion; do not change the frozen runner mid-matrix.
+19. Claude WBD-004 completed 15/15 at 100, making the combined task block
+    33/33. Median total time rose 112.5 → 135.9 seconds and worker time
+    63.2 → 88.6; grader time was nearly flat (30.2 → 31.2). Sonnet/low was
+    fastest at 54.1 seconds, while Sonnet/xhigh took 338.6 seconds at the same
+    score. Effective tokens rose 31,323 → 137,350 under the new fresh-input,
+    no-session-persistence invocation and remain provider-internal only.
 
 ## Deviations
 
