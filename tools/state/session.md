@@ -1,7 +1,7 @@
 driver: codex
-updated: 2026-07-23T20:52+0900
+updated: 2026-07-23T21:42+0900
 task: T-205 nightly Codex/Claude benchmark refresh
-status: planning
+status: ready-for-execution
 
 ## Now
 - Branch `t205-nightly-agent-benchmark` starts clean from public `main`
@@ -17,9 +17,12 @@ status: planning
 - Driver sandbox selftest/audit and a real Codex Terra/low WBD-001 probe passed
   100/100 at 55.664 seconds and 13,586 effective tokens. One pair is not
   treated as a trend.
-- The matrix runner's hard-coded freeze/artifact path and Claude's prior bypass
-  invocation require correction before broad calls. Driver evidence is frozen;
-  run the sealed blinded Claude evidence window next.
+- Independent and reciprocal Claude evidence passed sealed import and receipt
+  validation. The reconciled protocol is frozen in
+  `tools/state/cowork/t205-nightly-20260723/reconciliation.md`.
+- Historical complete singleton runtime is 5.73 hours across both providers.
+  The execution rule prioritizes all 165 singleton cells, reevaluates the
+  projection every 15 cells, and reserves the final 45 minutes for closeout.
 
 ## Working set
 - `TODO.md`
@@ -35,3 +38,7 @@ status: planning
 
 ## Awaiting user
 - None.
+
+## Next action
+- Commit the frozen cowork exchange, advance the session to `executing`, then
+  implement and test the generic matrix runner and non-bypass Claude route.
