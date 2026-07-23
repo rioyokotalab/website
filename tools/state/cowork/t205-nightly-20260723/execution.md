@@ -94,6 +94,14 @@
     fastest at 54.1 seconds, while Sonnet/xhigh took 338.6 seconds at the same
     score. Effective tokens rose 31,323 → 137,350 under the new fresh-input,
     no-session-persistence invocation and remain provider-internal only.
+20. GPT WBD-005 completed 14/18 strict full-quality and 18/18 browser
+    functional, versus July's 13/18 and 17/18. Luna/medium and Terra
+    medium/high/xhigh/max all recovered to 100; critically, Terra/xhigh's prior
+    browser-suite failure recovered. New 91s on Luna low/xhigh/max and Sol/max
+    all passed the five browser tests and used a semantically equivalent
+    reduced-motion object naming that the frozen `js-reduced-zero` regex does
+    not recognize. Preserve both the net +1 strict improvement and the
+    18/18 functional result; do not regrade the frozen matrix.
 
 ## Deviations
 

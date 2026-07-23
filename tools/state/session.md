@@ -20,15 +20,9 @@ status: executing
 - Generic 90-cell GPT and 75-cell Claude freeze plans validate. Selftest,
   capsule audit, focused matrix tests, and a bounded Claude denial-path probe
   pass.
-- WBD-001 is complete: GPT 18/18 and Claude 15/15 full-score passes. GPT
-  median time was nearly flat versus July; Claude improved 7%. Effective
-  tokens rose 36% for GPT and about 5.2× for Claude, with unchanged public
-  prompt/task hashes.
-- WBD-002 is complete: GPT 18/18 and Claude 15/15 full-score passes. Median
-  total time increased from 129.7 to 186.1 seconds for GPT and from 132.3 to
-  146.7 seconds for Claude; both providers shared a roughly 26-second increase
-  in browser-grader time, so the current runner/environment is a measured
-  contributor independent of worker behavior.
+- WBD-001/002 are full-score for both providers. GPT WBD-001 time was flat;
+  Claude improved 7%. WBD-002 slowed for both, including a shared roughly
+  26-second browser-grader increase.
 - GPT WBD-003 is 18/18; Claude is 13/15 strict full-score: Opus/xhigh and
   Sonnet/xhigh each
   scored 89 because the static grader does not recognize their equivalent
@@ -45,6 +39,11 @@ status: executing
 - A separately labeled two-cell workflow correction is frozen for the two
   WBD-003 misses. It changes only inspection mode from `default` to `focused`
   and will run after both complete singleton matrices.
+- GPT WBD-005 and its full 90-cell matrix are complete. WBD-005 improved
+  13/18 → 14/18 strict and 17/18 → 18/18 browser-functional: five prior routes
+  recovered (including Terra/xhigh's browser failure); four new 91s all pass
+  the browser suite and use an equivalent form missed by `js-reduced-zero`.
+  The continuation controller is executing Claude WBD-005.
 - The updated projection extends beyond the exact eight-hour boundary because
   WBD-004 and WBD-005 are the historically slowest blocks. A continuation
   guard extends the sequential controller through 05:10 so the exact frozen
@@ -67,6 +66,6 @@ status: executing
 - None.
 
 ## Next action
-- Complete frozen WBD-005 provider blocks sequentially. Then execute the
+- Complete Claude WBD-005. Then execute the
   frozen two-cell focused workflow, analyze, obtain reciprocal Claude critique,
   update the README, validate, and publish through protected Git.
