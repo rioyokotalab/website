@@ -51,6 +51,7 @@ test("all routes and local interactive components run without browser errors", a
 				await page.keyboard.press("Escape");
 				await expect(page.locator("#lightbox")).toBeHidden();
 			}
+			await page.waitForLoadState("networkidle");
 			await page.waitForTimeout(25);
 		}
 		await context.close();
