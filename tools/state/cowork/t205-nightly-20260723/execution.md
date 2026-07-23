@@ -48,6 +48,20 @@
     Opus/xhigh newly scored 89 after failing only `reject-first-focus`; its
     scope and changed file were otherwise correct. The singleton is retained
     and a matched repeat is required before classifying the regression.
+13. Artifact review showed that Opus/xhigh implemented
+    `rejectButton.focus()`, and all four browser consent tests passed. The
+    static assertion recognizes only three equivalent literal spellings and
+    does not recognize this local-variable form. The 89 is therefore a
+    confirmed static-grader false negative, not a user-visible functional
+    regression. Do not change or regrade the frozen singleton; test whether
+    `inspection-mode=focused` reduces this syntax variance in a separately
+    labeled workflow cell if closeout time permits.
+14. Sonnet/xhigh independently produced the same semantically correct
+    `rejectButton.focus()` form, passed all four browser consent tests, and
+    received the same 89 because of the literal-only static assertion. Two
+    independent routes now demonstrate that this is a systematic measurement
+    blind spot for a valid implementation form rather than an isolated product
+    failure.
 
 ## Deviations
 
