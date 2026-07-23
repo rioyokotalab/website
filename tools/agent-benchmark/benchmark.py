@@ -385,6 +385,36 @@ def parse_claude_jsonl(path: Path) -> tuple[dict[str, int] | None, dict[str, int
     return usage, item_types, final_message, invalid, tool_metrics
 
 
+CLAUDE_ALLOWED_TOOLS = ("Read", "Edit", "Write", "Bash")
+CLAUDE_DISALLOWED_TOOLS = (
+    "ToolSearch",
+    "WebFetch",
+    "WebSearch",
+    "Bash(ssh *)",
+    "Bash(scp *)",
+    "Bash(sftp *)",
+    "Bash(lftp *)",
+    "Bash(curl *)",
+    "Bash(wget *)",
+    "Bash(gh *)",
+    "Bash(git push*)",
+)
+
+
+def claude_command(model: str, effort: str) -> list[str]:
+    """Return the reviewed unattended Claude command used inside a task capsule."""
+    return [
+        "claude", "-p",
+        "--output-format", "stream-json", "--verbose",
+        "--model", model,
+        "--effort", effort,
+        "--permission-mode", "dontAsk",
+        "--allowedTools", *CLAUDE_ALLOWED_TOOLS,
+        "--disallowedTools", *CLAUDE_DISALLOWED_TOOLS,
+        "--no-session-persistence",
+    ]
+
+
 def run_claude(task: dict[str, Any], task_id: str, workspace: Path, artifact: Path,
                *, model: str, effort: str, prompt_mode: str, reference: Path | None,
                timeout_seconds: int, handoff_mode: str, inspection_mode: str) -> dict[str, Any]:
@@ -398,13 +428,7 @@ def run_claude(task: dict[str, Any], task_id: str, workspace: Path, artifact: Pa
     stdout_path = artifact / "stdout.jsonl"
     stderr_path = artifact / "stderr.log"
     prompt_path.write_text(prompt, encoding="utf-8")
-    command = [
-        "claude", "-p",
-        "--output-format", "stream-json", "--verbose",
-        "--model", model,
-        "--effort", effort,
-        "--dangerously-skip-permissions",
-    ]
+    command = claude_command(model, effort)
     env = os.environ.copy()
     env["PLAYWRIGHT_BROWSERS_PATH"] = str(ROOT / ".playwright" / "browsers")
     env["NODE_PATH"] = str(ROOT / "node_modules")
@@ -801,6 +825,14 @@ def selftest() -> dict[str, Any]:
     task_hash = task_definition_sha256(tasks["WBD-001"])
     assert len(task_hash) == 64
     assert task_hash != task_definition_sha256({**tasks["WBD-001"], "version": 999})
+    command = claude_command("claude-sonnet-5", "low")
+    assert "--dangerously-skip-permissions" not in command
+    assert command[command.index("--permission-mode") + 1] == "dontAsk"
+    tools_index = command.index("--allowedTools")
+    disallowed_index = command.index("--disallowedTools")
+    persistence_index = command.index("--no-session-persistence")
+    assert tuple(command[tools_index + 1:disallowed_index]) == CLAUDE_ALLOWED_TOOLS
+    assert tuple(command[disallowed_index + 1:persistence_index]) == CLAUDE_DISALLOWED_TOOLS
     operations = load_task_ops()
     inline_zero = "motionPreference.matches ? { fadeDuration: 0, imageFadeDuration: 0, resizeDuration: 0 } : motionOptions"
     named_zero = "const reduced = { fadeDuration: 0, imageFadeDuration: 0, resizeDuration: 0 }; motionPreference.matches ? reduced : motionOptions"

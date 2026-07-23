@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate and summarize a frozen benchmark matrix from results.jsonl."""
+"""Validate and summarize a frozen Codex or Claude matrix from results.jsonl."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from typing import Any, Iterable
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 RESULTS = HERE / "results.jsonl"
-FREEZE = HERE / "gpt56-full-20260713.freeze.json"
+DEFAULT_FREEZE = HERE / "gpt56-full-20260713.freeze.json"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -108,25 +108,28 @@ def validate_grid(rows: list[dict[str, Any]], freeze: dict[str, Any], label: str
     if extra:
         errors.append(f"extra cells: {extra}")
     identities = freeze["identities"]
-    probe_hash = str(identities["probe_runner_sha256"])
     matrix_hash = str(identities["matrix_runner_sha256"])
-    runner_counts = {
-        "probe": sum(row.get("runner_sha256") == probe_hash for row in rows),
-        "matrix": sum(row.get("runner_sha256") == matrix_hash for row in rows),
-    }
+    probe_hash = identities.get("probe_runner_sha256")
+    allowed_runner_hashes = {matrix_hash}
+    if probe_hash:
+        allowed_runner_hashes.add(str(probe_hash))
+    runner_counts = {"matrix": sum(row.get("runner_sha256") == matrix_hash for row in rows)}
+    if probe_hash:
+        runner_counts["probe"] = sum(row.get("runner_sha256") == probe_hash for row in rows)
     unexpected_runners = sorted({
         str(row.get("runner_sha256")) for row in rows
-        if row.get("runner_sha256") not in {probe_hash, matrix_hash}
+        if row.get("runner_sha256") not in allowed_runner_hashes
     })
     if unexpected_runners:
         errors.append(f"unexpected runner hashes: {unexpected_runners}")
-    expected_probe_cells = {("WBD-001", model, "ultra") for model in models}
-    observed_probe_cells = {
-        (str(row["task_id"]), str(row["model"]), str(row["effort"]))
-        for row in rows if row.get("runner_sha256") == probe_hash
-    }
-    if observed_probe_cells != expected_probe_cells:
-        errors.append(f"unexpected probe-runner cells: {sorted(observed_probe_cells)}")
+    if probe_hash:
+        expected_probe_cells = {("WBD-001", model, "ultra") for model in models}
+        observed_probe_cells = {
+            (str(row["task_id"]), str(row["model"]), str(row["effort"]))
+            for row in rows if row.get("runner_sha256") == probe_hash
+        }
+        if observed_probe_cells != expected_probe_cells:
+            errors.append(f"unexpected probe-runner cells: {sorted(observed_probe_cells)}")
     expected_settings = freeze["settings"]
     for row in rows:
         task = str(row["task_id"])
@@ -137,7 +140,8 @@ def validate_grid(rows: list[dict[str, Any]], freeze: dict[str, Any], label: str
             "task_definition_sha256": (
                 row.get("task_definition_sha256") == freeze["tasks"][task]["sha256"]
             ),
-            "codex_cli": row.get("codex_cli") == identities["codex_cli"],
+            "client": row.get(f"{freeze.get('provider', 'codex')}_cli")
+            == identities[f"{freeze.get('provider', 'codex')}_cli"],
             "prompt_mode": row.get("prompt_mode") == expected_settings["prompt_mode"],
             "handoff_mode": row.get("handoff_mode") == expected_settings["handoff_mode"],
             "inspection_mode": row.get("inspection_mode") == expected_settings["inspection_mode"],
@@ -288,13 +292,17 @@ def analyze(rows: list[dict[str, Any]], freeze: dict[str, Any], label: str) -> d
 def markdown(report: dict[str, Any]) -> str:
     totals = report["totals"]
     lines = [
-        f"# GPT-5.6 matrix summary — {report['run_label']}", "",
+        f"# Agent matrix summary — {report['run_label']}", "",
         "## Integrity and totals", "",
         f"- Exact grid: {report['integrity']['observed_cells']} cells "
         f"({report['integrity']['documented_cells']} documented + "
         f"{report['integrity']['ultra_cells']} ultra).",
-        f"- Runner identities: {report['integrity']['runner_identity_counts']['matrix']} matrix + "
-        f"{report['integrity']['runner_identity_counts']['probe']} frozen probe cells.",
+        f"- Runner identities: "
+        f"{report['integrity']['runner_identity_counts']['matrix']} matrix"
+        + (
+            f" + {report['integrity']['runner_identity_counts']['probe']} frozen probe cells."
+            if "probe" in report["integrity"]["runner_identity_counts"] else "."
+        ),
         f"- Capability passes: {totals['capability_passes']}/{totals['runs']}; "
         f"mean score: {totals['mean_score']}.",
         f"- Summed end-to-end time: {totals['total_duration_ms']:,} ms; "
@@ -355,6 +363,7 @@ def markdown(report: dict[str, Any]) -> str:
 def parser() -> argparse.ArgumentParser:
     command = argparse.ArgumentParser(description=__doc__)
     command.add_argument("--run-label", default="gpt56-full-20260713")
+    command.add_argument("--freeze", type=Path, default=DEFAULT_FREEZE)
     command.add_argument("--json-output", type=Path)
     command.add_argument("--markdown-output", type=Path)
     return command
@@ -362,7 +371,7 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
-    report = analyze(load_rows(args.run_label), load_json(FREEZE), args.run_label)
+    report = analyze(load_rows(args.run_label), load_json(args.freeze), args.run_label)
     payload = json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     if args.json_output:
         args.json_output.write_text(payload, encoding="utf-8")

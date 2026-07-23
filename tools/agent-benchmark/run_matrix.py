@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the frozen GPT-5.6 benchmark matrix sequentially and resumably."""
+"""Run a frozen Codex or Claude benchmark matrix sequentially and resumably."""
 
 from __future__ import annotations
 
@@ -8,16 +8,17 @@ import hashlib
 import json
 import subprocess
 import sys
+import re
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 BENCHMARK = HERE / "benchmark.py"
-FREEZE = HERE / "gpt56-full-20260713.freeze.json"
+DEFAULT_FREEZE = HERE / "gpt56-full-20260713.freeze.json"
 RESULTS = HERE / "results.jsonl"
 METRICS_TOOL = ROOT / "tools" / "task-metrics.py"
-ARTIFACTS = ROOT / "tools" / "out" / "agent-benchmark"
+ARTIFACTS = HERE / "artifacts"
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -43,7 +44,8 @@ def read_results() -> dict[str, dict[str, Any]]:
 
 
 def run_id(label: str, task: str, model: str, effort: str) -> str:
-    model_name = model.removeprefix("gpt-5.6-")
+    model_name = model.removeprefix("gpt-5.6-").removeprefix("claude-")
+    model_name = re.sub(r"[^a-z0-9]+", "-", model_name.lower()).strip("-")
     task_name = task.lower().replace("-", "")
     return f"{label}-{effort}-{model_name}-{task_name}"
 
@@ -69,9 +71,10 @@ def frozen_cells(freeze: dict[str, Any], phase: str, selected_tasks: set[str] | 
              "run_id": run_id(label, task, model, effort)}
             for model in models for effort in efforts
         ]
-        block.sort(key=lambda cell: hashlib.sha256(
-            f"{label}|{task}|{cell['model']}|{cell['effort']}".encode("utf-8")
-        ).hexdigest())
+        if freeze["execution_order"].get("within_block") != "listed":
+            block.sort(key=lambda cell: hashlib.sha256(
+                f"{label}|{task}|{cell['model']}|{cell['effort']}".encode("utf-8")
+            ).hexdigest())
         cells.extend(block)
     return cells
 
@@ -92,6 +95,18 @@ def verify_freeze(freeze: dict[str, Any]) -> None:
         observed = hashlib.sha256(path.read_bytes()).hexdigest()
         if observed != identities[key]:
             errors.append(f"{key}: expected {identities[key]}, observed {observed}")
+    provider = str(freeze.get("provider"))
+    if provider not in {"codex", "claude"}:
+        errors.append(f"unsupported provider: {provider}")
+    client_key = f"{provider}_cli"
+    client_command = ["codex", "--version"] if provider == "codex" else ["claude", "--version"]
+    observed_client = subprocess.run(
+        client_command, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+    ).stdout.strip()
+    if identities.get(client_key) != observed_client:
+        errors.append(
+            f"{client_key}: expected {identities.get(client_key)}, observed {observed_client}"
+        )
     baseline = str(freeze["baseline_commit"])
     check = subprocess.run(
         ["git", "cat-file", "-e", f"{baseline}^{{commit}}"], cwd=ROOT,
@@ -101,6 +116,34 @@ def verify_freeze(freeze: dict[str, Any]) -> None:
         errors.append(f"missing baseline commit: {baseline}")
     if errors:
         raise SystemExit("freeze verification failed:\n- " + "\n- ".join(errors))
+
+
+def validate_label_modes(
+    freeze: dict[str, Any], rows: dict[str, dict[str, Any]]
+) -> None:
+    """Reject reuse of a run label for a different workflow contract."""
+    label = str(freeze["run_label"])
+    settings = freeze["settings"]
+    expected = (
+        str(settings["prompt_mode"]),
+        str(settings["handoff_mode"]),
+        str(settings["inspection_mode"]),
+        bool(settings["run_p2p"]),
+    )
+    observed = {
+        (
+            str(row.get("prompt_mode")),
+            str(row.get("handoff_mode")),
+            str(row.get("inspection_mode")),
+            bool(row.get("run_p2p")),
+        )
+        for row in rows.values() if row.get("run_label") == label
+    }
+    if observed and observed != {expected}:
+        raise SystemExit(
+            f"run label {label} spans workflow modes: expected={expected}, "
+            f"observed={sorted(observed)}"
+        )
 
 
 def import_metrics(label: str) -> None:
@@ -160,6 +203,7 @@ def execute_cell(freeze: dict[str, Any], cell: dict[str, str]) -> dict[str, Any]
 
 def parser() -> argparse.ArgumentParser:
     command = argparse.ArgumentParser(description=__doc__)
+    command.add_argument("--freeze", type=Path, default=DEFAULT_FREEZE)
     command.add_argument("--phase", choices=("documented", "ultra", "all"), default="all")
     command.add_argument("--task", action="append", dest="tasks", help="run only this WBD task block; repeatable")
     command.add_argument("--max-cells", type=int, help="stop after this many pending cells")
@@ -169,11 +213,12 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
-    freeze = read_json(FREEZE)
+    freeze = read_json(args.freeze)
     verify_freeze(freeze)
     selected = set(args.tasks) if args.tasks else None
     cells = frozen_cells(freeze, args.phase, selected)
     results = read_results()
+    validate_label_modes(freeze, results)
     pending = [cell for cell in cells if cell["run_id"] not in results]
     if args.max_cells is not None:
         if args.max_cells < 0:
