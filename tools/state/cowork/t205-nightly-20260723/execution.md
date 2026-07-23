@@ -102,6 +102,21 @@
     reduced-motion object naming that the frozen `js-reduced-zero` regex does
     not recognize. Preserve both the net +1 strict improvement and the
     18/18 functional result; do not regrade the frozen matrix.
+21. Claude WBD-005 completed 13/15 strict and 14/15 browser-functional.
+    Opus/high scored 91 after failing only the literal-sensitive
+    `js-reduced-zero` assertion while passing all five browser tests.
+    Sonnet/low scored 63 after changing out-of-scope `js/pagetop.js` and
+    failing two reduced-motion browser tests; this is the one genuine current
+    Claude functional regression. The other 13 routes scored 100.
+22. Both exact singleton grids passed frozen identity validation: GPT is 86/90
+    strict and 90/90 browser-functional; Claude is 71/75 strict and 74/75
+    browser-functional. The prior matched matrices were 85/90 strict and 89/90
+    browser-functional for GPT, and 72/75 strict and 74/75 browser-functional
+    for Claude.
+23. A one-cell Sonnet/low WBD-005 focused-inspection retry is frozen separately
+    with the same baseline, task, grader, client, and browser suite. It joins
+    the existing two-cell WBD-003 focused experiment and does not change either
+    broad-matrix denominator.
 
 ## Deviations
 

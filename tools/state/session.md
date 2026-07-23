@@ -43,12 +43,13 @@ status: executing
   13/18 → 14/18 strict and 17/18 → 18/18 browser-functional: five prior routes
   recovered (including Terra/xhigh's browser failure); four new 91s all pass
   the browser suite and use an equivalent form missed by `js-reduced-zero`.
-  The continuation controller is executing Claude WBD-005.
-- The updated projection extends beyond the exact eight-hour boundary because
-  WBD-004 and WBD-005 are the historically slowest blocks. A continuation
-  guard extends the sequential controller through 05:10 so the exact frozen
-  singleton denominators remain the priority and lets any started block finish;
-  optional repeats remain deferred except for the two observed failures.
+- Claude's full 75-cell matrix is complete at 71/75 strict and 74/75
+  browser-functional. The prior matrix was 72/75 strict and the same 74/75
+  functional. Three current strict misses are browser-correct static-grader
+  blind spots; Sonnet/low WBD-005 is one genuine functional regression.
+- Exact-grid analysis and matched comparison reports validate. Three separately
+  labeled focused cells are next: the two WBD-003 syntax misses and the
+  Sonnet/low WBD-005 functional failure.
 
 ## Working set
 - `TODO.md`
@@ -66,6 +67,5 @@ status: executing
 - None.
 
 ## Next action
-- Complete Claude WBD-005. Then execute the
-  frozen two-cell focused workflow, analyze, obtain reciprocal Claude critique,
-  update the README, validate, and publish through protected Git.
+- Execute the three frozen focused cells, analyze, obtain reciprocal Claude
+  critique, update the README, validate, and publish through protected Git.

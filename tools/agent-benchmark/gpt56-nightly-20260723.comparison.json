@@ -1,0 +1,1092 @@
+{
+  "cells": [
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -10925,
+      "effort": "high",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 16543
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 7439,
+      "effort": "low",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 42250
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -15591,
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 113980
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 6634,
+      "effort": "medium",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 51200
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 8260,
+      "effort": "ultra",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 163184
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 20253,
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": -17912
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 6678,
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": -16710
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 20127,
+      "effort": "low",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 27493
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 22328,
+      "effort": "max",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 30305
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -1240,
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 6169
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 23380,
+      "effort": "ultra",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 22428
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 10120,
+      "effort": "xhigh",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": -84825
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 3750,
+      "effort": "high",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 95480
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -1889,
+      "effort": "low",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": -21396
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 15756,
+      "effort": "max",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 109903
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 572,
+      "effort": "medium",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 8458
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 7574,
+      "effort": "ultra",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": 127671
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -23152,
+      "effort": "xhigh",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-001",
+      "total_duration_delta_ms": -35184
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 1219,
+      "effort": "high",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 36638
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 24351,
+      "effort": "low",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 62379
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 6677,
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 93485
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -3876,
+      "effort": "medium",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 31764
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -2056,
+      "effort": "ultra",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 77971
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 8751,
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 64265
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 1887,
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 24071
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 20684,
+      "effort": "low",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 65368
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 9019,
+      "effort": "max",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 25594
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 14423,
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 10986
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 14633,
+      "effort": "ultra",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 56786
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 18585,
+      "effort": "xhigh",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 51995
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -12973,
+      "effort": "high",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 53827
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -5886,
+      "effort": "low",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 48229
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -1916,
+      "effort": "max",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 114096
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 10145,
+      "effort": "medium",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 80040
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -3146,
+      "effort": "ultra",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 119730
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 9011,
+      "effort": "xhigh",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-002",
+      "total_duration_delta_ms": 75914
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 2117,
+      "effort": "high",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 33736
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 1951,
+      "effort": "low",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": -2657
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -1737,
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 26850
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 4177,
+      "effort": "medium",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 15837
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -2822,
+      "effort": "ultra",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 9792
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -3289,
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 20412
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 16491,
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 6654
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 18666,
+      "effort": "low",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 48576
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 18881,
+      "effort": "max",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 62713
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 17497,
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 2740
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 17061,
+      "effort": "ultra",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": -23919
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 14772,
+      "effort": "xhigh",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 11,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": -496
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 14989,
+      "effort": "high",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 55122
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 915,
+      "effort": "low",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 18945
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 794,
+      "effort": "max",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 46728
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -7774,
+      "effort": "medium",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 18123
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -6053,
+      "effort": "ultra",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 17184
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 2224,
+      "effort": "xhigh",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-003",
+      "total_duration_delta_ms": 12121
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -2302,
+      "effort": "high",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": -7277
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 8230,
+      "effort": "low",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 46456
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 11467,
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": -15985
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 15401,
+      "effort": "medium",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 36012
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 1889,
+      "effort": "ultra",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 29839
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 2495,
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 121975
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 11228,
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 64873
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 16767,
+      "effort": "low",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 85071
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 12216,
+      "effort": "max",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 37127
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 10608,
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": -20128
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 6316,
+      "effort": "ultra",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 85706
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 18023,
+      "effort": "xhigh",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 39244
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 291,
+      "effort": "high",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": -30082
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 3073,
+      "effort": "low",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 44622
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -21899,
+      "effort": "max",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 30589
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -2790,
+      "effort": "medium",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": -635
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -14591,
+      "effort": "ultra",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 86924
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 29593,
+      "effort": "xhigh",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-004",
+      "total_duration_delta_ms": 67638
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -34101,
+      "effort": "high",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 18412
+    },
+    {
+      "current_pass": false,
+      "effective_tokens_delta": 2338,
+      "effort": "low",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": -9,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 44035
+    },
+    {
+      "current_pass": false,
+      "effective_tokens_delta": 42031,
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": -9,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 90467
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 15879,
+      "effort": "medium",
+      "model": "gpt-5.6-luna",
+      "previous_pass": false,
+      "score_delta": 9,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 41321
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 22400,
+      "effort": "ultra",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 9068
+    },
+    {
+      "current_pass": false,
+      "effective_tokens_delta": -5352,
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "previous_pass": true,
+      "score_delta": -9,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 111158
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 20054,
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 50522
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 16837,
+      "effort": "low",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 20301
+    },
+    {
+      "current_pass": false,
+      "effective_tokens_delta": -4182,
+      "effort": "max",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": -9,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 60580
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -1855,
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 67651
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 13433,
+      "effort": "ultra",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 162154
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -21650,
+      "effort": "xhigh",
+      "model": "gpt-5.6-sol",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 14433
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -7549,
+      "effort": "high",
+      "model": "gpt-5.6-terra",
+      "previous_pass": false,
+      "score_delta": 9,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 110921
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -2847,
+      "effort": "low",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 41464
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -16055,
+      "effort": "max",
+      "model": "gpt-5.6-terra",
+      "previous_pass": false,
+      "score_delta": 9,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 21317
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": 16003,
+      "effort": "medium",
+      "model": "gpt-5.6-terra",
+      "previous_pass": false,
+      "score_delta": 9,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 111335
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -57962,
+      "effort": "ultra",
+      "model": "gpt-5.6-terra",
+      "previous_pass": true,
+      "score_delta": 0,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 53333
+    },
+    {
+      "current_pass": true,
+      "effective_tokens_delta": -16450,
+      "effort": "xhigh",
+      "model": "gpt-5.6-terra",
+      "previous_pass": false,
+      "score_delta": 13,
+      "task_id": "WBD-005",
+      "total_duration_delta_ms": 33612
+    }
+  ],
+  "current": {
+    "by_effort": [
+      {
+        "cells": 15,
+        "effort": "high",
+        "full_quality": 15,
+        "median_effective_tokens": 28534,
+        "median_total_duration_ms": 130712
+      },
+      {
+        "cells": 15,
+        "effort": "low",
+        "full_quality": 14,
+        "median_effective_tokens": 23792,
+        "median_total_duration_ms": 99299
+      },
+      {
+        "cells": 15,
+        "effort": "max",
+        "full_quality": 13,
+        "median_effective_tokens": 32487,
+        "median_total_duration_ms": 170953
+      },
+      {
+        "cells": 15,
+        "effort": "medium",
+        "full_quality": 15,
+        "median_effective_tokens": 27319,
+        "median_total_duration_ms": 103095
+      },
+      {
+        "cells": 15,
+        "effort": "ultra",
+        "full_quality": 15,
+        "median_effective_tokens": 33863,
+        "median_total_duration_ms": 210801
+      },
+      {
+        "cells": 15,
+        "effort": "xhigh",
+        "full_quality": 14,
+        "median_effective_tokens": 34718,
+        "median_total_duration_ms": 131766
+      }
+    ],
+    "by_model": [
+      {
+        "cells": 30,
+        "full_quality": 27,
+        "median_effective_tokens": 26819,
+        "median_total_duration_ms": 121091,
+        "model": "gpt-5.6-luna"
+      },
+      {
+        "cells": 30,
+        "full_quality": 29,
+        "median_effective_tokens": 32487,
+        "median_total_duration_ms": 146458,
+        "model": "gpt-5.6-sol"
+      },
+      {
+        "cells": 30,
+        "full_quality": 30,
+        "median_effective_tokens": 25685,
+        "median_total_duration_ms": 160395,
+        "model": "gpt-5.6-terra"
+      }
+    ],
+    "capability_passes": 86,
+    "cells": 90,
+    "failure_phases": {
+      "f2p-or-visual": 4
+    },
+    "full_quality": 86
+  },
+  "current_label": "gpt56-nightly-20260723-full",
+  "identity": {
+    "current_claude_cli": [
+      "None"
+    ],
+    "current_codex_cli": [
+      "codex-cli 0.145.0"
+    ],
+    "current_grader_sha256": [
+      "d6929e6893092a5f1c5eaac0477625ecd4c4e0f05fa4a6da9ad554edf5785564"
+    ],
+    "current_runner_sha256": [
+      "a799e20fdaa548f80cf05046ba23589bc0f7ce83702dfa7c986b8ba46963fbd3"
+    ],
+    "previous_claude_cli": [
+      "None"
+    ],
+    "previous_codex_cli": [
+      "codex-cli 0.144.3"
+    ],
+    "previous_grader_sha256": [
+      "287d7dbf5c9e35425a2a0b14ebfe68011166d1703f3011683e10f5b4d269a351"
+    ],
+    "previous_runner_sha256": [
+      "a800623a529dd6bc4b5c49e50efaa4375b67b4588282f9fcc720bbbda377ef60",
+      "f78a8f72637b8e180201ac5efc031d9913d89fc862d2881efc75b6dc0a62f166"
+    ],
+    "task_definition_sha256_equal": true
+  },
+  "matched_cells": 90,
+  "matched_deltas": {
+    "median_effective_tokens_delta": 5246,
+    "median_total_duration_delta_ms": 38186,
+    "pass_recovered": 5,
+    "pass_regressed": 4,
+    "score_improved": 6,
+    "score_regressed": 4,
+    "score_unchanged": 80
+  },
+  "previous": {
+    "by_effort": [
+      {
+        "cells": 15,
+        "effort": "high",
+        "full_quality": 14,
+        "median_effective_tokens": 23545,
+        "median_total_duration_ms": 101965
+      },
+      {
+        "cells": 15,
+        "effort": "low",
+        "full_quality": 15,
+        "median_effective_tokens": 12141,
+        "median_total_duration_ms": 69360
+      },
+      {
+        "cells": 15,
+        "effort": "max",
+        "full_quality": 14,
+        "median_effective_tokens": 25992,
+        "median_total_duration_ms": 134343
+      },
+      {
+        "cells": 15,
+        "effort": "medium",
+        "full_quality": 13,
+        "median_effective_tokens": 18867,
+        "median_total_duration_ms": 77197
+      },
+      {
+        "cells": 15,
+        "effort": "ultra",
+        "full_quality": 15,
+        "median_effective_tokens": 32103,
+        "median_total_duration_ms": 131848
+      },
+      {
+        "cells": 15,
+        "effort": "xhigh",
+        "full_quality": 13,
+        "median_effective_tokens": 22199,
+        "median_total_duration_ms": 127625
+      }
+    ],
+    "by_model": [
+      {
+        "cells": 30,
+        "full_quality": 29,
+        "median_effective_tokens": 24322,
+        "median_total_duration_ms": 110069,
+        "model": "gpt-5.6-luna"
+      },
+      {
+        "cells": 30,
+        "full_quality": 29,
+        "median_effective_tokens": 19823,
+        "median_total_duration_ms": 118699,
+        "model": "gpt-5.6-sol"
+      },
+      {
+        "cells": 30,
+        "full_quality": 26,
+        "median_effective_tokens": 22692,
+        "median_total_duration_ms": 101074,
+        "model": "gpt-5.6-terra"
+      }
+    ],
+    "capability_passes": 85,
+    "cells": 90,
+    "full_quality": 84
+  },
+  "previous_label": "gpt56-full-20260713",
+  "schema_version": 1
+}
