@@ -1,5 +1,5 @@
 driver: codex
-updated: 2026-07-23T21:54+0900
+updated: 2026-07-23T22:45+0900
 task: T-205 nightly Codex/Claude benchmark refresh
 status: executing
 
@@ -28,6 +28,13 @@ status: executing
   pass.
 - The first frozen capability cell for each provider passed 100/100. The
   remaining visible singleton blocks are executing sequentially.
+- WBD-001 is complete: GPT 18/18 and Claude 15/15 full-score passes. GPT
+  median time was nearly flat versus July; Claude improved 7%. Effective
+  tokens rose 36% for GPT and about 5.2× for Claude, with unchanged public
+  prompt/task hashes.
+- The 30-cell provider-specific projection reaches approximately 04:03 JST.
+  Optional repeats are deferred; complete singleton denominators remain the
+  priority.
 
 ## Working set
 - `TODO.md`
@@ -45,5 +52,6 @@ status: executing
 - None.
 
 ## Next action
-- Finish GPT WBD-001, checkpoint throughput and quality, then run Claude
-  WBD-001. Continue alternating visible blocks before releasing WBD-005.
+- Continue the autonomous WBD-002 through WBD-004 provider blocks, reassess
+  failures/projection every 15 cells, then release frozen WBD-005 only if the
+  complete matrices remain feasible.
