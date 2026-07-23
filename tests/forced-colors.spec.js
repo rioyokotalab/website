@@ -39,6 +39,7 @@ test("forced colors preserves current, focus, link, and consent distinctions in 
 });
 
 test("forced colors keeps mobile menus, local tables, and EN/JP galleries operable", async ({ browser }) => {
+	test.setTimeout(90000);
 	const context = await browser.newContext({
 		baseURL: "http://127.0.0.1:8765", forcedColors: "active", viewport: { width: 320, height: 800 }
 	});

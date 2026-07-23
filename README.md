@@ -28,9 +28,9 @@ codex login --device-auth
 ### 2. Clone and configure the clients
 
 ```sh
-cd "$HOME"
-git clone https://github.com/rioyokotalab/website.git
-cd "$HOME/website"
+mkdir -p "$HOME/projects"
+git clone https://github.com/rioyokotalab/website.git "$HOME/projects/website"
+cd "$HOME/projects/website"
 mkdir -p "$HOME/.codex"
 printf '%s\n' 'approval_policy = "never"' 'sandbox_mode = "danger-full-access"' 'model_reasoning_effort = "medium"' '' "[projects.\"$PWD\"]" 'trust_level = "trusted"' > "$HOME/.codex/config.toml"
 chmod 600 "$HOME/.codex/config.toml"

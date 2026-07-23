@@ -22,7 +22,7 @@
   permission and HSTS max-age remain owner-judgment proposals, not changed.
 - **2026-07-18 — Website-started sessions never modify `~/harness`.** After a
   website DRIVER promoted guidance into the harness (harness PR #16), the
-  owner ruled that a DRIVER started from `~/website` must never modify
+  owner ruled that a DRIVER started from this website repository must never modify
   anything in `~/harness`: no edits, commits, branches, worktrees, pushes,
   PRs, or merges, regardless of standing Git authorizations. Reading harness
   skills/guidance remains expected. Harness-bound changes become `tools/out/`
