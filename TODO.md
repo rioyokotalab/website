@@ -32,23 +32,11 @@ free ID: T-207.
 
 ## Next resume checkpoint
 
-Complete T-206's mirrored member-page edit, validate, and publish it through
-the protected workflow.
+No active task. The next free ID is T-207.
 
 ## Active tasks
 
-### T-206 — Move Zhiyi Huang to Alumni
-
-Remove Zhiyi Huang from the current-student table and prepend him to Alumni on
-both mirrored member pages. Preserve all historical research, news,
-achievement, and CV records.
-
-The mirrored edit and 24-student standards invariant pass the complete offline
-suite and focused browser checks. Live deployment preview is blocked only
-because the configured `web` SSH master is not authenticated. Repository
-publication may proceed independently; after merge, run `ssh -fN web`, repeat
-`./deploy.sh --dry-run`, inspect the exact member-page delta, deploy, and
-verify both live member pages.
+None.
 
 ## Completed-task index
 
@@ -75,3 +63,4 @@ anchored versions below hold command-level detail for each era.
 | T-203 | Housekeeping: pruned 8 stale remote-tracking refs, deleted the superseded `t187-ruleset-closeout` branch, and guarded-deleted 92 disposable Claude benchmark artifact dirs (~37 MB; 173 GPT artifacts + tracked evidence intact). |
 | T-204 | Relocated the Local checkout to `~/projects/website` by fresh clone; preserved all ignored state and the remote-backed branch, kept Playwright runtime state local for NFS performance, passed offline and 38 browser checks, and guarded-deleted the old checkout. |
 | T-205 | Reran exact current GPT-5.6 (90 cells) and Claude Code (75 cells) matrices through receipt-backed cowork. GPT moved 85→86 strict and 89→90 browser-functional; Claude moved 72→71 strict and held 74 browser-functional. Focused inspection recovered two selected routes. README tables, matched comparisons, and `docs/audits/agent-benchmark-nightly-2026-07-24.md` updated; security and 38 browser tests pass. |
+| T-206 | Moved Zhiyi Huang from the 24-person current-student table to Alumni on both mirrored member pages (`837cf9a`), preserved historical records, deployed the 166-file allowlisted snapshot with zero deletions, verified both live pages byte-identical, and passed the live security suite. |
