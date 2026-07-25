@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-206.
+free ID: T-207.
 
 ## Current state
 
@@ -32,11 +32,23 @@ free ID: T-206.
 
 ## Next resume checkpoint
 
-No active task. The next free ID is T-206.
+Complete T-206's mirrored member-page edit, validate, and publish it through
+the protected workflow.
 
 ## Active tasks
 
-None.
+### T-206 — Move Zhiyi Huang to Alumni
+
+Remove Zhiyi Huang from the current-student table and prepend him to Alumni on
+both mirrored member pages. Preserve all historical research, news,
+achievement, and CV records.
+
+The mirrored edit and 24-student standards invariant pass the complete offline
+suite and focused browser checks. Live deployment preview is blocked only
+because the configured `web` SSH master is not authenticated. Repository
+publication may proceed independently; after merge, run `ssh -fN web`, repeat
+`./deploy.sh --dry-run`, inspect the exact member-page delta, deploy, and
+verify both live member pages.
 
 ## Completed-task index
 
