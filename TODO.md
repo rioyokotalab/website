@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-208.
+free ID: T-209.
 
 ## Current state
 
@@ -32,8 +32,7 @@ free ID: T-208.
 
 ## Next resume checkpoint
 
-No active task. T-207 is a verified no-op hardening audit pending protected
-merge.
+No active task. T-207 merged through protected PR #33 at `1ef111c`.
 
 ## Active tasks
 
@@ -66,3 +65,4 @@ anchored versions below hold command-level detail for each era.
 | T-205 | Reran exact current GPT-5.6 (90 cells) and Claude Code (75 cells) matrices through receipt-backed cowork. GPT moved 85→86 strict and 89→90 browser-functional; Claude moved 72→71 strict and held 74 browser-functional. Focused inspection recovered two selected routes. README tables, matched comparisons, and `docs/audits/agent-benchmark-nightly-2026-07-24.md` updated; security and 38 browser tests pass. |
 | T-206 | Moved Zhiyi Huang from the 24-person current-student table to Alumni on both mirrored member pages (`837cf9a`), preserved historical records, deployed the 166-file allowlisted snapshot with zero deletions, verified both live pages byte-identical, and passed the live security suite. |
 | T-207 | Verified no-op hardening audit: live Actions are read-only/no-approve; Dependabot security updates, grouped monthly npm/Actions updates, secret scanning and push protection are enabled; ruleset `19127356` preserves one review, admin bypass, strict Offline checks, linear history, and resolved conversations. npm audit has zero findings; task-metrics, size, standards, security, supply-chain, workflow, and offline suites pass. The 8,316-byte ledger gate was resolved below the 8,000-byte budget; a closeout-order gate was resolved by restoring numeric index order. No website or deployment target changed. |
+| T-208 | Removed only merged hardening/benchmark/ruleset task refs and the clean merged T-207 worktree; verified clean/current repository state and zero housekeeping residue. No site content or deployment changed. |

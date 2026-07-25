@@ -1,17 +1,16 @@
 driver: codex
-updated: 2026-07-25T16:39+0900
+updated: 2026-07-26T05:22+0900
 task: idle
 status: idle
 
 ## Now
 
-- T-206 is complete. PR #31 merged as
-  `837cf9a32587c82bb2a87b7ad2821d22350f6ec7`.
-- The guarded mirror deployed the exact 166-file allowlisted snapshot with
-  zero deletions after two identical previews.
-- Both live member pages are byte-identical to source, contain Zhiyi Huang
-  exactly once under Alumni, and the complete live security suite passes.
-- Historical research, news, achievement, and CV records were unchanged.
+- T-207 merged through protected PR #33 at
+  `1ef111ccf84e12535f0e2aacedf197f7e4e73528`.
+- T-208 removed only exact merged task refs and the clean merged T-207
+  worktree. The primary checkout is clean/current with no stashes or
+  housekeeping residue.
+- No website content, runtime dependency, or deployment target changed.
 
 ## Working set
 
@@ -27,4 +26,4 @@ status: idle
 
 ## Next action
 
-- Await the next task. The next free ID is T-207.
+- Await the next task. The next free ID is T-209.
