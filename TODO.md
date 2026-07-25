@@ -39,12 +39,13 @@ T-207 is executing in the isolated `task/t-207-hardening` worktree from clean
 
 ### T-207 — Revalidate and converge repository hardening
 
-Status: blocked at the first repository gate; no hardening target changed.
+Status: executing independently under Harness T-311.
 
-**Blocker 2026-07-25:** the first planning commit was rejected because this
+**LIFO gate resolved 2026-07-25:** the first planning commit was rejected because this
 board reached 8,316 bytes versus the enforced 8,000-byte limit. The failure is
-retry-safe; only this task entry was uncommitted. Per the owner contract,
-Website hardening stops while independent repositories continue.
+retry-safe; only this task entry was uncommitted. Compacting the new entry
+reduced the board to 7,938 bytes, and commit `4b8be95` passed the repository
+hook. T-207 now resumes from the interrupted audit.
 
 Scope on resume: revalidate the already mature public-repository baseline
 against the frozen T-311 policy—read-only Actions, dependency/security
@@ -56,8 +57,8 @@ Acceptance: compact this board per `skills/context-ledger.md`, then compare
 tracked/live settings and pass dependency, workflow-security, offline, and
 applicable locked-browser checks. A verified no-op audit is acceptable.
 
-Next action: compact superseded completed-task detail without losing its Git
-anchors, commit this planning checkpoint, and resume T-207 separately.
+Next action: compare tracked and live controls, then run dependency,
+workflow-security, and offline validation gates.
 
 ## Completed-task index
 
