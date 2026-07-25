@@ -508,7 +508,7 @@ def main() -> int:
         table_semantics = {
             "en/index.html": (1, 33, 0, 0), "jp/index.html": (1, 15, 0, 0),
             "en/news/index.html": (12, 105, 0, 0), "jp/news/index.html": (12, 109, 0, 0),
-            "en/member/index.html": (4, 25, 0, 3), "jp/member/index.html": (4, 25, 0, 3),
+            "en/member/index.html": (4, 24, 0, 3), "jp/member/index.html": (4, 24, 0, 3),
             "en/member/yokota.html": (1, 0, 0, 1), "jp/member/yokota.html": (1, 0, 0, 1),
             "en/computers/index.html": (1, 0, 4, 0), "jp/computers/index.html": (1, 0, 4, 0),
         }
