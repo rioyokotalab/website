@@ -32,33 +32,12 @@ free ID: T-208.
 
 ## Next resume checkpoint
 
-T-207 is executing in the isolated `task/t-207-hardening` worktree from clean
-`origin/main` at `3303c22`.
+No active task. T-207 is a verified no-op hardening audit pending protected
+merge.
 
 ## Active tasks
 
-### T-207 — Revalidate and converge repository hardening
-
-Status: executing independently under Harness T-311.
-
-**LIFO gate resolved 2026-07-25:** the first planning commit was rejected because this
-board reached 8,316 bytes versus the enforced 8,000-byte limit. The failure is
-retry-safe; only this task entry was uncommitted. Compacting the new entry
-reduced the board to 7,938 bytes, and commit `4b8be95` passed the repository
-hook. T-207 now resumes from the interrupted audit.
-
-Scope on resume: revalidate the already mature public-repository baseline
-against the frozen T-311 policy—read-only Actions, dependency/security
-automation without auto-merge, native secret protection, one non-admin review
-with owner/admin bypass, strict CI, linear history, and resolved conversations.
-Never deploy the website.
-
-Acceptance: compact this board per `skills/context-ledger.md`, then compare
-tracked/live settings and pass dependency, workflow-security, offline, and
-applicable locked-browser checks. A verified no-op audit is acceptable.
-
-Next action: compare tracked and live controls, then run dependency,
-workflow-security, and offline validation gates.
+None.
 
 ## Completed-task index
 
@@ -85,4 +64,5 @@ anchored versions below hold command-level detail for each era.
 | T-203 | Housekeeping: pruned 8 stale remote-tracking refs, deleted the superseded `t187-ruleset-closeout` branch, and guarded-deleted 92 disposable Claude benchmark artifact dirs (~37 MB; 173 GPT artifacts + tracked evidence intact). |
 | T-204 | Relocated the Local checkout to `~/projects/website` by fresh clone; preserved all ignored state and the remote-backed branch, kept Playwright runtime state local for NFS performance, passed offline and 38 browser checks, and guarded-deleted the old checkout. |
 | T-205 | Reran exact current GPT-5.6 (90 cells) and Claude Code (75 cells) matrices through receipt-backed cowork. GPT moved 85→86 strict and 89→90 browser-functional; Claude moved 72→71 strict and held 74 browser-functional. Focused inspection recovered two selected routes. README tables, matched comparisons, and `docs/audits/agent-benchmark-nightly-2026-07-24.md` updated; security and 38 browser tests pass. |
+| T-207 | Verified no-op hardening audit: live Actions are read-only/no-approve; Dependabot security updates, grouped monthly npm/Actions updates, secret scanning and push protection are enabled; ruleset `19127356` preserves one review, admin bypass, strict Offline checks, linear history, and resolved conversations. npm audit has zero findings; task-metrics, size, standards, security, supply-chain, workflow, and offline suites pass. The initial 8,316-byte ledger gate was resolved by compacting below the enforced 8,000-byte budget. No website or deployment target changed. |
 | T-206 | Moved Zhiyi Huang from the 24-person current-student table to Alumni on both mirrored member pages (`837cf9a`), preserved historical records, deployed the 166-file allowlisted snapshot with zero deletions, verified both live pages byte-identical, and passed the live security suite. |
