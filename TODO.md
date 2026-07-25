@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-207.
+free ID: T-208.
 
 ## Current state
 
@@ -32,11 +32,32 @@ free ID: T-207.
 
 ## Next resume checkpoint
 
-No active task. The next free ID is T-207.
+T-207 is executing in the isolated `task/t-207-hardening` worktree from clean
+`origin/main` at `3303c22`.
 
 ## Active tasks
 
-None.
+### T-207 — Revalidate and converge repository hardening
+
+Status: blocked at the first repository gate; no hardening target changed.
+
+**Blocker 2026-07-25:** the first planning commit was rejected because this
+board reached 8,316 bytes versus the enforced 8,000-byte limit. The failure is
+retry-safe; only this task entry was uncommitted. Per the owner contract,
+Website hardening stops while independent repositories continue.
+
+Scope on resume: revalidate the already mature public-repository baseline
+against the frozen T-311 policy—read-only Actions, dependency/security
+automation without auto-merge, native secret protection, one non-admin review
+with owner/admin bypass, strict CI, linear history, and resolved conversations.
+Never deploy the website.
+
+Acceptance: compact this board per `skills/context-ledger.md`, then compare
+tracked/live settings and pass dependency, workflow-security, offline, and
+applicable locked-browser checks. A verified no-op audit is acceptable.
+
+Next action: compact superseded completed-task detail without losing its Git
+anchors, commit this planning checkpoint, and resume T-207 separately.
 
 ## Completed-task index
 
