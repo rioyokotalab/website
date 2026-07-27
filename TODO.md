@@ -31,27 +31,13 @@ free ID: T-210.
 
 ## Next resume checkpoint
 
-T-209 is updating the locked browser-test dependency from
-`@playwright/test` 1.61.1 to current 1.62.0 in isolated worktree
-`/home/rioyokota/projects/website-t209`. Registry metadata reports Node
-`>=20` and integrity
-`sha512-9zOJ6ZQRAena31MpOH9VSzIz8Ou3YJ/wtY/eQm5T2uhfhG7/U3COrMS8xOtUrZrp9OgdmzEnIYODye3nY1VqzA==`.
-Update only `package.json`, `package-lock.json`, the exact supply-chain version
-guard, and task ledger/report/metrics surfaces; run the locked browser and full
-offline security gates. Do not deploy website content.
+No active task. T-209 is locally complete and PR #35 passed its implementation
+`Offline checks`; merge only after the closeout-only commit receives the same
+required check.
 
 ## Active tasks
 
-### T-209 — Update Playwright test dependency
-
-**Status:** in progress.
-
-Upgrade only the development/test dependency `@playwright/test` from 1.61.1
-to 1.62.0 and its exact supply-chain version guard under the whole-fleet
-housekeeping authorization. Preserve the static website and deployment target
-byte-for-byte. Require npm lock consistency, zero audit findings, supply-chain
-checks, browser tests, full offline security, and protected PR validation
-before merge.
+None.
 
 ## Completed-task index
 
@@ -81,3 +67,4 @@ anchored versions below hold command-level detail for each era.
 | T-206 | Moved Zhiyi Huang from the 24-person current-student table to Alumni on both mirrored member pages (`837cf9a`), preserved historical records, deployed the 166-file allowlisted snapshot with zero deletions, verified both live pages byte-identical, and passed the live security suite. |
 | T-207 | Verified no-op hardening audit: live Actions are read-only/no-approve; Dependabot security updates, grouped monthly npm/Actions updates, secret scanning and push protection are enabled; ruleset `19127356` preserves one review, admin bypass, strict Offline checks, linear history, and resolved conversations. npm audit has zero findings; task-metrics, size, standards, security, supply-chain, workflow, and offline suites pass. The 8,316-byte ledger gate was resolved below the 8,000-byte budget; a closeout-order gate was resolved by restoring numeric index order. No website or deployment target changed. |
 | T-208 | Removed only merged hardening/benchmark/ruleset task refs and the clean merged T-207 worktree; verified clean/current repository state and zero housekeeping residue. No site content or deployment changed. |
+| T-209 | Updated exact `@playwright/test` and its supply-chain guard to 1.62.0 via PR #35. Online supply-chain, zero-vulnerability audit, offline security, 38 browser tests on local storage, and protected CI passed; unchanged 1.61.1 reproduced the candidate's NFS timeouts. No site content or deployment changed. |
