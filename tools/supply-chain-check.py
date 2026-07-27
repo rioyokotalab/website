@@ -22,7 +22,7 @@ CDN = {
     "https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js": "sha384-jN3Qe7xtdnQxdyZWXD9gn2Z4oRyiFuU03xQATriSicCq2SKDikN9UEJMCx+9nsJM",
 }
 EXPECTED_CDN_PAGES = 6
-EXPECTED_PLAYWRIGHT = "1.61.1"
+EXPECTED_PLAYWRIGHT = "1.62.0"
 EXPECTED_SCRIPTS = {
     "test": "npm run test:browser",
     "test:browser:install": "PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers playwright install --only-shell chromium",

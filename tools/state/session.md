@@ -1,20 +1,19 @@
 driver: codex
-updated: 2026-07-26T05:22+0900
+updated: 2026-07-27T09:45+0900
 task: idle
 status: idle
 
 ## Now
 
-- T-207 merged through protected PR #33 at
-  `1ef111ccf84e12535f0e2aacedf197f7e4e73528`.
-- T-208 removed only exact merged task refs and the clean merged T-207
-  worktree. The primary checkout is clean/current with no stashes or
-  housekeeping residue.
-- No website content, runtime dependency, or deployment target changed.
+- T-209 updates exact `@playwright/test` and its supply-chain guard to 1.62.0
+  in PR #35.
+- Online supply-chain, offline security, 38 browser tests on local storage,
+  and the implementation commit's required `Offline checks` passed.
+- No website content or deployment target changed.
 
 ## Working set
 
-- None.
+- None after protected merge of PR #35.
 
 ## Open questions
 
@@ -26,4 +25,5 @@ status: idle
 
 ## Next action
 
-- Await the next task. The next free ID is T-209.
+- Require the closeout-only commit's `Offline checks`, merge PR #35, then
+  return the primary checkout to clean/current `main`.
