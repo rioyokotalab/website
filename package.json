@@ -11,6 +11,6 @@
     "test:supply-chain:online": "python3 tools/supply-chain-check.py --online"
   },
   "devDependencies": {
-    "@playwright/test": "1.61.1"
+    "@playwright/test": "1.62.0"
   }
 }

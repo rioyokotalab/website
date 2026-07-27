@@ -5,14 +5,13 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-209.
+free ID: T-210.
 
 ## Current state
 
-- The repository, including its full history, is public (T-192, 2026-07-18)
-  at the owner's explicit instruction; every tracked file is public the
-  moment it is pushed. Secret scanning and push protection are enabled with
-  zero alerts.
+- The repository and full history are public by owner instruction (T-192);
+  every pushed tracked file is public. Secret scanning and push protection
+  are enabled with zero alerts.
 - `main` is protected by active ruleset `19127356`: pull request plus the
   required `Offline checks` CI run, linear history, conversation resolution,
   no bypass actors, zero required approvals. A driver may self-merge its own
@@ -32,11 +31,27 @@ free ID: T-209.
 
 ## Next resume checkpoint
 
-No active task. T-207 merged through protected PR #33 at `1ef111c`.
+T-209 is updating the locked browser-test dependency from
+`@playwright/test` 1.61.1 to current 1.62.0 in isolated worktree
+`/home/rioyokota/projects/website-t209`. Registry metadata reports Node
+`>=20` and integrity
+`sha512-9zOJ6ZQRAena31MpOH9VSzIz8Ou3YJ/wtY/eQm5T2uhfhG7/U3COrMS8xOtUrZrp9OgdmzEnIYODye3nY1VqzA==`.
+Update only `package.json`, `package-lock.json`, the exact supply-chain version
+guard, and task ledger/report/metrics surfaces; run the locked browser and full
+offline security gates. Do not deploy website content.
 
 ## Active tasks
 
-None.
+### T-209 — Update Playwright test dependency
+
+**Status:** in progress.
+
+Upgrade only the development/test dependency `@playwright/test` from 1.61.1
+to 1.62.0 and its exact supply-chain version guard under the whole-fleet
+housekeeping authorization. Preserve the static website and deployment target
+byte-for-byte. Require npm lock consistency, zero audit findings, supply-chain
+checks, browser tests, full offline security, and protected PR validation
+before merge.
 
 ## Completed-task index
 
@@ -55,14 +70,14 @@ anchored versions below hold command-level detail for each era.
 | T-192 | Sanitized-mirror route built then reversed by owner; repository made public with ruleset intact; secret scanning enabled, zero alerts (`676c209`). |
 | T-193 | Task board restyled to the harness layout: current state, resume checkpoint, and this grouped completed-task index reconstructed from full board history. |
 | T-194 | "CI workflow run" email noise fixed (`69172ae`): CI is PR-only (post-merge push run was redundant); owner enabled the account "notify only on failure" setting. Owner also ruled `~/harness` read-only for website sessions (`063f021`). |
-| T-195–T-198 | Attack-surface hardening loop (`docs/security-threat-model.md`). T-196 repo-content baseline (`781e317`: SECURITY.md, dependabot.yml, least-privilege CI token, `workflow-security-check.py` + test). T-197 settings applied (reversible via `tools/out/t197-settings-rollback.md`: read-only token, SHA-pinned + GitHub-owned actions, Dependabot security updates, private vuln reporting, fork-PR approval all-external, wiki/projects off). T-198 = B9: `main` requires 1 review with a Repository-admin bypass (owner self-merges; 66 org write collaborators need approval) — ruleset `19127356`, `3574f40`. Verified `actions/checkout` v7.0.0 bump `c52c101`. |
-| T-199 | Repeated the README benchmark with Claude (harness support `58f5e7b`): 75 singletons × {fable-5, opus-4-8, sonnet-5} × 5 efforts + 14 repeats. 72/75 full-quality; the 3 higher-effort WBD-003 misses were variance (14/14 repeats pass). Low effort best; Fable 25/25. `tools/agent-benchmark/claude-full-20260718.summary.md` + README section. |
+| T-195–T-198 | Attack-surface hardening (`docs/security-threat-model.md`): repository controls `781e317`; reversible settings in `tools/out/t197-settings-rollback.md`; ruleset `19127356` requires one review with Repository-admin bypass (`3574f40`). |
+| T-199 | Claude benchmark: 72/75 strict; all 14 repeats passed. Evidence: `tools/agent-benchmark/claude-full-20260718.summary.md`. |
 | T-200 | Security proposals: HSTS `max-age` raised 1 day → 1 year, **deployed and verified live** (max-age=31536000, HTTP→HTTPS intact). Org `default_repository_permission` change **declined** (org-wide 100+ repos; T-198 gate suffices). |
 | T-201 | Merged the GPT-5.6 and Claude README benchmark tables into one section (unified 6-model table + side-by-side per-effort comparison; token caveat kept). |
 | T-202 | Fixed the deploy deletion guard (`439ef4d`): it mis-read SFTP in-place updates as unmatched deletions, blocking every real deploy since T-182. True deletion = removed-not-transferred; SFTP-format test added. Unblocked T-200. |
-| T-203 | Housekeeping: pruned 8 stale remote-tracking refs, deleted the superseded `t187-ruleset-closeout` branch, and guarded-deleted 92 disposable Claude benchmark artifact dirs (~37 MB; 173 GPT artifacts + tracked evidence intact). |
-| T-204 | Relocated the Local checkout to `~/projects/website` by fresh clone; preserved all ignored state and the remote-backed branch, kept Playwright runtime state local for NFS performance, passed offline and 38 browser checks, and guarded-deleted the old checkout. |
-| T-205 | Reran exact current GPT-5.6 (90 cells) and Claude Code (75 cells) matrices through receipt-backed cowork. GPT moved 85→86 strict and 89→90 browser-functional; Claude moved 72→71 strict and held 74 browser-functional. Focused inspection recovered two selected routes. README tables, matched comparisons, and `docs/audits/agent-benchmark-nightly-2026-07-24.md` updated; security and 38 browser tests pass. |
+| T-203 | Pruned 8 stale refs, one superseded branch, and 92 guarded disposable Claude artifact dirs; tracked evidence remained intact. |
+| T-204 | Relocated Local to `~/projects/website`, preserving ignored/runtime state; offline and 38 browser checks passed before guarded old-checkout deletion. |
+| T-205 | Reran GPT-5.6/Claude matrices and updated matched README results; evidence in `docs/audits/agent-benchmark-nightly-2026-07-24.md`. |
 | T-206 | Moved Zhiyi Huang from the 24-person current-student table to Alumni on both mirrored member pages (`837cf9a`), preserved historical records, deployed the 166-file allowlisted snapshot with zero deletions, verified both live pages byte-identical, and passed the live security suite. |
 | T-207 | Verified no-op hardening audit: live Actions are read-only/no-approve; Dependabot security updates, grouped monthly npm/Actions updates, secret scanning and push protection are enabled; ruleset `19127356` preserves one review, admin bypass, strict Offline checks, linear history, and resolved conversations. npm audit has zero findings; task-metrics, size, standards, security, supply-chain, workflow, and offline suites pass. The 8,316-byte ledger gate was resolved below the 8,000-byte budget; a closeout-order gate was resolved by restoring numeric index order. No website or deployment target changed. |
 | T-208 | Removed only merged hardening/benchmark/ruleset task refs and the clean merged T-207 worktree; verified clean/current repository state and zero housekeeping residue. No site content or deployment changed. |
