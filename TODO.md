@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-210.
+free ID: T-211.
 
 ## Current state
 
@@ -13,10 +13,11 @@ free ID: T-210.
   every pushed tracked file is public. Secret scanning and push protection
   are enabled with zero alerts.
 - `main` is protected by active ruleset `19127356`: pull request plus the
-  required `Offline checks` CI run, linear history, conversation resolution,
-  no bypass actors, zero required approvals. A driver may self-merge its own
-  PR after the required check passes and may repair local pre-commit hook
-  drift via `tools/hook-doctor.sh` (standing authorizations in decisions.md).
+  required `Offline checks` CI run, strict current checks, linear history, and
+  conversation resolution. Live readback on 2026-07-27 shows zero required
+  approvals and one always-bypass RepositoryRole actor. This differs from the
+  durable T-198 one-review decision; hosting administration remains read-only
+  pending owner reconciliation.
 - The live pre-commit hook matches canonical `tools/hooks/pre-commit`;
   `tools/hook-doctor.sh` verifies/applies/rolls back (T-190).
 - The site is static mirrored EN/JP HTML with no build step. Deployment is
@@ -31,13 +32,23 @@ free ID: T-210.
 
 ## Next resume checkpoint
 
-No active task. T-209 is locally complete and PR #35 passed its implementation
-`Offline checks`; merge only after the closeout-only commit receives the same
-required check.
+T-210 is updating immutable `actions/checkout` from v7.0.0 to v7.0.1 in an
+isolated worktree and reconciling the stale T-209/live-ruleset ledger. Run the
+focused workflow and full offline security gates, then use a protected PR. Do
+not deploy or change hosting settings.
 
 ## Active tasks
 
-None.
+### T-210 — Update checkout and reconcile live protection
+
+**Phase:** executing.
+
+Publisher metadata binds checkout v7.0.0 to current SHA `9c091bb` and v7.0.1
+to `3d3c42e5aac5ba805825da76410c181273ba90b1`. The first gate also found that
+`hook-doctor` assumes `.git` is a directory and falsely reports a missing hook
+in a linked worktree. Add common-Git-directory resolution and a focused
+regression. The site and deployment allowlist are out of scope. Live ruleset
+drift is evidence-only under the active Harness fleet audit.
 
 ## Completed-task index
 
