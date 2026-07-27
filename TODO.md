@@ -19,7 +19,8 @@ free ID: T-211.
   durable T-198 one-review decision; hosting administration remains read-only
   pending owner reconciliation.
 - The live pre-commit hook matches canonical `tools/hooks/pre-commit`;
-  `tools/hook-doctor.sh` verifies/applies/rolls back (T-190).
+  `tools/hook-doctor.sh` verifies/applies/rolls back through Git's common
+  directory in both primary and linked worktrees (T-190, T-210).
 - The site is static mirrored EN/JP HTML with no build step. Deployment is
   positive-allowlist staging behind gated `publish.sh`/`deploy.sh`; tools,
   skills, ledger, config, README, and CV sources never deploy.
@@ -32,23 +33,14 @@ free ID: T-211.
 
 ## Next resume checkpoint
 
-T-210 is updating immutable `actions/checkout` from v7.0.0 to v7.0.1 in an
-isolated worktree and reconciling the stale T-209/live-ruleset ledger. Run the
-focused workflow and full offline security gates, then use a protected PR. Do
-not deploy or change hosting settings.
+No active task. T-210 implementation and protected checks pass in PR #36.
+The live ruleset's zero-approval state still differs from the durable T-198
+one-review decision; require an owner hosting-policy decision before changing
+it.
 
 ## Active tasks
 
-### T-210 — Update checkout and reconcile live protection
-
-**Phase:** executing.
-
-Publisher metadata binds checkout v7.0.0 to current SHA `9c091bb` and v7.0.1
-to `3d3c42e5aac5ba805825da76410c181273ba90b1`. The first gate also found that
-`hook-doctor` assumes `.git` is a directory and falsely reports a missing hook
-in a linked worktree. Add common-Git-directory resolution and a focused
-regression. The site and deployment allowlist are out of scope. Live ruleset
-drift is evidence-only under the active Harness fleet audit.
+None.
 
 ## Completed-task index
 
@@ -79,3 +71,4 @@ anchored versions below hold command-level detail for each era.
 | T-207 | Verified no-op hardening audit: live Actions are read-only/no-approve; Dependabot security updates, grouped monthly npm/Actions updates, secret scanning and push protection are enabled; ruleset `19127356` preserves one review, admin bypass, strict Offline checks, linear history, and resolved conversations. npm audit has zero findings; task-metrics, size, standards, security, supply-chain, workflow, and offline suites pass. The 8,316-byte ledger gate was resolved below the 8,000-byte budget; a closeout-order gate was resolved by restoring numeric index order. No website or deployment target changed. |
 | T-208 | Removed only merged hardening/benchmark/ruleset task refs and the clean merged T-207 worktree; verified clean/current repository state and zero housekeeping residue. No site content or deployment changed. |
 | T-209 | Updated exact `@playwright/test` and its supply-chain guard to 1.62.0 via PR #35. Online supply-chain, zero-vulnerability audit, offline security, 38 browser tests on local storage, and protected CI passed; unchanged 1.61.1 reproduced the candidate's NFS timeouts. No site content or deployment changed. |
+| T-210 | Updated checkout to publisher-pinned v7.0.1 and made hook-doctor resolve the shared Git hooks directory in linked worktrees via PR #36. Focused, ShellCheck, full offline security, and protected CI pass; no site content, deployment, or hosting setting changed. |
