@@ -6,15 +6,28 @@
 #   tools/hook-doctor.sh apply      back up any existing hook, install canonical
 #   tools/hook-doctor.sh rollback   restore the pre-apply backup
 #
-# `doctor` never writes. `apply` and `rollback` write inside .git/hooks and are
-# owner-run commands; agents report doctor output and hand off the exact apply
-# command instead. HOOK_DOCTOR_HOOKS_DIR overrides the hooks directory so tests
-# never touch the real repository hooks.
+# `doctor` never writes. `apply` and `rollback` write inside the repository's
+# common Git hooks directory and are owner-run commands; agents report doctor
+# output and hand off the exact apply command instead. HOOK_DOCTOR_HOOKS_DIR
+# overrides the hooks directory so tests never touch the real repository hooks.
 set -eu
 
 ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 CANONICAL=$ROOT/tools/hooks/pre-commit
-HOOKS_DIR=${HOOK_DOCTOR_HOOKS_DIR:-$ROOT/.git/hooks}
+if [ -n "${HOOK_DOCTOR_HOOKS_DIR:-}" ]; then
+	HOOKS_DIR=$HOOK_DOCTOR_HOOKS_DIR
+else
+	GIT_COMMON_DIR=$(git -C "$ROOT" rev-parse --git-common-dir 2>/dev/null) ||
+		{
+			echo "hook-doctor: cannot resolve the common Git directory" >&2
+			exit 1
+		}
+	case "$GIT_COMMON_DIR" in
+		/*) ;;
+		*) GIT_COMMON_DIR=$ROOT/$GIT_COMMON_DIR ;;
+	esac
+	HOOKS_DIR=$GIT_COMMON_DIR/hooks
+fi
 LIVE=$HOOKS_DIR/pre-commit
 BACKUP=$LIVE.pre-apply-backup
 

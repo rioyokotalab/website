@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-210.
+free ID: T-211.
 
 ## Current state
 
@@ -13,12 +13,14 @@ free ID: T-210.
   every pushed tracked file is public. Secret scanning and push protection
   are enabled with zero alerts.
 - `main` is protected by active ruleset `19127356`: pull request plus the
-  required `Offline checks` CI run, linear history, conversation resolution,
-  no bypass actors, zero required approvals. A driver may self-merge its own
-  PR after the required check passes and may repair local pre-commit hook
-  drift via `tools/hook-doctor.sh` (standing authorizations in decisions.md).
+  required `Offline checks` CI run, strict current checks, linear history, and
+  conversation resolution. Live readback on 2026-07-27 shows zero required
+  approvals and one always-bypass RepositoryRole actor. This differs from the
+  durable T-198 one-review decision; hosting administration remains read-only
+  pending owner reconciliation.
 - The live pre-commit hook matches canonical `tools/hooks/pre-commit`;
-  `tools/hook-doctor.sh` verifies/applies/rolls back (T-190).
+  `tools/hook-doctor.sh` verifies/applies/rolls back through Git's common
+  directory in both primary and linked worktrees (T-190, T-210).
 - The site is static mirrored EN/JP HTML with no build step. Deployment is
   positive-allowlist staging behind gated `publish.sh`/`deploy.sh`; tools,
   skills, ledger, config, README, and CV sources never deploy.
@@ -31,9 +33,10 @@ free ID: T-210.
 
 ## Next resume checkpoint
 
-No active task. T-209 is locally complete and PR #35 passed its implementation
-`Offline checks`; merge only after the closeout-only commit receives the same
-required check.
+No active task. T-210 implementation and protected checks pass in PR #36.
+The live ruleset's zero-approval state still differs from the durable T-198
+one-review decision; require an owner hosting-policy decision before changing
+it.
 
 ## Active tasks
 
@@ -68,3 +71,4 @@ anchored versions below hold command-level detail for each era.
 | T-207 | Verified no-op hardening audit: live Actions are read-only/no-approve; Dependabot security updates, grouped monthly npm/Actions updates, secret scanning and push protection are enabled; ruleset `19127356` preserves one review, admin bypass, strict Offline checks, linear history, and resolved conversations. npm audit has zero findings; task-metrics, size, standards, security, supply-chain, workflow, and offline suites pass. The 8,316-byte ledger gate was resolved below the 8,000-byte budget; a closeout-order gate was resolved by restoring numeric index order. No website or deployment target changed. |
 | T-208 | Removed only merged hardening/benchmark/ruleset task refs and the clean merged T-207 worktree; verified clean/current repository state and zero housekeeping residue. No site content or deployment changed. |
 | T-209 | Updated exact `@playwright/test` and its supply-chain guard to 1.62.0 via PR #35. Online supply-chain, zero-vulnerability audit, offline security, 38 browser tests on local storage, and protected CI passed; unchanged 1.61.1 reproduced the candidate's NFS timeouts. No site content or deployment changed. |
+| T-210 | Updated checkout to publisher-pinned v7.0.1 and made hook-doctor resolve the shared Git hooks directory in linked worktrees via PR #36. Focused, ShellCheck, full offline security, and protected CI pass; no site content, deployment, or hosting setting changed. |

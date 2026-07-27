@@ -100,4 +100,20 @@ HOOK_DOCTOR_HOOKS_DIR=$HOOKS_DIR "$DOCTOR" rollback >"$OUT" 2>&1 || rc=$?
 [ "$rc" -ne 0 ] || fail "rollback without backup unexpectedly succeeded"
 grep -F 'no backup' "$OUT" >/dev/null || fail "missing no-backup evidence"
 
-echo "test-hook-doctor: OK (8 checks)"
+# 9. A linked worktree resolves hooks through Git's common directory.
+FAKE_BIN=$TEST_ROOT/fake-bin
+COMMON_GIT=$TEST_ROOT/common.git
+mkdir -p "$FAKE_BIN" "$COMMON_GIT/hooks"
+cat >"$FAKE_BIN/git" <<EOF
+#!/bin/sh
+printf '%s\n' '$COMMON_GIT'
+EOF
+chmod 755 "$FAKE_BIN/git"
+cp "$CANONICAL" "$COMMON_GIT/hooks/pre-commit"
+chmod 755 "$COMMON_GIT/hooks/pre-commit"
+PATH=$FAKE_BIN:$PATH "$DOCTOR" doctor >"$OUT" 2>&1 ||
+	fail "common Git hooks resolution failed: $(cat "$OUT")"
+grep -F "$COMMON_GIT/hooks/pre-commit" "$OUT" >/dev/null ||
+	fail "doctor did not use the common Git hooks directory"
+
+echo "test-hook-doctor: OK (9 checks)"

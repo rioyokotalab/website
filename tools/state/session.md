@@ -1,19 +1,21 @@
 driver: codex
-updated: 2026-07-27T09:45+0900
+updated: 2026-07-27T12:38+0900
 task: idle
 status: idle
 
 ## Now
 
-- T-209 updates exact `@playwright/test` and its supply-chain guard to 1.62.0
-  in PR #35.
-- Online supply-chain, offline security, 38 browser tests on local storage,
-  and the implementation commit's required `Offline checks` passed.
-- No website content or deployment target changed.
+- T-209 is complete: PR #35 merged at `141a79e`.
+- T-210 updates the immutable checkout pin to publisher-verified v7.0.1,
+  fixes linked-worktree hook discovery, and passes implementation-head
+  `Offline checks` in PR #36.
+- Live ruleset `19127356` currently has zero required approvals and an
+  always-bypass RepositoryRole actor, while the durable T-198 decision says
+  one approval plus admin bypass. Record the drift without changing settings.
 
 ## Working set
 
-- None after protected merge of PR #35.
+- None after protected merge of PR #36.
 
 ## Open questions
 
@@ -25,5 +27,5 @@ status: idle
 
 ## Next action
 
-- Require the closeout-only commit's `Offline checks`, merge PR #35, then
-  return the primary checkout to clean/current `main`.
+- Resume the next owner-selected task. Reconcile the live zero-approval
+  ruleset with T-198 only after an explicit hosting-policy decision.
