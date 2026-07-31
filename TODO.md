@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-211.
+free ID: T-212.
 
 ## Current state
 
@@ -33,7 +33,9 @@ free ID: T-211.
 
 ## Next resume checkpoint
 
-No active task. T-210 implementation and protected checks pass in PR #36.
+No active task. T-211 (2026-07-31 claude overnight audit) verified the full
+offline suite, metrics, and hook state green on `9e1cd10` with no actionable
+issue absent owner input.
 The live ruleset's zero-approval state still differs from the durable T-198
 one-review decision; require an owner hosting-policy decision before changing
 it.
@@ -71,4 +73,5 @@ anchored versions below hold command-level detail for each era.
 | T-207 | Verified no-op hardening audit: live Actions are read-only/no-approve; Dependabot security updates, grouped monthly npm/Actions updates, secret scanning and push protection are enabled; ruleset `19127356` preserves one review, admin bypass, strict Offline checks, linear history, and resolved conversations. npm audit has zero findings; task-metrics, size, standards, security, supply-chain, workflow, and offline suites pass. The 8,316-byte ledger gate was resolved below the 8,000-byte budget; a closeout-order gate was resolved by restoring numeric index order. No website or deployment target changed. |
 | T-208 | Removed only merged hardening/benchmark/ruleset task refs and the clean merged T-207 worktree; verified clean/current repository state and zero housekeeping residue. No site content or deployment changed. |
 | T-209 | Updated exact `@playwright/test` and its supply-chain guard to 1.62.0 via PR #35. Online supply-chain, zero-vulnerability audit, offline security, 38 browser tests on local storage, and protected CI passed; unchanged 1.61.1 reproduced the candidate's NFS timeouts. No site content or deployment changed. |
+| T-211 | Verified no-op overnight health audit (claude driver, harness T-358 run): full offline suite, metrics validation, and hook doctor pass on `9e1cd10`; only open item remains the owner-gated ruleset/T-198 drift; no site content or deployment changed. |
 | T-210 | Updated checkout to publisher-pinned v7.0.1 and made hook-doctor resolve the shared Git hooks directory in linked worktrees via PR #36. Focused, ShellCheck, full offline security, and protected CI pass; no site content, deployment, or hosting setting changed. |
