@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-212.
+free ID: T-214.
 
 ## Current state
 
@@ -14,10 +14,9 @@ free ID: T-212.
   are enabled with zero alerts.
 - `main` is protected by active ruleset `19127356`: pull request plus the
   required `Offline checks` CI run, strict current checks, linear history, and
-  conversation resolution. Live readback on 2026-07-27 shows zero required
-  approvals and one always-bypass RepositoryRole actor. This differs from the
-  durable T-198 one-review decision; hosting administration remains read-only
-  pending owner reconciliation.
+  conversation resolution. Zero required approvals and the owner/admin bypass
+  are the owner's later accepted policy; do not treat T-198's older one-review
+  choice as a live drift or change it during hardening.
 - The live pre-commit hook matches canonical `tools/hooks/pre-commit`;
   `tools/hook-doctor.sh` verifies/applies/rolls back through Git's common
   directory in both primary and linked worktrees (T-190, T-210).
@@ -33,45 +32,50 @@ free ID: T-212.
 
 ## Next resume checkpoint
 
-No active task. T-211 (2026-07-31 claude overnight audit) verified the full
+T-212 completed its worker-scoped portfolio review under Harness T-369. The
+validated candidate is this board; this worker does not own publication or
+`tools/state/session.md`.
+
+T-211 (2026-07-31 claude overnight audit) verified the full
 offline suite, metrics, and hook state green on `9e1cd10` with no actionable
 issue absent owner input.
-The live ruleset's zero-approval state still differs from the durable T-198
-one-review decision; require an owner hosting-policy decision before changing
-it.
+No hosting-policy reconciliation is pending; required approvals remain zero.
 
 ## Active tasks
 
-None.
+| Task | Phase | Durable pointer |
+|---|---|---|
+| T-213 | queued change-triggered accessibility and source-integrity sampling; local/manual, no added Actions | this board |
 
-## Completed-task index
+### T-213 acceptance
 
-Git history is the durable evidence store: full chronology lives in this
-file's history, at `tools/todo.md` before the `628b53a` root rename. The
-anchored versions below hold command-level detail for each era.
+At the next material content/template change and at a bounded quarterly manual
+checkpoint, sample representative EN/JP pages with keyboard and one assistive
+technology, verify external factual links against primary sources, and record
+only actionable regressions. Automated checks remain necessary but do not
+claim full accessibility conformance. Do not add a recurring hosted workflow;
+reuse the local offline/browser gates and publish only with a normal site task.
+Use W3C's current [WCAG-EM 2.0](https://www.w3.org/TR/wcag-em-2/) sampling
+method and [sustaining accessibility](https://www.w3.org/WAI/planning-and-managing/sustain/)
+guidance rather than inventing a site-specific conformance claim.
 
-| Task | Completed outcome / durable pointer |
-|---|---|
-| pre-T-1–T-23 | Initial ResearchMap/site fixes and the context-ledger, deployment exclusions, bounded delegation, and repository workflow. `986ed09:tools/todo.md`, `28f8685:tools/todo.md`. |
-| T-24–T-108 | Security, deploy allowlisting, metadata, accessibility, responsive/print behavior, and locked browser coverage. `d44f862:tools/todo.md`, `17b5eb8:tools/todo.md`. |
-| T-109–T-178 | Agent benchmark/handoff work, ResearchMap reconciliation, and extraction of the portable harness. `d888cbc:tools/todo.md`, `d928540:tools/todo.md`, `041a453:TODO.md`. |
-| T-179–T-189 | Recovery, guarded deployment cleanup, protected CI, harness independence, and website-owned Claude takeover. `64c4b18:TODO.md`, `docs/audits/claude-live-takeover-2026-07-18.md`. |
-| T-190 | Canonical pre-commit hook and doctor landed (PR #7 `e6faf3b`); owner-applied hook verified byte-identical; standing authorization recorded. |
-| T-191 | Live ruleset `19127356` verified to match `docs/github-rulesets/main.json`; presumed divergence did not exist; read-only. |
-| T-192 | Sanitized-mirror route built then reversed by owner; repository made public with ruleset intact; secret scanning enabled, zero alerts (`676c209`). |
-| T-193 | Task board restyled to the harness layout: current state, resume checkpoint, and this grouped completed-task index reconstructed from full board history. |
-| T-194 | "CI workflow run" email noise fixed (`69172ae`): CI is PR-only (post-merge push run was redundant); owner enabled the account "notify only on failure" setting. Owner also ruled `~/harness` read-only for website sessions (`063f021`). |
-| T-195–T-198 | Attack-surface hardening (`docs/security-threat-model.md`): repository controls `781e317`; reversible settings in `tools/out/t197-settings-rollback.md`; ruleset `19127356` requires one review with Repository-admin bypass (`3574f40`). |
-| T-199 | Claude benchmark: 72/75 strict; all 14 repeats passed. Evidence: `tools/agent-benchmark/claude-full-20260718.summary.md`. |
-| T-200 | Security proposals: HSTS `max-age` raised 1 day → 1 year, **deployed and verified live** (max-age=31536000, HTTP→HTTPS intact). Org `default_repository_permission` change **declined** (org-wide 100+ repos; T-198 gate suffices). |
-| T-201 | Merged the GPT-5.6 and Claude README benchmark tables into one section (unified 6-model table + side-by-side per-effort comparison; token caveat kept). |
-| T-202 | Fixed the deploy deletion guard (`439ef4d`): it mis-read SFTP in-place updates as unmatched deletions, blocking every real deploy since T-182. True deletion = removed-not-transferred; SFTP-format test added. Unblocked T-200. |
-| T-203 | Pruned 8 stale refs, one superseded branch, and 92 guarded disposable Claude artifact dirs; tracked evidence remained intact. |
-| T-204 | Relocated Local to `~/projects/website`, preserving ignored/runtime state; offline and 38 browser checks passed before guarded old-checkout deletion. |
-| T-205 | Reran GPT-5.6/Claude matrices and updated matched README results; evidence in `docs/audits/agent-benchmark-nightly-2026-07-24.md`. |
-| T-206 | Moved Zhiyi Huang from the 24-person current-student table to Alumni on both mirrored member pages (`837cf9a`), preserved historical records, deployed the 166-file allowlisted snapshot with zero deletions, verified both live pages byte-identical, and passed the live security suite. |
-| T-207 | Verified no-op hardening audit: live Actions are read-only/no-approve; Dependabot security updates, grouped monthly npm/Actions updates, secret scanning and push protection are enabled; ruleset `19127356` preserves one review, admin bypass, strict Offline checks, linear history, and resolved conversations. npm audit has zero findings; task-metrics, size, standards, security, supply-chain, workflow, and offline suites pass. The 8,316-byte ledger gate was resolved below the 8,000-byte budget; a closeout-order gate was resolved by restoring numeric index order. No website or deployment target changed. |
-| T-208 | Removed only merged hardening/benchmark/ruleset task refs and the clean merged T-207 worktree; verified clean/current repository state and zero housekeeping residue. No site content or deployment changed. |
-| T-209 | Updated exact `@playwright/test` and its supply-chain guard to 1.62.0 via PR #35. Online supply-chain, zero-vulnerability audit, offline security, 38 browser tests on local storage, and protected CI passed; unchanged 1.61.1 reproduced the candidate's NFS timeouts. No site content or deployment changed. |
-| T-211 | Verified no-op overnight health audit (claude driver, harness T-358 run): full offline suite, metrics validation, and hook doctor pass on `9e1cd10`; only open item remains the owner-gated ruleset/T-198 drift; no site content or deployment changed. |
-| T-210 | Updated checkout to publisher-pinned v7.0.1 and made hook-doctor resolve the shared Git hooks directory in linked worktrees via PR #36. Focused, ShellCheck, full offline security, and protected CI pass; no site content, deployment, or hosting setting changed. |
+## Completed-task lookup
+
+Git history is the durable chronology; this board intentionally does not
+duplicate it. Exact prior boards are available at these immutable anchors:
+
+- pre-T-1–T-108: `986ed09:tools/todo.md`, `d44f862:tools/todo.md`, and
+  `17b5eb8:tools/todo.md`;
+- T-109–T-178: `d888cbc:tools/todo.md`, `d928540:tools/todo.md`, and
+  `041a453:TODO.md`;
+- T-179–T-189: `64c4b18:TODO.md` plus
+  `docs/audits/claude-live-takeover-2026-07-18.md`;
+- T-190–T-211: `736e14a:TODO.md`, with repository audit artifacts under
+  `docs/audits/` and benchmark evidence under `tools/agent-benchmark/`.
+
+Current operational invariants from those tasks are retained above. Consult
+an anchored board only when a new task depends on that historical detail.
+
+T-212 removed one stale 56.8 MB public staging root through a guarded manifest,
+found no local historical branch or extra worktree, and passed the complete
+offline security suite after compacting this ledger below its 8,000-byte gate.
