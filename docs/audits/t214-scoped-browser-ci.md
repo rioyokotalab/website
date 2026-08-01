@@ -32,7 +32,6 @@ boolean scope and path count; it never evaluates a path as shell text.
 - The complete offline suite passes before protected publication.
 - No site content, deployment, hosting setting, required approval, or
   non-owner pull-request isolation changes.
-
 ## Protected evidence
 
 PR #39 changed the workflow and classifier, so the fail-closed rule correctly
