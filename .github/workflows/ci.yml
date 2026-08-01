@@ -28,6 +28,14 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Classify browser-test scope
+        id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git diff --no-renames --name-only -z "$BASE_SHA" HEAD |
+            python3 tools/ci-browser-scope.py >> "$GITHUB_OUTPUT"
+
       - name: Install the pinned local-mirror test dependency
         run: |
           sudo apt-get update
@@ -43,10 +51,12 @@ jobs:
           tools/test-security.sh
 
       - name: Install locked browser-test dependencies
+        if: steps.scope.outputs.browser == 'true'
         run: |
           npm ci --ignore-scripts
           PLAYWRIGHT_BROWSERS_PATH=.playwright/browsers \
             npx playwright install --with-deps chromium
 
       - name: Run locked browser tests
+        if: steps.scope.outputs.browser == 'true'
         run: npm run test:browser
