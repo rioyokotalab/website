@@ -37,6 +37,10 @@ boolean scope and path count; it never evaluates a path as shell text.
 PR #39 changed the workflow and classifier, so the fail-closed rule correctly
 selected the full path. Required `Offline checks` passed in 5m02s, including
 the locked browser install/run, before protected squash merge `5849ffaa`.
-This documentation-only follow-up is the protected fast-path proof: its base
-and head trees differ only in this audit file, so both browser steps must report
-skipped while the required job and offline policy checks still pass.
+PR #40 is the protected documentation-only fast-path proof. Run `30720737734`
+passed the required job in 23 seconds: checkout, path classification, pinned
+transport installation, and the complete offline policy suite succeeded, while
+both locked-browser steps reported `skipped`. Against PR #39's 302-second full
+path, this removes 279 seconds / 92.4% without removing the required check. The
+final evidence-only amendment is itself documentation-only and must reproduce
+the same protected fast path before merge.
