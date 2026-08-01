@@ -32,9 +32,12 @@ free ID: T-215.
 
 ## Next resume checkpoint
 
-T-212 completed its worker-scoped portfolio review under Harness T-369. The
-validated candidate is this board; this worker does not own publication or
-`tools/state/session.md`.
+T-212's worker-scoped portfolio review is published through PR #38 at
+`3573e75`; no local worker handoff remains. T-214's scoped-browser change and
+protected proof are published through PRs #39–#40 at `e22c8dc`: workflow-
+changing CI passed in 5m02s, while documentation-only required gates passed in
+23s and 25s with locked-browser setup/run skipped. Neither task deployed the
+site or changed `tools/state/session.md`.
 
 T-211 (2026-07-31 claude overnight audit) verified the full
 offline suite, metrics, and hook state green on `9e1cd10` with no actionable
