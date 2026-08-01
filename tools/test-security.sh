@@ -16,6 +16,7 @@ tools/test-repository-independence.sh
 tools/test-deploy-policy.sh
 tools/test-hook-doctor.sh
 tools/test-workflow-security.sh
+tools/test-ci-browser-scope.sh
 python3 tools/supply-chain-check.py
 python3 tools/generate-sitemap.py --check
 python3 tools/standards-check.py

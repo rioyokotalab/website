@@ -5,7 +5,7 @@ Protocol and schemas: `skills/context-ledger.md`; immediate execution state:
 `tools/state/session.md`; durable choices: `tools/state/decisions.md`. Git
 retains superseded chronology and command-level evidence — keep only current
 state, active tasks, blockers, and compact historical pointers here. Next
-free ID: T-214.
+free ID: T-215.
 
 ## Current state
 
@@ -79,3 +79,7 @@ an anchored board only when a new task depends on that historical detail.
 T-212 removed one stale 56.8 MB public staging root through a guarded manifest,
 found no local historical branch or extra worktree, and passed the complete
 offline security suite after compacting this ledger below its 8,000-byte gate.
+T-214 scopes the locked browser install/run to changes outside the explicit
+ledger/documentation-only set while keeping the required `Offline checks` job,
+full local policy suite, untrusted-PR isolation, and fail-closed path handling;
+evidence is in `docs/audits/t214-scoped-browser-ci.md`.
