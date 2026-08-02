@@ -11,7 +11,6 @@ Next free ID: Web-219.
 
 | Task | State | Priority | Packet |
 | --- | --- | ---: | --- |
-| Web-218 | ready | 1 | `docs/producer/tasks/Web-218.md` |
 | Web-213 | gated | 10 | `docs/producer/tasks/Web-213.md` |
 
 ## Writer contract
