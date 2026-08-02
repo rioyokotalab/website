@@ -6,6 +6,7 @@ import sys
 
 BUDGETS = {  # repo-root-relative path -> max bytes
     "TODO.md": 8000,
+    "PRODUCER.md": 4096,
     "tools/state/session.md": 4000,
     "tools/state/facts.md": 10000,
     "tools/state/decisions.md": 10000,

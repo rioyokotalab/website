@@ -48,8 +48,9 @@ Canonical protocol: `skills/context-ledger.md`.
 
 ## Driver workflow
 
-1. Reconstruct state from the ledger and set `driver:` to the active client,
-   `codex` or `claude`.
+1. Read `PRODUCER.md` before `TODO.md`. Select only its first ready packet; if
+   none is ready, remain idle. Then reconstruct state from the consumer ledger
+   and set `driver:` to the active client, `codex` or `claude`.
 2. Work in small verified steps. Delegate only bounded independent work when
    the client-native delegation route predicts net context savings; default
    one and at most two disjoint subagents. Codex routing is documented in
@@ -64,6 +65,13 @@ Canonical protocol: `skills/context-ledger.md`.
    work uses schema v2 (`tools/task-metrics.schema.json`) and validates with
    `python3 tools/task-metrics.py validate`; unknown telemetry is null, not
    zero.
+5. Only the portfolio producer may modify `PRODUCER.md` or `docs/producer/`.
+   Consumers never allocate durable IDs or durable goals. Handle nested
+   in-scope findings LIFO inside the current task; record out-of-scope or
+   authority-gated findings as blocked receipts under
+   `docs/consumer/receipts/`.
+   Before consumer publication run
+   `python3 tools/producer-ledger.py check-consumer-diff --base origin/main`.
 
 ## Task playbooks
 
