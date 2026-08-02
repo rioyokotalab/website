@@ -1,4 +1,5 @@
 task	state	summary	source
+Web-217	complete	Install repository-local producer and consumer task protocol	docs/tasks/Web-217.md
 Web-216	complete	Adopt the Website task namespace	docs/tasks/Web-216.md
 Web-213	pending	Change-triggered accessibility and source-integrity sampling	TODO.md;docs/tasks/Web-213.md
 T-215	complete	Compact the active board and archive completed chronology	docs/tasks/T-215.md

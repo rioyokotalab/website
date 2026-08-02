@@ -1,11 +1,12 @@
 # Lab website — task board
 
-This is the authoritative cold-start queue. Read it with `AGENTS.md` and
-`tools/state/session.md`, then read only the linked record for the first
-executable task. Completed chronology is indexed by `docs/tasks/index.tsv`.
+This is the consumer-owned execution board. Read `PRODUCER.md` first, then its
+first ready packet, this file, `tools/state/session.md`, and only the matching
+execution record. If no producer packet is ready, remain idle. Completed
+chronology is indexed by `docs/tasks/index.tsv`.
 Current and future Website tasks use the `Web-NNN` namespace. Historical
 `T-NNN` identifiers remain unchanged in completed records, metrics, and
-archives. Next free ID: Web-217.
+archives.
 
 ## Active and pending queue
 

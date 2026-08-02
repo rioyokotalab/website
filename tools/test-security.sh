@@ -7,6 +7,8 @@ cd "$ROOT"
 python3 tools/security-check.py "$@"
 python3 tools/link-check.py
 python3 tools/test-link-check.py
+python3 tools/producer-ledger.py validate
+python3 tools/test_producer_ledger.py
 tools/test-guarded-delete.sh
 tools/test-public-repo-audit.sh
 tools/test-github-ruleset.sh
