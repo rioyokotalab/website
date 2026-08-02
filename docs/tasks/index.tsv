@@ -1,6 +1,7 @@
 task	state	summary	source
+Web-216	complete	Adopt the Website task namespace	docs/tasks/Web-216.md
+Web-213	pending	Change-triggered accessibility and source-integrity sampling	TODO.md;docs/tasks/Web-213.md
 T-215	complete	Compact the active board and archive completed chronology	docs/tasks/T-215.md
 T-214	complete	Scope locked browser CI to relevant changes	docs/audits/t214-scoped-browser-ci.md;docs/history/TODO-full-archive-2026-08-02.md
-T-213	pending	Change-triggered accessibility and source-integrity sampling	TODO.md;docs/tasks/T-213.md
 T-212	complete	Portfolio review and guarded staging cleanup	3573e75;docs/history/TODO-full-archive-2026-08-02.md
 T-001..T-211	complete-or-superseded	Historical website work	docs/history/TODO-full-archive-2026-08-02.md

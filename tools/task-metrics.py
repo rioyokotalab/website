@@ -346,7 +346,8 @@ def append_driver_tasks(
         if key in existing:
             duplicates.append(task_id)
             continue
-        if not task_id.startswith("T-") or not task_id[2:].isdigit():
+        prefix, separator, number = task_id.partition("-")
+        if prefix not in {"T", "Web"} or separator != "-" or not number.isdigit():
             return {"status": "fail", "errors": [f"invalid task id: {task_id}"]}
         rows.append({
             "date": date.today().isoformat(), "task_type": "other", "agent": agent,
@@ -683,10 +684,10 @@ def selftest() -> dict[str, Any]:
         compact_summary = summarize(None, comparison_path)
         detailed_summary = summarize(None, comparison_path, details=True)
         assert "run_details" not in compact_summary and len(detailed_summary["run_details"]) == 3
-        driver = append_driver_tasks(["T-1", "T-2"], "tools/out/report.md", "gpt-5", metrics)
+        driver = append_driver_tasks(["Web-1", "T-2"], "tools/out/report.md", "gpt-5", metrics)
         assert driver["appended"] == 2
-        driver_duplicate = append_driver_tasks(["T-1"], "tools/out/report.md", "gpt-5", metrics)
-        assert driver_duplicate["duplicates"] == ["T-1"]
+        driver_duplicate = append_driver_tasks(["Web-1"], "tools/out/report.md", "gpt-5", metrics)
+        assert driver_duplicate["duplicates"] == ["Web-1"]
         claude_driver = append_driver_tasks(
             ["T-3"], "tools/out/claude-report.md", "claude-test", metrics,
             agent="claude",
