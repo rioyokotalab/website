@@ -156,9 +156,17 @@ def validate() -> None:
                 fail(f"packet-index-mismatch:{row['task']}:{key}")
         if values["repository"] != repository or values["consumer"] not in ALLOWED_CONSUMERS:
             fail(f"packet-routing:{row['task']}")
-        record = Path(values["record"])
-        if record.is_absolute() or ".." in record.parts or not (ROOT / record).is_file():
-            fail(f"packet-record:{row['task']}")
+        if values["record"] == "pending":
+            if row["state"] != "ready":
+                fail(f"pending-record-state:{row['task']}")
+        else:
+            record = Path(values["record"])
+            if (
+                record.is_absolute()
+                or ".." in record.parts
+                or not (ROOT / record).is_file()
+            ):
+                fail(f"packet-record:{row['task']}")
         if "tmux" in packet_text.lower() or "harness:" in packet_text.lower():
             fail(f"assignment-coupling:{row['task']}")
         if bool(config["public"]) and re.search(
