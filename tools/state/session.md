@@ -1,13 +1,13 @@
 driver: codex
-updated: 2026-08-02T12:40+0900
+updated: 2026-08-02T13:15+0900
 task: idle
 status: idle
 
 ## Now
 
-- T-215 complete on the protected-publication candidate: `TODO.md` contains
-  only pending T-213, and completed chronology is routed through the new task
-  index and exact pre-compaction archive. No site content or deployment changed.
+- Web-216 complete on the protected-publication candidate: current and future
+  task IDs use `Web-NNN`; pending Web-213 retains its original gate. Historical
+  IDs and archives are unchanged. No site content or deployment changed.
 
 ## Working set
 
@@ -23,5 +23,5 @@ status: idle
 
 ## Next action
 
-- Wait for T-213's next material content/template change or bounded quarterly
+- Wait for Web-213's next material content/template change or bounded quarterly
   manual checkpoint.
