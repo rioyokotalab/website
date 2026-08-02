@@ -8,6 +8,37 @@ The public URL tree is intentionally stable. Edit pages in place rather than
 moving them. The `en/` and `jp/` trees mirror one another so the language switch
 can replace one prefix with the other.
 
+## Task architecture
+
+```text
+repository/
+├── AGENTS.md                     # Cold-start instructions
+├── PRODUCER.md                   # Producer-owned queue and next free task ID
+├── TODO.md                       # Consumer-owned execution board
+│
+├── docs/
+│   ├── producer/                 # Producer-only writes
+│   │   ├── config.json           # Repository name, prefix, privacy, size limits
+│   │   ├── assignment.tsv        # Current consumer assignment
+│   │   ├── index.tsv             # All producer-created task dispositions
+│   │   ├── NIGHTLY.md            # Owner-started nightly procedure
+│   │   └── tasks/
+│   │       └── <ID>.md           # Immutable task packets
+│   │
+│   ├── tasks/                    # Consumer-owned execution records
+│   │   ├── index.tsv             # Historical/completed-task lookup
+│   │   └── <ID>.md               # Detailed execution state
+│   │
+│   ├── consumer/
+│   │   └── receipts/
+│   │       └── <ID>.md           # Completion or blocked receipts
+│   │
+│   └── history/                  # Archived historical boards and chronology
+│
+└── tools/
+    └── producer-ledger.py        # Schema and writer-boundary validator
+```
+
 ## Quickstart
 
 GitHub write access and web-server credentials are provisioned separately by
