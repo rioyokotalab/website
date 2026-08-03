@@ -5,12 +5,13 @@ producer may modify this file or `docs/producer/`. Consumers read the first
 ready packet in priority/date order, then their own board and matching execution
 record. If no packet is ready, remain idle.
 
-Next free ID: Web-221.
+Next free ID: Web-222.
 
 ## Queue
 
 | Task | State | Priority | Packet |
 | --- | --- | ---: | --- |
+| Web-221 | ready | 0 | `docs/producer/tasks/Web-221.md` |
 | Web-213 | gated | 10 | `docs/producer/tasks/Web-213.md` |
 
 ## Writer contract
