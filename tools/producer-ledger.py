@@ -86,7 +86,9 @@ def read_rows() -> list[dict[str, str]]:
     return rows
 
 
-def validate() -> None:
+def validate(
+    *, emit: bool = True
+) -> tuple[dict[str, object], list[dict[str, str]], dict[str, dict[str, str]]]:
     config = read_config()
     assignment_path = ROOT / "docs/producer/assignment.tsv"
     with assignment_path.open(encoding="utf-8", newline="") as handle:
@@ -151,15 +153,20 @@ def validate() -> None:
         }
         if set(values) != required:
             fail(f"packet-schema:{row['task']}")
-        for key in ("task", "state", "priority", "created"):
+        for key in ("task", "created"):
             if values[key] != row[key]:
                 fail(f"packet-index-mismatch:{row['task']}:{key}")
+        if values["state"] not in ALLOWED_STATES:
+            fail(f"packet-state:{row['task']}")
+        try:
+            packet_priority = int(values["priority"])
+        except ValueError:
+            fail(f"packet-priority:{row['task']}")
+        if not 0 <= packet_priority <= 999:
+            fail(f"packet-priority:{row['task']}")
         if values["repository"] != repository or values["consumer"] not in ALLOWED_CONSUMERS:
             fail(f"packet-routing:{row['task']}")
-        if values["record"] == "pending":
-            if row["state"] != "ready":
-                fail(f"pending-record-state:{row['task']}")
-        else:
+        if values["record"] != "pending":
             record = Path(values["record"])
             if (
                 record.is_absolute()
@@ -180,18 +187,39 @@ def validate() -> None:
     if not board_ids <= seen:
         fail(f"unproduced-board-task:{','.join(sorted(board_ids - seen))}")
     receipt_dir = ROOT / "docs/consumer/receipts"
+    receipts: dict[str, dict[str, str]] = {}
     for path in sorted(receipt_dir.glob(f"{prefix}-*.md")) if receipt_dir.is_dir() else []:
         values, text = metadata(path, 4096)
         if set(values) != {"task", "status", "updated", "validation"}:
             fail(f"receipt-schema:{path.name}")
         if values["task"] not in seen or values["status"] not in {"complete", "blocked"}:
             fail(f"receipt-routing:{path.name}")
+        if path.stem != values["task"] or values["task"] in receipts:
+            fail(f"receipt-identity:{path.name}")
         if re.search(r"(?im)^authority(?: granted)?:", text):
             fail(f"receipt-authority:{path.name}")
-    print(
-        f"PRODUCER_LEDGER status=pass repository={repository} "
-        f"tasks={len(rows)} board_tasks={len(board_ids)}"
-    )
+        receipts[values["task"]] = values
+    if emit:
+        print(
+            f"PRODUCER_LEDGER status=pass repository={repository} "
+            f"tasks={len(rows)} board_tasks={len(board_ids)}"
+        )
+    return config, rows, receipts
+
+
+def next_ready() -> None:
+    _config, rows, receipts = validate(emit=False)
+    for row in rows:
+        if row["state"] == "ready" and row["task"] not in receipts:
+            print(
+                "PRODUCER_LEDGER_SELECTION status=ready "
+                f"task={row['task']} packet={row['packet']} "
+                "disposition=ready "
+                "disposition_source=docs/producer/index.tsv "
+                "packet_state=publication-only"
+            )
+            return
+    print("PRODUCER_LEDGER_SELECTION status=idle")
 
 
 def changed_paths(base: str) -> list[str]:
@@ -208,6 +236,20 @@ def changed_paths(base: str) -> list[str]:
     return [line for line in result.stdout.splitlines() if line]
 
 
+def changed_published_packets(base: str) -> list[str]:
+    git = shutil.which("git")
+    if git is None:
+        fail("git-unavailable")
+    result = subprocess.run(  # noqa: S603
+        [
+            git, "-C", str(ROOT), "diff", "--name-only",
+            "--diff-filter=MDTRUXB", base, "--", "docs/producer/tasks",
+        ],
+        check=True, text=True, stdout=subprocess.PIPE,
+    )
+    return [line for line in result.stdout.splitlines() if line]
+
+
 def check_diff(base: str, role: str) -> None:
     config = read_config()
     prefix = str(config["prefix"])
@@ -218,6 +260,9 @@ def check_diff(base: str, role: str) -> None:
             path for path in paths
             if path != "PRODUCER.md" and not path.startswith("docs/producer/")
         ]
+        immutable = changed_published_packets(base)
+        if immutable:
+            fail(f"producer-immutable-packet:{','.join(sorted(immutable))}")
     else:
         bad = [path for path in paths if path == "PRODUCER.md" or path.startswith("docs/producer/")]
         for path in paths:
@@ -233,12 +278,15 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("validate")
+    sub.add_parser("next-ready")
     for role in ("producer", "consumer"):
         command = sub.add_parser(f"check-{role}-diff")
         command.add_argument("--base", required=True)
     args = parser.parse_args()
     if args.command == "validate":
         validate()
+    elif args.command == "next-ready":
+        next_ready()
     else:
         check_diff(args.base, args.command.removeprefix("check-").removesuffix("-diff"))
 
