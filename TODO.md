@@ -12,7 +12,6 @@ archives.
 
 | Task | Phase | Record |
 | --- | --- | --- |
-| Web-219 | active: separate the local placeholder from the remote deployment sentinel | `docs/tasks/Web-219.md` |
 | Web-213 | pending the next material content/template change or bounded quarterly manual checkpoint | `docs/tasks/Web-213.md` |
 
 Web-213 is local/manual and adds no recurring hosted workflow. It does not
