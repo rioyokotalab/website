@@ -1,4 +1,5 @@
 task	state	summary	source
+Web-219	complete	Separate local placeholder from remote deployment sentinel	docs/tasks/Web-219.md
 Web-218	complete	Document the producer and consumer repository layout	docs/tasks/Web-218.md
 Web-217	complete	Install repository-local producer and consumer task protocol	docs/tasks/Web-217.md
 Web-216	complete	Adopt the Website task namespace	docs/tasks/Web-216.md

@@ -1,26 +1,17 @@
 driver: codex
-updated: 2026-08-03T17:51+0900
-task: Web-219
-status: in-progress
+updated: 2026-08-03T17:58+0900
+task: idle
+status: idle
 
 ## Now
 
-- Web-219 removes the tracked zero-byte local `.dont-remove-me` placeholder
-  while preserving the remote deployment sentinel, mirror exclusion, positive
-  deployment allowlist, live exclusion check, and preview refusal.
-- Focused deployment-policy, complete offline, and 38/38 browser checks pass.
+- Web-219 is complete: protected `main` no longer contains the local marker;
+  remote preservation controls are unchanged; focused, offline, local browser,
+  and hosted checks pass; post-publication obsolete directories are absent.
 
 ## Working set
 
-- `.dont-remove-me`
-- `AGENTS.md`
-- `README.md`
-- `skills/html-editing.md`
-- `skills/publish-and-verify.md`
-- `tools/test-deploy-policy.sh`
-- `TODO.md`
-- `docs/tasks/Web-219.md`
-- `tools/state/session.md`
+- None after Web-219 closeout publication.
 
 ## Open questions
 
@@ -32,5 +23,5 @@ status: in-progress
 
 ## Next action
 
-- Publish without deploying. Guarded-delete the three obsolete unregistered
-  Website directories only after the protected change lands.
+- Wait for Web-213's next material content/template change or bounded quarterly
+  manual checkpoint.
