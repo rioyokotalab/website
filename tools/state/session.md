@@ -1,18 +1,18 @@
 driver: codex
-updated: 2026-08-03T22:22+0900
-task: Web-220
-status: active
+updated: 2026-08-03T22:31+0900
+task: idle
+status: idle
 
 ## Now
 
-- Web-220 producer packet is protected at `65ee8534`. The consumer
-  implementation and all focused and complete offline checks pass; protected
-  publication is pending.
+- Web-220 is complete on protected `main` at `34d3a26`; focused, complete local,
+  and hosted offline checks pass. Producer reconciliation is disjoint from the
+  now-idle consumer.
 
 ## Working set
 
-- Branch `codex/web220-ledger-semantics-implementation` in the current isolated
-  Website checkout.
+- Closeout branch `codex/web220-ledger-semantics-closeout` in the current
+  isolated Website checkout.
 
 ## Open questions
 
@@ -24,5 +24,5 @@ status: active
 
 ## Next action
 
-- Publish the verified implementation through a protected pull request, wait
-  for hosted checks, and do not deploy.
+- Wait for the portfolio producer to reconcile Web-220. Then remain idle until
+  the selector reports another eligible packet; Web-213 remains gated.
