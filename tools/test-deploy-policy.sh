@@ -3,6 +3,7 @@
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
+test ! -e "$ROOT/.dont-remove-me"
 TMP_ROOT=${TMPDIR:-/tmp}
 TMP=$(mktemp -d "$TMP_ROOT/website-deploy-test.XXXXXX")
 cleanup() {
@@ -39,7 +40,7 @@ for allowed in .htaccess index.html robots.txt sitemap.xml style.css en/index.ht
 	images/public.png js/public.js cv/cv.pdf; do
 	test -e "$STAGE/$allowed"
 done
-for blocked in README.md package.json tools/private.txt unexpected-root.html; do
+for blocked in .dont-remove-me README.md package.json tools/private.txt unexpected-root.html; do
 	test ! -e "$STAGE/$blocked"
 done
 

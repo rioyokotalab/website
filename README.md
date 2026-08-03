@@ -236,14 +236,16 @@ changes, and material scope expansion remain fail-closed.
 `deploy.sh` builds a fresh positive-allowlist staging tree and mirrors it to the
 SFTP web root with deletion. Only `.htaccess`, `index.html`, `style.css`,
 `en/`, `jp/`, `images/`, `js/`, and `cv/cv.pdf` can enter staging;
-`.dont-remove-me` is the sole preserved remote exception.
+The remote `.dont-remove-me` deployment sentinel is the sole preserved remote
+exception; it does not belong in the source or staging tree.
 
 ## Invariants
 
 - Preserve every public path and EN/JP counterpart.
 - Update shared navigation/header/footer markup across both trees with a
   CRLF-safe scripted replacement.
-- Preserve `.dont-remove-me`; never expose credentials or `.git`.
+- Preserve the remote deployment `.dont-remove-me`; exclude it from source and
+  staging, and never expose credentials or `.git`.
 - Add `rel="noopener noreferrer"` to new `target="_blank"` links.
 - Publish or push only after role, scope, verification, rebase, and applicable
   dry-run gates pass.

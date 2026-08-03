@@ -1,17 +1,26 @@
 driver: codex
-updated: 2026-08-02T13:15+0900
-task: idle
-status: idle
+updated: 2026-08-03T17:51+0900
+task: Web-219
+status: in-progress
 
 ## Now
 
-- Web-216 complete on the protected-publication candidate: current and future
-  task IDs use `Web-NNN`; pending Web-213 retains its original gate. Historical
-  IDs and archives are unchanged. No site content or deployment changed.
+- Web-219 removes the tracked zero-byte local `.dont-remove-me` placeholder
+  while preserving the remote deployment sentinel, mirror exclusion, positive
+  deployment allowlist, live exclusion check, and preview refusal.
+- Focused deployment-policy, complete offline, and 38/38 browser checks pass.
 
 ## Working set
 
-- None after T-215 publication.
+- `.dont-remove-me`
+- `AGENTS.md`
+- `README.md`
+- `skills/html-editing.md`
+- `skills/publish-and-verify.md`
+- `tools/test-deploy-policy.sh`
+- `TODO.md`
+- `docs/tasks/Web-219.md`
+- `tools/state/session.md`
 
 ## Open questions
 
@@ -23,5 +32,5 @@ status: idle
 
 ## Next action
 
-- Wait for Web-213's next material content/template change or bounded quarterly
-  manual checkpoint.
+- Publish without deploying. Guarded-delete the three obsolete unregistered
+  Website directories only after the protected change lands.
