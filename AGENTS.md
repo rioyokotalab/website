@@ -19,8 +19,9 @@ source ranges only when required.
   normal completion of user-requested repository changes, but must follow every
   gate in `skills/publish-and-verify.md`. Never force-push. Stop on a failed
   gate or material scope expansion.
-- Never read, print, copy, or modify credentials, `~/.ssh`, or
-  `.dont-remove-me`; never edit `.git` internals. Approved scripts may use
+- Never read, print, copy, or modify credentials, `~/.ssh`, or the remote
+  deployment `.dont-remove-me`; local source and staging trees must not contain
+  that marker. Never edit `.git` internals. Approved scripts may use
   configured authentication without Codex inspecting it. Never automate login
   UIs.
 - Project config (`AGENTS.md`) may be edited only when the current user task

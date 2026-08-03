@@ -46,7 +46,8 @@ deploy-exclusion checks.
 
 Deployment is positive-allowlist based: only `.htaccess`, `index.html`,
 `style.css`, `en/`, `jp/`, `images/`, `js/`, and `cv/cv.pdf` enter staging.
-The remote mirror preserves only `.dont-remove-me`. Never upload `.git`, tools,
+The remote mirror preserves only the remote deployment `.dont-remove-me`.
+Source and staging must not contain that marker. Never upload `.git`, tools,
 ledger, configuration, or credentials.
 
 GitHub pushes use the configured agent socket. If authentication fails, the

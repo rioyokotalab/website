@@ -12,7 +12,8 @@
 - If you edit `style.css`, bump `style.css?v=YYYYMMDD` in ALL pages with a
   scripted replace.
 - Site-wide strings (nav, footer, header) must update every affected EN/JP page
-  directly with a CRLF-safe script. Preserve `.dont-remove-me`.
+  directly with a CRLF-safe script. Preserve the remote deployment
+  `.dont-remove-me`; it must not be present in source or staging.
 - New `target="_blank"` links need `rel="noopener noreferrer"`.
 - Galleries: pinned cdnjs Lightbox 2.11 / jQuery 3.7 with SRI; do not change
   versions casually.
