@@ -108,25 +108,88 @@ class ProducerLedgerTests(unittest.TestCase):
         result = self.run_tool(root, "validate")
         self.assertEqual(result.returncode, 0, result.stdout)
 
-    def test_nonready_packet_requires_record(self) -> None:
+    def test_index_disposition_may_differ_from_published_packet(self) -> None:
         root = self.fixture()
-        packet = root / "docs/producer/tasks/Fix-001.md"
-        packet.write_text(
-            packet.read_text(encoding="utf-8")
-            .replace("state: ready", "state: claimed")
-            .replace("record: docs/tasks/Fix-001.md", "record: pending"),
-            encoding="utf-8",
-        )
         index = root / "docs/producer/index.tsv"
         index.write_text(
             index.read_text(encoding="utf-8").replace(
-                "Fix-001\tready", "Fix-001\tclaimed"
+                "Fix-001\tready\t10", "Fix-001\tgated\t20"
+            ),
+            encoding="utf-8",
+        )
+        result = self.run_tool(root, "validate")
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_next_ready_reports_disposition_source(self) -> None:
+        root = self.fixture()
+        result = self.run_tool(root, "next-ready")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("status=ready task=Fix-001", result.stdout)
+        self.assertIn("disposition_source=docs/producer/index.tsv", result.stdout)
+        self.assertIn("packet_state=publication-only", result.stdout)
+
+    def test_terminal_receipt_suppresses_ready_selection(self) -> None:
+        root = self.fixture()
+        (root / "docs/consumer/receipts/Fix-001.md").write_text(
+            "task: Fix-001\nstatus: complete\nupdated: 2026-08-03\n"
+            "validation: pass\n---\nComplete.\n",
+            encoding="utf-8",
+        )
+        result = self.run_tool(root, "next-ready")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("status=idle", result.stdout)
+
+    def test_packet_metadata_must_remain_valid(self) -> None:
+        root = self.fixture()
+        packet = root / "docs/producer/tasks/Fix-001.md"
+        packet.write_text(
+            packet.read_text(encoding="utf-8").replace(
+                "state: ready", "state: unknown"
             ),
             encoding="utf-8",
         )
         result = self.run_tool(root, "validate")
         self.assertNotEqual(result.returncode, 0, result.stdout)
-        self.assertIn("pending-record-state", result.stdout)
+        self.assertIn("packet-state", result.stdout)
+
+    def test_existing_packet_is_immutable_for_producer(self) -> None:
+        root = self.fixture()
+        self.init_git(root)
+        self.mutate_packet(root, lambda text: text + "\nchanged\n")
+        result = self.run_tool(root, "check-producer-diff", "--base", "HEAD")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("producer-immutable-packet", result.stdout)
+
+    def test_new_packet_is_allowed_for_producer(self) -> None:
+        root = self.fixture()
+        self.init_git(root)
+        packet = root / "docs/producer/tasks/Fix-002.md"
+        packet.write_text("new packet\n", encoding="utf-8")
+        result = self.run_tool(root, "check-producer-diff", "--base", "HEAD")
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_packet_deletion_is_rejected_for_producer(self) -> None:
+        root = self.fixture()
+        self.init_git(root)
+        (root / "docs/producer/tasks/Fix-001.md").unlink()
+        result = self.run_tool(root, "check-producer-diff", "--base", "HEAD")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("producer-immutable-packet", result.stdout)
+
+    def test_live_index_can_close_without_rewriting_packet(self) -> None:
+        root = self.fixture()
+        packet = root / "docs/producer/tasks/Fix-001.md"
+        before = hashlib.sha256(packet.read_bytes()).hexdigest()
+        index = root / "docs/producer/index.tsv"
+        index.write_text(
+            index.read_text(encoding="utf-8").replace(
+                "Fix-001\tready\t10", "Fix-001\tcomplete\t999"
+            ),
+            encoding="utf-8",
+        )
+        result = self.run_tool(root, "validate")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(hashlib.sha256(packet.read_bytes()).hexdigest(), before)
 
     def test_packet_failures_close(self) -> None:
         cases = {

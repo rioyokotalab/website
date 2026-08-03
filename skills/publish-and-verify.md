@@ -15,8 +15,11 @@ Before publishing or pushing, the DRIVER must:
 
 1. Checkpoint `tools/state/session.md`; inspect complete status, untracked
    files, branch, remote, and ahead/behind state. Never force-push.
-2. Run `SSH_AUTH_SOCK=$HOME/.ssh/agent.sock git pull --rebase --autostash
-   origin main`. Keep non-overlapping changes; stop on ambiguous conflicts.
+2. Require the current process `SSH_AUTH_SOCK` to name a current-user-owned
+   Unix socket, then run `git pull --rebase --autostash origin main` in that
+   process environment. Do not inspect agent identities, recover from tmux's
+   global environment, or create, inspect, or modify anything under `~/.ssh`.
+   Keep non-overlapping changes; stop on ambiguous conflicts.
 3. Run task-relevant verification and confirm the task is complete, no ledger
    blocker exists, no unrelated dirty scope would be swept, and deploy-included
    content has no placeholder. Preview in proportion to the change.
@@ -50,5 +53,6 @@ The remote mirror preserves only the remote deployment `.dont-remove-me`.
 Source and staging must not contain that marker. Never upload `.git`, tools,
 ledger, configuration, or credentials.
 
-GitHub pushes use the configured agent socket. If authentication fails, the
-user repairs the agent in a real terminal; Codex never reads key material.
+GitHub pushes use the validated current process agent socket. If authentication
+fails, the user repairs the agent in a real terminal; Codex never reads key
+material or substitutes a different socket source.

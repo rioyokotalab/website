@@ -49,8 +49,11 @@ Canonical protocol: `skills/context-ledger.md`.
 
 ## Driver workflow
 
-1. Read `PRODUCER.md` before `TODO.md`. Select only its first ready packet; if
-   none is ready, remain idle. Then reconstruct state from the consumer ledger
+1. Read `PRODUCER.md`, then run
+   `python3 tools/producer-ledger.py next-ready`. Read only the selected packet;
+   if the selector reports idle, remain idle. The selector and
+   `docs/producer/index.tsv` are the current disposition; immutable packet
+   `state` is publication-only. Then reconstruct state from the consumer ledger
    and set `driver:` to the active client, `codex` or `claude`.
 2. Work in small verified steps. Delegate only bounded independent work when
    the client-native delegation route predicts net context savings; default

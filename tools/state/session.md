@@ -1,17 +1,18 @@
 driver: codex
-updated: 2026-08-03T17:58+0900
-task: idle
-status: idle
+updated: 2026-08-03T22:22+0900
+task: Web-220
+status: active
 
 ## Now
 
-- Web-219 is complete: protected `main` no longer contains the local marker;
-  remote preservation controls are unchanged; focused, offline, local browser,
-  and hosted checks pass; post-publication obsolete directories are absent.
+- Web-220 producer packet is protected at `65ee8534`. The consumer
+  implementation and all focused and complete offline checks pass; protected
+  publication is pending.
 
 ## Working set
 
-- None after Web-219 closeout publication.
+- Branch `codex/web220-ledger-semantics-implementation` in the current isolated
+  Website checkout.
 
 ## Open questions
 
@@ -23,5 +24,5 @@ status: idle
 
 ## Next action
 
-- Wait for Web-213's next material content/template change or bounded quarterly
-  manual checkpoint.
+- Publish the verified implementation through a protected pull request, wait
+  for hosted checks, and do not deploy.

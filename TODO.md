@@ -12,6 +12,7 @@ archives.
 
 | Task | Phase | Record |
 | --- | --- | --- |
+| Web-220 | implementing ledger disposition and publication-agent policy hardening | `docs/tasks/Web-220.md` |
 | Web-213 | pending the next material content/template change or bounded quarterly manual checkpoint | `docs/tasks/Web-213.md` |
 
 Web-213 is local/manual and adds no recurring hosted workflow. It does not
