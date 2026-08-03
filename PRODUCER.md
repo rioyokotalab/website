@@ -5,12 +5,13 @@ producer may modify this file or `docs/producer/`. Consumers read the first
 ready packet in priority/date order, then their own board and matching execution
 record. If no packet is ready, remain idle.
 
-Next free ID: Web-220.
+Next free ID: Web-221.
 
 ## Queue
 
 | Task | State | Priority | Packet |
 | --- | --- | ---: | --- |
+| Web-220 | ready | 0 | `docs/producer/tasks/Web-220.md` |
 | Web-213 | gated | 10 | `docs/producer/tasks/Web-213.md` |
 
 ## Writer contract
@@ -23,4 +24,7 @@ findings produce a blocked receipt, not a new goal.
 
 Before publication run `python3 tools/producer-ledger.py validate` and the
 role-appropriate diff check against the protected base.
+`docs/producer/index.tsv` and `next-ready` are the sole current-disposition
+authority. A packet's immutable `state` is publication-time metadata and never
+overrides a ready selector result or alone justifies a blocked receipt.
 Owner-started nightly runs additionally follow `docs/producer/NIGHTLY.md`.
