@@ -266,9 +266,10 @@ class ConsumerProtocolTests(unittest.TestCase):
                 "terminal receipt",
             ),
             "writers": (
-                "Only the portfolio producer",
+                "trust-equivalent repository agents",
                 "PRODUCER.md",
                 "docs/producer/",
+                "role-aware advisory diff check",
             ),
             "owner-gate": (
                 "safe work",
