@@ -76,6 +76,8 @@ Canonical protocol: `skills/context-ledger.md`.
    `docs/consumer/receipts/`.
    Before consumer publication run
    `python3 tools/producer-ledger.py check-consumer-diff --base origin/main`.
+6. Before producer or consumer work, read
+   `docs/agent-policy/producer-consumer.md` completely.
 
 ## Task playbooks
 

@@ -1,18 +1,17 @@
 driver: codex
-updated: 2026-08-03T22:31+0900
-task: idle
-status: idle
+updated: 2026-08-04T08:55+0900
+task: Web-221
+status: reconciliation-pending
 
 ## Now
 
-- Web-220 is complete on protected `main` at `34d3a26`; focused, complete local,
-  and hosted offline checks pass. Producer reconciliation is disjoint from the
-  now-idle consumer.
+- Web-221 has a validated terminal consumer candidate and immutable receipt;
+  protected publication and producer reconciliation remain.
 
 ## Working set
 
-- Closeout branch `codex/web220-ledger-semantics-closeout` in the current
-  isolated Website checkout.
+- Branch `codex/web221-implementation` in the current isolated Website
+  checkout.
 
 ## Open questions
 
@@ -24,5 +23,5 @@ status: idle
 
 ## Next action
 
-- Wait for the portfolio producer to reconcile Web-220. Then remain idle until
-  the selector reports another eligible packet; Web-213 remains gated.
+- Publish the terminal push-only candidate, then reconcile Web-221 and return
+  the driver ledger to idle. Web-213 remains gated.
