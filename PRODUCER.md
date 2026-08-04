@@ -11,20 +11,16 @@ Next free ID: Web-222.
 
 | Task | State | Priority | Packet |
 | --- | --- | ---: | --- |
-| Web-221 | ready | 0 | `docs/producer/tasks/Web-221.md` |
 | Web-213 | gated | 10 | `docs/producer/tasks/Web-213.md` |
 
 ## Writer contract
 
 Consumers never modify producer-owned paths or allocate durable IDs. They keep
-execution state in `TODO.md`, `docs/tasks/`, and implementation files, and write
-completion or blocking evidence under `docs/consumer/receipts/`. Nested in-scope
-findings are handled LIFO inside the active task; out-of-scope or authority-gated
-findings produce a blocked receipt, not a new goal.
+execution state in `TODO.md`, `docs/tasks/`, and implementation files. They
+exhaust safe work before reversible owner-choice parking and create receipts
+only for durable terminal outcomes. Never delete or rewrite a terminal receipt.
 
 Before publication run `python3 tools/producer-ledger.py validate` and the
-role-appropriate diff check against the protected base.
-`docs/producer/index.tsv` and `next-ready` are the sole current-disposition
-authority. A packet's immutable `state` is publication-time metadata and never
-overrides a ready selector result or alone justifies a blocked receipt.
+role-appropriate diff check against the protected base. The index and selector
+are the sole current-disposition authority.
 Owner-started nightly runs additionally follow `docs/producer/NIGHTLY.md`.
