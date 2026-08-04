@@ -18,6 +18,8 @@ PRODUCER_PATH = ROOT / "PRODUCER.md"
 PRODUCER_PREFIXES = ("PRODUCER.md", "docs/producer/")
 ALLOWED_STATES = {"ready", "gated", "claimed", "complete", "cancelled"}
 ALLOWED_CONSUMERS = {"any", "codex", "claude"}
+ALLOWED_RECORD_STATUSES = {"active", "blocked", "complete"}
+MAX_ACTIVE_RECORD_WORDS = 900
 FORBIDDEN_FIELDS = {
     "credential", "credentials", "secret", "secrets", "token", "password",
     "private_payload", "message_body", "event_body", "attachment",
@@ -86,25 +88,91 @@ def read_rows() -> list[dict[str, str]]:
     return rows
 
 
+def producer_queue_ids(
+    text: str, task_pattern: re.Pattern[str]
+) -> tuple[str, ...]:
+    """Read task IDs only from the exact human queue table."""
+    lines = text.splitlines()
+    headings = [index for index, line in enumerate(lines) if line == "## Queue"]
+    if len(headings) != 1:
+        fail("producer-queue-section")
+    index = headings[0] + 1
+    while index < len(lines) and not lines[index]:
+        index += 1
+    expected = (
+        "| Task | State | Priority | Packet |",
+        "| --- | --- | ---: | --- |",
+    )
+    if lines[index : index + 2] != list(expected):
+        fail("producer-queue-format")
+    tasks: list[str] = []
+    for line in lines[index + 2 :]:
+        if not line or line.startswith("## "):
+            break
+        if not line.startswith("| ") or not line.endswith(" |"):
+            fail("producer-queue-format")
+        cells = [cell.strip() for cell in line[1:-1].split("|")]
+        if len(cells) != 4 or task_pattern.fullmatch(cells[0]) is None:
+            fail("producer-queue-row")
+        tasks.append(cells[0])
+    duplicates = sorted(task for task in set(tasks) if tasks.count(task) > 1)
+    if duplicates:
+        fail(f"producer-queue-duplicate:{duplicates[0]}")
+    return tuple(tasks)
+
+
+def validate_active_records(prefix: str, tasks: set[str]) -> None:
+    record_dir = ROOT / "docs/tasks"
+    for path in sorted(record_dir.glob(f"{prefix}-*.md")):
+        if not path.is_file() or path.is_symlink():
+            fail(f"unsafe-task-record:{path.name}")
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeError) as exc:
+            fail(f"unreadable-task-record:{path.name}:{exc}")
+        # Records predating the metadata-managed lifecycle remain historical.
+        if not text.startswith("task: "):
+            continue
+        head, marker, _body = text.partition("\n---\n")
+        if not marker:
+            fail(f"task-record-metadata:{path.name}")
+        values: dict[str, str] = {}
+        for line in head.splitlines():
+            key, separator, value = line.partition(": ")
+            if not separator or not re.fullmatch(r"[a-z_]+", key) or key in values:
+                fail(f"task-record-metadata:{path.name}")
+            values[key] = value
+        task = values.get("task", "")
+        status = values.get("status", "")
+        if task != path.stem or task not in tasks:
+            fail(f"task-record-identity:{path.name}")
+        if status not in ALLOWED_RECORD_STATUSES:
+            fail(f"task-record-status:{path.name}")
+        words = len(text.split())
+        if status == "active" and words > MAX_ACTIVE_RECORD_WORDS:
+            fail(f"active-record-words:{task}:{words}>{MAX_ACTIVE_RECORD_WORDS}")
+
+
 def validate(
-    *, emit: bool = True
+    *, require_converged: bool = False, emit: bool = True
 ) -> tuple[dict[str, object], list[dict[str, str]], dict[str, dict[str, str]]]:
     config = read_config()
     assignment_path = ROOT / "docs/producer/assignment.tsv"
     with assignment_path.open(encoding="utf-8", newline="") as handle:
         assignments = list(csv.DictReader(handle, delimiter="\t"))
-    if (
-        len(assignments) != 1
-        or list(assignments[0]) != ["client", "slot", "state"]
-    ):
+    if not assignments or list(assignments[0]) != ["client", "slot", "state"]:
         fail("assignment-schema")
-    assignment = assignments[0]
-    if assignment["client"] not in ALLOWED_CONSUMERS:
-        fail("assignment-client")
-    if not re.fullmatch(r"[a-z][a-z0-9-]*", assignment["slot"]):
-        fail("assignment-slot")
-    if assignment["state"] not in {"active", "idle", "producer"}:
-        fail("assignment-state")
+    slots: set[str] = set()
+    for assignment in assignments:
+        if assignment["client"] not in ALLOWED_CONSUMERS:
+            fail("assignment-client")
+        if not re.fullmatch(r"[a-z][a-z0-9-]*", assignment["slot"]):
+            fail("assignment-slot")
+        if assignment["slot"] in slots:
+            fail("assignment-duplicate-slot")
+        slots.add(assignment["slot"])
+        if assignment["state"] not in {"active", "idle", "producer"}:
+            fail("assignment-state")
     nightly = ROOT / "docs/producer/NIGHTLY.md"
     if (
         not nightly.is_file()
@@ -118,12 +186,14 @@ def validate(
     rows = read_rows()
     seen: set[str] = set()
     numbers: list[int] = []
+    packets: dict[str, dict[str, str]] = {}
     prior_order: tuple[int, str, str] | None = None
     producer_text = PRODUCER_PATH.read_text(encoding="utf-8")
     if len(producer_text.encode()) > 4096:
         fail("oversized-producer-entrypoint")
     if f"Next free ID: {prefix}-{int(config['next_id']):03d}." not in producer_text:
         fail("next-id-entrypoint")
+    queue_tasks = producer_queue_ids(producer_text, task_pattern)
     for row in rows:
         match = task_pattern.fullmatch(row["task"])
         if not match or row["task"] in seen:
@@ -180,8 +250,24 @@ def validate(
             r"PRIVATE_(?:PERSONAL|STUDENTS)_CANARY", packet_text
         ):
             fail(f"public-privacy-canary:{row['task']}")
+        packets[row["task"]] = values
+    queue_set = set(queue_tasks)
+    unknown_queue = sorted(queue_set - seen)
+    if unknown_queue:
+        fail(f"producer-queue-unknown:{unknown_queue[0]}")
+    terminal = {
+        row["task"] for row in rows if row["state"] in {"complete", "cancelled"}
+    }
+    stale_queue = sorted(queue_set & terminal)
+    if stale_queue:
+        fail(f"producer-queue-stale-terminal:{stale_queue[0]}")
+    nonterminal = seen - terminal
+    omitted_queue = sorted(nonterminal - queue_set)
+    if omitted_queue:
+        fail(f"producer-queue-omitted:{omitted_queue[0]}")
     if max(numbers) >= int(config["next_id"]):
         fail("next-id-not-free")
+    validate_active_records(prefix, seen)
     board_text = (ROOT / "TODO.md").read_text(encoding="utf-8")
     board_ids = set(re.findall(rf"\b{re.escape(prefix)}-\d{{3}}\b", board_text))
     if not board_ids <= seen:
@@ -199,10 +285,57 @@ def validate(
         if re.search(r"(?im)^authority(?: granted)?:", text):
             fail(f"receipt-authority:{path.name}")
         receipts[values["task"]] = values
+
+    reconciliation_pending: list[str] = []
+    executable: list[dict[str, str]] = []
+    for row in rows:
+        task = row["task"]
+        state = row["state"]
+        receipt = receipts.get(task)
+        record_path = ROOT / f"docs/tasks/{task}.md"
+        if state in {"claimed", "complete"} and not record_path.is_file():
+            fail(f"task-record:{task}")
+        if state == "complete":
+            if not receipt or receipt["status"] != "complete":
+                fail(f"terminal-receipt:{task}")
+        elif state == "gated" and receipt and receipt["status"] == "blocked":
+            pass
+        elif receipt:
+            reconciliation_pending.append(task)
+        if state in {"ready", "claimed"} and receipt is None:
+            executable.append(row)
+        if state in {"complete", "cancelled"} and task in board_ids:
+            fail(f"terminal-board-task:{task}")
+        if receipt and task in board_ids:
+            fail(f"receipt-board-task:{task}")
+
+    for assignment in assignments:
+        if assignment["state"] != "active":
+            continue
+        client = assignment["client"]
+        compatible_executable = any(
+            client == "any"
+            or packets[row["task"]]["consumer"] in {"any", client}
+            for row in executable
+        )
+        compatible_handoff = any(
+            row["task"] in reconciliation_pending
+            and (
+                client == "any"
+                or packets[row["task"]]["consumer"] in {"any", client}
+            )
+            for row in rows
+        )
+        if not compatible_executable and not compatible_handoff:
+            fail(f"assignment-without-executable-task:{assignment['slot']}")
+
+    if require_converged and reconciliation_pending:
+        fail(f"receipt-disposition:{reconciliation_pending[0]}")
     if emit:
         print(
             f"PRODUCER_LEDGER status=pass repository={repository} "
-            f"tasks={len(rows)} board_tasks={len(board_ids)}"
+            f"tasks={len(rows)} board_tasks={len(board_ids)} "
+            f"reconciliation_pending={len(reconciliation_pending)}"
         )
     return config, rows, receipts
 
@@ -226,14 +359,20 @@ def changed_paths(base: str) -> list[str]:
     git = shutil.which("git")
     if git is None:
         fail("git-unavailable")
-    result = subprocess.run(  # noqa: S603
+    tracked = subprocess.run(  # noqa: S603
         [
             git, "-C", str(ROOT), "diff", "--name-only",
             "--diff-filter=ACMRTUXB", base,
         ],
         check=True, text=True, stdout=subprocess.PIPE,
     )
-    return [line for line in result.stdout.splitlines() if line]
+    untracked = subprocess.run(  # noqa: S603
+        [git, "-C", str(ROOT), "ls-files", "--others", "--exclude-standard"],
+        check=True, text=True, stdout=subprocess.PIPE,
+    )
+    return sorted(
+        set(tracked.stdout.splitlines()) | set(untracked.stdout.splitlines())
+    )
 
 
 def changed_published_packets(base: str) -> list[str]:
@@ -277,14 +416,15 @@ def check_diff(base: str, role: str) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("validate")
+    validate_parser = sub.add_parser("validate")
+    validate_parser.add_argument("--require-converged", action="store_true")
     sub.add_parser("next-ready")
     for role in ("producer", "consumer"):
         command = sub.add_parser(f"check-{role}-diff")
         command.add_argument("--base", required=True)
     args = parser.parse_args()
     if args.command == "validate":
-        validate()
+        validate(require_converged=args.require_converged)
     elif args.command == "next-ready":
         next_ready()
     else:

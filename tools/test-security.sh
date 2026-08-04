@@ -9,6 +9,8 @@ python3 tools/link-check.py
 python3 tools/test-link-check.py
 python3 tools/producer-ledger.py validate
 python3 tools/test_producer_ledger.py
+python3 tools/test_consumer_protocol.py
+python3 tools/test_consumer_validation.py
 tools/test-guarded-delete.sh
 tools/test-public-repo-audit.sh
 tools/test-github-ruleset.sh

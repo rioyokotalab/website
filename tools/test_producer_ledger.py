@@ -17,6 +17,29 @@ if GIT is None:
 
 
 class ProducerLedgerTests(unittest.TestCase):
+    @staticmethod
+    def queue_text(*tasks: str, next_id: int = 2) -> str:
+        rows = "".join(
+            f"| {task} | ready | 10 | `docs/producer/tasks/{task}.md` |\n"
+            for task in tasks
+        )
+        return (
+            "# Fixture producer queue\n\n"
+            f"Next free ID: Fix-{next_id:03d}.\n\n"
+            "## Queue\n\n"
+            "| Task | State | Priority | Packet |\n"
+            "| --- | --- | ---: | --- |\n"
+            f"{rows}\n"
+            "## Writer contract\n\nSynthetic fixture policy.\n"
+        )
+
+    def write_queue(
+        self, root: Path, *tasks: str, next_id: int = 2
+    ) -> None:
+        (root / "PRODUCER.md").write_text(
+            self.queue_text(*tasks, next_id=next_id), encoding="utf-8"
+        )
+
     def fixture(self, *, public: bool = False) -> Path:
         root = Path(tempfile.mkdtemp(prefix="producer-ledger-test-"))
         self.addCleanup(shutil.rmtree, root)
@@ -36,10 +59,7 @@ class ProducerLedgerTests(unittest.TestCase):
         (root / "docs/producer/config.json").write_text(
             json.dumps(config), encoding="utf-8"
         )
-        (root / "PRODUCER.md").write_text(
-            "# Fixture producer queue\n\nNext free ID: Fix-002.\n",
-            encoding="utf-8",
-        )
+        self.write_queue(root, "Fix-001")
         (root / "docs/producer/index.tsv").write_text(
             "task\tstate\tpriority\tcreated\tpacket\n"
             "Fix-001\tready\t10\t2026-08-02\tdocs/producer/tasks/Fix-001.md\n",
@@ -77,6 +97,33 @@ class ProducerLedgerTests(unittest.TestCase):
             check=False,
         )
 
+    def write_receipt(self, root: Path, *, status: str = "complete") -> None:
+        (root / "docs/consumer/receipts/Fix-001.md").write_text(
+            "task: Fix-001\n"
+            f"status: {status}\n"
+            "updated: 2026-08-03\n"
+            "validation: pass\n"
+            "---\nTerminal fixture evidence.\n",
+            encoding="utf-8",
+        )
+
+    def reconcile_terminal(
+        self, root: Path, *, state: str = "complete", receipt: str = "complete"
+    ) -> None:
+        index = root / "docs/producer/index.tsv"
+        index.write_text(
+            index.read_text(encoding="utf-8").replace(
+                "Fix-001\tready\t10", f"Fix-001\t{state}\t999"
+            ),
+            encoding="utf-8",
+        )
+        (root / "TODO.md").write_text("# Board\n", encoding="utf-8")
+        (root / "docs/producer/assignment.tsv").write_text(
+            "client\tslot\tstate\nany\tfixture\tidle\n", encoding="utf-8"
+        )
+        self.write_queue(root)
+        self.write_receipt(root, status=receipt)
+
     def mutate_packet(self, root: Path, transform) -> None:
         path = root / "docs/producer/tasks/Fix-001.md"
         path.write_text(transform(path.read_text(encoding="utf-8")), encoding="utf-8")
@@ -95,6 +142,255 @@ class ProducerLedgerTests(unittest.TestCase):
     def test_valid_contract(self) -> None:
         result = self.run_tool(self.fixture(), "validate")
         self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("reconciliation_pending=0", result.stdout)
+
+    def test_queue_parity_rejects_omitted_duplicate_unknown_and_stale(self) -> None:
+        cases = [
+            ("producer-queue-omitted:Fix-001", lambda root: self.write_queue(root)),
+            (
+                "producer-queue-duplicate:Fix-001",
+                lambda root: self.write_queue(root, "Fix-001", "Fix-001"),
+            ),
+            (
+                "producer-queue-unknown:Fix-999",
+                lambda root: self.write_queue(root, "Fix-001", "Fix-999"),
+            ),
+            (
+                "producer-queue-stale-terminal:Fix-001",
+                lambda root: (
+                    self.reconcile_terminal(root),
+                    self.write_queue(root, "Fix-001"),
+                ),
+            ),
+        ]
+        for reason, mutate in cases:
+            with self.subTest(reason=reason):
+                root = self.fixture()
+                mutate(root)
+                result = self.run_tool(root, "validate")
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertIn(reason, result.stdout)
+
+    def test_queue_table_is_exact_and_descriptive_prose_is_not_authority(self) -> None:
+        root = self.fixture()
+        producer = root / "PRODUCER.md"
+        producer.write_text(
+            producer.read_text(encoding="utf-8")
+            + "\nDescriptive history mentions Fix-999 without queue authority.\n",
+            encoding="utf-8",
+        )
+        self.assertEqual(self.run_tool(root, "validate").returncode, 0)
+
+        producer.write_text(
+            producer.read_text(encoding="utf-8").replace(
+                "| Task | State | Priority | Packet |",
+                "| Task | State | Packet |",
+            ),
+            encoding="utf-8",
+        )
+        result = self.run_tool(root, "validate")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("producer-queue-format", result.stdout)
+
+    def test_cancelled_task_is_a_stale_queue_entry(self) -> None:
+        root = self.fixture()
+        index = root / "docs/producer/index.tsv"
+        index.write_text(
+            index.read_text(encoding="utf-8").replace(
+                "Fix-001\tready", "Fix-001\tcancelled"
+            ),
+            encoding="utf-8",
+        )
+        (root / "TODO.md").write_text("# Board\n", encoding="utf-8")
+        (root / "docs/producer/assignment.tsv").write_text(
+            "client\tslot\tstate\nany\tfixture\tidle\n", encoding="utf-8"
+        )
+        result = self.run_tool(root, "validate")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("producer-queue-stale-terminal:Fix-001", result.stdout)
+
+    def test_active_record_word_ceiling_preserves_terminal_history(self) -> None:
+        root = self.fixture()
+        record = root / "docs/tasks/Fix-001.md"
+        record.write_text(
+            "task: Fix-001\nstatus: active\nupdated: 2026-08-04\n---\n"
+            + ("synthetic " * 901),
+            encoding="utf-8",
+        )
+        result = self.run_tool(root, "validate")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("active-record-words:Fix-001", result.stdout)
+
+        record.write_text(
+            "task: Fix-001\nstatus: active\nupdated: 2026-08-04\n---\n"
+            "Compact synthetic recovery index.\n",
+            encoding="utf-8",
+        )
+        result = self.run_tool(root, "validate")
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+        record.write_text(
+            "task: Fix-001\nstatus: complete\nupdated: 2026-08-04\n---\n"
+            + ("historical " * 901),
+            encoding="utf-8",
+        )
+        result = self.run_tool(root, "validate")
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_terminal_receipt_is_not_selected_while_reconciliation_pends(self) -> None:
+        root = self.fixture()
+        self.write_receipt(root)
+        (root / "TODO.md").write_text("# Board\n", encoding="utf-8")
+        result = self.run_tool(root, "validate")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("reconciliation_pending=1", result.stdout)
+        strict = self.run_tool(root, "validate", "--require-converged")
+        self.assertNotEqual(strict.returncode, 0, strict.stdout)
+        self.assertIn("receipt-disposition", strict.stdout)
+        selection = self.run_tool(root, "next-ready")
+        self.assertEqual(selection.returncode, 0, selection.stdout)
+        self.assertIn("status=idle", selection.stdout)
+
+    def test_terminal_handoff_must_match_active_assignment_client(self) -> None:
+        root = self.fixture()
+        self.write_receipt(root)
+        (root / "TODO.md").write_text("# Board\n", encoding="utf-8")
+        self.mutate_packet(
+            root, lambda text: text.replace("consumer: any", "consumer: codex")
+        )
+        (root / "docs/producer/assignment.tsv").write_text(
+            "client\tslot\tstate\nclaude\tfixture\tactive\n", encoding="utf-8"
+        )
+        result = self.run_tool(root, "validate")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("assignment-without-executable-task", result.stdout)
+
+    def test_terminal_reconciliation_preserves_published_packet(self) -> None:
+        root = self.fixture()
+        packet = root / "docs/producer/tasks/Fix-001.md"
+        before = hashlib.sha256(packet.read_bytes()).hexdigest()
+        self.reconcile_terminal(root)
+        result = self.run_tool(root, "validate", "--require-converged")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(hashlib.sha256(packet.read_bytes()).hexdigest(), before)
+
+    def test_terminal_disposition_requires_matching_receipt(self) -> None:
+        root = self.fixture()
+        self.reconcile_terminal(root)
+        (root / "docs/consumer/receipts/Fix-001.md").unlink()
+        result = self.run_tool(root, "validate")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("terminal-receipt", result.stdout)
+
+    def test_reconciled_terminal_assignment_must_be_idle(self) -> None:
+        root = self.fixture()
+        self.reconcile_terminal(root)
+        (root / "docs/producer/assignment.tsv").write_text(
+            "client\tslot\tstate\nany\tfixture\tactive\n", encoding="utf-8"
+        )
+        result = self.run_tool(root, "validate")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("assignment-without-executable-task", result.stdout)
+        (root / "docs/producer/assignment.tsv").write_text(
+            "client\tslot\tstate\nany\tfixture\tidle\n", encoding="utf-8"
+        )
+        result = self.run_tool(root, "validate", "--require-converged")
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_next_ready_ignores_terminal_receipts(self) -> None:
+        root = self.fixture()
+        selection = self.run_tool(root, "next-ready")
+        self.assertEqual(selection.returncode, 0, selection.stdout)
+        self.assertIn("status=ready task=Fix-001", selection.stdout)
+        self.write_receipt(root, status="blocked")
+        (root / "TODO.md").write_text("# Board\n", encoding="utf-8")
+        (root / "docs/producer/assignment.tsv").write_text(
+            "client\tslot\tstate\nany\tfixture\tidle\n", encoding="utf-8"
+        )
+        selection = self.run_tool(root, "next-ready")
+        self.assertEqual(selection.returncode, 0, selection.stdout)
+        self.assertIn("status=idle", selection.stdout)
+
+    def test_reversible_gate_is_queue_local_and_preserves_partial_record(self) -> None:
+        root = self.fixture()
+        config_path = root / "docs/producer/config.json"
+        config = json.loads(config_path.read_text(encoding="utf-8"))
+        config["next_id"] = 3
+        config_path.write_text(json.dumps(config), encoding="utf-8")
+        self.write_queue(root, "Fix-001", "Fix-002", next_id=3)
+        (root / "docs/producer/index.tsv").write_text(
+            "task\tstate\tpriority\tcreated\tpacket\n"
+            "Fix-001\tready\t10\t2026-08-02\tdocs/producer/tasks/Fix-001.md\n"
+            "Fix-002\tready\t20\t2026-08-03\tdocs/producer/tasks/Fix-002.md\n",
+            encoding="utf-8",
+        )
+        (root / "docs/producer/tasks/Fix-002.md").write_text(
+            "task: Fix-002\n"
+            "repository: fixture\n"
+            "state: ready\n"
+            "priority: 20\n"
+            "created: 2026-08-03\n"
+            "consumer: any\n"
+            "record: docs/tasks/Fix-002.md\n"
+            "authority: packet-scope-plus-closer-gates\n"
+            "---\n# Objective\n\nComplete the second fixture task.\n",
+            encoding="utf-8",
+        )
+        (root / "docs/tasks/Fix-002.md").write_text(
+            "# second record\n", encoding="utf-8"
+        )
+        (root / "TODO.md").write_text(
+            "# Board\n\nFix-001\nFix-002\n", encoding="utf-8"
+        )
+        first_record = root / "docs/tasks/Fix-001.md"
+        receipt = root / "docs/consumer/receipts/Fix-001.md"
+        before = first_record.read_bytes()
+
+        index = root / "docs/producer/index.tsv"
+        index.write_text(
+            index.read_text(encoding="utf-8").replace(
+                "Fix-001\tready", "Fix-001\tgated"
+            ),
+            encoding="utf-8",
+        )
+        selection = self.run_tool(root, "next-ready")
+        self.assertEqual(selection.returncode, 0, selection.stdout)
+        self.assertIn("status=ready task=Fix-002", selection.stdout)
+        self.assertFalse(receipt.exists())
+        self.assertEqual(first_record.read_bytes(), before)
+
+        index.write_text(
+            index.read_text(encoding="utf-8").replace(
+                "Fix-001\tgated", "Fix-001\tready"
+            ),
+            encoding="utf-8",
+        )
+        selection = self.run_tool(root, "next-ready")
+        self.assertEqual(selection.returncode, 0, selection.stdout)
+        self.assertIn("status=ready task=Fix-001", selection.stdout)
+        self.assertFalse(receipt.exists())
+        self.assertEqual(first_record.read_bytes(), before)
+
+        index.write_text(
+            index.read_text(encoding="utf-8").replace(
+                "Fix-001\tready", "Fix-001\tgated"
+            ),
+            encoding="utf-8",
+        )
+        self.write_receipt(root, status="blocked")
+        index.write_text(
+            index.read_text(encoding="utf-8").replace(
+                "Fix-001\tgated", "Fix-001\tready"
+            ),
+            encoding="utf-8",
+        )
+        (root / "TODO.md").write_text(
+            "# Board\n\nFix-002\n", encoding="utf-8"
+        )
+        selection = self.run_tool(root, "next-ready")
+        self.assertEqual(selection.returncode, 0, selection.stdout)
+        self.assertIn("status=ready task=Fix-002", selection.stdout)
+        self.assertNotIn("task=Fix-001", selection.stdout)
 
     def test_ready_packet_may_await_consumer_record(self) -> None:
         root = self.fixture()
@@ -108,88 +404,39 @@ class ProducerLedgerTests(unittest.TestCase):
         result = self.run_tool(root, "validate")
         self.assertEqual(result.returncode, 0, result.stdout)
 
-    def test_index_disposition_may_differ_from_published_packet(self) -> None:
+    def test_index_is_current_disposition_and_packet_state_is_publication_only(self) -> None:
         root = self.fixture()
-        index = root / "docs/producer/index.tsv"
-        index.write_text(
-            index.read_text(encoding="utf-8").replace(
-                "Fix-001\tready\t10", "Fix-001\tgated\t20"
-            ),
-            encoding="utf-8",
+        self.mutate_packet(
+            root, lambda text: text.replace("state: ready", "state: gated")
         )
-        result = self.run_tool(root, "validate")
-        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(self.run_tool(root, "validate").returncode, 0)
+        selection = self.run_tool(root, "next-ready")
+        self.assertEqual(selection.returncode, 0, selection.stdout)
+        self.assertIn("disposition_source=docs/producer/index.tsv", selection.stdout)
+        self.assertIn("packet_state=publication-only", selection.stdout)
 
-    def test_next_ready_reports_disposition_source(self) -> None:
-        root = self.fixture()
-        result = self.run_tool(root, "next-ready")
-        self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertIn("status=ready task=Fix-001", result.stdout)
-        self.assertIn("disposition_source=docs/producer/index.tsv", result.stdout)
-        self.assertIn("packet_state=publication-only", result.stdout)
-
-    def test_terminal_receipt_suppresses_ready_selection(self) -> None:
-        root = self.fixture()
-        (root / "docs/consumer/receipts/Fix-001.md").write_text(
-            "task: Fix-001\nstatus: complete\nupdated: 2026-08-03\n"
-            "validation: pass\n---\nComplete.\n",
-            encoding="utf-8",
-        )
-        result = self.run_tool(root, "next-ready")
-        self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertIn("status=idle", result.stdout)
-
-    def test_packet_metadata_must_remain_valid(self) -> None:
+    def test_claimed_disposition_uses_deterministic_record_without_packet_rewrite(self) -> None:
         root = self.fixture()
         packet = root / "docs/producer/tasks/Fix-001.md"
         packet.write_text(
-            packet.read_text(encoding="utf-8").replace(
-                "state: ready", "state: unknown"
-            ),
+            packet.read_text(encoding="utf-8")
+            .replace("state: ready", "state: claimed")
+            .replace("record: docs/tasks/Fix-001.md", "record: pending"),
             encoding="utf-8",
         )
-        result = self.run_tool(root, "validate")
-        self.assertNotEqual(result.returncode, 0, result.stdout)
-        self.assertIn("packet-state", result.stdout)
-
-    def test_existing_packet_is_immutable_for_producer(self) -> None:
-        root = self.fixture()
-        self.init_git(root)
-        self.mutate_packet(root, lambda text: text + "\nchanged\n")
-        result = self.run_tool(root, "check-producer-diff", "--base", "HEAD")
-        self.assertNotEqual(result.returncode, 0, result.stdout)
-        self.assertIn("producer-immutable-packet", result.stdout)
-
-    def test_new_packet_is_allowed_for_producer(self) -> None:
-        root = self.fixture()
-        self.init_git(root)
-        packet = root / "docs/producer/tasks/Fix-002.md"
-        packet.write_text("new packet\n", encoding="utf-8")
-        result = self.run_tool(root, "check-producer-diff", "--base", "HEAD")
-        self.assertEqual(result.returncode, 0, result.stdout)
-
-    def test_packet_deletion_is_rejected_for_producer(self) -> None:
-        root = self.fixture()
-        self.init_git(root)
-        (root / "docs/producer/tasks/Fix-001.md").unlink()
-        result = self.run_tool(root, "check-producer-diff", "--base", "HEAD")
-        self.assertNotEqual(result.returncode, 0, result.stdout)
-        self.assertIn("producer-immutable-packet", result.stdout)
-
-    def test_live_index_can_close_without_rewriting_packet(self) -> None:
-        root = self.fixture()
-        packet = root / "docs/producer/tasks/Fix-001.md"
-        before = hashlib.sha256(packet.read_bytes()).hexdigest()
         index = root / "docs/producer/index.tsv"
         index.write_text(
             index.read_text(encoding="utf-8").replace(
-                "Fix-001\tready\t10", "Fix-001\tcomplete\t999"
+                "Fix-001\tready", "Fix-001\tclaimed"
             ),
             encoding="utf-8",
         )
         result = self.run_tool(root, "validate")
         self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertEqual(hashlib.sha256(packet.read_bytes()).hexdigest(), before)
+        (root / "docs/tasks/Fix-001.md").unlink()
+        result = self.run_tool(root, "validate")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("task-record", result.stdout)
 
     def test_packet_failures_close(self) -> None:
         cases = {
@@ -245,6 +492,17 @@ class ProducerLedgerTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0, result.stdout)
         self.assertIn("receipt-authority", result.stdout)
 
+    def test_receipt_filename_must_match_task(self) -> None:
+        root = self.fixture()
+        (root / "docs/consumer/receipts/Fix-002.md").write_text(
+            "task: Fix-001\nstatus: blocked\nupdated: 2026-08-03\n"
+            "validation: not-run\n---\nBlocked fixture evidence.\n",
+            encoding="utf-8",
+        )
+        result = self.run_tool(root, "validate")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("receipt-identity", result.stdout)
+
     def test_writer_boundaries(self) -> None:
         producer_root = self.fixture()
         self.init_git(producer_root)
@@ -266,15 +524,30 @@ class ProducerLedgerTests(unittest.TestCase):
         self.init_git(consumer_root)
         (consumer_root / "TODO.md").write_text("Fix-001\nupdated\n", encoding="utf-8")
         self.assertEqual(
-            self.run_tool(
-                consumer_root, "check-consumer-diff", "--base", "HEAD"
-            ).returncode,
+            self.run_tool(consumer_root, "check-consumer-diff", "--base", "HEAD").returncode,
             0,
         )
-        result = self.run_tool(
-            consumer_root, "check-producer-diff", "--base", "HEAD"
-        )
+        result = self.run_tool(consumer_root, "check-producer-diff", "--base", "HEAD")
         self.assertNotEqual(result.returncode, 0, result.stdout)
+
+    def test_producer_cannot_change_a_published_packet(self) -> None:
+        root = self.fixture()
+        self.init_git(root)
+        self.mutate_packet(root, lambda text: text + "\nchanged\n")
+        result = self.run_tool(root, "check-producer-diff", "--base", "HEAD")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("producer-immutable-packet", result.stdout)
+
+    def test_producer_may_add_a_new_packet(self) -> None:
+        root = self.fixture()
+        self.init_git(root)
+        packet = root / "docs/producer/tasks/Fix-002.md"
+        packet.write_text("new packet\n", encoding="utf-8")
+        subprocess.run(  # noqa: S603
+            [GIT, "add", str(packet.relative_to(root))], cwd=root, check=True
+        )
+        result = self.run_tool(root, "check-producer-diff", "--base", "HEAD")
+        self.assertEqual(result.returncode, 0, result.stdout)
 
     def test_consumer_cannot_allocate_task_record(self) -> None:
         root = self.fixture()
@@ -291,6 +564,22 @@ class ProducerLedgerTests(unittest.TestCase):
         result = self.run_tool(root, "check-consumer-diff", "--base", "HEAD^")
         self.assertNotEqual(result.returncode, 0, result.stdout)
         self.assertIn("consumer-writer-boundary", result.stdout)
+
+    def test_consumer_diff_includes_untracked_nonignored_path(self) -> None:
+        root = self.fixture()
+        self.init_git(root)
+        (root / "consumer-note.md").write_text("synthetic\n", encoding="utf-8")
+        result = self.run_tool(root, "check-consumer-diff", "--base", "HEAD")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("role=consumer paths=1", result.stdout)
+
+        (root / "consumer-note.md").unlink()
+        producer_path = root / "docs/producer/untracked.tsv"
+        producer_path.write_text("synthetic\n", encoding="utf-8")
+        result = self.run_tool(root, "check-consumer-diff", "--base", "HEAD")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("consumer-writer-boundary", result.stdout)
+        self.assertIn("docs/producer/untracked.tsv", result.stdout)
 
     def test_disjoint_producer_and_consumer_changes_merge(self) -> None:
         root = self.fixture()
