@@ -1,16 +1,16 @@
 driver: codex
-updated: 2026-08-04T08:55+0900
-task: Web-221
-status: reconciliation-pending
+updated: 2026-08-05T08:38+0900
+task: Web-222
+status: publication-ready
 
 ## Now
 
-- Web-221 has a validated terminal consumer candidate and immutable receipt;
-  protected publication and producer reconciliation remain.
+- Web-222 has a validated terminal candidate with role-equal repository
+  permissions, advisory overlap checks, and unchanged deployment boundaries.
 
 ## Working set
 
-- Branch `codex/web221-implementation` in the current isolated Website
+- Branch `codex/web222-equal-agent-permissions` in the current isolated Website
   checkout.
 
 ## Open questions
@@ -23,5 +23,5 @@ status: reconciliation-pending
 
 ## Next action
 
-- Publish the terminal push-only candidate, then reconcile Web-221 and return
+- Publish the terminal push-only candidate, then verify Web-222 and return
   the driver ledger to idle. Web-213 remains gated.

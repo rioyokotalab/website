@@ -27,6 +27,9 @@ source ranges only when required.
 - Project config (`AGENTS.md`) may be edited only when the current user task
   explicitly authorizes that scope. Owner-scope config remains proposal-only
   without exact external-write authorization.
+- Owner authorization has no magic syntax. Clear plain-language approval of
+  the immediately preceding bounded proposal is sufficient; never ask the owner
+  to copy agent-authored authorization text.
 - Sessions started in this repository treat `~/harness` as strictly read-only
   (owner rule, 2026-07-18): no file edit, commit, branch, worktree, push, PR,
   or merge there, overriding any standing Git authorization. Reading its
@@ -69,13 +72,12 @@ Canonical protocol: `skills/context-ledger.md`.
    work uses schema v2 (`tools/task-metrics.schema.json`) and validates with
    `python3 tools/task-metrics.py validate`; unknown telemetry is null, not
    zero.
-5. Only the portfolio producer may modify `PRODUCER.md` or `docs/producer/`.
-   Consumers never allocate durable IDs or durable goals. Handle nested
-   in-scope findings LIFO inside the current task; record out-of-scope or
-   authority-gated findings as blocked receipts under
-   `docs/consumer/receipts/`.
-   Before consumer publication run
-   `python3 tools/producer-ledger.py check-consumer-diff --base origin/main`.
+5. Producer and consumer DRIVERs are trust-equivalent repository agents. The
+   producer normally curates producer paths and IDs to avoid conflicts. A
+   consumer DRIVER may edit or allocate them when necessary for an in-scope
+   solution after fetching, checking overlap, recording the reason, and
+   preserving ledger invariants. Run the role-aware advisory diff check before
+   publication; immutable packets remain hard protected.
 6. Before producer or consumer work, read
    `docs/agent-policy/producer-consumer.md` completely.
 
