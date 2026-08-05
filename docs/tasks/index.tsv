@@ -1,4 +1,5 @@
 task	state	summary	source
+Web-223	complete	Refresh current repository README	docs/tasks/Web-223.md;docs/consumer/receipts/Web-223.md
 Web-222	complete	Equalize producer and consumer permissions	docs/tasks/Web-222.md;docs/consumer/receipts/Web-222.md
 Web-221	complete	Converge reusable producer and consumer protocol	docs/tasks/Web-221.md;docs/consumer/receipts/Web-221.md
 Web-220	complete	Harden producer-ledger disposition and publication-agent policy	docs/tasks/Web-220.md
