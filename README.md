@@ -13,31 +13,45 @@ can replace one prefix with the other.
 ```text
 repository/
 ├── AGENTS.md                     # Cold-start instructions
-├── PRODUCER.md                   # Producer-owned queue and next free task ID
-├── TODO.md                       # Consumer-owned execution board
+├── PRODUCER.md                   # Coordination queue and next Web-* ID
+├── TODO.md                       # Consumer execution and recovery board
 │
 ├── docs/
-│   ├── producer/                 # Producer-only writes
+│   ├── producer/                 # Normally producer-curated coordination
 │   │   ├── config.json           # Repository name, prefix, privacy, size limits
 │   │   ├── assignment.tsv        # Current consumer assignment
 │   │   ├── index.tsv             # All producer-created task dispositions
-│   │   ├── NIGHTLY.md            # Owner-started nightly procedure
+│   │   ├── NIGHTLY.md            # Target guidance for Harness-run nightlies
 │   │   └── tasks/
 │   │       └── <ID>.md           # Immutable task packets
 │   │
-│   ├── tasks/                    # Consumer-owned execution records
+│   ├── tasks/                    # Consumer execution records and lookup
 │   │   ├── index.tsv             # Historical/completed-task lookup
 │   │   └── <ID>.md               # Detailed execution state
 │   │
 │   ├── consumer/
-│   │   └── receipts/
-│   │       └── <ID>.md           # Completion or blocked receipts
+│   │   └── receipts/             # Durable terminal outcomes
 │   │
 │   └── history/                  # Archived historical boards and chronology
 │
 └── tools/
-    └── producer-ledger.py        # Schema and writer-boundary validator
+    └── producer-ledger.py        # Selector and ledger-invariant validator
 ```
+
+Producer and consumer DRIVERs have the same repository capabilities. The
+delegated WORKER remains narrower and never publishes. Path ownership avoids
+collisions; immutable packets, public-content, credential, and deployment
+boundaries remain hard. Only Harness starts portfolio nightlies. `next-ready`
+and the producer index—not this README—own current task disposition.
+
+## Current state
+
+At the 2026-08-05 refresh, `next-ready` is idle because Web-213 remains gated
+until a material site/template change or bounded quarterly manual checkpoint.
+The public site and deployment state are unchanged by this documentation
+refresh. Offline security checks remain the ordinary publication gate; browser,
+online supply-chain, live-header, and deployment checks run only when their
+documented scope requires them.
 
 ## Quickstart
 
@@ -52,7 +66,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 nvm install 24.16.0
 nvm alias default 24.16.0
-npm install --global @openai/codex@0.144.1 @anthropic-ai/claude-code@2.1.207
+npm install --global @openai/codex@0.146.0 @anthropic-ai/claude-code@2.1.220
 codex login --device-auth
 ```
 
@@ -63,10 +77,13 @@ mkdir -p "$HOME/projects"
 git clone https://github.com/rioyokotalab/website.git "$HOME/projects/website"
 cd "$HOME/projects/website"
 mkdir -p "$HOME/.codex"
-printf '%s\n' 'approval_policy = "never"' 'sandbox_mode = "danger-full-access"' 'model_reasoning_effort = "medium"' '' "[projects.\"$PWD\"]" 'trust_level = "trusted"' > "$HOME/.codex/config.toml"
-chmod 600 "$HOME/.codex/config.toml"
+# Merge these entries into the existing file; do not replace unrelated keys.
+printf '%s\n' 'model = "gpt-5.6-sol"' 'model_reasoning_effort = "high"' \
+  '' "[projects.\"$PWD\"]" 'trust_level = "trusted"'
 ```
 
+The command prints the intended entries. Review and merge them into
+`$HOME/.codex/config.toml`, then keep that file mode `0600`.
 Owner-scope configuration affects other projects. Preserve unrelated keys when
 updating an existing file; see `skills/config-proposals.md`.
 Claude reads the tracked root `CLAUDE.md`, which imports the same repository
